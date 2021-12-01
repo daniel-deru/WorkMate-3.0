@@ -2,12 +2,10 @@ import sqlite3
 
 class Model:
     def __init__(self):
-        self.db = sqlite3.connect("workmate.db")
+        self.db = sqlite3.connect("./database/workmate.db")
         self.cur = self.db.cursor()
 
         self.create_tables()
-
-        
 
     def create_tables(self):
         apps_table = """
@@ -15,7 +13,7 @@ class Model:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 path TEXT NOT NULL,
-                index INT NOT NULL
+                sequence INTEGER NOT NULL
             )
         """
 
@@ -23,7 +21,7 @@ class Model:
             CREATE TABLE IF NOT EXISTS notes(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
-                body TEXT,
+                body TEXT
             )
         """
 
@@ -31,7 +29,7 @@ class Model:
             CREATE TABLE IF NOT EXISTS todos(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
-                complete INT DEFAULT 0 NOT NULL,
+                complete INTEGER DEFAULT 0 NOT NULL,
                 deadline NUMERIC
             )
         """
@@ -39,19 +37,17 @@ class Model:
         self.cur.execute(notes_table)
         self.cur.execute(todos_table)
 
-    def save(self, table, data):
-        # self.open_db()
+    def save(self, table, data): 
+        keys = f'{", ".join(data.keys())}'
+        values = ", ".join(list(map(lambda v: "?", data.keys())))
+
+        query = f"INSERT INTO {table}({keys}) VALUES ({values})"
+
+        self.cur.executemany(query, [tuple(data.values())])
+        self.db.commit()
+        self.db.close()
         
-        # data = [data] if type(data) != list else data
-        # values = "(?, ?, ?)" if table == "notes" else "(?, ?, ?, ?)"
-
-        # query = f"INSERT INTO {table} VALUES {values}"
-
-        # self.cur.executemany(query, data)
-        # self.db.commit()
-        # self.db.close()
-        print(data.keys())
-        print(data.values())
+        
 
     def read(self, table):
 
@@ -77,6 +73,8 @@ class Model:
         self.cur.execute(query, (name,))
         self.db.commit()
         self.db.close()
+
+
 
 
 

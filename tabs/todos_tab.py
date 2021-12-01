@@ -31,11 +31,13 @@ class Todo_tab(QWidget, Ui_todo_tab):
     def add_todo(self):
 
         name = self.lne_add_todo.text()
-        deadline = self.lbl_data_display.text()
+        deadline = self.lbl_data_display.text() if self.lbl_data_display.text() != "Not Set" else None
+        
 
         todo = {
-            'name':name
+            'name':name,
+            'deadline': deadline
         }
         Model().save("todos", todo)
-        # print(Model.read("todos"))
+        print(Model().read("todos"))
         

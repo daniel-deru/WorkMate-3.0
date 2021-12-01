@@ -59,9 +59,9 @@ class Ui_todo_tab(object):
         self.btn_add_todo.setMaximumSize(QtCore.QSize(150, 16777215))
         self.btn_add_todo.setObjectName("btn_add_todo")
         self.form_todos.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.btn_add_todo)
-        self.lbl_data_display = QtWidgets.QLabel(todo_tab)
-        self.lbl_data_display.setObjectName("lbl_data_display")
-        self.form_todos.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.lbl_data_display)
+        self.lbl_date_display = QtWidgets.QLabel(todo_tab)
+        self.lbl_date_display.setObjectName("lbl_date_display")
+        self.form_todos.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.lbl_date_display)
         self.dte_date_select = QtWidgets.QDateEdit(todo_tab)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -92,7 +92,7 @@ class Ui_todo_tab(object):
         _translate = QtCore.QCoreApplication.translate
         todo_tab.setWindowTitle(_translate("todo_tab", "Form"))
         self.btn_add_todo.setText(_translate("todo_tab", "Add Todo"))
-        self.lbl_data_display.setText(_translate("todo_tab", "Date"))
+        self.lbl_date_display.setText(_translate("todo_tab", "Not Set"))
 
 
 if __name__ == "__main__":
