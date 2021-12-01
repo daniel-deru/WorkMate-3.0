@@ -1,0 +1,22 @@
+import sys
+import os
+
+from functools import reduce
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
+from widgets.Dialog import Dialog
+from widgets.LineEdit import LineEdit
+from widgets.PushButton import PushButton
+from widgets.Label import Label
+from widgets.SpinBox import SpinBox
+
+_widget_list = [
+    PushButton,
+    LineEdit,
+    Dialog,
+    Label,
+    SpinBox
+    ]
+
+app_window_styles = reduce(lambda a, b: a + b, _widget_list)
