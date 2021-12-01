@@ -37,17 +37,11 @@ class Notes_tab(QWidget, Ui_notes_tab):
 
     def display_note(self):
         
-        column_switcher = True
-        for i in range(5):
-            column = 0
-            if column_switcher:
-                column = 0
-                column_switcher = False
-            else:
-                column = 1
-                column_switcher = True
-            note = NoteItem().create()
-            self.gbox_note_container.addWidget(note, i, column)
+
+        for row in range(2):
+            for col in range(2):
+                note = NoteItem().create()
+                self.gbox_note_container.addWidget(note, row, col)
 
 #   0     0   # 0   1
 #   1     0   # 1   1

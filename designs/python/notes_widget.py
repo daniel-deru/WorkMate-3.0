@@ -17,16 +17,7 @@ class Ui_notes_tab(object):
         notes_tab.resize(430, 314)
         notes_tab.setMinimumSize(QtCore.QSize(400, 0))
         notes_tab.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        notes_tab.setStyleSheet("QWidget {\n"
-"    font-size: 16px;\n"
-"    padding: 5px 8px;\n"
-"    \n"
-"}\n"
-"\n"
-"QPushButton {\n"
-"    border-radius: 5px;\n"
-"    background-color: white;\n"
-"}")
+        notes_tab.setStyleSheet("")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(notes_tab)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.hbox_notes = QtWidgets.QHBoxLayout()

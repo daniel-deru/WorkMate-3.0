@@ -1,7 +1,7 @@
 import sys
 import os
 
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QGridLayout
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QPushButton, QFrame
 from PyQt5.QtCore import pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -10,13 +10,14 @@ from database.model import Model
 from styles.widgets.NoteWidget import NoteWidget
 
 
-class NoteItem(QWidget):
+class NoteItem(QFrame):
     def __init__(self):
         super(NoteItem, self).__init__()
         self.setupUI()
         
 
     def setupUI(self):
+        self.setObjectName("note_item")
         self.hbox = QHBoxLayout()
         self.hbox.setObjectName("hbox_note_item")
 
