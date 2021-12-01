@@ -30,7 +30,7 @@ class Model:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 complete INTEGER DEFAULT 0 NOT NULL,
-                deadline NUMERIC
+                deadline TEXT
             )
         """
         self.cur.execute(apps_table)
@@ -65,14 +65,14 @@ class Model:
         self.db.commit()
         self.db.close()
 
-    def update(self, table, name, data):
-        self.open_db()
-
-        query = f"DELETE FROM {table} WHERE name = (?)"
-
-        self.cur.execute(query, (name,))
+    def update(self, table, field, value, name):
+ 
+        query = f"UPDATE {table} SET {field} = ? WHERE name = ?"
+  
+        self.cur.execute(query, (value, name))
         self.db.commit()
         self.db.close()
+
 
 
 
