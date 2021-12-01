@@ -47,9 +47,9 @@ class Ui_notes_tab(object):
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.hbox_notes.addItem(spacerItem2)
         self.verticalLayout_2.addLayout(self.hbox_notes)
-        self.vbox_note_container = QtWidgets.QVBoxLayout()
-        self.vbox_note_container.setObjectName("vbox_note_container")
-        self.verticalLayout_2.addLayout(self.vbox_note_container)
+        self.gbox_note_container = QtWidgets.QGridLayout()
+        self.gbox_note_container.setObjectName("gbox_note_container")
+        self.verticalLayout_2.addLayout(self.gbox_note_container)
         spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem3)
 

@@ -22,6 +22,11 @@ class Ui_Note_Window(object):
         self.chkbx_edit = QtWidgets.QCheckBox(Note_Window)
         self.chkbx_edit.setObjectName("chkbx_edit")
         self.notes_window_hbox.addWidget(self.chkbx_edit)
+        self.btn_save = QtWidgets.QPushButton(Note_Window)
+        self.btn_save.setMinimumSize(QtCore.QSize(150, 0))
+        self.btn_save.setMaximumSize(QtCore.QSize(150, 16777215))
+        self.btn_save.setObjectName("btn_save")
+        self.notes_window_hbox.addWidget(self.btn_save)
         self.btn_copy_note = QtWidgets.QPushButton(Note_Window)
         self.btn_copy_note.setMinimumSize(QtCore.QSize(150, 0))
         self.btn_copy_note.setMaximumSize(QtCore.QSize(150, 16777215))
@@ -37,6 +42,7 @@ class Ui_Note_Window(object):
         self.lnedt_title.setObjectName("lnedt_title")
         self.verticalLayout.addWidget(self.lnedt_title)
         self.txtedt_body = QtWidgets.QTextEdit(Note_Window)
+        self.txtedt_body.setTextInteractionFlags(QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
         self.txtedt_body.setObjectName("txtedt_body")
         self.verticalLayout.addWidget(self.txtedt_body)
 
@@ -47,6 +53,7 @@ class Ui_Note_Window(object):
         _translate = QtCore.QCoreApplication.translate
         Note_Window.setWindowTitle(_translate("Note_Window", "Note"))
         self.chkbx_edit.setText(_translate("Note_Window", "Editable"))
+        self.btn_save.setText(_translate("Note_Window", "Save"))
         self.btn_copy_note.setText(_translate("Note_Window", "Copy"))
         self.btn_delete_note.setText(_translate("Note_Window", "Delete"))
 
