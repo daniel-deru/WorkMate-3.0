@@ -2,6 +2,7 @@ import sys
 from functools import reduce
 
 
+
 from PyQt5.QtWidgets import QApplication, QWidget
 
 from designs.python.main_widget import Ui_main_container

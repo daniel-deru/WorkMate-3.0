@@ -32,11 +32,6 @@ class Ui_Note_Window(object):
         self.btn_copy_note.setMaximumSize(QtCore.QSize(150, 16777215))
         self.btn_copy_note.setObjectName("btn_copy_note")
         self.notes_window_hbox.addWidget(self.btn_copy_note)
-        self.btn_delete_note = QtWidgets.QPushButton(Note_Window)
-        self.btn_delete_note.setMinimumSize(QtCore.QSize(150, 0))
-        self.btn_delete_note.setMaximumSize(QtCore.QSize(150, 16777215))
-        self.btn_delete_note.setObjectName("btn_delete_note")
-        self.notes_window_hbox.addWidget(self.btn_delete_note)
         self.verticalLayout.addLayout(self.notes_window_hbox)
         self.lnedt_title = QtWidgets.QLineEdit(Note_Window)
         self.lnedt_title.setObjectName("lnedt_title")
@@ -55,7 +50,6 @@ class Ui_Note_Window(object):
         self.chkbx_edit.setText(_translate("Note_Window", "Editable"))
         self.btn_save.setText(_translate("Note_Window", "Save"))
         self.btn_copy_note.setText(_translate("Note_Window", "Copy"))
-        self.btn_delete_note.setText(_translate("Note_Window", "Delete"))
 
 
 if __name__ == "__main__":

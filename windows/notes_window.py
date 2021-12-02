@@ -1,8 +1,12 @@
 import os
 import sys
+import pyperclip
+
+from PyQt5.QtWidgets import QDialog, QWidget
+from PyQt5.QtCore import pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
-from PyQt5.QtWidgets import QDialog, QWidget
+
 
 from designs.python.note_window import Ui_Note_Window
 
@@ -13,13 +17,21 @@ from database.model import Model
 
 
 class Note_window(QDialog, Ui_Note_Window):
-    def __init__(self):
+    note_window_signal = pyqtSignal(str)
+    def __init__(self, note=None):
         super(Note_window, self).__init__()
         self.setupUi(self)
         self.setStyleSheet(note_window_styles)
 
+        if note:
+            self.note = note
+            self.lnedt_title.setText(self.note[1])
+            self.txtedt_body.setPlainText(self.note[2])
+            self.btn_save.setText("Update")
+
         self.chkbx_edit.stateChanged.connect(self.editable)
         self.btn_save.clicked.connect(self.save_clicked)
+        self.btn_copy_note.clicked.connect(self.copy_text)
 
     def editable(self):
         checkbox = self.chkbx_edit
@@ -36,11 +48,20 @@ class Note_window(QDialog, Ui_Note_Window):
             message.exec_()
         else:
             note = {
-                'name': name,
-                'body': body
-            }
-            Model().save("notes", note)
-            print(Model().read("notes"))
+                    'name': name,
+                    'body': body
+                }
+            print('from clicking the update button', note)
+            if not self.note:
+                Model().save("notes", note)
+            else:
+                Model().update("notes", note, self.note[0])
+            self.note_window_signal.emit("note saved")
+            self.close()
+
+    def copy_text(self):
+        body = self.txtedt_body.toPlainText()
+        pyperclip.copy(body)
 
 
     

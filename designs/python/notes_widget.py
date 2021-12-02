@@ -25,24 +25,19 @@ class Ui_notes_tab(object):
         self.hbox_notes.setObjectName("hbox_notes")
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.hbox_notes.addItem(spacerItem)
-        self.chk_delete_notes = QtWidgets.QCheckBox(notes_tab)
-        self.chk_delete_notes.setObjectName("chk_delete_notes")
-        self.hbox_notes.addWidget(self.chk_delete_notes)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.hbox_notes.addItem(spacerItem1)
         self.btn_note = QtWidgets.QPushButton(notes_tab)
         self.btn_note.setMinimumSize(QtCore.QSize(150, 0))
         self.btn_note.setMaximumSize(QtCore.QSize(200, 16777215))
         self.btn_note.setObjectName("btn_note")
         self.hbox_notes.addWidget(self.btn_note)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.hbox_notes.addItem(spacerItem2)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.hbox_notes.addItem(spacerItem1)
         self.verticalLayout_2.addLayout(self.hbox_notes)
         self.gbox_note_container = QtWidgets.QGridLayout()
         self.gbox_note_container.setObjectName("gbox_note_container")
         self.verticalLayout_2.addLayout(self.gbox_note_container)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_2.addItem(spacerItem3)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_2.addItem(spacerItem2)
 
         self.retranslateUi(notes_tab)
         QtCore.QMetaObject.connectSlotsByName(notes_tab)
@@ -50,7 +45,6 @@ class Ui_notes_tab(object):
     def retranslateUi(self, notes_tab):
         _translate = QtCore.QCoreApplication.translate
         notes_tab.setWindowTitle(_translate("notes_tab", "Form"))
-        self.chk_delete_notes.setText(_translate("notes_tab", "Delete Notes"))
         self.btn_note.setText(_translate("notes_tab", "Add Notes"))
 
 

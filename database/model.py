@@ -59,17 +59,23 @@ class Model:
 
         return data
 
-    def delete(self, table, name):
-        query = f"DELETE FROM {table} WHERE name = (?)"
-        self.cur.execute(query, (name,))
+    def delete(self, table, id):
+        query = f"DELETE FROM {table} WHERE id = (?)"
+        self.cur.execute(query, (id,))
         self.db.commit()
         self.db.close()
 
-    def update(self, table, field, value, name):
+    def update(self, table, data, id):
+        fields = data.keys()
+        values = list(data.values())
+        values.append(id)
+        data_string = ", ".join(list(map(lambda a: f"{a} = ?", fields)))
+        
+
  
-        query = f"UPDATE {table} SET {field} = ? WHERE name = ?"
-  
-        self.cur.execute(query, (value, name))
+        query = f"UPDATE {table} SET {data_string} WHERE id = ?"
+
+        self.cur.execute(query, values)
         self.db.commit()
         self.db.close()
 

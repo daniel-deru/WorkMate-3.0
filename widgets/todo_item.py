@@ -28,9 +28,9 @@ class TodoItem(QWidget):
 
     def button_clicked(self):
         if self.completed:
-            Model().delete("todos", self.todo)
+            Model().delete("todos", self.todo_id)
         else:
-            Model().update("todos", "complete", 1, self.todo)
+            Model().update("todos", {'complete': 1}, self.todo_id)
 
             
         self.todo_item_signal.emit(self.todo)
