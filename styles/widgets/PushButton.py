@@ -14,3 +14,23 @@ QPushButton:pressed {
     border: 2px solid #000000;
 }
 """
+
+CompleteButton = """
+    QPushButton {
+    background-color: transparent;
+    font-size: 16px;
+    image: url(assets/done.png);
+    border: none;
+    width: 60px;
+}
+"""
+
+DeleteButton = """
+    QPushButton {
+    background-color: transparent;
+    font-size: 16px;
+    image: url(assets/delete.png);
+    border: none;
+    width: 50px;
+}
+"""

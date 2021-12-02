@@ -1,15 +1,19 @@
 import sys
 import os
+from functools import reduce
 
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QPushButton
+from PyQt5.QtWidgets import QFrame, QWidget, QHBoxLayout, QLabel, QPushButton
 from PyQt5.QtCore import pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from database.model import Model
+from styles.widgets.PushButton import CompleteButton
+from styles.widgets.PushButton import DeleteButton
+from styles.widgets.Frame import TodoFrame
 
 
-class TodoItem(QWidget):
+class TodoItem(QFrame):
     todo_item_signal = pyqtSignal(str)
     def __init__(self, todo):
         super(TodoItem, self).__init__()
@@ -31,7 +35,7 @@ class TodoItem(QWidget):
             Model().delete("todos", self.todo_id)
         else:
             Model().update("todos", {'complete': 1}, self.todo_id)
-
+            
             
         self.todo_item_signal.emit(self.todo)
         
@@ -49,8 +53,8 @@ class TodoItem(QWidget):
         self.date = QLabel(self.date)
         self.date.setObjectName("lbl_date")
 
-        label = "Delete" if self.completed else "Complete"
-        self.action = QPushButton(label)
+        button = DeleteButton if self.completed else CompleteButton
+        self.action = QPushButton()
         self.action.setObjectName("btn_action")
 
         self.hbox.addWidget(self.name)
@@ -58,6 +62,14 @@ class TodoItem(QWidget):
         self.hbox.addWidget(self.action)
 
         self.setLayout(self.hbox)
+
+        styles = [
+            button,
+            TodoFrame
+        ]
+
+        self.setStyleSheet(reduce(lambda a, b: a + b, styles))
+
 
 
 
