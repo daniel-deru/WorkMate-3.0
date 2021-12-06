@@ -14,14 +14,17 @@ from tabs.notes_tab import Notes_tab
 from tabs.todos_tab import Todo_tab
 
 from styles.tabs.main import main
+from styles.widgets.Widget import MainWidget
 
 
 class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
         self.setupUi(self)
+        self.tab_widget.setAutoFillBackground(True)
+        self.setStyleSheet(MainWidget)
         self.read_style()
-
+        
         self.apps_tab = Apps_tab().create_tab()
         self.tab_widget.addTab(self.apps_tab, "Apps")
 
@@ -33,7 +36,7 @@ class Main(QWidget, Ui_main_container):
     
     def read_style(self):
         style = reduce(lambda a, b: a + b, main)
-        self.setStyleSheet(style)
+        self.tab_widget.setStyleSheet(style)
 
 
 

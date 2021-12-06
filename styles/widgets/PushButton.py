@@ -1,36 +1,33 @@
-PushButton = """
-    QPushButton {
-    background-color: #000000;
-    color: #ffffff;
-    border: 2px solid #ffffff;
+import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
+from styles.styles import colors
+from styles.styles import button_filled
+
+PushButton = f"""
+    QPushButton {{
+    background-color: {button_filled['background']};
+    color: {button_filled['color']};
+    border: 2px solid {colors['border']};
     border-radius: 5px;
     font-size: 16px;
     padding: 5px 8px;
-}
+}}
 
-QPushButton:pressed {
-    background-color: #ffffff;
-    color: #000000;
-    border: 2px solid #000000;
-}
+QPushButton:pressed {{
+    background-color: {button_filled['background-clicked']};
+    color: {button_filled['color-clicked']};
+    border: 2px solid {colors['border']};
+}}
 """
 
-CompleteButton = """
+IconButton = """
     QPushButton {
     background-color: transparent;
     font-size: 16px;
-    image: url(assets/done.png);
     border: none;
-    width: 60px;
-}
-"""
-
-DeleteButton = """
-    QPushButton {
-    background-color: transparent;
-    font-size: 16px;
-    image: url(assets/delete.png);
-    border: none;
-    width: 50px;
+    width: 20px;
 }
 """

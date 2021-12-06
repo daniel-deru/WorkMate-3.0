@@ -7,8 +7,10 @@ from widgets.PushButton import PushButton
 from widgets.LineEdit import LineEdit
 from widgets.Label import Label
 from widgets.DateEdit import DateEdit
+from widgets.Widget import Widget
 
 todo = [
+    Widget,
     LineEdit,
     PushButton,
     Label,

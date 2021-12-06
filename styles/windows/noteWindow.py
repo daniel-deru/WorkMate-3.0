@@ -16,7 +16,6 @@ _widget_list = [
     LineEdit,
     CheckBox,
     TextEdit,
-    Widget,
     Dialog
 ]
 

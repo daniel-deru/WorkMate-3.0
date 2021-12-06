@@ -1,10 +1,21 @@
-TabWidget = """
-    QTabWidget {
-        background-color: #000000;
-    }
+import os
+import sys
 
-    QTabWidget::pane {
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
+from styles.styles import colors
+
+TabWidget = f"""
+    QTabWidget {{
+        background-color: {colors['background-active']};
+    }}
+
+    QTabWidget::pane {{
         border: none;
-        background-color: #000000;
-    }
+        background-color: {colors['background-active']};
+    }}
+
+    QTabWidget::tab-bar {{
+        background-color: {colors['background-active']};
+    }}
 """

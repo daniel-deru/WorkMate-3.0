@@ -2,15 +2,17 @@ import sys
 import os
 from functools import reduce
 
-from PyQt5.QtWidgets import QFrame, QWidget, QHBoxLayout, QLabel, QPushButton
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QSpacerItem, QSizePolicy
+from PyQt5.QtCore import pyqtSignal, QSize
+from PyQt5.QtGui import QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from database.model import Model
-from styles.widgets.PushButton import CompleteButton
-from styles.widgets.PushButton import DeleteButton
-from styles.widgets.Frame import TodoFrame
+
+
+from styles.widgets.Frame import TodoFrameComplete, TodoFrameDelete
+from styles.widgets.Label import Label
 
 
 class TodoItem(QFrame):
@@ -44,6 +46,8 @@ class TodoItem(QFrame):
     def setupUI(self):
         self.setObjectName("TodoItem")
 
+        Frame = TodoFrameDelete if self.completed else TodoFrameComplete
+
         self.hbox = QHBoxLayout()
         self.hbox.setObjectName("hbox_todo_item")
 
@@ -53,19 +57,27 @@ class TodoItem(QFrame):
         self.date = QLabel(self.date)
         self.date.setObjectName("lbl_date")
 
-        button = DeleteButton if self.completed else CompleteButton
+        self.HSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+
+        icon = QIcon("assets/delete.png") if self.completed else QIcon("assets/done.png")
         self.action = QPushButton()
         self.action.setObjectName("btn_action")
+        self.action.setIcon(icon)
+        self.action.setIconSize(QSize(30, 30))
+
+
 
         self.hbox.addWidget(self.name)
         self.hbox.addWidget(self.date)
+        self.hbox.addSpacerItem(self.HSpacer)
         self.hbox.addWidget(self.action)
 
         self.setLayout(self.hbox)
 
         styles = [
-            button,
-            TodoFrame
+            Frame,
+            Label
         ]
 
         self.setStyleSheet(reduce(lambda a, b: a + b, styles))
