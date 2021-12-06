@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_apps_tab(object):
     def setupUi(self, apps_tab):
         apps_tab.setObjectName("apps_tab")
-        apps_tab.resize(400, 300)
+        apps_tab.resize(531, 300)
         apps_tab.setStyleSheet("QWidget {\n"
 "    font-size: 16px;\n"
 "    border-radius: 5px;\n"
@@ -31,26 +31,27 @@ class Ui_apps_tab(object):
         self.hbox_apps = QtWidgets.QHBoxLayout()
         self.hbox_apps.setSpacing(0)
         self.hbox_apps.setObjectName("hbox_apps")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.hbox_apps.addItem(spacerItem)
         self.chk_delete_apps = QtWidgets.QCheckBox(apps_tab)
         self.chk_delete_apps.setObjectName("chk_delete_apps")
         self.hbox_apps.addWidget(self.chk_delete_apps)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.hbox_apps.addItem(spacerItem1)
+        self.chk_edit_apps = QtWidgets.QCheckBox(apps_tab)
+        self.chk_edit_apps.setObjectName("chk_edit_apps")
+        self.hbox_apps.addWidget(self.chk_edit_apps)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.hbox_apps.addItem(spacerItem)
         self.btn_add_app = QtWidgets.QPushButton(apps_tab)
         self.btn_add_app.setMinimumSize(QtCore.QSize(150, 0))
         self.btn_add_app.setMaximumSize(QtCore.QSize(150, 16777215))
         self.btn_add_app.setObjectName("btn_add_app")
         self.hbox_apps.addWidget(self.btn_add_app)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.hbox_apps.addItem(spacerItem2)
         self.verticalLayout.addLayout(self.hbox_apps)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.verticalLayout.addItem(spacerItem1)
         self.gbox_apps = QtWidgets.QGridLayout()
         self.gbox_apps.setObjectName("gbox_apps")
         self.verticalLayout.addLayout(self.gbox_apps)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem3)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem2)
 
         self.retranslateUi(apps_tab)
         QtCore.QMetaObject.connectSlotsByName(apps_tab)
@@ -59,6 +60,7 @@ class Ui_apps_tab(object):
         _translate = QtCore.QCoreApplication.translate
         apps_tab.setWindowTitle(_translate("apps_tab", "Form"))
         self.chk_delete_apps.setText(_translate("apps_tab", "Delete Apps"))
+        self.chk_edit_apps.setText(_translate("apps_tab", "Edit Apps"))
         self.btn_add_app.setText(_translate("apps_tab", "Add App"))
 
 

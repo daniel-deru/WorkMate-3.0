@@ -31,3 +31,22 @@ IconButton = """
     width: 20px;
 }
 """
+
+AppRunButton = f"""
+QPushButton#run {{
+    background-color: {button_filled['background']};
+    color: {button_filled['color']};
+    border: 2px solid {colors['border']};
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 5px 8px;
+    width: 40px
+}}
+
+QPushButton#run:pressed {{
+    background-color: {button_filled['background-clicked']};
+    color: {button_filled['color-clicked']};
+    border: 2px solid {colors['border']};
+}}
+
+"""

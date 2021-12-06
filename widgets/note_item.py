@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from database.model import Model
 from styles.widgets.Frame import Frame
 from styles.widgets.Label import Label
-from styles.widgets.PushButton import IconButton, PushButton
+from styles.widgets.PushButton import IconButton
 from windows.notes_window import Note_window
 
 

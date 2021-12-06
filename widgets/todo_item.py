@@ -13,6 +13,7 @@ from database.model import Model
 
 from styles.widgets.Frame import TodoFrameComplete, TodoFrameDelete
 from styles.widgets.Label import Label
+from styles.widgets.PushButton import IconButton
 
 
 class TodoItem(QFrame):
@@ -77,7 +78,8 @@ class TodoItem(QFrame):
 
         styles = [
             Frame,
-            Label
+            Label,
+            IconButton
         ]
 
         self.setStyleSheet(reduce(lambda a, b: a + b, styles))

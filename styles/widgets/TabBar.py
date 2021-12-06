@@ -13,14 +13,10 @@ TabBar = f"""
         border: none;
         background: {colors['background-active']};
         color: {colors['background']};
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
     }}
 
         QTabBar::tab:selected {{
         background: {colors['background']};
-        color: {colors['text']};
-        border-radius: 0px;
-        
+        color: {colors['text']};    
     }}
 """

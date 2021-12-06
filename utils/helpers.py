@@ -10,3 +10,7 @@ def clear_window(container):
                 item.widget().deleteLater()
             elif item.spacerItem():
                 container.removeItem(item.spacerItem())
+
+
+def display_grid():
+    pass
