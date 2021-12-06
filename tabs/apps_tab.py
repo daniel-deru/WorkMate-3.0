@@ -75,15 +75,15 @@ class Apps_tab(QWidget, Ui_apps_tab):
             Model().delete('apps', app[0])
             self.update()
         elif edit:
-            app_window = Apps_window()
+            app_window = Apps_window(app)
+            app_window.app_window_signal.connect(self.update)
             app_window.exec_()
         else:
             try:
                 os.startfile(app[2])
-            except OSError as error:
+            except OSError:
                 pass
     def update(self):
-        print("in the update() method")
         clear_window(self.gbox_apps)
         self.create_apps()
 
