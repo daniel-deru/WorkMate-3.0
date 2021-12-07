@@ -8,11 +8,13 @@ from widgets.LineEdit import LineEdit
 from widgets.Label import Label
 from widgets.DateEdit import DateEdit
 from widgets.Widget import Widget
+from widgets.Calendar import Calendar
 
 todo = [
     Widget,
     LineEdit,
     PushButton,
     Label,
-    DateEdit
+    DateEdit,
+    Calendar,
     ]

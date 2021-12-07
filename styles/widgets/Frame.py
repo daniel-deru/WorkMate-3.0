@@ -10,7 +10,7 @@ Frame = f"""
         font-size: 16px;
         border-radius: 5px;
         font-size: 16px;
-        padding: 10px;
+        padding: 0px;
         background-color: {colors['background']};
         color: {colors['text']};
         border: 2px solid {colors['border']};
@@ -22,10 +22,11 @@ TodoFrameDelete = f"""
         font-size: 16px;
         border-radius: 5px;
         font-size: 16px;
-        background-color: {colors['complete']};
+        background-color: {colors['delete']};
         color: {colors['text']};
-        max-height: 50px;
-        height: 50px;
+        max-height: 40px;
+        height: 40px;
+        padding: 0px;
     }}
 """
 
@@ -34,9 +35,10 @@ TodoFrameComplete = f"""
         font-size: 16px;
         border-radius: 5px;
         font-size: 16px;
-        background-color: {colors['incomplete']};
+        background-color: {colors['complete']};
         color: {colors['text']};
-        max-height: 50px;
-        height: 50px;
+        max-height: 40px;
+        height: 40px;
+        padding: 0px;
     }}
 """

@@ -2,8 +2,8 @@ import sys
 import os
 from functools import reduce
 
-from PyQt5.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QSpacerItem, QSizePolicy
-from PyQt5.QtCore import pyqtSignal, QSize
+from PyQt5.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QSpacerItem, QSizePolicy, QWidget
+from PyQt5.QtCore import pyqtSignal, QSize, Qt
 from PyQt5.QtGui import QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -11,8 +11,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from database.model import Model
 
 
+from styles.widgets.Widget import TodoItemWidgetComplete, TodoItemWidgetDelete
 from styles.widgets.Frame import TodoFrameComplete, TodoFrameDelete
-from styles.widgets.Label import Label
+from styles.widgets.Label import Label, LabelMono
 from styles.widgets.PushButton import IconButton
 
 
@@ -26,20 +27,19 @@ class TodoItem(QFrame):
         self.date = todo[3]
         self.setupUI()
 
-        self.action.clicked.connect(self.button_clicked)
-        
+        # self.action.clicked.connect(self.button_clicked)
 
     
     def create_widget(self):
         return self
 
-    def button_clicked(self):
-        if self.completed:
-            Model().delete("todos", self.todo_id)
-        else:
-            Model().update("todos", {'complete': 1}, self.todo_id)
-            
-            
+  
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+                if self.completed:
+                    Model().delete("todos", self.todo_id)
+                else:
+                    Model().update("todos", {'complete': 1}, self.todo_id)
         self.todo_item_signal.emit(self.todo)
         
 
@@ -47,25 +47,25 @@ class TodoItem(QFrame):
     def setupUI(self):
         self.setObjectName("TodoItem")
 
-        Frame = TodoFrameDelete if self.completed else TodoFrameComplete
-
+        
         self.hbox = QHBoxLayout()
         self.hbox.setObjectName("hbox_todo_item")
 
         self.name = QLabel(self.todo)
         self.name.setObjectName("lbl_todo_name")
+        self.name.setStyleSheet("color: #ffffff")
 
         self.date = QLabel(self.date)
         self.date.setObjectName("lbl_date")
+        self.date.setStyleSheet("color: #ffffff")
 
         self.HSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
 
         icon = QIcon("assets/delete.png") if self.completed else QIcon("assets/done.png")
         self.action = QPushButton()
         self.action.setObjectName("btn_action")
         self.action.setIcon(icon)
-        self.action.setIconSize(QSize(30, 30))
+        self.action.setIconSize(QSize(15, 15))
 
 
 
@@ -75,11 +75,11 @@ class TodoItem(QFrame):
         self.hbox.addWidget(self.action)
 
         self.setLayout(self.hbox)
-
+        Background = TodoFrameDelete if self.completed else TodoFrameComplete
         styles = [
-            Frame,
-            Label,
-            IconButton
+            LabelMono,
+            IconButton,
+            Background
         ]
 
         self.setStyleSheet(reduce(lambda a, b: a + b, styles))

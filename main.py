@@ -3,6 +3,7 @@ from functools import reduce
 
 from PyQt5.QtWidgets import QApplication, QWidget, QFrame
 
+
 from designs.python.main_widget import Ui_main_container
 from tabs.apps_tab import Apps_tab
 
@@ -22,6 +23,7 @@ class Main(QWidget, Ui_main_container):
         self.tab_widget.setAutoFillBackground(True)
         self.setStyleSheet(MainWidget)
         self.read_style()
+        self.setMinimumSize(1000, 600)
         
         self.apps_tab = Apps_tab().create_tab()
         self.tab_widget.addTab(self.apps_tab, "Apps")

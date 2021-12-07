@@ -12,3 +12,11 @@ Label = f"""
         border: none;
     }}
 """
+
+LabelMono = f"""
+QLabel{{
+        color: {colors['text-alt']};
+        font-size: 16px;
+        border: none;
+    }}
+"""

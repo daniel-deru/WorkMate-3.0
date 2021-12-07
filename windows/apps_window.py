@@ -19,7 +19,6 @@ class Apps_window(QDialog, Ui_App_Window):
         self.setupUi(self)
         self.setStyleSheet(app_window_styles)
         self.apps = Model().read('apps')
-        print(self.apps)
         self.spn_index.setValue(len(self.apps) + 1)
 
         self.btn_save.clicked.connect(self.save_clicked)
@@ -78,19 +77,18 @@ class Apps_window(QDialog, Ui_App_Window):
                     if move_up:
                         array = self.apps[new:old]
                     elif not move_up:
-                        array = self.apps[old:new]
-                    print(array)
-                    # Test this to see if the array returns the correct results see figma
-                # Model().update('apps', data, self.app[0])
-                # self.app_window_signal.emit("updated")
+                        array = self.apps[old+1:new+1]
+                    for app in array:
+                        app = list(app)
+                        if move_up:
+                            Model().update('apps', {'sequence': app[3] + 1}, app[0])
+                        elif not move_up:
+                            Model().update('apps', {'sequence': app[3] - 1}, app[0])
+                Model().update('apps', data, self.app[0])
+                self.app_window_signal.emit("updated")
             self.close()
 
     def add_from_desktop(self):
         file = QFileDialog.getOpenFileName(self, "Open a file", DESKTOP, "All Files (*.*)")[0]
         path = self.lnedt_path
         path.setText(file)
-
-# Update algorithm
-# You need to know the original index
-# You need to know the indexes between the original and new position (new position included)
-# Move the indexes to the opposite of the move eg if new > old = move down else new < old = move up

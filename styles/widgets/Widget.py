@@ -22,3 +22,29 @@ MainWidget = f"""
         background-color: {colors['text']};
     }}
 """
+
+TodoItemWidgetComplete = f"""
+QWidget#TodoItem {{
+        font-size: 16px;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: {colors['complete']};
+        color: {colors['text']};
+        max-height: 50px;
+        height: 50px;
+        border: 2px solid {colors['border']};
+    }}
+"""
+
+TodoItemWidgetDelete = f"""
+    QWidget#TodoItem {{
+        font-size: 16px;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: {colors['delete']};
+        color: {colors['text']};
+        max-height: 50px;
+        height: 50px;
+        border: 2px solid {colors['border']};
+    }}
+"""

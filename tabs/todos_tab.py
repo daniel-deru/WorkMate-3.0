@@ -47,6 +47,7 @@ class Todo_tab(QWidget, Ui_todo_tab):
             }
             Model().save("todos", todo)
             self.update()
+        self.lne_add_todo.clear()
 
 
     def display_todos(self):

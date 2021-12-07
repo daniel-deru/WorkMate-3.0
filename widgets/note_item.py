@@ -33,6 +33,7 @@ class NoteItem(QFrame):
         self.setObjectName("note_item")
         self.hbox = QHBoxLayout()
         self.hbox.setObjectName("hbox_note_item")
+        # self.setMaximumWidth(200)
 
         self.name = QLabel(self.note_name)
         self.name.setObjectName("lbl_name")

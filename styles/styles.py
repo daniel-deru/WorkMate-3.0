@@ -4,7 +4,7 @@ colors = {
     'text': "#000000",
     'text-alt': '#ffffff',
     'border': '#000000',
-    'incomplete': "#C00000",
+    'delete': "#C00000",
     'complete': "#00A324"
 }
 
