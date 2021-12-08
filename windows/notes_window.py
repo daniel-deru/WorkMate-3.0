@@ -1,6 +1,7 @@
 import os
 import sys
 import pyperclip
+from functools import reduce
 
 from PyQt5.QtWidgets import QDialog, QWidget
 from PyQt5.QtCore import pyqtSignal
@@ -10,18 +11,29 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from designs.python.note_window import Ui_Note_Window
 
-from styles.windows.noteWindow import note_window_styles
+
 from utils.message import Message
 from database.model import Model
+from widgetStyles.PushButton import PushButton
+from widgetStyles.LineEdit import LineEdit
+from widgetStyles.QCheckBox import CheckBox
+from widgetStyles.TextEdit import TextEdit
+from widgetStyles.Dialog import Dialog
 
-
+styles = [
+    PushButton,
+    LineEdit,
+    CheckBox,
+    TextEdit,
+    Dialog,
+]
 
 class Note_window(QDialog, Ui_Note_Window):
     note_window_signal = pyqtSignal(str)
     def __init__(self, edit_note=None):
         super(Note_window, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(note_window_styles)
+        self.setStyleSheet(reduce(lambda a, b: a + b, styles))
 
         self.note = edit_note
         if self.note:

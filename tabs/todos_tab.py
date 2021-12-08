@@ -7,13 +7,26 @@ from PyQt5.QtWidgets import QWidget
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from styles.tabs.todo import todo
 from database.model import Model
 from designs.python.todo_widget import Ui_todo_tab
 from widgets.todo_item import TodoItem
 from utils.helpers import clear_window
 from utils.message import Message
+from widgetStyles.PushButton import PushButton
+from widgetStyles.LineEdit import LineEdit
+from widgetStyles.Label import Label
+from widgetStyles.DateEdit import DateEdit
+from widgetStyles.Widget import Widget
+from widgetStyles.Calendar import Calendar
 
+styles = [
+    Widget,
+    PushButton,
+    LineEdit,
+    Label,
+    DateEdit,
+    Calendar,
+]
 
 class Todo_tab(QWidget, Ui_todo_tab):
     def __init__(self):
@@ -31,8 +44,7 @@ class Todo_tab(QWidget, Ui_todo_tab):
         return self
 
     def read_style(self):
-        style = reduce(lambda a, b: a + b, todo)
-        self.setStyleSheet(style)
+        self.setStyleSheet(reduce(lambda a, b: a + b, styles))
 
     def add_todo(self):
         name = self.lne_add_todo.text()

@@ -9,9 +9,9 @@ from PyQt5.QtGui import QIcon
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from database.model import Model
-from styles.widgets.Frame import Frame
-from styles.widgets.Label import Label
-from styles.widgets.PushButton import IconButton
+from widgetStyles.Frame import Frame
+from widgetStyles.Label import Label
+from widgetStyles.PushButton import IconButton
 from windows.notes_window import Note_window
 
 

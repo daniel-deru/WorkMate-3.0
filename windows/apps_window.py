@@ -1,5 +1,6 @@
 import sys
 import os
+from functools import reduce
 from PyQt5.QtWidgets import QDialog, QFileDialog
 from PyQt5.QtCore import pyqtSignal
 
@@ -8,7 +9,19 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from designs.python.app_window import Ui_App_Window
 from database.model import Model
 from utils.message import Message
-from styles.windows.appWindow import app_window_styles
+from widgetStyles.Dialog import Dialog
+from widgetStyles.LineEdit import LineEdit
+from widgetStyles.PushButton import PushButton
+from widgetStyles.Label import Label
+from widgetStyles.SpinBox import SpinBox
+
+styles = [
+    Dialog,
+    LineEdit,
+    PushButton,
+    Label,
+    SpinBox,
+]
 
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
@@ -17,9 +30,11 @@ class Apps_window(QDialog, Ui_App_Window):
     def __init__(self, app=None):
         super(Apps_window, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(app_window_styles)
+        self.setStyleSheet(reduce(lambda a, b: a + b, styles))
         self.apps = Model().read('apps')
         self.spn_index.setValue(len(self.apps) + 1)
+        self.spn_index.setMaximum(len(self.apps) + 1)
+        self.spn_index.setMinimum(1)
 
         self.btn_save.clicked.connect(self.save_clicked)
         self.btn_desktop.clicked.connect(self.add_from_desktop)

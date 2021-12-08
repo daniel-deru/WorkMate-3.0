@@ -8,7 +8,6 @@ from widgets.PushButton import PushButton
 from widgets.LineEdit import LineEdit
 from widgets.QCheckBox import CheckBox
 from widgets.TextEdit import TextEdit
-from widgets.Widget import Widget
 from widgets.Dialog import Dialog
 
 _widget_list = [

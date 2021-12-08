@@ -1,7 +1,7 @@
 import sys
 from functools import reduce
 
-from PyQt5.QtWidgets import QApplication, QWidget, QFrame
+from PyQt5.QtWidgets import QApplication, QWidget
 
 
 from designs.python.main_widget import Ui_main_container
@@ -12,8 +12,10 @@ from tabs.apps_tab import Apps_tab
 from tabs.notes_tab import Notes_tab
 from tabs.todos_tab import Todo_tab
 
-from styles.tabs.main import main
-from styles.widgets.Widget import MainWidget
+from widgetStyles.TabBar import TabBar
+from widgetStyles.TabWidget import TabWidget
+from widgetStyles.Widget import Widget
+from widgetStyles.Widget import MainWidget
 
 
 class Main(QWidget, Ui_main_container):
@@ -35,6 +37,11 @@ class Main(QWidget, Ui_main_container):
         self.tab_widget.addTab(self.todo_tab, "Todos")
     
     def read_style(self):
+        main = [
+            TabWidget,
+            TabBar,
+            Widget
+        ]
         style = reduce(lambda a, b: a + b, main)
         self.tab_widget.setStyleSheet(style)
 
@@ -45,3 +52,23 @@ if __name__ == "__main__":
     main = Main()
     main.show()
     sys.exit(app.exec_())
+
+    # hiddenimports=[
+    #              "os",
+    #              "sys",
+    #              "PushButton",
+    #              "CheckBox",
+    #              "Widget",
+    #              "TabBar",
+    #              "TabWidget",
+    #              "DateEdit",
+    #              "Calendar",
+    #              "LineEdit",
+    #              "Label",
+    #              "colors",
+    #              "button_filled",
+    #              "Dialog",
+    #              "SpinBox",
+    #              "CheckBox",
+    #              "TextEdit"
+    #          ]

@@ -10,10 +10,18 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from database.model import Model
 from designs.python.notes_widget import Ui_notes_tab
-from styles.tabs.notes import notes
 from windows.notes_window import Note_window
 from widgets.note_item import NoteItem
 from utils.helpers import clear_window
+from widgetStyles.PushButton import PushButton
+from widgetStyles.QCheckBox import CheckBox
+from widgetStyles.Widget import Widget
+
+styles = [
+    CheckBox,
+    Widget,
+    PushButton,
+]
 
 
 class Notes_tab(QWidget, Ui_notes_tab):
@@ -29,8 +37,7 @@ class Notes_tab(QWidget, Ui_notes_tab):
         return self
 
     def read_styles(self):
-        style = reduce(lambda a, b: a + b, notes)
-        self.setStyleSheet(style)
+        self.setStyleSheet(reduce(lambda a, b: a + b, styles))
 
     def add_note(self):
         note_window = Note_window()

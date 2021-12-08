@@ -11,8 +11,15 @@ from windows.apps_window import Apps_window
 from database.model import Model
 from widgets.app_item import AppItem
 from utils.helpers import clear_window
-from styles.tabs.apps import apps
+from widgetStyles.PushButton import PushButton
+from widgetStyles.QCheckBox import CheckBox
+from widgetStyles.Widget import Widget
 
+styles = [
+    CheckBox,
+    Widget,
+    PushButton,
+]
 
 class Apps_tab(QWidget, Ui_apps_tab):
     def __init__(self):
@@ -31,8 +38,7 @@ class Apps_tab(QWidget, Ui_apps_tab):
         return self
 
     def read_styles(self):
-        styles = reduce(lambda a, b: a + b, apps)
-        self.setStyleSheet(styles)
+        self.setStyleSheet(reduce(lambda a, b: a + b, styles))
 
     def add_app(self):
         app_window = Apps_window()

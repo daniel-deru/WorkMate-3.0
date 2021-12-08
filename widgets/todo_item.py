@@ -11,10 +11,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from database.model import Model
 
 
-from styles.widgets.Widget import TodoItemWidgetComplete, TodoItemWidgetDelete
-from styles.widgets.Frame import TodoFrameComplete, TodoFrameDelete
-from styles.widgets.Label import Label, LabelMono
-from styles.widgets.PushButton import IconButton
+from widgetStyles.Widget import TodoItemWidgetComplete, TodoItemWidgetDelete
+from widgetStyles.Frame import TodoFrameComplete, TodoFrameDelete
+from widgetStyles.Label import Label, LabelMono
+from widgetStyles.PushButton import IconButton
 
 
 class TodoItem(QFrame):

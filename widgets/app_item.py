@@ -7,7 +7,7 @@ from PyQt5.QtCore import pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from styles.widgets.PushButton import IconButton, AppRunButton
+from widgetStyles.PushButton import IconButton, AppRunButton
 
 
 class AppItem(QPushButton):
