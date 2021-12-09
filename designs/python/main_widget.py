@@ -15,16 +15,12 @@ class Ui_main_container(object):
     def setupUi(self, main_container):
         main_container.setObjectName("main_container")
         main_container.resize(517, 439)
-        self.verticalLayout = QtWidgets.QVBoxLayout(main_container)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout.setSpacing(0)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.tab_widget = QtWidgets.QTabWidget(main_container)
-        self.tab_widget.setObjectName("tab_widget")
-        self.verticalLayout.addWidget(self.tab_widget)
+        self.main_layout = QtWidgets.QVBoxLayout(main_container)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_layout.setSpacing(0)
+        self.main_layout.setObjectName("main_layout")
 
         self.retranslateUi(main_container)
-        self.tab_widget.setCurrentIndex(-1)
         QtCore.QMetaObject.connectSlotsByName(main_container)
 
     def retranslateUi(self, main_container):

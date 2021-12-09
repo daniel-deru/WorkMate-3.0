@@ -3,23 +3,22 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from styles.styles import colors
-from styles.styles import button_filled
+from widgetStyles.styles import color, mode, default
 
 PushButton = f"""
     QPushButton {{
-    background-color: {button_filled['background']};
-    color: {button_filled['color']};
-    border: 2px solid {colors['border']};
+    background-color: {color};
+    color: #ffffff;
+    border: 2px solid {color};
     border-radius: 5px;
     font-size: 16px;
     padding: 5px 8px;
 }}
 
 QPushButton:pressed {{
-    background-color: {button_filled['background-clicked']};
-    color: {button_filled['color-clicked']};
-    border: 2px solid {colors['border']};
+    background-color: {mode};
+    color: {color};
+    border: 2px solid {color};
 }}
 """
 
@@ -34,9 +33,9 @@ IconButton = """
 
 AppRunButton = f"""
 QPushButton#run {{
-    background-color: {button_filled['background']};
-    color: {button_filled['color']};
-    border: 2px solid {colors['border']};
+    background-color: {color};
+    color: #ffffff;
+    border: 2px solid {color};
     border-radius: 5px;
     font-size: 16px;
     padding: 5px 8px;
@@ -44,9 +43,9 @@ QPushButton#run {{
 }}
 
 QPushButton#run:pressed {{
-    background-color: {button_filled['background-clicked']};
-    color: {button_filled['color-clicked']};
-    border: 2px solid {colors['border']};
+    background-color: {mode};
+    color: {color};
+    border: 2px solid {color};
 }}
 
 """

@@ -3,14 +3,14 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from styles.styles import colors
+from widgetStyles.styles import color, mode, default
 
 TextEdit = f"""
     QTextEdit{{
-        background-color: {colors['background']};
-        color: {colors['text']};
+        background-color: {mode};
+        color: {color};
         border-radius: 5px;
         font-size: 16px;
-        border: 2px solid {colors['border']};
+        border: 2px solid {color};
     }}
 """

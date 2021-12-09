@@ -1,9 +1,10 @@
 import os
 import sys
 import pyperclip
+import re
 from functools import reduce
 
-from PyQt5.QtWidgets import QDialog, QWidget
+from PyQt5.QtWidgets import QDialog
 from PyQt5.QtCore import pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -19,8 +20,9 @@ from widgetStyles.LineEdit import LineEdit
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.TextEdit import TextEdit
 from widgetStyles.Dialog import Dialog
+from widgetStyles.styles import color, default, mode
 
-styles = [
+stylesheet = [
     PushButton,
     LineEdit,
     CheckBox,
@@ -33,7 +35,7 @@ class Note_window(QDialog, Ui_Note_Window):
     def __init__(self, edit_note=None):
         super(Note_window, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(reduce(lambda a, b: a + b, styles))
+        self.read_styles()
 
         self.note = edit_note
         if self.note:
@@ -75,5 +77,17 @@ class Note_window(QDialog, Ui_Note_Window):
         body = self.txtedt_body.toPlainText()
         pyperclip.copy(body)
 
+    def read_styles(self):
+        settings = Model().read("settings")[0]
+        settings_mode = "#000000" if settings[1] else "#ffffff"
+        settings_default = "#ffffff" if settings[2] else "#000000"
+        settings_color = settings[3]
 
+
+        style = reduce(lambda a, b: a + b, stylesheet)
+        style = re.sub(mode, settings_mode, style)
+        style = re.sub(color, settings_color, style)
+        style = re.sub(default, settings_default, style)
+
+        self.setStyleSheet(style)
     

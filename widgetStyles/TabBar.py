@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from styles.styles import colors
+from widgetStyles.styles import color, mode, default
 
 TabBar = f"""
    QTabBar::tab {{
@@ -11,12 +11,12 @@ TabBar = f"""
         width: 100px;
         height: 30px;
         border: none;
-        background: {colors['background-active']};
-        color: {colors['background']};
+        background: {color};
+        color: {mode};
     }}
 
         QTabBar::tab:selected {{
-        background: {colors['background']};
-        color: {colors['text']};    
+        background: {mode};
+        color: {color};    
     }}
 """

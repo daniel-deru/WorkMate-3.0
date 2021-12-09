@@ -3,11 +3,11 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from styles.styles import colors
+from widgetStyles.styles import color, mode, default
 
 Label = f"""
     QLabel{{
-        color: {colors['text']};
+        color: {color};
         font-size: 16px;
         border: none;
     }}
@@ -15,7 +15,7 @@ Label = f"""
 
 LabelMono = f"""
 QLabel{{
-        color: {colors['text-alt']};
+        color: {default};
         font-size: 16px;
         border: none;
     }}

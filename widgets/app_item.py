@@ -1,5 +1,6 @@
 import os
 import sys
+import re
 
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtCore import pyqtSignal
@@ -7,7 +8,10 @@ from PyQt5.QtCore import pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
+from database.model import Model
+
 from widgetStyles.PushButton import IconButton, AppRunButton
+from widgetStyles.styles import color, default, mode
 
 
 class AppItem(QPushButton):
@@ -29,3 +33,15 @@ class AppItem(QPushButton):
     def setupUI(self):
         self.setText(self.app[1])
         self.setStyleSheet("QPushButton{ max-width: 250px }")
+
+    # def read_styles(self):
+    #     settings = Model().read("settings")[0]
+    #     settings_mode = "#000000" if settings[1] else "#ffffff"
+    #     settings_default = "#ffffff" if settings[2] else "#000000"
+    #     settings_color = settings[3]
+
+
+    #     style = reduce(lambda a, b: a + b, stylesheet)
+    #     style = re.sub(mode, settings_mode, style)
+    #     style = re.sub(color, settings_color, style)
+    #     style = re.sub(default, settings_default, style)

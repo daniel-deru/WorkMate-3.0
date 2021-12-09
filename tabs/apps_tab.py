@@ -1,8 +1,11 @@
 import sys
 import os
-from PyQt5.QtWidgets import QWidget, QPushButton
 from functools import reduce
 import math
+import re
+
+from PyQt5.QtWidgets import QWidget, QPushButton
+from PyQt5.QtCore import pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -14,31 +17,45 @@ from utils.helpers import clear_window
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.Widget import Widget
+from widgetStyles.styles import color, default, mode
 
-styles = [
+stylesheet = [
     CheckBox,
     Widget,
     PushButton,
 ]
 
 class Apps_tab(QWidget, Ui_apps_tab):
+    app_signal = pyqtSignal(str)
     def __init__(self):
         super(Apps_tab, self).__init__()
         self.setupUi(self)
         self.read_styles()
-        
         
         self.create_apps()
 
         self.btn_add_app.clicked.connect(self.add_app)
         self.chk_edit_apps.stateChanged.connect(self.edit_checked)
         self.chk_delete_apps.stateChanged.connect(self.delete_checked)
+
+        self.app_signal.connect(self.read_styles)
     
     def create_tab(self):
         return self
 
     def read_styles(self):
-        self.setStyleSheet(reduce(lambda a, b: a + b, styles))
+        settings = Model().read("settings")[0]
+        settings_mode = "#000000" if settings[1] else "#ffffff"
+        settings_default = "#ffffff" if settings[2] else "#000000"
+        settings_color = settings[3]
+
+
+        style = reduce(lambda a, b: a + b, stylesheet)
+        style = re.sub(mode, settings_mode, style)
+        style = re.sub(color, settings_color, style)
+        style = re.sub(default, settings_default, style)
+        self.setStyleSheet(style)
+
 
     def add_app(self):
         app_window = Apps_window()
@@ -92,6 +109,7 @@ class Apps_tab(QWidget, Ui_apps_tab):
     def update(self):
         clear_window(self.gbox_apps)
         self.create_apps()
+        self.read_styles()
 
         
 

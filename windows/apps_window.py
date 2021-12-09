@@ -1,6 +1,7 @@
 import sys
 import os
 from functools import reduce
+import re
 from PyQt5.QtWidgets import QDialog, QFileDialog
 from PyQt5.QtCore import pyqtSignal
 
@@ -14,8 +15,9 @@ from widgetStyles.LineEdit import LineEdit
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
 from widgetStyles.SpinBox import SpinBox
+from widgetStyles.styles import color, default, mode
 
-styles = [
+stylesheet = [
     Dialog,
     LineEdit,
     PushButton,
@@ -30,7 +32,7 @@ class Apps_window(QDialog, Ui_App_Window):
     def __init__(self, app=None):
         super(Apps_window, self).__init__()
         self.setupUi(self)
-        self.setStyleSheet(reduce(lambda a, b: a + b, styles))
+        self.read_styles()
         self.apps = Model().read('apps')
         self.spn_index.setValue(len(self.apps) + 1)
         self.spn_index.setMaximum(len(self.apps) + 1)
@@ -107,3 +109,17 @@ class Apps_window(QDialog, Ui_App_Window):
         file = QFileDialog.getOpenFileName(self, "Open a file", DESKTOP, "All Files (*.*)")[0]
         path = self.lnedt_path
         path.setText(file)
+
+    def read_styles(self):
+        settings = Model().read("settings")[0]
+        settings_mode = "#000000" if settings[1] else "#ffffff"
+        settings_default = "#ffffff" if settings[2] else "#000000"
+        settings_color = settings[3]
+
+
+        style = reduce(lambda a, b: a + b, stylesheet)
+        style = re.sub(mode, settings_mode, style)
+        style = re.sub(color, settings_color, style)
+        style = re.sub(default, settings_default, style)
+
+        self.setStyleSheet(style)

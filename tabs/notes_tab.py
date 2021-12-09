@@ -1,9 +1,11 @@
 import sys
 import os
 import math
+import re
 from functools import reduce
 
 from PyQt5.QtWidgets import QWidget
+from PyQt5.QtCore import pyqtSignal
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -16,8 +18,9 @@ from utils.helpers import clear_window
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.Widget import Widget
+from widgetStyles.styles import color, default, mode
 
-styles = [
+stylesheet = [
     CheckBox,
     Widget,
     PushButton,
@@ -25,6 +28,7 @@ styles = [
 
 
 class Notes_tab(QWidget, Ui_notes_tab):
+    note_signal = pyqtSignal(str)
     def __init__(self):
         super(Notes_tab, self).__init__()
         self.setupUi(self)
@@ -32,12 +36,24 @@ class Notes_tab(QWidget, Ui_notes_tab):
         self.display_note()
 
         self.btn_note.clicked.connect(self.add_note)
+        self.note_signal.connect(self.update_window)
 
     def create_tab(self):
         return self
 
     def read_styles(self):
-        self.setStyleSheet(reduce(lambda a, b: a + b, styles))
+        settings = Model().read("settings")[0]
+        settings_mode = "#000000" if settings[1] else "#ffffff"
+        settings_default = "#ffffff" if settings[2] else "#000000"
+        settings_color = settings[3]
+
+
+        style = reduce(lambda a, b: a + b, stylesheet)
+        style = re.sub(mode, settings_mode, style)
+        style = re.sub(color, settings_color, style)
+        style = re.sub(default, settings_default, style)
+        self.setStyleSheet(style)
+
 
     def add_note(self):
         note_window = Note_window()
@@ -45,6 +61,7 @@ class Notes_tab(QWidget, Ui_notes_tab):
         note_window.exec_()
 
     def display_note(self):
+        clear_window(self.gbox_note_container)
         notes = Model().read("notes")
         grid_items = []
         for i in range(math.ceil(len(notes)/2)):
@@ -57,13 +74,15 @@ class Notes_tab(QWidget, Ui_notes_tab):
             row = i
             for j in range(len(grid_items[i])):
                 col = j
-                note = NoteItem(grid_items[i][j]).create()
-                note.note_item_signal.connect(self.update_window)
-                self.gbox_note_container.addWidget(note, row, col)
+                self.note = NoteItem(grid_items[i][j]).create()
+                self.note.note_item_signal.connect(self.update_window)
+                self.gbox_note_container.addWidget(self.note, row, col)
     
     def update_window(self):
-        clear_window(self.gbox_note_container)
+        self.read_styles()
         self.display_note()
+        # self.note.note_item_signal.emit("signal")
+        
 
 
 

@@ -5,7 +5,7 @@ path = os.getenv("APPDATA") + "\\WorkMate"
 
 class Model:
     def __init__(self):
-        self.db = sqlite3.connect(f"{path}/database/workmate.db")
+        self.db = sqlite3.connect(f"./database/workmate.db")
         self.cur = self.db.cursor()
 
         self.create_tables()
@@ -36,9 +36,19 @@ class Model:
                 deadline TEXT
             )
         """
+
+        settings_table = """
+            CREATE TABLE IF NOT EXISTS settings(
+                id TEXT DEFAULT 'settings' PRIMARY KEY,
+                nightmode INTEGER DEFAULT 0 NOT NULL,
+                font TEXT DEFAULT 'Arial' NOT NULL,
+                color TEXT DEFAULT '#000000' NOT NULL
+            )
+        """
         self.cur.execute(apps_table)
         self.cur.execute(notes_table)
         self.cur.execute(todos_table)
+        self.cur.execute(settings_table)
 
     def save(self, table, data): 
         keys = f'{", ".join(data.keys())}'
@@ -81,6 +91,25 @@ class Model:
         self.cur.execute(query, values)
         self.db.commit()
         self.db.close()
+    
+    def clearTable(self, table):
+        query = f"""
+            DROP TABLE IF EXISTS {table}
+        """
+        self.cur.execute(query)
+        self.db.commit()
+        self.db.close()
+    
+    def reset(self):
+        query = """
+            UPDATE settings SET nightmode = 0, font = 'Arial', color = '#000000' WHERE id = 'settings'
+        """
+
+        self.cur.execute(query)
+        self.db.commit()
+        self.db.close()
+    
+
 
 
 

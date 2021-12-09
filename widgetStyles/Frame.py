@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from styles.styles import colors
+from widgetStyles.styles import color, mode, default
 
 Frame = f"""
     QFrame {{
@@ -11,9 +11,9 @@ Frame = f"""
         border-radius: 5px;
         font-size: 16px;
         padding: 0px;
-        background-color: {colors['background']};
-        color: {colors['text']};
-        border: 2px solid {colors['border']};
+        background-color: {mode};
+        color: {color};
+        border: 2px solid {color};
     }}
 """
 
@@ -22,8 +22,8 @@ TodoFrameDelete = f"""
         font-size: 16px;
         border-radius: 5px;
         font-size: 16px;
-        background-color: {colors['delete']};
-        color: {colors['text']};
+        background-color: #ff0000;
+        color: #ffffff;
         max-height: 40px;
         height: 40px;
         padding: 0px;
@@ -35,8 +35,8 @@ TodoFrameComplete = f"""
         font-size: 16px;
         border-radius: 5px;
         font-size: 16px;
-        background-color: {colors['complete']};
-        color: {colors['text']};
+        background-color: #00ff00;
+        color: #ffffff;
         max-height: 40px;
         height: 40px;
         padding: 0px;

@@ -1,6 +1,7 @@
 import sys
 import os
 from functools import reduce
+import re
 
 from PyQt5.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QSpacerItem, QSizePolicy, QWidget
 from PyQt5.QtCore import pyqtSignal, QSize, Qt
@@ -10,11 +11,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from database.model import Model
 
-
 from widgetStyles.Widget import TodoItemWidgetComplete, TodoItemWidgetDelete
 from widgetStyles.Frame import TodoFrameComplete, TodoFrameDelete
 from widgetStyles.Label import Label, LabelMono
 from widgetStyles.PushButton import IconButton
+from widgetStyles.styles import default, color, mode
 
 
 class TodoItem(QFrame):
@@ -26,6 +27,7 @@ class TodoItem(QFrame):
         self.completed = todo[2]
         self.date = todo[3]
         self.setupUI()
+        self.read_styles()
 
         # self.action.clicked.connect(self.button_clicked)
 
@@ -75,14 +77,26 @@ class TodoItem(QFrame):
         self.hbox.addWidget(self.action)
 
         self.setLayout(self.hbox)
+
+
+    def read_styles(self):
         Background = TodoFrameDelete if self.completed else TodoFrameComplete
-        styles = [
+        stylesheet = [
             LabelMono,
             IconButton,
             Background
         ]
+        settings = Model().read("settings")[0]
+        settings_mode = "#000000" if settings[1] else "#ffffff"
+        settings_default = "#ffffff" if settings[2] else "#000000"
+        settings_color = settings[3]
+      
+        style = reduce(lambda a, b: a + b, stylesheet)
+        style = re.sub(mode, settings_mode, style)
+        style = re.sub(color, settings_color, style)
+        style = re.sub(default, settings_default, style)
 
-        self.setStyleSheet(reduce(lambda a, b: a + b, styles))
+        self.setStyleSheet(style)
 
 
 

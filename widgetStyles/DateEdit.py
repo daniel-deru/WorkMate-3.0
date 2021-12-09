@@ -3,15 +3,15 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from styles.styles import colors
+from widgetStyles.styles import color, mode, default
 
 DateEdit = f"""
     QDateEdit {{
         border: none;
     }}
     QDateEdit::drop-down {{
-        background-color: {colors['background-active']};
-        color: {colors['text-alt']};
+        background-color: {color};
+        color: {default};
         padding: 5px;
         border-radius: 5px;
         width: 40px;

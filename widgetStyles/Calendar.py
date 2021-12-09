@@ -3,24 +3,24 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from styles.styles import colors
+from widgetStyles.styles import color, mode, default
 
 
 Calendar = f"""
     QCalendarWidget {{
         margin-top: 20px;
-        background-color: {colors['background']};
-        color: {colors['text']};
+        background-color: {mode};
+        color: {color};
     }}
     QCalendarWidget QWidget {{
-        background-color: {colors['background-active']};
-        color: {colors['text-alt']};
+        background-color: {color};
+        color: {default};
     }}
     QCalendarWidget QTableView {{
-        background-color: {colors['background-active']};
+        background-color: {color};
     }}
     QCalendarWidget QTableView QLabel {{
-        color: {colors['text-alt']};
+        color: {default};
     }}
 
 """
