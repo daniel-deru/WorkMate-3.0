@@ -3,8 +3,9 @@ import os
 from functools import reduce
 import re
 
-from PyQt5.QtWidgets import QWidget, QColorDialog, QTabWidget
+from PyQt5.QtWidgets import QWidget, QColorDialog
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QFont
 
 from utils.helpers import clear_window
 
@@ -16,7 +17,6 @@ from widgetStyles.Label import Label
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.Widget import Widget
-from widgetStyles.styles import default, color, mode
 from utils.helpers import StyleSheet
 
 from database.model import Model
@@ -69,15 +69,14 @@ class SettingsTab(QWidget, Ui_Settings_tab):
     def read_styles(self):
         styles = [Label, PushButton, CheckBox]
         stylesheet = StyleSheet(styles).create()
-        # settings = Model().read("settings")[0]
-        # settings_mode = "#000000" if settings[1] else "#ffffff"
-        # settings_default = "#ffffff" if settings[2] else "#000000"
-        # settings_color = settings[3]
-
-
-        # style = reduce(lambda a, b: a + b, stylesheet)
-        # style = re.sub(mode, settings_mode, style)
-        # style = re.sub(color, settings_color, style)
-        # style = re.sub(default, settings_default, style)
-
         self.setStyleSheet(stylesheet)
+        font = Model().read('settings')[0][2]
+        self.lbl_color.setFont(QFont(font))
+        self.lbl_night_mode.setFont(QFont(font))
+        self.lbl_font.setFont(QFont(font))
+        self.btn_color.setFont(QFont(font))
+        self.btn_export_apps.setFont(QFont(font))
+        self.btn_export_notes.setFont(QFont(font))
+        self.btn_import_apps.setFont(QFont(font))
+        self.btn_import_notes.setFont(QFont(font))
+        self.btn_reset.setFont(QFont(font))

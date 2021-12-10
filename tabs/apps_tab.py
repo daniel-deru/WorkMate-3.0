@@ -4,8 +4,9 @@ from functools import reduce
 import math
 import re
 
-from PyQt5.QtWidgets import QWidget, QPushButton
+from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -42,6 +43,10 @@ class Apps_tab(QWidget, Ui_apps_tab):
         styles = [CheckBox, PushButton]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
+        font = Model().read('settings')[0][2]
+        self.btn_add_app.setFont(QFont(font))
+        self.chk_edit_apps.setFont(QFont(font))
+        self.chk_delete_apps.setFont(QFont(font))
 
 
     def add_app(self):

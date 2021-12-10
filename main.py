@@ -1,9 +1,7 @@
 import sys
-from functools import reduce
-import re
 
-from PyQt5.QtWidgets import QApplication, QWidget, QTabWidget
-
+from PyQt5.QtWidgets import QApplication, QWidget
+from PyQt5.QtGui import QFont
 
 from designs.python.main_widget import Ui_main_container
 from tabs.apps_tab import Apps_tab
@@ -28,12 +26,15 @@ class Main(QWidget, Ui_main_container):
         self.setupUi(self)
         self.read_style()
         self.add_tabs()
+
         
        
     def read_style(self):
         styles = [Widget, TabBar]
         stylesheet = StyleSheet(styles).create()
         self.tab_widget.setStyleSheet(stylesheet)
+        font = Model().read('settings')[0][2]
+        self.tab_widget.setFont(QFont(font))
       
        
 

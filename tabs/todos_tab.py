@@ -6,6 +6,7 @@ import re
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -50,6 +51,11 @@ class Todo_tab(QWidget, Ui_todo_tab):
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
+        font = Model().read('settings')[0][2]
+        self.lne_add_todo.setFont(QFont(font))
+        self.btn_add_todo.setFont(QFont(font))
+        self.lbl_date_display.setFont(QFont(font))
+        self.dte_date_select.setFont(QFont(font))
 
     def add_todo(self):
         name = self.lne_add_todo.text()

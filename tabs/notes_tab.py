@@ -6,6 +6,7 @@ from functools import reduce
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QFont
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -42,6 +43,8 @@ class Notes_tab(QWidget, Ui_notes_tab):
         styles = [CheckBox, PushButton]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
+        font = Model().read('settings')[0][2]
+        self.btn_note.setFont(QFont(font))
 
 
     def add_note(self):
