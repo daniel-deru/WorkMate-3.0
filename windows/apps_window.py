@@ -16,14 +16,8 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
 from widgetStyles.SpinBox import SpinBox
 from widgetStyles.styles import color, default, mode
+from utils.helpers import StyleSheet
 
-stylesheet = [
-    Dialog,
-    LineEdit,
-    PushButton,
-    Label,
-    SpinBox,
-]
 
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
@@ -111,15 +105,12 @@ class Apps_window(QDialog, Ui_App_Window):
         path.setText(file)
 
     def read_styles(self):
-        settings = Model().read("settings")[0]
-        settings_mode = "#000000" if settings[1] else "#ffffff"
-        settings_default = "#ffffff" if settings[2] else "#000000"
-        settings_color = settings[3]
-
-
-        style = reduce(lambda a, b: a + b, stylesheet)
-        style = re.sub(mode, settings_mode, style)
-        style = re.sub(color, settings_color, style)
-        style = re.sub(default, settings_default, style)
-
-        self.setStyleSheet(style)
+        styles = [
+            Dialog,
+            LineEdit,
+            PushButton,
+            Label,
+            SpinBox,
+        ]
+        stylesheet = StyleSheet(styles).create()
+        self.setStyleSheet(stylesheet)

@@ -7,7 +7,7 @@ from widgetStyles.styles import color, mode, default
 
 TabWidget = f"""
     QTabWidget {{
-        background-color: {color};
+        background-color: {mode};
     }}
 
     QTabWidget::pane {{

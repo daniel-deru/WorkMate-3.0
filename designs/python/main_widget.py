@@ -19,8 +19,16 @@ class Ui_main_container(object):
         self.main_layout.setContentsMargins(0, 0, 0, 0)
         self.main_layout.setSpacing(0)
         self.main_layout.setObjectName("main_layout")
+        self.tab_widget = QtWidgets.QTabWidget(main_container)
+        self.tab_widget.setAutoFillBackground(True)
+        self.tab_widget.setDocumentMode(True)
+        self.tab_widget.setMovable(False)
+        self.tab_widget.setTabBarAutoHide(False)
+        self.tab_widget.setObjectName("tab_widget")
+        self.main_layout.addWidget(self.tab_widget)
 
         self.retranslateUi(main_container)
+        self.tab_widget.setCurrentIndex(-1)
         QtCore.QMetaObject.connectSlotsByName(main_container)
 
     def retranslateUi(self, main_container):

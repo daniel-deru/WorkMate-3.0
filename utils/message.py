@@ -8,12 +8,9 @@ from PyQt5.QtWidgets import QMessageBox
 from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
 from widgetStyles.PushButton import PushButton
+from utils.helpers import StyleSheet
 
-styles = [
-    Label,
-    Dialog,
-    PushButton,
-]
+
 
 
 
@@ -24,7 +21,13 @@ class Message(QMessageBox):
         self.setIcon(QMessageBox.Warning)
         self.setText(message)
         self.setWindowTitle(title)
-        self.setStyleSheet(reduce(lambda a, b: a + b, styles))
+        styles = [
+            Label,
+            Dialog,
+            PushButton,
+        ]
+        stylesheet = StyleSheet(styles).create()
+        self.setStyleSheet(stylesheet)
     
     def create(self):
         return self

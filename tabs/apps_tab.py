@@ -18,12 +18,7 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.Widget import Widget
 from widgetStyles.styles import color, default, mode
-
-stylesheet = [
-    CheckBox,
-    Widget,
-    PushButton,
-]
+from utils.helpers import StyleSheet
 
 class Apps_tab(QWidget, Ui_apps_tab):
     app_signal = pyqtSignal(str)
@@ -44,17 +39,9 @@ class Apps_tab(QWidget, Ui_apps_tab):
         return self
 
     def read_styles(self):
-        settings = Model().read("settings")[0]
-        settings_mode = "#000000" if settings[1] else "#ffffff"
-        settings_default = "#ffffff" if settings[2] else "#000000"
-        settings_color = settings[3]
-
-
-        style = reduce(lambda a, b: a + b, stylesheet)
-        style = re.sub(mode, settings_mode, style)
-        style = re.sub(color, settings_color, style)
-        style = re.sub(default, settings_default, style)
-        self.setStyleSheet(style)
+        styles = [CheckBox, PushButton]
+        stylesheet = StyleSheet(styles).create()
+        self.setStyleSheet(stylesheet)
 
 
     def add_app(self):

@@ -15,6 +15,7 @@ from widgetStyles.Frame import Frame
 from widgetStyles.Label import Label
 from widgetStyles.PushButton import IconButton
 from widgetStyles.styles import default, color, mode
+from utils.helpers import StyleSheet
 
 
 
@@ -75,22 +76,12 @@ class NoteItem(QFrame):
         edit_window.exec_()
 
     def read_styles(self):
-        settings = Model().read("settings")[0]
-        settings_mode = "#000000" if settings[1] else "#ffffff"
-        settings_default = "#ffffff" if settings[2] else "#000000"
-        settings_color = settings[3]
-
-        stylesheet = [
+        styles = [
             Frame,
             Label,
             IconButton
         ]
-      
-        style = reduce(lambda a, b: a + b, stylesheet)
-        style = re.sub(mode, settings_mode, style)
-        style = re.sub(color, settings_color, style)
-        style = re.sub(default, settings_default, style)
-
-        self.setStyleSheet(style)
+        stylesheet = StyleSheet(styles).create()
+        self.setStyleSheet(stylesheet)
         
         

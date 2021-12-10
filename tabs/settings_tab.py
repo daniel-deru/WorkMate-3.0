@@ -17,15 +17,10 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.Widget import Widget
 from widgetStyles.styles import default, color, mode
+from utils.helpers import StyleSheet
 
 from database.model import Model
 
-stylesheet = [
-    Label,
-    PushButton,
-    CheckBox,
-    
-]
 
 class SettingsTab(QWidget, Ui_Settings_tab):
     settings_signal = pyqtSignal(str)
@@ -72,15 +67,17 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.settings_signal.emit("settings")
 
     def read_styles(self):
-        settings = Model().read("settings")[0]
-        settings_mode = "#000000" if settings[1] else "#ffffff"
-        settings_default = "#ffffff" if settings[2] else "#000000"
-        settings_color = settings[3]
+        styles = [Label, PushButton, CheckBox]
+        stylesheet = StyleSheet(styles).create()
+        # settings = Model().read("settings")[0]
+        # settings_mode = "#000000" if settings[1] else "#ffffff"
+        # settings_default = "#ffffff" if settings[2] else "#000000"
+        # settings_color = settings[3]
 
 
-        style = reduce(lambda a, b: a + b, stylesheet)
-        style = re.sub(mode, settings_mode, style)
-        style = re.sub(color, settings_color, style)
-        style = re.sub(default, settings_default, style)
+        # style = reduce(lambda a, b: a + b, stylesheet)
+        # style = re.sub(mode, settings_mode, style)
+        # style = re.sub(color, settings_color, style)
+        # style = re.sub(default, settings_default, style)
 
-        self.setStyleSheet(style)
+        self.setStyleSheet(stylesheet)

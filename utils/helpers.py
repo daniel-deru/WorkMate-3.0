@@ -1,4 +1,13 @@
-import math  
+import math
+import sys
+import os
+import re
+from functools import reduce
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
+from widgetStyles.styles import placeholders
+from database.model import Model
 
 # clears the window so it can be repainted
 def clear_window(container):
@@ -18,10 +27,13 @@ def display_grid():
     pass
  
 
-class Contrast():
-    def __init__(self, c1, c2):
-        self.c1 =c1
-        self.c2 =c2
+class StyleSheet():
+    def __init__(self, stylesheet):
+        self.stylesheet = stylesheet
+        settings = Model().read("settings")[0]
+        self.settings_mode = "#000000" if settings[1] else "#ffffff"
+        self.settings_contrast = "#ffffff" if settings[1] else  "#000000"
+        self.settings_color = settings[3]
 
     def rgb(self, color):
         color /= 255
@@ -38,12 +50,28 @@ class Contrast():
         return round( (array[0] * 0.2126 + array[1] * 0.7152 + array[2] * 0.0722), 4 )
 
 
-    def contrast(self):
-        color1 = self.luminance(self.c1)
-        color2 = self.luminance(self.c2)
+    def contrast(self, c1, c2):
+        color1 = self.luminance(c1)
+        color2 = self.luminance(c2)
         if color1 > color2:
             return round((color1 + 0.05) / (color2 + 0.05), 1)
         elif color2 > color1:
             return round((color2 + 0.05) / (color1 + 0.05), 1)
         else:
             return 1
+    
+    def create(self):
+        black_contrast = self.contrast(self.settings_color, "#000000")
+        white_contrast = self.contrast(self.settings_color, "#ffffff")
+        color_contrast = self.contrast(self.settings_color, self.settings_mode)
+
+
+        settings_button = "#000000" if black_contrast > white_contrast else "#ffffff"
+        settings_default = self.settings_contrast if color_contrast < 3 else self.settings_color
+
+        values = [self.settings_color, self.settings_mode, settings_default, settings_button]
+
+        stylesheet = reduce(lambda a, b: a + b, self.stylesheet)
+        for i in range(len(placeholders)):
+            stylesheet = re.sub(placeholders[i], values[i], stylesheet)
+        return stylesheet

@@ -3,12 +3,12 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from widgetStyles.styles import color, mode, default
+from widgetStyles.styles import color, mode, button
 
 PushButton = f"""
     QPushButton {{
     background-color: {color};
-    color: #ffffff;
+    color: {button};
     border: 2px solid {color};
     border-radius: 5px;
     font-size: 16px;

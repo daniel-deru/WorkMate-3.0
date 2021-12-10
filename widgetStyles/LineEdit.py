@@ -9,7 +9,7 @@ from widgetStyles.styles import color, mode, default
 LineEdit = f"""
     QLineEdit {{
         background-color: {mode};
-        color: {color};
+        color: {default};
         padding: 5px 8px;
         font-size: 16px;
         border-radius: 5px;

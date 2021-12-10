@@ -7,7 +7,7 @@ from widgetStyles.styles import color, mode, default
 
 Label = f"""
     QLabel{{
-        color: {color};
+        color: {default};
         font-size: 16px;
         border: none;
     }}

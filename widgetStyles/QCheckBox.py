@@ -7,7 +7,7 @@ from widgetStyles.styles import color, mode, default
 
 CheckBox = f"""
     QCheckBox {{
-        color: {color};
+        color: {default};
         font-size: 16px;
         border-radius: 5px;
     }}

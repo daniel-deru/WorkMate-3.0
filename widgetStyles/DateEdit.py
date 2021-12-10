@@ -8,6 +8,7 @@ from widgetStyles.styles import color, mode, default
 DateEdit = f"""
     QDateEdit {{
         border: none;
+        color: {default};
     }}
     QDateEdit::drop-down {{
         background-color: {color};

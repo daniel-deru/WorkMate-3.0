@@ -18,18 +18,9 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Label import Label
 from widgetStyles.DateEdit import DateEdit
-from widgetStyles.Widget import Widget
 from widgetStyles.Calendar import Calendar
-from widgetStyles.styles import color, default, mode
+from utils.helpers import StyleSheet
 
-stylesheet = [
-    Widget,
-    PushButton,
-    LineEdit,
-    Label,
-    DateEdit,
-    Calendar,
-]
 
 class Todo_tab(QWidget, Ui_todo_tab):
     todo_signal = pyqtSignal(str)
@@ -50,17 +41,15 @@ class Todo_tab(QWidget, Ui_todo_tab):
         return self
 
     def read_style(self):
-        settings = Model().read("settings")[0]
-        settings_mode = "#000000" if settings[1] else "#ffffff"
-        settings_default = "#ffffff" if settings[2] else "#000000"
-        settings_color = settings[3]
-
-
-        style = reduce(lambda a, b: a + b, stylesheet)
-        style = re.sub(mode, settings_mode, style)
-        style = re.sub(color, settings_color, style)
-        style = re.sub(default, settings_default, style)
-        self.setStyleSheet(style)
+        styles = [
+            PushButton,
+            LineEdit,
+            Label,
+            DateEdit,
+            Calendar,
+        ]
+        stylesheet = StyleSheet(styles).create()
+        self.setStyleSheet(stylesheet)
 
     def add_todo(self):
         name = self.lne_add_todo.text()

@@ -8,7 +8,7 @@ from widgetStyles.styles import color, mode, default
 TextEdit = f"""
     QTextEdit{{
         background-color: {mode};
-        color: {color};
+        color: {default};
         border-radius: 5px;
         font-size: 16px;
         border: 2px solid {color};

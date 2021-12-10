@@ -8,7 +8,7 @@ from widgetStyles.styles import color, mode, default
 SpinBox = f"""
     QSpinBox {{
         background-color: {mode};
-        color: {color};
+        color: {default};
         font-size: 16px;
         padding: 5px 8px;
         border-radius: 5px;

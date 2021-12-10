@@ -16,10 +16,8 @@ from tabs.todos_tab import Todo_tab
 from tabs.settings_tab import SettingsTab
 
 from widgetStyles.TabBar import TabBar
-from widgetStyles.TabWidget import TabWidget
 from widgetStyles.Widget import Widget
-from widgetStyles.Widget import MainWidget
-from widgetStyles.styles import default, color, mode
+from utils.helpers import StyleSheet
 
 
 
@@ -28,29 +26,15 @@ class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
         self.setupUi(self)
-        self.add_tabs()
         self.read_style()
+        self.add_tabs()
         
-        
-    
+       
     def read_style(self):
-        settings = Model().read("settings")[0]
-        settings_mode = "#000000" if settings[1] else "#ffffff"
-        settings_default = "#ffffff" if settings[2] else "#000000"
-        settings_color = settings[3]
-
-        stylesheet = [
-            TabWidget,
-            TabBar,
-            Widget
-        ]
+        styles = [Widget, TabBar]
+        stylesheet = StyleSheet(styles).create()
+        self.tab_widget.setStyleSheet(stylesheet)
       
-        style = reduce(lambda a, b: a + b, stylesheet)
-        style = re.sub(mode, settings_mode, style) 
-        style = re.sub(color, settings_color, style)
-        style = re.sub(default, settings_default, style)
-        self.tab_widget.setStyleSheet(style)
-        self.setStyleSheet(MainWidget)
        
 
     def updateWindow(self):     
@@ -60,7 +44,6 @@ class Main(QWidget, Ui_main_container):
         self.todo_tab.todo_signal.emit("update")
 
     def add_tabs(self):
-        self.tab_widget = QTabWidget()
         self.setMinimumSize(1000, 600)
         
         self.apps_tab = Apps_tab().create_tab()

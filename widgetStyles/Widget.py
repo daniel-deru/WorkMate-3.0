@@ -15,7 +15,7 @@ Widget = f"""
 """
 
 MainWidget = f"""
-    QWidget {{
+    QWidget#main_container {{
         font-size: 16px;
         font-size: 16px;
         padding: 5px 8px;
