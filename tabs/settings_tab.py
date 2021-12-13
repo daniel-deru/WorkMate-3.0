@@ -1,13 +1,10 @@
 import sys
 import os
-from functools import reduce
-import re
+import csv
 
-from PyQt5.QtWidgets import QWidget, QColorDialog
+from PyQt5.QtWidgets import QWidget, QColorDialog, QFileDialog
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QFont
-
-from utils.helpers import clear_window
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -16,11 +13,12 @@ from designs.python.settings_tab import Ui_Settings_tab
 from widgetStyles.Label import Label
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
-from widgetStyles.Widget import Widget
 from widgetStyles.ComboBox import ComboBox
 from utils.helpers import StyleSheet
-
+from utils.message import Message
 from database.model import Model
+
+DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
 
 class SettingsTab(QWidget, Ui_Settings_tab):
@@ -38,6 +36,10 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.fcmbx_font.currentFontChanged.connect(self.set_font)
         self.btn_reset.clicked.connect(self.reset)
         self.settings_signal.connect(self.read_styles)
+        self.btn_export_apps.clicked.connect(lambda: self.export_data("apps"))
+        self.btn_export_notes.clicked.connect(lambda: self.export_data("notes"))
+        self.btn_import_apps.clicked.connect(lambda: self.import_data("apps"))
+        self.btn_import_notes.clicked.connect(lambda: self.import_data("notes"))        
     
     def create_tab(self):
         return self
@@ -81,3 +83,29 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.btn_import_apps.setFont(QFont(font))
         self.btn_import_notes.setFont(QFont(font))
         self.btn_reset.setFont(QFont(font))
+
+    def export_data(self, table):
+        data = Model().read(table)
+        if len(data) > 0:
+            headings = ["name", "path"] if table == "apps" else ["name", "body"]
+            with open(f"{DESKTOP}/{table}.csv", 'w', newline="") as f:
+                writer = csv.writer(f)
+                writer.writerow(headings)
+                for i in range(len(data)):
+                    row = [data[i][1], data[i][2]]
+                    writer.writerow(row)
+
+    def import_data(self, table):
+        file = QFileDialog.getOpenFileName(self, f"Choose the {table}.csv file", DESKTOP, f"csv files ({table}.csv)")[0]
+        field = "body" if table == "notes" else "path"
+        fields = []
+        with open(file, 'r') as f:
+            reader = csv.reader(f)
+            header = next(reader)
+            if header[1] != field:
+                Message("The File does not match the data you want to import. Please ensure you don't change the name of the csv file or import the wrong file.", "File doesn't match data").exec_()
+                return
+            else:
+                for row in reader:
+                    fields.append(row)
+                return fields

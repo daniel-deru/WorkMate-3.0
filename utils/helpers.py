@@ -3,8 +3,11 @@ import sys
 import os
 import re
 from functools import reduce
+import csv
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
+DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
 from widgetStyles.styles import placeholders
 from database.model import Model
@@ -75,3 +78,7 @@ class StyleSheet():
         for i in range(len(placeholders)):
             stylesheet = re.sub(placeholders[i], values[i], stylesheet)
         return stylesheet
+
+def import_file(table, file):
+    pass
+        
