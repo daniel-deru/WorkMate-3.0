@@ -4,6 +4,7 @@ from functools import reduce
 import re
 from PyQt5.QtWidgets import QDialog, QFileDialog
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -114,3 +115,13 @@ class Apps_window(QDialog, Ui_App_Window):
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
+        font = Model().read('settings')[0][2]
+        self.btn_save.setFont(QFont(font))
+        self.btn_desktop.setFont(QFont(font))
+        self.btn_discard.setFont(QFont(font))
+        self.lbl_name.setFont(QFont(font))
+        self.lbl_index.setFont(QFont(font))
+        self.lbl_path.setFont(QFont(font))
+        self.lnedt_name.setFont(QFont(font))
+        self.lnedt_path.setFont(QFont(font))
+        self.spn_index.setFont(QFont(font))

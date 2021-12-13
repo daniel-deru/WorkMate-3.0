@@ -1,9 +1,9 @@
 import os
 import sys
-import re
 
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QFont
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -33,6 +33,8 @@ class AppItem(QPushButton):
     def setupUI(self):
         self.setText(self.app[1])
         self.setStyleSheet("QPushButton{ max-width: 250px }")
+        font = Model().read("settings")[0][2]
+        self.setFont(QFont(font))
 
     # def read_styles(self):
     #     settings = Model().read("settings")[0]

@@ -17,6 +17,7 @@ from widgetStyles.Label import Label
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.Widget import Widget
+from widgetStyles.ComboBox import ComboBox
 from utils.helpers import StyleSheet
 
 from database.model import Model
@@ -67,7 +68,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.settings_signal.emit("settings")
 
     def read_styles(self):
-        styles = [Label, PushButton, CheckBox]
+        styles = [Label, PushButton, CheckBox, ComboBox]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         font = Model().read('settings')[0][2]

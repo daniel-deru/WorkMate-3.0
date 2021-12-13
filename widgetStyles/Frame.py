@@ -22,7 +22,7 @@ TodoFrameDelete = f"""
         font-size: 16px;
         border-radius: 5px;
         font-size: 16px;
-        background-color: #ff0000;
+        background-color: #A60000;
         color: #ffffff;
         max-height: 40px;
         height: 40px;
@@ -35,7 +35,7 @@ TodoFrameComplete = f"""
         font-size: 16px;
         border-radius: 5px;
         font-size: 16px;
-        background-color: #00ff00;
+        background-color: #00A62E;
         color: #ffffff;
         max-height: 40px;
         height: 40px;

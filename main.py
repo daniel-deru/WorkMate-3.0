@@ -14,6 +14,7 @@ from tabs.todos_tab import Todo_tab
 from tabs.settings_tab import SettingsTab
 
 from widgetStyles.TabBar import TabBar
+from widgetStyles.TabWidget import TabWidget
 from widgetStyles.Widget import Widget
 from utils.helpers import StyleSheet
 
@@ -30,7 +31,7 @@ class Main(QWidget, Ui_main_container):
         
        
     def read_style(self):
-        styles = [Widget, TabBar]
+        styles = [TabWidget, Widget, TabBar]
         stylesheet = StyleSheet(styles).create()
         self.tab_widget.setStyleSheet(stylesheet)
         font = Model().read('settings')[0][2]
@@ -39,10 +40,10 @@ class Main(QWidget, Ui_main_container):
        
 
     def updateWindow(self):     
-        self.read_style()
         self.apps_tab.app_signal.emit("update")
         self.notes_tab.note_signal.emit("update")
         self.todo_tab.todo_signal.emit("update")
+        self.read_style()
 
     def add_tabs(self):
         self.setMinimumSize(1000, 600)
@@ -68,4 +69,3 @@ if __name__ == "__main__":
     main = Main()
     main.show()
     sys.exit(app.exec_())
-

@@ -4,6 +4,7 @@ import pyperclip
 
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -78,4 +79,10 @@ class Note_window(QDialog, Ui_Note_Window):
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
+        font = Model().read('settings')[0][2]
+        self.chkbx_edit.setFont(QFont(font))
+        self.btn_save.setFont(QFont(font))
+        self.txtedt_body.setFont(QFont(font))
+        self.btn_copy_note.setFont(QFont(font))
+        self.lnedt_title.setFont(QFont(font))
     

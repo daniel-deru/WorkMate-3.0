@@ -8,6 +8,8 @@ from widgetStyles.styles import color, mode, default, button
 TabBar = f"""
     QTabBar{{
         background-color: {color};
+        border: none;
+        qproperty-drawBase: 0;
     }}
    QTabBar::tab {{
         font-size: 16px;

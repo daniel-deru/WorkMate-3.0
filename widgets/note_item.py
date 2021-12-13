@@ -1,11 +1,9 @@
 import sys
 import os
-from functools import reduce
-import re
 
 from PyQt5.QtWidgets import QHBoxLayout, QLabel, QPushButton, QFrame, QSpacerItem, QSizePolicy
 from PyQt5.QtCore import pyqtSignal, QSize
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -14,7 +12,6 @@ from database.model import Model
 from widgetStyles.Frame import Frame
 from widgetStyles.Label import Label
 from widgetStyles.PushButton import IconButton
-from widgetStyles.styles import default, color, mode
 from utils.helpers import StyleSheet
 
 
@@ -83,5 +80,7 @@ class NoteItem(QFrame):
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
+        font = Model().read("settings")[0][2]
+        self.name.setFont(QFont(font))
         
         

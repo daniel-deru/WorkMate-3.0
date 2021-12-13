@@ -8,10 +8,10 @@ from widgetStyles.styles import color, mode, default
 TabWidget = f"""
     QTabWidget {{
         background-color: {mode};
+        border: none;
     }}
 
     QTabWidget::pane {{
-        border: none;
         background-color: {color};
     }}
 
