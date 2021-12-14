@@ -29,6 +29,6 @@ ComboBox = f"""
         width: 7px;
         height: 5px;
         border: none;
-        backround-color: {color};
+        background-color: {color};
     }}
 """

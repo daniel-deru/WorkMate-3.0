@@ -29,33 +29,39 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.setupUi(self)
         self.read_styles()
         settings = Model().read('settings')[0]
-        nightmode = settings[1]
-        self.chkbx_night_mode.setChecked(nightmode)
+        nightmode = "ON" if settings[1] else "OFF"
 
-        self.chkbx_night_mode.stateChanged.connect(self.set_night_mode)
+        self.btn_nightmode.setText(nightmode)
+        
+        self.btn_nightmode.clicked.connect(self.set_night_mode)
         self.btn_color.clicked.connect(self.set_color)
         self.fcmbx_font.currentFontChanged.connect(self.set_font)
         self.btn_reset.clicked.connect(self.reset)
-        self.settings_signal.connect(self.read_styles)
         self.btn_export_apps.clicked.connect(lambda: self.export_data("apps"))
         self.btn_export_notes.clicked.connect(lambda: self.export_data("notes"))
         self.btn_import_apps.clicked.connect(lambda: self.import_data("apps"))
-        self.btn_import_notes.clicked.connect(lambda: self.import_data("notes"))        
+        self.btn_import_notes.clicked.connect(lambda: self.import_data("notes"))  
+
+        self.settings_signal.connect(self.read_styles)      
     
     def create_tab(self):
         return self
 
     def set_night_mode(self):
-        print("clicked", self.chkbx_night_mode.isChecked())
         color = Model().read('settings')[0][3]
+        
         if color == "#000000":
             Message("Nightmode is not available with the default color. Please choose a different color.", "Night Mode not available").exec_()
-            self.chkbx_night_mode.setChecked(False)
+            return
         else:
-            nightmode = self.chkbx_night_mode.isChecked()
-            Model().update("settings", {'nightmode': nightmode}, 'settings')
+            nightmode = Model().read('settings')[0][1]
+            toggle = 1 if not nightmode else 0
+            Model().update("settings", {'nightmode': toggle}, 'settings')
             self.settings_signal.emit("settings changed")
+            text = "ON" if not nightmode else "OFF"
+            self.btn_nightmode.setText(text)
             self.updateWindow()
+            
 
     def set_font(self):
         font = self.fcmbx_font.currentFont().family()
