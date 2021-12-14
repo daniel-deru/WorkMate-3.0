@@ -1,6 +1,7 @@
 import sys
 import os
 import csv
+import re
 
 from PyQt5.QtWidgets import QWidget, QColorDialog, QFileDialog
 from PyQt5.QtCore import pyqtSignal
@@ -45,10 +46,16 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         return self
 
     def set_night_mode(self):
-        nightmode = self.chkbx_night_mode.isChecked()
-        Model().update("settings", {'nightmode': nightmode}, 'settings')
-        self.settings_signal.emit("settings changed")
-        self.updateWindow()
+        print("clicked", self.chkbx_night_mode.isChecked())
+        color = Model().read('settings')[0][3]
+        if color == "#000000":
+            Message("Nightmode is not available with the default color. Please choose a different color.", "Night Mode not available").exec_()
+            self.chkbx_night_mode.setChecked(False)
+        else:
+            nightmode = self.chkbx_night_mode.isChecked()
+            Model().update("settings", {'nightmode': nightmode}, 'settings')
+            self.settings_signal.emit("settings changed")
+            self.updateWindow()
 
     def set_font(self):
         font = self.fcmbx_font.currentFont().family()
@@ -86,6 +93,14 @@ class SettingsTab(QWidget, Ui_Settings_tab):
 
     def export_data(self, table):
         data = Model().read(table)
+        if table == "apps":
+            def get_website(app):
+                website = re.search("^[http(s)?://|www\.]", app[2])
+                if website is not None:
+                    return app
+            data = list(filter(get_website, data))
+            print(data)
+                
         if len(data) > 0:
             headings = ["name", "path"] if table == "apps" else ["name", "body"]
             with open(f"{DESKTOP}/{table}.csv", 'w', newline="") as f:
@@ -108,4 +123,22 @@ class SettingsTab(QWidget, Ui_Settings_tab):
             else:
                 for row in reader:
                     fields.append(row)
-                return fields
+                if table == "notes":
+                    for item in fields:
+                        data = {
+                            header[0]: item[0],
+                            header[1]: item[1]
+                        }
+                        Model().save(table, data)
+                        self.settings_signal.emit("settings")
+                elif table == "apps":
+                    apps = Model().read("apps")
+                    for i in range(len(fields)):
+                        data = {
+                            header[0]: fields[i][0],
+                            header[1]: fields[i][1],
+                            'sequence': len(apps) + (i + 1)
+                        }
+                        Model().save(table, data)
+                        self.settings_signal.emit("settings")
+        

@@ -27,7 +27,6 @@ class Main(QWidget, Ui_main_container):
         self.setupUi(self)
         self.read_style()
         self.add_tabs()
-
         
        
     def read_style(self):

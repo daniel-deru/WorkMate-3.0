@@ -34,7 +34,7 @@ class Apps_tab(QWidget, Ui_apps_tab):
         self.chk_edit_apps.stateChanged.connect(self.edit_checked)
         self.chk_delete_apps.stateChanged.connect(self.delete_checked)
 
-        self.app_signal.connect(self.read_styles)
+        self.app_signal.connect(self.update)
     
     def create_tab(self):
         return self
