@@ -5,7 +5,7 @@ path = os.getenv("APPDATA") + "\\WorkMate"
 
 class Model:
     def __init__(self):
-        self.db = sqlite3.connect(f"./database/workmate.db")
+        self.db = sqlite3.connect(f"{path}/database/workmate.db")
         self.cur = self.db.cursor()
 
         self.create_tables()

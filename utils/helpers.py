@@ -71,6 +71,7 @@ class StyleSheet():
 
         settings_button = "#000000" if black_contrast > white_contrast else "#ffffff"
         settings_default = self.settings_contrast if color_contrast < 3 else self.settings_color
+        # settings_default = self.settings_contrast
 
         values = [self.settings_color, self.settings_mode, settings_default, settings_button]
 

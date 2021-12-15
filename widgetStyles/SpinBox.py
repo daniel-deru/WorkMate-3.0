@@ -11,6 +11,7 @@ SpinBox = f"""
         color: {default};
         font-size: 16px;
         padding: 5px 8px;
+        
         border-radius: 5px;
         border: 2px solid {color};
     }}
@@ -18,15 +19,31 @@ SpinBox = f"""
     QSpinBox::down-button {{
         border: none;
         image: url(assets/down.png);
-        width: 10px;
-        height: 10px;
-        padding: 5px 10px; 
+        margin-top: 2px;
+        width: 15px;
+        height: 15px;
+        padding: 0px 5px;
+        background-color: {color};
+        cursor: pointer;
     }}
+
+    QSpinBox::up-button:pressed {{
+        background-color: {mode};
+    }}
+
     QSpinBox::up-button {{
         border: none;
         image: url(assets/up.png);
-        width: 10px;
-        height: 10px;
-        padding: 5px 10px; 
+        width: 15px;
+        height: 15px;
+        padding: 0px 5px;
+        margin-bottom: 2px;
+        background-color: {color};
+        cursor: pointer;
     }}
+
+    QSpinBox::down-button:pressed {{
+        background-color: {mode};
+    }}
+
 """

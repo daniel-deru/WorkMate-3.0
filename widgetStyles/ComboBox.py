@@ -15,9 +15,17 @@ ComboBox = f"""
         subcontrol-origin: padding;
         subcontrol-position: top right;
         color: white;
-        padding-left: 5px;
+        padding: 0px 5px;
+        width: 20px;
         font-size: 12px;
+        border: none;
+        background-color: {color};
     }}
+
+    QComboBox::drop-down:pressed {{
+        background-color: {mode};
+    }}
+
     QComboBox QAbstractItemView {{
         background-color: {color};
         selection-background-color: {mode};
@@ -26,9 +34,13 @@ ComboBox = f"""
         border-radius: 5px;
     }}
     QComboBox::down-arrow{{
-        width: 7px;
-        height: 5px;
+        width: 15px;
+        height: 15px;
         border: none;
-        background-color: {color};
+        image: url(assets/down.png);
+    }}
+
+    QComboBox QListView {{
+        font-size: 5px
     }}
 """
