@@ -24,6 +24,7 @@ from utils.helpers import StyleSheet
 class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
+        Model().start()      
         self.setupUi(self)
         self.read_style()
         self.add_tabs()

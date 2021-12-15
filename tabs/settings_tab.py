@@ -16,6 +16,7 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.ComboBox import ComboBox
 from utils.helpers import StyleSheet
+from utils.updateSVG import change_color
 from utils.message import Message
 from database.model import Model
 
@@ -70,8 +71,10 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         
 
     def set_color(self):
-        color = QColorDialog().getColor().name()
-        Model().update("settings", {'color': color}, 'settings')
+        old_color = Model().read('settings')[0][3]
+        new_color = QColorDialog().getColor().name()
+        Model().update("settings", {'color': new_color}, 'settings')
+        change_color(old_color, new_color)
         self.settings_signal.emit("settings changed")
 
     def reset(self):

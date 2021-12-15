@@ -1,7 +1,5 @@
 import sys
 import os
-from functools import reduce
-import re
 from PyQt5.QtWidgets import QDialog, QFileDialog
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QFont
@@ -16,7 +14,6 @@ from widgetStyles.LineEdit import LineEdit
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
 from widgetStyles.SpinBox import SpinBox
-from widgetStyles.styles import color, default, mode
 from utils.helpers import StyleSheet
 
 

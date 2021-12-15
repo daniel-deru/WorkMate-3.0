@@ -13,11 +13,11 @@ CheckBox = f"""
     }}
 
     QCheckBox::indicator:checked {{
-        image: url(assets/check-on.png);
+        image: url(assets/check-on.svg);
     }}
 
     QCheckBox::indicator{{
-        image: url(assets/check-off.png);
+        image: url(assets/check-off.svg);
         width: 50px;
         height: 25px;
         max-width: 50px;
