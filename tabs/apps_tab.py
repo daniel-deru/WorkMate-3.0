@@ -1,8 +1,6 @@
 import sys
 import os
-from functools import reduce
 import math
-import re
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal
@@ -17,8 +15,6 @@ from widgets.app_item import AppItem
 from utils.helpers import clear_window
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
-from widgetStyles.Widget import Widget
-from widgetStyles.styles import color, default, mode
 from utils.helpers import StyleSheet
 
 class Apps_tab(QWidget, Ui_apps_tab):

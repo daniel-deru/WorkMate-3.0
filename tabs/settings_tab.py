@@ -15,6 +15,7 @@ from widgetStyles.Label import Label
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.ComboBox import ComboBox
+from widgetStyles.ScrollBar import ScrollBar
 from utils.helpers import StyleSheet
 from utils.updateSVG import change_color
 from utils.message import Message
@@ -86,7 +87,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.settings_signal.emit("settings")
 
     def read_styles(self):
-        styles = [Label, PushButton, CheckBox, ComboBox]
+        styles = [Label, PushButton, CheckBox, ComboBox, ScrollBar]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         font = Model().read('settings')[0][2]
@@ -108,7 +109,6 @@ class SettingsTab(QWidget, Ui_Settings_tab):
                 if website is not None:
                     return app
             data = list(filter(get_website, data))
-            print(data)
                 
         if len(data) > 0:
             headings = ["name", "path"] if table == "apps" else ["name", "body"]

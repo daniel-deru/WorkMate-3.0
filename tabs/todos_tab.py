@@ -1,8 +1,6 @@
 import sys
 import os
 from datetime import date
-from functools import reduce
-import re
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal

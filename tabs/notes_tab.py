@@ -1,8 +1,6 @@
 import sys
 import os
 import math
-import re
-from functools import reduce
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal
@@ -18,8 +16,6 @@ from widgets.note_item import NoteItem
 from utils.helpers import clear_window
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
-from widgetStyles.Widget import Widget
-from widgetStyles.styles import color, default, mode
 from utils.helpers import StyleSheet
 
 

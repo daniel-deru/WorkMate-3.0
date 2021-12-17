@@ -1,7 +1,8 @@
 import sys
+import time
 
-from PyQt5.QtWidgets import QApplication, QWidget
-from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
+from PyQt5.QtGui import QFont, QPixmap
 
 from designs.python.main_widget import Ui_main_container
 from tabs.apps_tab import Apps_tab
@@ -24,6 +25,7 @@ from utils.helpers import StyleSheet
 class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
+       
         Model().start()      
         self.setupUi(self)
         self.read_style()
@@ -62,10 +64,17 @@ class Main(QWidget, Ui_main_container):
         self.tab_widget.addTab(self.settings_tab, "Settings")
 
         self.main_layout.addWidget(self.tab_widget)
+        
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    splash_image = QPixmap("assets/splash.svg").scaled(500, 500)
+    splash = QSplashScreen(splash_image)
+    splash.setMaximumWidth(500)
+    splash.show()
+    time.sleep(1)
+    splash.close()
     main = Main()
     main.show()
     sys.exit(app.exec_())
