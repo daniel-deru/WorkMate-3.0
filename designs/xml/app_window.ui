@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>514</width>
-    <height>381</height>
+    <height>484</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -120,6 +120,37 @@
     </layout>
    </item>
    <item>
+    <layout class="QVBoxLayout" name="vbox_username">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
+     <item>
+      <widget class="QLabel" name="lbl_username">
+       <property name="text">
+        <string>Username (Optional)</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lnedt_username"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="vbox_password">
+     <item>
+      <widget class="QLabel" name="lbl_password">
+       <property name="text">
+        <string>Password (Optional)</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lnedt_password"/>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="hbox_desktop">
      <item>
       <spacer name="spcr_left_desktop">
@@ -167,19 +198,6 @@
       </spacer>
      </item>
     </layout>
-   </item>
-   <item>
-    <spacer name="spcer_layout">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout" name="hbox_save">

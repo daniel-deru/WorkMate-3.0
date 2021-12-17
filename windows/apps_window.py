@@ -32,6 +32,7 @@ class Apps_window(QDialog, Ui_App_Window):
 
         self.btn_save.clicked.connect(self.save_clicked)
         self.btn_desktop.clicked.connect(self.add_from_desktop)
+        
 
         self.app = app
         if self.app is not None:     
@@ -45,10 +46,14 @@ class Apps_window(QDialog, Ui_App_Window):
         name = self.lnedt_name.text()
         index = self.spn_index.value()
         path = self.lnedt_path.text()
+        username = self.lnedt_username.text()
+        password = self.lnedt_password.text()
         data = {
                     'name': name,
                     'path': path,
-                    'sequence': index
+                    'sequence': index,
+                    'username': username,
+                    'password': password
                 }
 
         is_unique = True
@@ -122,3 +127,7 @@ class Apps_window(QDialog, Ui_App_Window):
         self.lnedt_name.setFont(QFont(font))
         self.lnedt_path.setFont(QFont(font))
         self.spn_index.setFont(QFont(font))
+        self.lbl_username.setFont(QFont(font))
+        self.lbl_password.setFont(QFont(font))
+        self.lnedt_username.setFont(QFont(font))
+        self.lnedt_password.setFont(QFont(font))

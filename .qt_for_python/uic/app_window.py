@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'app_window.ui'
+# Form implementation generated from reading ui file 'c:\Users\SATRUST\Desktop\WorkMate 3.0 Pro\designs\xml\app_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -125,13 +125,3 @@ class Ui_App_Window(object):
         self.btn_desktop.setText(_translate("App_Window", "Add From Desktop"))
         self.btn_discard.setText(_translate("App_Window", "Discard"))
         self.btn_save.setText(_translate("App_Window", "Save"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    App_Window = QtWidgets.QDialog()
-    ui = Ui_App_Window()
-    ui.setupUi(App_Window)
-    App_Window.show()
-    sys.exit(app.exec_())

@@ -13,6 +13,7 @@ from tabs.apps_tab import Apps_tab
 from tabs.notes_tab import Notes_tab
 from tabs.todos_tab import Todo_tab
 from tabs.settings_tab import SettingsTab
+from tabs.vault_tab import Vault_tab
 
 from widgetStyles.TabBar import TabBar
 from widgetStyles.TabWidget import TabWidget
@@ -52,6 +53,9 @@ class Main(QWidget, Ui_main_container):
         
         self.apps_tab = Apps_tab().create_tab()
         self.tab_widget.addTab(self.apps_tab, "Apps")
+
+        self.vault_tab = Vault_tab().create_tab()
+        self.tab_widget.addTab(self.vault_tab, "Vault")
 
         self.notes_tab = Notes_tab().create_tab()
         self.tab_widget.addTab(self.notes_tab, "Notes")

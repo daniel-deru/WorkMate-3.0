@@ -16,7 +16,9 @@ class Model:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 path TEXT NOT NULL,
-                sequence INTEGER NOT NULL
+                sequence INTEGER NOT NULL,
+                username TEXT,
+                password TEXT
             )
         """
 
