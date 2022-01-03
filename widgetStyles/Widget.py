@@ -8,7 +8,6 @@ from widgetStyles.styles import color, mode, default
 Widget = f"""
     QWidget {{
         font-size: 16px;
-        font-size: 16px;
         padding: 5px 8px;
         background-color: {mode};
     }}

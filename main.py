@@ -1,8 +1,9 @@
 import sys
 import time
+import os
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
-from PyQt5.QtGui import QFont, QPixmap
+from PyQt5.QtGui import QFont, QPixmap, QFontDatabase
 
 from designs.python.main_widget import Ui_main_container
 from tabs.apps_tab import Apps_tab
@@ -18,7 +19,9 @@ from tabs.vault_tab import Vault_tab
 from widgetStyles.TabBar import TabBar
 from widgetStyles.TabWidget import TabWidget
 from widgetStyles.Widget import Widget
+
 from utils.helpers import StyleSheet
+from windows.register_window import Register
 
 
 
@@ -27,7 +30,15 @@ class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
        
-        Model().start()      
+        Model().start()
+        
+
+        user = Model().read("user")
+        if len(user) != 1:
+            self.hide()
+            register = Register()
+            register.exec_()
+        
         self.setupUi(self)
         self.read_style()
         self.add_tabs()

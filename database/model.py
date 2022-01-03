@@ -47,10 +47,21 @@ class Model:
                 color TEXT DEFAULT '#000000'
             )
         """
+
+        users_table = """
+            CREATE TABLE IF NOT EXISTS user(
+                name TEXT NOT NULL,
+                email TEXT NOT NULL,
+                password TEXT NOT NULL,
+                question TEXT NOT NULL,
+                answer TEXT NOT NULL
+            )
+        """
         self.cur.execute(apps_table)
         self.cur.execute(notes_table)
         self.cur.execute(todos_table)
         self.cur.execute(settings_table)
+        self.cur.execute(users_table)
 
     def save(self, table, data): 
         keys = f'{", ".join(data.keys())}'
@@ -120,7 +131,8 @@ class Model:
                 'color': "#000000"
             }
             self.save('settings', data)
-    
+
+# Model().clearTable("user")
 
 
 

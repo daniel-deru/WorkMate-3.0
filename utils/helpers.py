@@ -3,7 +3,6 @@ import sys
 import os
 import re
 from functools import reduce
-import csv
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 

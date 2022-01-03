@@ -22,6 +22,23 @@ QPushButton:pressed {{
 }}
 """
 
+VaultButton = f"""
+  QPushButton {{
+    background-color: {color};
+    color: {button};
+    border: 2px solid {color};
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 5px 8px;
+}}
+
+QPushButton:pressed {{
+    background-color: {mode};
+    color: {color};
+    border: 2px solid {color};
+}}
+"""
+
 IconButton = """
     QPushButton {
     background-color: transparent;
