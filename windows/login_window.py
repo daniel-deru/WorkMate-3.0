@@ -1,7 +1,7 @@
 import os
 import sys
 
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QLineEdit
 from PyQt5.QtCore import pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -25,6 +25,7 @@ class Login(QDialog, Ui_Login):
         self.read_styles()
 
         self.btn_login.clicked.connect(self.login)
+        self.lnedt_password.setEchoMode(QLineEdit.Password)
 
 
     def read_styles(self):

@@ -46,7 +46,7 @@ class Model:
                 font TEXT DEFAULT 'Arial',
                 color TEXT DEFAULT '#000000',
                 vault_on INTEGER DEFAULT 1 NOT NULL,
-                timer INTEGER
+                timer INTEGER DEFAULT 5 NOT NULL
             )
         """
 

@@ -23,6 +23,7 @@ from utils.helpers import StyleSheet
 from database.model import Model
 
 from windows.timer_window import Timer
+from windows.login_window import Login
 
 
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
@@ -34,6 +35,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         super(SettingsTab, self).__init__()
         self.setupUi(self)
         self.read_styles()
+        self.logged_in = False
         settings = Model().read('settings')[0]
         nightmode = "ON" if settings[1] else "OFF"
         vault_on = "ON" if settings[4] else "OFF"
@@ -52,7 +54,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.btn_vault.clicked.connect(self.vault)
         self.btn_vault_timer.clicked.connect(self.vault_timer)
 
-        self.settings_signal.connect(self.read_styles)      
+        self.settings_signal.connect(self.read_styles)    
     
     def create_tab(self):
         return self
@@ -160,17 +162,31 @@ class SettingsTab(QWidget, Ui_Settings_tab):
                         self.settings_signal.emit("settings")
     
     def vault(self):
-        vault_on = 1 if Model().read("settings")[0][4] else 0
-        Model().update("settings", {"vault_on": not vault_on}, "settings")
-        button_text = "ON" if Model().read('settings')[0][4] else "OFF"
-        self.btn_vault.setText(button_text)
-        # self.updateWindow()
+        login = Login()
+        login.login_status.connect(self.login)
+        login.exec_()
+        if self.logged_in:
+            vault_on = 1 if Model().read("settings")[0][4] else 0
+            Model().update("settings", {"vault_on": not vault_on}, "settings")
+            button_text = "ON" if Model().read('settings')[0][4] else "OFF"
+            self.btn_vault.setText(button_text)
+            self.updateWindow()
 
     def vault_timer(self):
         vault_on = Model().read("settings")[0][4]
         if not vault_on:
             Message("The vault is not active, please turn on the vault in order to set the timer.", "The vault is off.").exec_()
         elif vault_on:
-            Timer().exec_()
+            login = Login()
+            login.login_status.connect(self.login)
+            login.exec_()
+            if self.logged_in:
+                Timer().exec_()
+    
+    def login(self, signal):
+        if signal == "success":
+            self.logged_in = True
+        
+
 
         
