@@ -67,7 +67,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="btn_vault_timer">
        <property name="text">
         <string>Set Timer</string>
        </property>

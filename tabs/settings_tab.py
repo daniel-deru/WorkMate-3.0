@@ -16,10 +16,14 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.ScrollBar import ScrollBar
-from utils.helpers import StyleSheet
+
 from utils.updateSVG import change_color
 from utils.message import Message
+from utils.helpers import StyleSheet
 from database.model import Model
+
+from windows.timer_window import Timer
+
 
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
@@ -32,8 +36,10 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.read_styles()
         settings = Model().read('settings')[0]
         nightmode = "ON" if settings[1] else "OFF"
+        vault_on = "ON" if settings[4] else "OFF"
 
         self.btn_nightmode.setText(nightmode)
+        self.btn_vault.setText(vault_on)
         
         self.btn_nightmode.clicked.connect(self.set_night_mode)
         self.btn_color.clicked.connect(self.set_color)
@@ -42,7 +48,9 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.btn_export_apps.clicked.connect(lambda: self.export_data("apps"))
         self.btn_export_notes.clicked.connect(lambda: self.export_data("notes"))
         self.btn_import_apps.clicked.connect(lambda: self.import_data("apps"))
-        self.btn_import_notes.clicked.connect(lambda: self.import_data("notes"))  
+        self.btn_import_notes.clicked.connect(lambda: self.import_data("notes"))
+        self.btn_vault.clicked.connect(self.vault)
+        self.btn_vault_timer.clicked.connect(self.vault_timer)
 
         self.settings_signal.connect(self.read_styles)      
     
@@ -150,4 +158,19 @@ class SettingsTab(QWidget, Ui_Settings_tab):
                         }
                         Model().save(table, data)
                         self.settings_signal.emit("settings")
+    
+    def vault(self):
+        vault_on = 1 if Model().read("settings")[0][4] else 0
+        Model().update("settings", {"vault_on": not vault_on}, "settings")
+        button_text = "ON" if Model().read('settings')[0][4] else "OFF"
+        self.btn_vault.setText(button_text)
+        # self.updateWindow()
+
+    def vault_timer(self):
+        vault_on = Model().read("settings")[0][4]
+        if not vault_on:
+            Message("The vault is not active, please turn on the vault in order to set the timer.", "The vault is off.").exec_()
+        elif vault_on:
+            Timer().exec_()
+
         

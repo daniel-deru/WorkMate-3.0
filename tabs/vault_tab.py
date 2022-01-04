@@ -1,8 +1,9 @@
 import os
 import sys
+import pyperclip
 
-from PyQt5.QtWidgets import QWidget, QHeaderView, QTableWidgetItem, QApplication, QLineEdit, QGraphicsBlurEffect
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QHeaderView, QTableWidgetItem, QApplication
+from PyQt5.QtCore import Qt, pyqtSignal, QSize
 from PyQt5.QtGui import QFont, QFontDatabase
 
 
@@ -10,6 +11,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from designs.python.vault_tab import Ui_Vault_tab
 from utils.helpers import StyleSheet
+from utils.message import Message
+from utils.helpers import clear_window
 from windows.login_window import Login
 
 
@@ -19,6 +22,7 @@ from widgetStyles.PushButton import PushButton
 from database.model import Model
 
 class Vault_tab(QWidget, Ui_Vault_tab):
+    vault_signal = pyqtSignal(str)
     def __init__(self):
         super(Vault_tab, self).__init__()
         self.setupUi(self)
@@ -26,12 +30,13 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         self.load_data()
 
         QFontDatabase.addApplicationFont("./assets/fonts/redacted-script-regular.ttf")
-        self.setFont(QFont("Redacted Script"))
        
         self.tbl_vault.horizontalHeader().setStretchLastSection(True)
         self.tbl_vault.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
         self.btn_login.clicked.connect(self.login)
+        self.tbl_vault.itemClicked.connect(self.item)
+        self.vault_signal.connect(self.update)
 
         self.logged_in = False
         self.visible(self.logged_in)
@@ -74,24 +79,61 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         self.setStyleSheet(stylesheet)
 
     def login(self):
-        login = Login()
-        login.login_status.connect(self.update_status)
-        login.exec_()
+        if not self.logged_in:
+            login = Login()
+            login.login_status.connect(self.update_status)
+            login.exec_()
+        else:
+            self.logged_in = False
+            self.visible(False)
+            self.btn_login.setText("login")
     
     def update_status(self, signal):
         if signal == "success":
             self.logged_in = True
+            self.visible(self.logged_in)
+            self.btn_login.setText("Logout")
     
     def visible(self, is_logged_in):
-        if not is_logged_in:
-            blur = QGraphicsBlurEffect()
-            blur.setBlurRadius(15)
-            for i in range(len(self.app_items)):
-                username = self.tbl_vault.item(i, 2)
-                username.setFont(QFont("Redacted Script"))
-                
-                password = self.tbl_vault.item(i, 3)
-                password.setFont(QFont("Redacted Script"))
+        font = Model().read("settings")[0][2]
+        vault_on = Model().read("settings")[0][4]
+        for i in range(len(self.app_items)):
+            username = self.tbl_vault.item(i, 2)
+            password = self.tbl_vault.item(i, 3)
+
+            if not is_logged_in and vault_on:
+                username.setFont(QFont("Redacted Script", 20))
+                password.setFont(QFont("Redacted Script", 20))
+            elif is_logged_in:
+                username.setFont(QFont(font))
+                password.setFont(QFont(font))
+            elif not vault_on:
+                username.setFont(QFont(font))
+                password.setFont(QFont(font))
+    def update(self):
+        for i in range(self.tbl_vault.rowCount()):
+            self.tbl_vault.removeRow(i)
+        self.load_data()
+        self.visible(self.logged_in)
+        self.tbl_vault.setMaximumSize(self.getQTableWidgetSize())
+        self.tbl_vault.setMinimumSize(self.getQTableWidgetSize())
+    
+    def getQTableWidgetSize(self):
+        w = self.tbl_vault.verticalHeader().width() + 4  # +4 seems to be needed
+        for i in range(self.tbl_vault.columnCount()):
+            w += self.tbl_vault.columnWidth(i)  # seems to include gridline (on my machine)
+        h = self.tbl_vault.horizontalHeader().height() + 4
+        for i in range(self.tbl_vault.rowCount()):
+            h += self.tbl_vault.rowHeight(i)
+        return QSize(w, h)
+
+    def item(self, item):
+        column = item.column()
+        if self.logged_in and column == 2 or self.logged_in and column == 3:
+            pyperclip.copy(item.text())
+        elif not self.logged_in and column == 2 or not self.logged_in and column == 3:
+            Message("Please login before you can access this information.", "Restricted Access").exec_()
+    
         
 
 

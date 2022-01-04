@@ -3,7 +3,7 @@ import time
 import os
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
-from PyQt5.QtGui import QFont, QPixmap, QFontDatabase
+from PyQt5.QtGui import QFont, QPixmap
 
 from designs.python.main_widget import Ui_main_container
 from tabs.apps_tab import Apps_tab
@@ -57,12 +57,17 @@ class Main(QWidget, Ui_main_container):
         self.apps_tab.app_signal.emit("update")
         self.notes_tab.note_signal.emit("update")
         self.todo_tab.todo_signal.emit("update")
+        self.vault_tab.vault_signal.emit("update")
         self.read_style()
+    
+    def updateTable(self):
+        self.vault_tab.vault_signal.emit("update")
 
     def add_tabs(self):
         self.setMinimumSize(1000, 600)
         
         self.apps_tab = Apps_tab().create_tab()
+        self.apps_tab.table_signal.connect(self.updateTable)
         self.tab_widget.addTab(self.apps_tab, "Apps")
 
         self.vault_tab = Vault_tab().create_tab()
@@ -72,7 +77,7 @@ class Main(QWidget, Ui_main_container):
         self.tab_widget.addTab(self.notes_tab, "Notes")
 
         self.todo_tab = Todo_tab().create_tab()
-        self.tab_widget.addTab(self.todo_tab, "Todos")
+        self.tab_widget.addTab(self.todo_tab, "To-dos")
 
         self.settings_tab = SettingsTab().create_tab()
         self.settings_tab.settings_signal.connect(self.updateWindow)

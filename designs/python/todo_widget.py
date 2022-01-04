@@ -91,7 +91,7 @@ class Ui_todo_tab(object):
     def retranslateUi(self, todo_tab):
         _translate = QtCore.QCoreApplication.translate
         todo_tab.setWindowTitle(_translate("todo_tab", "Form"))
-        self.btn_add_todo.setText(_translate("todo_tab", "Add Todo"))
+        self.btn_add_todo.setText(_translate("todo_tab", "Add To-do"))
         self.lbl_date_display.setText(_translate("todo_tab", "Not Set"))
 
 

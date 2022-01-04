@@ -19,6 +19,7 @@ from utils.helpers import StyleSheet
 
 class Apps_tab(QWidget, Ui_apps_tab):
     app_signal = pyqtSignal(str)
+    table_signal = pyqtSignal(str)
     def __init__(self):
         super(Apps_tab, self).__init__()
         self.setupUi(self)
@@ -98,6 +99,7 @@ class Apps_tab(QWidget, Ui_apps_tab):
         clear_window(self.gbox_apps)
         self.create_apps()
         self.read_styles()
+        self.table_signal.emit("update")
 
         
 

@@ -44,7 +44,9 @@ class Model:
                 id TEXT DEFAULT 'settings' PRIMARY KEY,
                 nightmode INTEGER DEFAULT 0,
                 font TEXT DEFAULT 'Arial',
-                color TEXT DEFAULT '#000000'
+                color TEXT DEFAULT '#000000',
+                vault_on INTEGER DEFAULT 1 NOT NULL,
+                timer INTEGER
             )
         """
 
@@ -133,6 +135,7 @@ class Model:
             self.save('settings', data)
 
 # Model().clearTable("user")
+# Model().clearTable("settings")
 
 
 

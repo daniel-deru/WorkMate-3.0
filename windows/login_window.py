@@ -24,6 +24,8 @@ class Login(QDialog, Ui_Login):
         self.setupUi(self)
         self.read_styles()
 
+        self.btn_login.clicked.connect(self.login)
+
 
     def read_styles(self):
         styles = [
@@ -37,7 +39,7 @@ class Login(QDialog, Ui_Login):
         self.setStyleSheet(stylesheet)
 
     def login(self):
-        user = Model().read("user")
+        user = Model().read("user")[0]
         db_password = user[2]
         password = self.lnedt_password.text()
 

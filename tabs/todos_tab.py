@@ -60,7 +60,7 @@ class Todo_tab(QWidget, Ui_todo_tab):
         deadline = self.lbl_date_display.text() if self.lbl_date_display.text() != "Not Set" else None
 
         if not name:
-            Message("Please enter a name for the todo.", "Todo").exec_()
+            Message("Please enter a name for the todo.", "To-do").exec_()
         else:
             todo = {
                 'name':name,

@@ -9,12 +9,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from designs.python.app_window import Ui_App_Window
 from database.model import Model
 from utils.message import Message
+from utils.helpers import StyleSheet
+
 from widgetStyles.Dialog import Dialog
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
 from widgetStyles.SpinBox import SpinBox
-from utils.helpers import StyleSheet
+
+from tabs.vault_tab import Vault_tab
+
 
 
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))

@@ -62,7 +62,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Add Todo</string>
+        <string>Add To-do</string>
        </property>
       </widget>
      </item>
