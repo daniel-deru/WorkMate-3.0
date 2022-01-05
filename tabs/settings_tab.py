@@ -2,10 +2,12 @@ import sys
 import os
 import csv
 import re
+from pebble import concurrent
 
 from PyQt5.QtWidgets import QWidget, QColorDialog, QFileDialog
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QFont
+
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -25,6 +27,8 @@ from database.model import Model
 from windows.timer_window import Timer
 from windows.login_window import Login
 
+from integrations.calendar.c import Google_calendar
+
 
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
@@ -39,9 +43,11 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         settings = Model().read('settings')[0]
         nightmode = "ON" if settings[1] else "OFF"
         vault_on = "ON" if settings[4] else "OFF"
+        calendar_on = "ON" if settings[6] else "OFF"
 
         self.btn_nightmode.setText(nightmode)
         self.btn_vault.setText(vault_on)
+        self.btn_calendar.setText(calendar_on)
         
         self.btn_nightmode.clicked.connect(self.set_night_mode)
         self.btn_color.clicked.connect(self.set_color)
@@ -53,6 +59,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.btn_import_notes.clicked.connect(lambda: self.import_data("notes"))
         self.btn_vault.clicked.connect(self.vault)
         self.btn_vault_timer.clicked.connect(self.vault_timer)
+        self.btn_calendar.clicked.connect(self.calendar_toggle)
 
         self.settings_signal.connect(self.read_styles)    
     
@@ -89,6 +96,8 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.settings_signal.emit("settings changed")
 
     def reset(self):
+        old_color = Model().read('settings')[0][3]
+        change_color(old_color, "#000000")
         Model().reset()
         self.settings_signal.emit("settings changed")
     
@@ -186,6 +195,22 @@ class SettingsTab(QWidget, Ui_Settings_tab):
     def login(self, signal):
         if signal == "success":
             self.logged_in = True
+
+    def calendar_toggle(self):
+        calendar_integration = True if Model().read("settings")[0][6] else False
+        calendar_on = "ON" if not calendar_integration else "OFF"
+        self.btn_calendar.setText(calendar_on)
+        print(calendar_on)
+        Model().update("settings", {"calendar": not calendar_integration}, "settings")
+        if not calendar_integration:
+                google_thread()
+
+            
+            
+@concurrent.process(timeout=10)
+def google_thread():
+    Google_calendar.save()
+    
         
 
 
