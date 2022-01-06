@@ -1,24 +1,27 @@
 import sys
 import os
-from datetime import date
+from datetime import date, datetime
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QFont
-
+from pebble import concurrent
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from database.model import Model
 from designs.python.todo_widget import Ui_todo_tab
 from widgets.todo_item import TodoItem
-from utils.helpers import clear_window
+from utils.helpers import StyleSheet
 from utils.message import Message
+from integrations.calendar.c import Google_calendar
 from widgetStyles.PushButton import PushButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Label import Label
 from widgetStyles.DateEdit import DateEdit
 from widgetStyles.Calendar import Calendar
-from utils.helpers import StyleSheet
+from utils.helpers import clear_window
+
+
 
 
 class Todo_tab(QWidget, Ui_todo_tab):
@@ -59,6 +62,12 @@ class Todo_tab(QWidget, Ui_todo_tab):
         name = self.lne_add_todo.text()
         deadline = self.lbl_date_display.text() if self.lbl_date_display.text() != "Not Set" else None
 
+        if(self.lbl_date_display.text()):
+            deadline = self.dte_date_select.date().toPyDate()
+            time = datetime.now()
+            date = datetime(deadline.year, deadline.month, deadline.day, time.hour, time.minute, time.second)
+            google_save(date)
+
         if not name:
             Message("Please enter a name for the todo.", "To-do").exec_()
         else:
@@ -86,6 +95,11 @@ class Todo_tab(QWidget, Ui_todo_tab):
         clear_window(self.vbox_todo_container)
         self.display_todos()
         self.read_style()
+
+
+@concurrent.process(timeout=30)
+def google_save(date):
+    Google_calendar.save(date)
 
 
         

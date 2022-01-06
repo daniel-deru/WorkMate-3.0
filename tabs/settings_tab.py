@@ -5,8 +5,8 @@ import re
 from pebble import concurrent
 
 from PyQt5.QtWidgets import QWidget, QColorDialog, QFileDialog
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QFont
+from PyQt5.QtCore import pyqtSignal, QSize
+from PyQt5.QtGui import QFont, QPixmap, QImage, QIcon
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -51,7 +51,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         
         self.btn_nightmode.clicked.connect(self.set_night_mode)
         self.btn_color.clicked.connect(self.set_color)
-        self.fcmbx_font.currentFontChanged.connect(self.set_font)
+        self.fcmbx_font.currentFontChanged.connect(self.get_font)
         self.btn_reset.clicked.connect(self.reset)
         self.btn_export_apps.clicked.connect(lambda: self.export_data("apps"))
         self.btn_export_notes.clicked.connect(lambda: self.export_data("notes"))
@@ -82,10 +82,33 @@ class SettingsTab(QWidget, Ui_Settings_tab):
             self.updateWindow()
             
 
-    def set_font(self):
+    def get_font(self):
         font = self.fcmbx_font.currentFont().family()
         Model().update("settings", {'font': font}, 'settings')
         self.settings_signal.emit("settings changed")
+    
+    def set_font(self):
+        font = Model().read('settings')[0][2]
+        widget_list = [
+            self.lbl_color,
+            self.lbl_night_mode,
+            self.lbl_font,
+            self.btn_color,
+            self.btn_export_apps,
+            self.btn_export_notes,
+            self.btn_import_apps,
+            self.btn_import_notes,
+            self.btn_reset,
+            self.btn_calendar,
+            self.btn_vault,
+            self.btn_vault_timer,
+            self.lbl_calendar,
+            self.lbl_vault,
+            self.lbl_vault_timer,
+            self.lbl_reset
+        ]
+        for i in range(len(widget_list)):
+            widget_list[i].setFont(QFont(font))
         
 
     def set_color(self):
@@ -109,16 +132,10 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         styles = [Label, PushButton, CheckBox, ComboBox, ScrollBar]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
-        font = Model().read('settings')[0][2]
-        self.lbl_color.setFont(QFont(font))
-        self.lbl_night_mode.setFont(QFont(font))
-        self.lbl_font.setFont(QFont(font))
-        self.btn_color.setFont(QFont(font))
-        self.btn_export_apps.setFont(QFont(font))
-        self.btn_export_notes.setFont(QFont(font))
-        self.btn_import_apps.setFont(QFont(font))
-        self.btn_import_notes.setFont(QFont(font))
-        self.btn_reset.setFont(QFont(font))
+        self.set_font()
+        self.set_pic()
+        
+
 
     def export_data(self, table):
         data = Model().read(table)
@@ -200,16 +217,23 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         calendar_integration = True if Model().read("settings")[0][6] else False
         calendar_on = "ON" if not calendar_integration else "OFF"
         self.btn_calendar.setText(calendar_on)
-        print(calendar_on)
         Model().update("settings", {"calendar": not calendar_integration}, "settings")
         if not calendar_integration:
                 google_thread()
 
+    def set_pic(self):
+        color = Model().read("settings")[0][3]
+
+        pic = QPixmap("./assets/settings_logo.png").scaled(400, 400)
+        
+        self.lbl_logo.setPixmap(pic)
+        
+
             
             
-@concurrent.process(timeout=10)
+@concurrent.process(timeout=30)
 def google_thread():
-    Google_calendar.save()
+    Google_calendar.connect()
     
         
 
