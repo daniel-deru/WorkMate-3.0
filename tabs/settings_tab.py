@@ -114,9 +114,10 @@ class SettingsTab(QWidget, Ui_Settings_tab):
     def set_color(self):
         old_color = Model().read('settings')[0][3]
         new_color = QColorDialog().getColor().name()
-        Model().update("settings", {'color': new_color}, 'settings')
-        change_color(old_color, new_color)
-        self.settings_signal.emit("settings changed")
+        if new_color != "#000000":
+            Model().update("settings", {'color': new_color}, 'settings')
+            change_color(old_color, new_color)
+            self.settings_signal.emit("settings changed")
 
     def reset(self):
         old_color = Model().read('settings')[0][3]
@@ -222,10 +223,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
                 google_thread()
 
     def set_pic(self):
-        color = Model().read("settings")[0][3]
-
         pic = QPixmap("./assets/settings_logo.png").scaled(400, 400)
-        
         self.lbl_logo.setPixmap(pic)
         
 

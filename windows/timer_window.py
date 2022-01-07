@@ -1,7 +1,7 @@
 import os
 import sys
 
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QLCDNumber
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -12,6 +12,8 @@ from database.model import Model
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
+from widgetStyles.HSlider import HSlider
+from widgetStyles.LCDNumber import LCDNumber
 
 class Timer(Ui_Timer, QDialog):
     def __init__(self):
@@ -28,8 +30,11 @@ class Timer(Ui_Timer, QDialog):
         styles = [
             Dialog,
             PushButton,
-            Label
+            Label,
+            HSlider,
+            LCDNumber
             ]
+        self.lcd_timer.setSegmentStyle(QLCDNumber.Flat)
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
     

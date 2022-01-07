@@ -81,20 +81,26 @@ class Apps_tab(QWidget, Ui_apps_tab):
             self.chk_delete_apps.setChecked(True)
     
     def get_app(self, app):
-        delete = self.chk_delete_apps.isChecked()
-        edit = self.chk_edit_apps.isChecked()
-        if delete:
+        delete = self.chk_delete_apps
+        edit = self.chk_edit_apps
+        print(delete.isChecked())
+        if delete.isChecked():
             Model().delete('apps', app[0])
             self.update()
-        elif edit:
+            delete.setChecked(False)
+            
+        elif edit.isChecked():
             app_window = Apps_window(app)
             app_window.app_window_signal.connect(self.update)
             app_window.exec_()
+            edit.setChecked(False)
         else:
             try:
                 os.startfile(app[2])
             except OSError:
                 pass
+
+
     def update(self):
         clear_window(self.gbox_apps)
         self.create_apps()
