@@ -1,9 +1,9 @@
 import sys
 import time
-import os
+import re
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
-from PyQt5.QtGui import QFont, QPixmap
+from PyQt5.QtGui import QFont, QIcon, QPixmap
 
 from designs.python.main_widget import Ui_main_container
 from tabs.apps_tab import Apps_tab
@@ -29,6 +29,8 @@ from windows.register_window import Register
 class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
+
+        
        
         Model().start()
         
@@ -42,6 +44,8 @@ class Main(QWidget, Ui_main_container):
         self.setupUi(self)
         self.read_style()
         self.add_tabs()
+        # self.setTabIcons()
+        self.tab_widget.currentChanged.connect(self.changed)
         
        
     def read_style(self):
@@ -50,6 +54,7 @@ class Main(QWidget, Ui_main_container):
         self.tab_widget.setStyleSheet(stylesheet)
         font = Model().read('settings')[0][2]
         self.tab_widget.setFont(QFont(font))
+        self.setTabIcons()
       
        
 
@@ -84,7 +89,28 @@ class Main(QWidget, Ui_main_container):
         self.tab_widget.addTab(self.settings_tab, "Settings")
 
         self.main_layout.addWidget(self.tab_widget)
+
+    def setTabIcons(self):
+        stylesheet = self.tab_widget.styleSheet()
+        # print(stylesheet)
+        colorWidget = re.search(r"QTabBar::tab {(.|\n|\r)*}", stylesheet).group()
+        activeColorWidget = re.search(r"QTabBar::tab:selected {(.|\n|\r)*}", stylesheet).group()
+
+        color = re.search(r"(?<=(?<!background-)color: )#.{6}(?=;)", colorWidget).group()
+        activeColor = re.search(r"(?<=(?<!background-)color: )#.{6}(?=;)", activeColorWidget).group()
+        icons = [
+                "_apps.png",
+                "_vault.png",
+                "_notes.png",
+                "_task.png",
+                "_settings.png"
+        ]
+        for icon in icons:
+            pass
         
+    
+    def changed(self):
+        self.setTabIcons()
 
 
 if __name__ == "__main__":

@@ -37,7 +37,7 @@ ComboBox = f"""
         width: 15px;
         height: 15px;
         border: none;
-        image: url(assets/down.png);
+        image: url(assets/down-arrow.svg);
     }}
 
     QComboBox QListView {{

@@ -16,6 +16,6 @@ DateEdit = f"""
         padding: 5px;
         border-radius: 5px;
         width: 40px;
-        image: url(assets/calendar.png);
+        image: url(assets/calendar.svg);
     }}
 """

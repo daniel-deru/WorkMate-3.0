@@ -17,7 +17,7 @@ SpinBox = f"""
 
     QSpinBox::down-button {{
         border: none;
-        image: url(assets/down.png);
+        image: url(assets/down-arrow.svg);
         margin-top: 2px;
         width: 15px;
         height: 15px;
@@ -31,7 +31,7 @@ SpinBox = f"""
 
     QSpinBox::up-button {{
         border: none;
-        image: url(assets/up.png);
+        image: url(assets/up-arrow.svg);
         width: 15px;
         height: 15px;
         padding: 0px 5px;

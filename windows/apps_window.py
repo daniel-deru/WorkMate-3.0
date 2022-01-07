@@ -85,6 +85,7 @@ class Apps_window(QDialog, Ui_App_Window):
                             Model().update('apps', {'sequence': app[3] + 1}, app[0])
                 Model().save('apps', data)
                 self.app_window_signal.emit("saved")
+                self.close()
 
             elif self.app is not None:
                 if self.app[3] != index:
@@ -104,7 +105,7 @@ class Apps_window(QDialog, Ui_App_Window):
                             Model().update('apps', {'sequence': app[3] - 1}, app[0])
                 Model().update('apps', data, self.app[0])
                 self.app_window_signal.emit("updated")
-            self.close()
+                self.close()
 
     def add_from_desktop(self):
         file = QFileDialog.getOpenFileName(self, "Open a file", DESKTOP, "All Files (*.*)")[0]
