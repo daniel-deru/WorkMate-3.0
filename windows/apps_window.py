@@ -1,8 +1,8 @@
 import sys
 import os
-from PyQt5.QtWidgets import QDialog, QFileDialog
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import QDialog, QFileDialog, QAbstractSpinBox
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtGui import QFont, QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -28,6 +28,8 @@ class Apps_window(QDialog, Ui_App_Window):
     def __init__(self, app=None):
         super(Apps_window, self).__init__()
         self.setupUi(self)
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
         self.read_styles()
         self.apps = Model().read('apps')
         self.spn_index.setValue(len(self.apps) + 1)

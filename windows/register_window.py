@@ -1,7 +1,9 @@
 import sys
 import os
 
-from PyQt5.QtWidgets import QDial, QDialog, QLineEdit
+from PyQt5.QtWidgets import QDialog, QLineEdit
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -19,6 +21,8 @@ class Register(QDialog, Ui_Register):
     def __init__(self):
         super(Register, self).__init__()
         self.setupUi(self)
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
         self.lnedt_password.setEchoMode(QLineEdit.Password)
         self.lnedt_password2.setEchoMode(QLineEdit.Password)
         self.read_styles()

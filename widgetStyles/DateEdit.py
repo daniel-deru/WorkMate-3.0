@@ -11,7 +11,8 @@ DateEdit = f"""
         color: {default};
     }}
     QDateEdit::drop-down {{
-        background-color: {color};
+        background-color: {mode};
+        border: 2px solid {color};
         color: {default};
         padding: 5px;
         border-radius: 5px;

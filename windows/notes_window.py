@@ -3,8 +3,8 @@ import sys
 import pyperclip
 
 from PyQt5.QtWidgets import QDialog
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QFont
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtGui import QFont, QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -27,6 +27,8 @@ class Note_window(QDialog, Ui_Note_Window):
     def __init__(self, edit_note=None):
         super(Note_window, self).__init__()
         self.setupUi(self)
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
         self.read_styles()
 
         self.note = edit_note

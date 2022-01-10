@@ -2,7 +2,8 @@ import os
 import sys
 
 from PyQt5.QtWidgets import QDialog, QLineEdit
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtGui import QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -22,6 +23,8 @@ class Login(QDialog, Ui_Login):
     def __init__(self):
         super(Login, self).__init__()
         self.setupUi(self)
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
         self.read_styles()
 
         self.btn_login.clicked.connect(self.login)

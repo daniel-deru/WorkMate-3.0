@@ -29,9 +29,7 @@ from windows.register_window import Register
 class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
-
-        
-       
+        self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
         Model().start()
         
 

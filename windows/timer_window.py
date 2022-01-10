@@ -2,6 +2,8 @@ import os
 import sys
 
 from PyQt5.QtWidgets import QDialog, QLCDNumber
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -19,6 +21,8 @@ class Timer(Ui_Timer, QDialog):
     def __init__(self):
         super(Timer, self).__init__()
         self.setupUi(self)
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
         self.read_styles()
         self.hslide_timer.valueChanged.connect(self.slider)
         self.btn_save.clicked.connect(self.save)

@@ -17,12 +17,13 @@ SpinBox = f"""
 
     QSpinBox::down-button {{
         border: none;
+        border-left: 2px solid {color};
         image: url(assets/down-arrow.svg);
         margin-top: 2px;
         width: 15px;
         height: 15px;
         padding: 0px 5px;
-        background-color: {color};
+        background-color: {mode};
     }}
 
     QSpinBox::up-button:pressed {{
@@ -31,12 +32,13 @@ SpinBox = f"""
 
     QSpinBox::up-button {{
         border: none;
+        border-left: 2px solid {color};
         image: url(assets/up-arrow.svg);
         width: 15px;
         height: 15px;
         padding: 0px 5px;
         margin-bottom: 2px;
-        background-color: {color};
+        background-color: {mode};
     }}
 
     QSpinBox::down-button:pressed {{

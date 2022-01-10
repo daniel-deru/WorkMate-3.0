@@ -2,14 +2,20 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-
+ASSETS_FOLDER = "assets/"
 images = [
-    'assets/toggle-on.svg',
-    "assets/color_apps.svg",
-    "assets/color_vault.svg",
-    "assets/color_notes.svg",
-    "assets/color_task.svg",
-    "assets/color_settings.svg"
+    f'{ASSETS_FOLDER}toggle-on.svg',
+    f"{ASSETS_FOLDER}color_apps.svg",
+    f"{ASSETS_FOLDER}color_vault.svg",
+    f"{ASSETS_FOLDER}color_notes.svg",
+    f"{ASSETS_FOLDER}color_task.svg",
+    f"{ASSETS_FOLDER}color_settings.svg",
+    f"{ASSETS_FOLDER}down-arrow.svg",
+    f"{ASSETS_FOLDER}up-arrow.svg",
+    f"{ASSETS_FOLDER}calendar.svg",
+    f"{ASSETS_FOLDER}right-arrow.svg",
+    f"{ASSETS_FOLDER}left-arrow.svg"
+    
 ]
 
 def change_color(prevColor, newColor):

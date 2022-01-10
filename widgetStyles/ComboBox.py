@@ -19,7 +19,8 @@ ComboBox = f"""
         width: 20px;
         font-size: 12px;
         border: none;
-        background-color: {color};
+        border-left: 2px solid {color};
+        background-color: {mode};
     }}
 
     QComboBox::drop-down:pressed {{
@@ -37,6 +38,7 @@ ComboBox = f"""
         width: 15px;
         height: 15px;
         border: none;
+        background-color: {mode};
         image: url(assets/down-arrow.svg);
     }}
 
