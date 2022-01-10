@@ -18,6 +18,7 @@ TabBar = f"""
         border: none;
         background-color: {color};
         color: {button};
+        padding-left: 15px;
     }}
 
         QTabBar::tab:selected {{

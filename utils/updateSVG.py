@@ -4,9 +4,12 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 
 images = [
-    'assets/check-on.svg',
-    'assets/color_splash.svg',
-    'assets/toggle-on.svg'
+    'assets/toggle-on.svg',
+    "assets/color_apps.svg",
+    "assets/color_vault.svg",
+    "assets/color_notes.svg",
+    "assets/color_task.svg",
+    "assets/color_settings.svg"
 ]
 
 def change_color(prevColor, newColor):

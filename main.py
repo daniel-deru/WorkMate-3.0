@@ -44,7 +44,7 @@ class Main(QWidget, Ui_main_container):
         self.setupUi(self)
         self.read_style()
         self.add_tabs()
-        # self.setTabIcons()
+        self.setTabIcons()
         self.tab_widget.currentChanged.connect(self.changed)
         
        
@@ -92,21 +92,27 @@ class Main(QWidget, Ui_main_container):
 
     def setTabIcons(self):
         stylesheet = self.tab_widget.styleSheet()
-        # print(stylesheet)
         colorWidget = re.search(r"QTabBar::tab {(.|\n|\r)*}", stylesheet).group()
         activeColorWidget = re.search(r"QTabBar::tab:selected {(.|\n|\r)*}", stylesheet).group()
 
         color = re.search(r"(?<=(?<!background-)color: )#.{6}(?=;)", colorWidget).group()
         activeColor = re.search(r"(?<=(?<!background-)color: )#.{6}(?=;)", activeColorWidget).group()
         icons = [
-                "_apps.png",
-                "_vault.png",
-                "_notes.png",
-                "_task.png",
-                "_settings.png"
+                "_apps.svg",
+                "_vault.svg",
+                "_notes.svg",
+                "_task.svg",
+                "_settings.svg"
         ]
-        for icon in icons:
-            pass
+        for i in range(len(icons)):
+            icon_color = "black" if color == "#000000" else "white"
+            active_icon_color = "black" if activeColor == "#000000" else "white" if activeColor == "#ffffff" else "color"
+            self.tab_widget.setTabIcon(i, QIcon(f"./assets/{icon_color}{icons[i]}"))
+
+        active_tab_index = self.tab_widget.currentIndex()
+        self.tab_widget.setTabIcon(active_tab_index, QIcon(f"./assets/{active_icon_color}{icons[active_tab_index]}"))
+
+        
         
     
     def changed(self):
