@@ -21,6 +21,8 @@ def clear_window(container):
             item = container.itemAt(i)
             if item.widget():
                 item.widget().deleteLater()
+            elif item.layout():
+                item.layout.deleteLater()
             elif item.spacerItem():
                 container.removeItem(item.spacerItem())
 

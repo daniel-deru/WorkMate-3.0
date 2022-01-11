@@ -1,7 +1,7 @@
 import sys
 import os
-from PyQt5.QtWidgets import QDialog, QFileDialog, QAbstractSpinBox
-from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtWidgets import QDialog, QFileDialog, QHBoxLayout, QLabel, QLineEdit, QVBoxLayout
+from PyQt5.QtCore import QLine, pyqtSignal, Qt
 from PyQt5.QtGui import QFont, QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -16,8 +16,8 @@ from widgetStyles.LineEdit import LineEdit
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
 from widgetStyles.SpinBox import SpinBox
+from widgetStyles.QCheckBox import CheckBox, SettingsCheckBox
 
-from tabs.vault_tab import Vault_tab
 
 
 
@@ -30,6 +30,7 @@ class Apps_window(QDialog, Ui_App_Window):
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
+        self.setWindowTitle("Add Your App")
         self.read_styles()
         self.apps = Model().read('apps')
         self.spn_index.setValue(len(self.apps) + 1)
@@ -38,10 +39,12 @@ class Apps_window(QDialog, Ui_App_Window):
 
         self.btn_save.clicked.connect(self.save_clicked)
         self.btn_desktop.clicked.connect(self.add_from_desktop)
+        self.chkbox_protected_app.stateChanged.connect(self.protected_toggle)
         
 
         self.app = app
-        if self.app is not None:     
+        if self.app is not None: 
+            self.setWindowTitle("Update Your App")    
             self.btn_save.setText("Update")
             self.lnedt_name.setText(self.app[1])
             self.lnedt_path.setText(self.app[2])
@@ -52,15 +55,28 @@ class Apps_window(QDialog, Ui_App_Window):
         name = self.lnedt_name.text()
         index = self.spn_index.value()
         path = self.lnedt_path.text()
-        username = self.lnedt_username.text()
-        password = self.lnedt_password.text()
+
         data = {
                     'name': name,
                     'path': path,
                     'sequence': index,
-                    'username': username,
-                    'password': password
                 }
+            
+        if self.chkbox_protected_app.isChecked():
+            username = self.lnedt_username.text()
+            email = self.lnedt_email.text()
+            password = self.lnedt_password.text()
+            if not password:
+                Message("Please enter the password used by the protected app", "Password Required").exec_()
+                return
+            elif not username and not email:
+                Message("You must provide either a username or an email that is used by the protected app", "Missing field").exec_()
+                return
+            else:
+                data["username"] = username
+                data["email"] = email
+                data["password"] = password
+
 
         is_unique = True
         if not name:
@@ -121,6 +137,7 @@ class Apps_window(QDialog, Ui_App_Window):
             PushButton,
             Label,
             SpinBox,
+            SettingsCheckBox
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
@@ -134,7 +151,69 @@ class Apps_window(QDialog, Ui_App_Window):
         self.lnedt_name.setFont(QFont(font))
         self.lnedt_path.setFont(QFont(font))
         self.spn_index.setFont(QFont(font))
+
+    
+    def protected_toggle(self):
+        toggle = self.chkbox_protected_app
+        if toggle.isChecked():
+            self.add_protected_fields()
+        elif not toggle.isChecked():
+            self.remove_protected_fields()
+        
+    def add_protected_fields(self):
+        font = Model().read('settings')[0][2]
+
+        self.lbl_username = QLabel("Username")
+        self.lbl_email = QLabel("Email")
+        self.lbl_password = QLabel("Password")
+
+        self.lnedt_username = QLineEdit()
+        self.lnedt_email = QLineEdit()
+        self.lnedt_password = QLineEdit()
+
+        self.vbox_username = QVBoxLayout()
+        self.vbox_email = QVBoxLayout()
+        self.vbox_password = QVBoxLayout()
+
+        self.vbox_username.addWidget(self.lbl_username)
+        self.vbox_username.addWidget(self.lnedt_username)
+
+        self.vbox_email.addWidget(self.lbl_email)
+        self.vbox_email.addWidget(self.lnedt_email)
+
+        self.vbox_password.addWidget(self.lbl_password)
+        self.vbox_password.addWidget(self.lnedt_password)
+
+        self.vbox_protected_fields.addLayout(self.vbox_username)
+        self.vbox_protected_fields.addLayout(self.vbox_email)
+        self.vbox_protected_fields.addLayout(self.vbox_password)
+
         self.lbl_username.setFont(QFont(font))
         self.lbl_password.setFont(QFont(font))
+        self.lbl_email.setFont(QFont(font))
+
         self.lnedt_username.setFont(QFont(font))
         self.lnedt_password.setFont(QFont(font))
+        self.lnedt_email.setFont(QFont(font))
+
+
+    def remove_protected_fields(self):
+
+        self.lbl_password.deleteLater()
+        self.lbl_username.deleteLater()
+        self.lbl_email.deleteLater()
+
+        self.lnedt_password.deleteLater()
+        self.lnedt_email.deleteLater()
+        self.lnedt_username.deleteLater()
+
+        self.vbox_password.deleteLater()
+        self.vbox_email.deleteLater()
+        self.vbox_username.deleteLater()
+
+
+
+        
+
+
+            

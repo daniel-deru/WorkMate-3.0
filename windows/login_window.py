@@ -52,3 +52,4 @@ class Login(QDialog, Ui_Login):
             self.close()
         else:
             Message("The password is incorrect", "Wrong Password").exec_()
+            self.login_status.emit("failure")

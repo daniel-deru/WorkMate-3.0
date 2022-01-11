@@ -33,3 +33,29 @@ CheckBox = f"""
     }}
 
 """
+
+SettingsCheckBox = f"""
+    QCheckBox {{
+        color: {default};
+        font-size: 16px;
+        border-radius: 5px;
+        text-align: left center;
+    }}
+
+    QCheckBox::indicator:checked {{
+        image: url(assets/toggle-on.svg);
+        width: {width}px;
+        height: {height}px;
+        max-width: {width}px;
+        max-height: {height}px;
+    }}
+
+    QCheckBox::indicator{{
+        image: url(assets/toggle-off.svg);
+        width: {width}px;
+        height: {height}px;
+        max-width: {width}px;
+        max-height: {height}px;
+        subcontrol-position: right center;
+    }}
+"""

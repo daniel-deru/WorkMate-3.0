@@ -38,13 +38,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btn_nightmode">
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>25</height>
-          </size>
-         </property>
+        <widget class="QCheckBox" name="chkbox_nightmode">
          <property name="text">
           <string/>
          </property>
@@ -74,13 +68,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btn_vault">
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>25</height>
-          </size>
-         </property>
+        <widget class="QCheckBox" name="chkbox_vault">
          <property name="text">
           <string/>
          </property>
@@ -215,21 +203,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btn_calendar">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>25</height>
-          </size>
-         </property>
+        <widget class="QCheckBox" name="chkbox_calendar">
          <property name="text">
-          <string>OFF</string>
+          <string/>
          </property>
         </widget>
        </item>

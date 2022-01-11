@@ -2,8 +2,9 @@ import sys
 import time
 import re
 
-from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
+from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen, QTabWidget
 from PyQt5.QtGui import QFont, QIcon, QPixmap
+
 
 from designs.python.main_widget import Ui_main_container
 from tabs.apps_tab import Apps_tab
@@ -63,12 +64,16 @@ class Main(QWidget, Ui_main_container):
         self.vault_tab.vault_signal.emit("update")
         self.read_style()
     
+    # This is to update the vault window after a new app has been added
+    def updateVault(self):
+        pass
+    
     def updateTable(self):
         self.vault_tab.vault_signal.emit("update")
 
     def add_tabs(self):
         self.setMinimumSize(1000, 600)
-        
+        # self.tab_widget.setTabPosition(QTabWidget.West)
         self.apps_tab = Apps_tab().create_tab()
         self.apps_tab.table_signal.connect(self.updateTable)
         self.tab_widget.addTab(self.apps_tab, "Apps")

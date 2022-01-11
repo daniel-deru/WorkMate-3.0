@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>514</width>
-    <height>484</height>
+    <height>441</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -120,37 +120,6 @@
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="vbox_username">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
-     </property>
-     <item>
-      <widget class="QLabel" name="lbl_username">
-       <property name="text">
-        <string>Username (Optional)</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lnedt_username"/>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="vbox_password">
-     <item>
-      <widget class="QLabel" name="lbl_password">
-       <property name="text">
-        <string>Password (Optional)</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lnedt_password"/>
-     </item>
-    </layout>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="hbox_desktop">
      <item>
       <spacer name="spcr_left_desktop">
@@ -198,6 +167,27 @@
       </spacer>
      </item>
     </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hbox_protected_toggle">
+     <item>
+      <widget class="QLabel" name="lbl_protected_app">
+       <property name="text">
+        <string>Protected App</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="chkbox_protected_app">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="vbox_protected_fields"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="hbox_save">

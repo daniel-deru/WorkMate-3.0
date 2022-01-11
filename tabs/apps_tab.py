@@ -8,7 +8,8 @@ from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from designs.python.apps_widget import Ui_apps_tab
+
+from designs.python.apps_tab import Ui_apps_tab
 from windows.apps_window import Apps_window
 from database.model import Model
 from widgets.app_item import AppItem
@@ -83,7 +84,6 @@ class Apps_tab(QWidget, Ui_apps_tab):
     def get_app(self, app):
         delete = self.chk_delete_apps
         edit = self.chk_edit_apps
-        print(delete.isChecked())
         if delete.isChecked():
             Model().delete('apps', app[0])
             self.update()
@@ -105,7 +105,9 @@ class Apps_tab(QWidget, Ui_apps_tab):
         clear_window(self.gbox_apps)
         self.create_apps()
         self.read_styles()
-        self.table_signal.emit("update")
+        apps = Model().read("apps")[0]
+        print(apps)
+        # self.table_signal.emit("update")
 
         
 

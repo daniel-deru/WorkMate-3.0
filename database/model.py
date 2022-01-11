@@ -18,7 +18,8 @@ class Model:
                 path TEXT NOT NULL,
                 sequence INTEGER NOT NULL,
                 username TEXT,
-                password TEXT
+                email TEXT,
+                password TEXT NOT NULL
             )
         """
 
@@ -53,6 +54,7 @@ class Model:
 
         users_table = """
             CREATE TABLE IF NOT EXISTS user(
+                id TEXT DEFAULT 'user' PRIMARY KEY,
                 name TEXT NOT NULL,
                 email TEXT NOT NULL,
                 password TEXT NOT NULL,
@@ -60,11 +62,20 @@ class Model:
                 answer TEXT NOT NULL
             )
         """
+
+        vault_table = """
+            CREATE TABLE IF NOT EXISTS vault(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                password TEXT NOT NULL
+            )
+        """
         self.cur.execute(apps_table)
         self.cur.execute(notes_table)
         self.cur.execute(todos_table)
         self.cur.execute(settings_table)
         self.cur.execute(users_table)
+        self.cur.execute(vault_table)
 
     def save(self, table, data): 
         keys = f'{", ".join(data.keys())}'
