@@ -27,10 +27,14 @@ class Apps_tab(QWidget, Ui_apps_tab):
         self.read_styles()
         
         self.create_apps()
+        self.create_protected_apps()
 
         self.btn_add_app.clicked.connect(self.add_app)
         self.chk_edit_apps.stateChanged.connect(self.edit_checked)
         self.chk_delete_apps.stateChanged.connect(self.delete_checked)
+        self.chkbox_pro_apps_edit.stateChanged.connect(self.edit_checked)
+        self.chkbox_pro_apps_delete.stateChanged.connect(self.delete_checked)
+        
 
         self.app_signal.connect(self.update)
     
@@ -54,11 +58,12 @@ class Apps_tab(QWidget, Ui_apps_tab):
     
     def create_apps(self):
         apps = Model().read('apps')
-        sorted_apps = sorted(apps, key=lambda item: item[3])
+        COLUMNS = 2
+        sorted_apps = sorted(apps, key=lambda item: item[COLUMNS])
         grid_items = []
-        for i in range(math.ceil(len(sorted_apps)/3)):
+        for i in range(math.ceil(len(sorted_apps)/COLUMNS)):
             subarr = []
-            for j in range(3):
+            for j in range(COLUMNS):
                 if sorted_apps:
                     subarr.append(sorted_apps.pop(0))
             grid_items.append(subarr)
@@ -70,26 +75,87 @@ class Apps_tab(QWidget, Ui_apps_tab):
                 app_button.app_clicked_signal.connect(self.get_app)
                 self.gbox_apps.addWidget(app_button, row, col)
 
+    def create_protected_apps(self):
+        apps = Model().read('protected_apps')
+        COLUMNS = 2
+        sorted_apps = sorted(apps, key=lambda item: item[COLUMNS])
+        grid_items = []
+        for i in range(math.ceil(len(sorted_apps)/COLUMNS)):
+            subarr = []
+            for j in range(COLUMNS):
+                if sorted_apps:
+                    subarr.append(sorted_apps.pop(0))
+            grid_items.append(subarr)
+        for i in range(len(grid_items)):
+            row = i
+            for j in range(len(grid_items[i])):
+                col = j
+                app_button = AppItem(grid_items[i][j]).create()
+                app_button.app_clicked_signal.connect(self.get_app)
+                self.gbox_pro_apps.addWidget(app_button, row, col)
+
     def edit_checked(self):
-        if self.chk_delete_apps.isChecked() and self.chk_edit_apps.isChecked():
-            self.chk_delete_apps.setChecked(False)
-            self.chk_edit_apps.setChecked(True)
+        delete_apps = self.chk_delete_apps
+        edit_apps = self.chk_edit_apps
+        pro_delete_apps = self.chkbox_pro_apps_delete
+        pro_edit_apps = self.chkbox_pro_apps_edit
+
+        if delete_apps.isChecked() and edit_apps.isChecked():
+            edit_apps.setChecked(True)
+            delete_apps.setChecked(False)
+            pro_delete_apps.setChecked(False)
+            pro_edit_apps.setChecked(False)
+
+        elif pro_delete_apps.isChecked() and pro_edit_apps.isChecked():
+            pro_edit_apps.setChecked(True)
+            pro_delete_apps.setChecked(False)
+            edit_apps.setChecked(False)
+            delete_apps.setChecked(False)
  
 
     def delete_checked(self):
-        if self.chk_edit_apps.isChecked() and self.chk_delete_apps.isChecked():
-            self.chk_edit_apps.setChecked(False)
-            self.chk_delete_apps.setChecked(True)
+        delete_apps = self.chk_delete_apps
+        edit_apps = self.chk_edit_apps
+        pro_delete_apps = self.chkbox_pro_apps_delete
+        pro_edit_apps = self.chkbox_pro_apps_edit
+
+        if edit_apps.isChecked() and delete_apps.isChecked():
+            delete_apps.setChecked(True)
+            edit_apps.setChecked(False)
+            pro_edit_apps.setChecked(False)
+            pro_delete_apps.setChecked(False)
+
+        elif pro_edit_apps.isChecked() and pro_delete_apps.isChecked():
+            pro_delete_apps.setChecked(True)
+            pro_edit_apps.setChecked(False)
+            delete_apps.setChecked(False)
+            edit_apps.setChecked(False)
     
+    # Handles the editing and deleting of the apps
     def get_app(self, app):
         delete = self.chk_delete_apps
         edit = self.chk_edit_apps
-        if delete.isChecked():
+        pro_delete = self.chkbox_pro_apps_delete
+        pro_edit = self.chkbox_pro_apps_edit
+        is_protected_app = app[4]
+
+        if delete.isChecked() and not is_protected_app:
             Model().delete('apps', app[0])
             self.update()
             delete.setChecked(False)
             
-        elif edit.isChecked():
+        elif edit.isChecked() and not is_protected_app:
+            app_window = Apps_window(app)
+            app_window.app_window_signal.connect(self.update)
+            app_window.exec_()
+            edit.setChecked(False)
+        # app[4] tests to see if the app is open or protected
+        elif pro_delete.isChecked() and is_protected_app:
+            Model().delete('protected_apps', app[0])
+            self.update()
+            delete.setChecked(False)
+        # app[4] tests to see if the app is open or protected
+        elif pro_edit.isChecked() and is_protected_app:
             app_window = Apps_window(app)
             app_window.app_window_signal.connect(self.update)
             app_window.exec_()
@@ -103,25 +169,11 @@ class Apps_tab(QWidget, Ui_apps_tab):
 
     def update(self):
         clear_window(self.gbox_apps)
+        clear_window(self.gbox_pro_apps)
         self.create_apps()
+        self.create_protected_apps()
         self.read_styles()
-        apps = Model().read("apps")[0]
-        print(apps)
-        # self.table_signal.emit("update")
+
 
         
-
-
-
-
-
-
-# if __name__ == "__main__":
-#     import sys
-#     app = QApplication(sys.argv)
-#     apps_tab = QWidget()
-#     ui = Ui_apps_tab()
-#     ui.setupUi(apps_tab)
-#     apps_tab.show()
-#     sys.exit(app.exec_())
 

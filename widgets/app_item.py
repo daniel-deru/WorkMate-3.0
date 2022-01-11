@@ -32,7 +32,7 @@ class AppItem(QPushButton):
     
     def setupUI(self):
         self.setText(self.app[1])
-        self.setStyleSheet("QPushButton{ max-width: 250px }")
+        # self.setStyleSheet("QPushButton{ max-width: 250px }")
         font = Model().read("settings")[0][2]
         self.setFont(QFont(font))
 

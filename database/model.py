@@ -16,6 +16,15 @@ class Model:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 path TEXT NOT NULL,
+                sequence INTEGER NOT NULL
+            )
+        """
+
+        protected_apps_table = """
+            CREATE TABLE IF NOT EXISTS protected_apps(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                path TEXT NOT NULL,
                 sequence INTEGER NOT NULL,
                 username TEXT,
                 email TEXT,
@@ -76,6 +85,7 @@ class Model:
         self.cur.execute(settings_table)
         self.cur.execute(users_table)
         self.cur.execute(vault_table)
+        self.cur.execute(protected_apps_table)
 
     def save(self, table, data): 
         keys = f'{", ".join(data.keys())}'

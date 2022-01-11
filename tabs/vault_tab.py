@@ -28,7 +28,7 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         super(Vault_tab, self).__init__()
         self.setupUi(self)
         self.read_styles()
-        self.load_data()
+        # self.load_data()
         self.timer = QTimer(self)
         QFontDatabase.addApplicationFont("./assets/fonts/redacted-script-regular.ttf")
        
@@ -45,7 +45,7 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         self.user_visibility = False
         self.password_visibility = False
         self.count = 0
-        self.visible()
+        # self.visible()
 
     def load_data(self):
         def filterApps(app):

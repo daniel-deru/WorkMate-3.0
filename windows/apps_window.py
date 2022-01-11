@@ -33,6 +33,7 @@ class Apps_window(QDialog, Ui_App_Window):
         self.setWindowTitle("Add Your App")
         self.read_styles()
         self.apps = Model().read('apps')
+        self.protected_apps = Model().read("protected_apps")
         self.spn_index.setValue(len(self.apps) + 1)
         self.spn_index.setMaximum(len(self.apps) + 1)
         self.spn_index.setMinimum(1)
@@ -77,53 +78,97 @@ class Apps_window(QDialog, Ui_App_Window):
                 data["email"] = email
                 data["password"] = password
 
-
-        is_unique = True
         if not name:
             Message("Please enter a name for your app", "No name").exec_()
         elif not path:
             Message("Please enter a path for your app", "No path").exec_()
         else:
+            if self.chkbox_protected_app.isChecked():
+                self.save_protected_apps(data)
+            else:
+                self.save_apps(data)
+    
+    def save_apps(self, data):
+        is_unique = True
+        for app in self.apps:
+            if data['name'] in app and self.app is None:
+                Message("This name is already being used", "Name already exists").exec_()
+                is_unique = False
+
+            elif data['path'] in app and self.app is None:
+                Message("This path is already being used", "Path already exists").exec_()
+                is_unique = False
+        if is_unique and not self.app:
             for app in self.apps:
 
-                if name in app and self.app is None:
-                    Message("This name is already being used", "Name already exists").exec_()
-                    is_unique = False
+                if data['sequence'] <= len(self.apps):
 
-                elif path in app and self.app is None:
-                    Message("This path is already being used", "Path already exists").exec_()
-                    is_unique = False
+                    if app[3] >= data['sequence']:
+                        Model().update('apps', {'sequence': app[3] + 1}, app[0])
+            Model().save('apps', data)
+            self.app_window_signal.emit("saved")
 
-            if is_unique and not self.app:
-                for app in self.apps:
-
-                    if index <= len(self.apps):
-
-                        if app[3] >= index:
-                            Model().update('apps', {'sequence': app[3] + 1}, app[0])
-                Model().save('apps', data)
-                self.app_window_signal.emit("saved")
-                self.close()
-
-            elif self.app is not None:
-                if self.app[3] != index:
-                    old = self.app[3] - 1
-                    new = index - 1
-                    move_up = True if old > new else False
-                    global array
+        
+        elif self.app is not None:
+            if self.app[3] != data['sequence']:
+                old = self.app[3] - 1
+                new = data['sequence'] - 1
+                move_up = True if old > new else False
+                global array
+                if move_up:
+                    array = self.apps[new:old]
+                elif not move_up:
+                    array = self.apps[old+1:new+1]
+                for app in array:
+                    app = list(app)
                     if move_up:
-                        array = self.apps[new:old]
+                        Model().update('apps', {'sequence': app[3] + 1}, app[0])
                     elif not move_up:
-                        array = self.apps[old+1:new+1]
-                    for app in array:
-                        app = list(app)
-                        if move_up:
-                            Model().update('apps', {'sequence': app[3] + 1}, app[0])
-                        elif not move_up:
-                            Model().update('apps', {'sequence': app[3] - 1}, app[0])
-                Model().update('apps', data, self.app[0])
-                self.app_window_signal.emit("updated")
-                self.close()
+                        Model().update('apps', {'sequence': app[3] - 1}, app[0])
+            Model().update('apps', data, self.app[0])
+            self.app_window_signal.emit("updated")
+        self.close()
+
+    def save_protected_apps(self, data):
+        is_unique = True
+        for app in self.protected_apps:
+            if data['name'] in app and self.app is None:
+                Message("This name is already being used", "Name already exists").exec_()
+                is_unique = False
+
+            elif data['path'] in app and self.app is None:
+                Message("This path is already being used", "Path already exists").exec_()
+                is_unique = False
+        if is_unique and not self.app:
+            for app in self.protected_apps:
+
+                if data['sequence'] <= len(self.protected_apps):
+
+                    if app[3] >= data['sequence']:
+                        Model().update('protected_apps', {'sequence': app[3] + 1}, app[0])
+            Model().save('protected_apps', data)
+            self.app_window_signal.emit("saved")
+
+        
+        elif self.app is not None:
+            if self.app[3] != data['sequence']:
+                old = self.app[3] - 1
+                new = data['sequence'] - 1
+                move_up = True if old > new else False
+                global array
+                if move_up:
+                    array = self.protected_apps[new:old]
+                elif not move_up:
+                    array = self.protected_apps[old+1:new+1]
+                for app in array:
+                    app = list(app)
+                    if move_up:
+                        Model().update('protected_apps', {'sequence': app[3] + 1}, app[0])
+                    elif not move_up:
+                        Model().update('protected_apps', {'sequence': app[3] - 1}, app[0])
+            Model().update('protected_apps', data, self.app[0])
+            self.app_window_signal.emit("updated")
+        self.close()
 
     def add_from_desktop(self):
         file = QFileDialog.getOpenFileName(self, "Open a file", DESKTOP, "All Files (*.*)")[0]
@@ -157,8 +202,14 @@ class Apps_window(QDialog, Ui_App_Window):
         toggle = self.chkbox_protected_app
         if toggle.isChecked():
             self.add_protected_fields()
+            self.spn_index.setValue(len(self.protected_apps) + 1)
+            self.spn_index.setMaximum(len(self.protected_apps) + 1)
+            self.spn_index.setMinimum(1)
         elif not toggle.isChecked():
             self.remove_protected_fields()
+            self.spn_index.setValue(len(self.apps) + 1)
+            self.spn_index.setMaximum(len(self.apps) + 1)
+            self.spn_index.setMinimum(1)
         
     def add_protected_fields(self):
         font = Model().read('settings')[0][2]
