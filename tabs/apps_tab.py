@@ -11,12 +11,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from designs.python.apps_tab import Ui_apps_tab
 from windows.apps_window import Apps_window
+from windows.protected_apps_edit_window import ProtectedApps
 from database.model import Model
 from widgets.app_item import AppItem
-from utils.helpers import clear_window
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
 from utils.helpers import StyleSheet
+from utils.helpers import clear_window
 
 class Apps_tab(QWidget, Ui_apps_tab):
     app_signal = pyqtSignal(str)
@@ -137,7 +138,7 @@ class Apps_tab(QWidget, Ui_apps_tab):
         edit = self.chk_edit_apps
         pro_delete = self.chkbox_pro_apps_delete
         pro_edit = self.chkbox_pro_apps_edit
-        is_protected_app = app[4]
+        is_protected_app = True if len(app) > 4 else False
 
         if delete.isChecked() and not is_protected_app:
             Model().delete('apps', app[0])
@@ -153,13 +154,13 @@ class Apps_tab(QWidget, Ui_apps_tab):
         elif pro_delete.isChecked() and is_protected_app:
             Model().delete('protected_apps', app[0])
             self.update()
-            delete.setChecked(False)
+            pro_delete.setChecked(False)
         # app[4] tests to see if the app is open or protected
         elif pro_edit.isChecked() and is_protected_app:
-            app_window = Apps_window(app)
-            app_window.app_window_signal.connect(self.update)
+            app_window = ProtectedApps(app)
+            app_window.protected_app_window_signal.connect(self.update)
             app_window.exec_()
-            edit.setChecked(False)
+            pro_edit.setChecked(False)
         else:
             try:
                 os.startfile(app[2])
