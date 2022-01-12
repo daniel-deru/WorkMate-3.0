@@ -12,6 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from designs.python.apps_tab import Ui_apps_tab
 from windows.apps_window import Apps_window
 from windows.protected_apps_edit_window import ProtectedApps
+from windows.apps_edit_window import AppsEdit
 from database.model import Model
 from widgets.app_item import AppItem
 from widgetStyles.PushButton import PushButton
@@ -146,8 +147,8 @@ class Apps_tab(QWidget, Ui_apps_tab):
             delete.setChecked(False)
             
         elif edit.isChecked() and not is_protected_app:
-            app_window = Apps_window(app)
-            app_window.app_window_signal.connect(self.update)
+            app_window = AppsEdit(app)
+            app_window.app_edit_window_signal.connect(self.update)
             app_window.exec_()
             edit.setChecked(False)
         # app[4] tests to see if the app is open or protected

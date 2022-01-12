@@ -43,13 +43,14 @@ class Apps_window(QDialog, Ui_App_Window):
         self.chkbox_protected_app.stateChanged.connect(self.protected_toggle)
         
 
-        self.app = app
-        if self.app is not None: 
-            self.setWindowTitle("Update Your App")    
-            self.btn_save.setText("Update")
-            self.lnedt_name.setText(self.app[1])
-            self.lnedt_path.setText(self.app[2])
-            self.spn_index.setValue(self.app[3])
+        # self.app = app
+        # if self.app is not None: 
+        #     self.setWindowTitle("Update Your App")    
+        #     self.btn_save.setText("Update")
+        #     self.lnedt_name.setText(self.app[1])
+        #     self.lnedt_path.setText(self.app[2])
+        #     self.spn_index.setValue(self.app[3])
+
 
     def save_clicked(self):
         
@@ -91,11 +92,11 @@ class Apps_window(QDialog, Ui_App_Window):
     def save_apps(self, data):
         is_unique = True
         for app in self.apps:
-            if data['name'] in app and self.app is None:
+            if data['name'] in app:
                 Message("This name is already being used", "Name already exists").exec_()
                 is_unique = False
 
-            elif data['path'] in app and self.app is None:
+            elif data['path'] in app:
                 Message("This path is already being used", "Path already exists").exec_()
                 is_unique = False
         if is_unique and not self.app:
@@ -107,26 +108,6 @@ class Apps_window(QDialog, Ui_App_Window):
                         Model().update('apps', {'sequence': app[3] + 1}, app[0])
             Model().save('apps', data)
             self.app_window_signal.emit("saved")
-
-        
-        elif self.app is not None:
-            if self.app[3] != data['sequence']:
-                old = self.app[3] - 1
-                new = data['sequence'] - 1
-                move_up = True if old > new else False
-                global array
-                if move_up:
-                    array = self.apps[new:old]
-                elif not move_up:
-                    array = self.apps[old+1:new+1]
-                for app in array:
-                    app = list(app)
-                    if move_up:
-                        Model().update('apps', {'sequence': app[3] + 1}, app[0])
-                    elif not move_up:
-                        Model().update('apps', {'sequence': app[3] - 1}, app[0])
-            Model().update('apps', data, self.app[0])
-            self.app_window_signal.emit("updated")
         self.close()
 
     def save_protected_apps(self, data):
@@ -148,26 +129,6 @@ class Apps_window(QDialog, Ui_App_Window):
                         Model().update('protected_apps', {'sequence': app[3] + 1}, app[0])
             Model().save('protected_apps', data)
             self.app_window_signal.emit("saved")
-
-        
-        elif self.app is not None:
-            if self.app[3] != data['sequence']:
-                old = self.app[3] - 1
-                new = data['sequence'] - 1
-                move_up = True if old > new else False
-                global array
-                if move_up:
-                    array = self.protected_apps[new:old]
-                elif not move_up:
-                    array = self.protected_apps[old+1:new+1]
-                for app in array:
-                    app = list(app)
-                    if move_up:
-                        Model().update('protected_apps', {'sequence': app[3] + 1}, app[0])
-                    elif not move_up:
-                        Model().update('protected_apps', {'sequence': app[3] - 1}, app[0])
-            Model().update('protected_apps', data, self.app[0])
-            self.app_window_signal.emit("updated")
         self.close()
 
     def add_from_desktop(self):
