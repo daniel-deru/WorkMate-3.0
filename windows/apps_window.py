@@ -41,15 +41,7 @@ class Apps_window(QDialog, Ui_App_Window):
         self.btn_save.clicked.connect(self.save_clicked)
         self.btn_desktop.clicked.connect(self.add_from_desktop)
         self.chkbox_protected_app.stateChanged.connect(self.protected_toggle)
-        
 
-        # self.app = app
-        # if self.app is not None: 
-        #     self.setWindowTitle("Update Your App")    
-        #     self.btn_save.setText("Update")
-        #     self.lnedt_name.setText(self.app[1])
-        #     self.lnedt_path.setText(self.app[2])
-        #     self.spn_index.setValue(self.app[3])
 
 
     def save_clicked(self):
@@ -99,7 +91,7 @@ class Apps_window(QDialog, Ui_App_Window):
             elif data['path'] in app:
                 Message("This path is already being used", "Path already exists").exec_()
                 is_unique = False
-        if is_unique and not self.app:
+        if is_unique:
             for app in self.apps:
 
                 if data['sequence'] <= len(self.apps):
@@ -113,14 +105,14 @@ class Apps_window(QDialog, Ui_App_Window):
     def save_protected_apps(self, data):
         is_unique = True
         for app in self.protected_apps:
-            if data['name'] in app and self.app is None:
+            if data['name'] in app:
                 Message("This name is already being used", "Name already exists").exec_()
                 is_unique = False
 
-            elif data['path'] in app and self.app is None:
+            elif data['path'] in app:
                 Message("This path is already being used", "Path already exists").exec_()
                 is_unique = False
-        if is_unique and not self.app:
+        if is_unique:
             for app in self.protected_apps:
 
                 if data['sequence'] <= len(self.protected_apps):

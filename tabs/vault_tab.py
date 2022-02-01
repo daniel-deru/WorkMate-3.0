@@ -134,8 +134,8 @@ class Vault_tab(QWidget, Ui_Vault_tab):
     def update(self):
         for i in range(self.tbl_vault.rowCount()):
             self.tbl_vault.removeRow(i)
-        self.load_data()
-        self.visible()
+        # self.load_data()
+        # self.visible()
         self.read_styles()
         self.tbl_vault.setMaximumSize(self.getQTableWidgetSize())
         self.tbl_vault.setMinimumSize(self.getQTableWidgetSize())

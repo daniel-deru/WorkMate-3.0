@@ -14,7 +14,7 @@ TabBar = f"""
    QTabBar::tab {{
         font-size: 16px;
         width: 100px;
-        height: 30px;
+        height: 40px;
         border: none;
         background-color: {color};
         color: {button};

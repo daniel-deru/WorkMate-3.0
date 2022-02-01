@@ -3,7 +3,7 @@ import os
 
 from PyQt5.QtWidgets import QDialog, QLineEdit
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -18,6 +18,7 @@ from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
 
 class Register(QDialog, Ui_Register):
+    register_close_signal = pyqtSignal(str)
     def __init__(self):
         super(Register, self).__init__()
         self.setupUi(self)
@@ -67,6 +68,7 @@ class Register(QDialog, Ui_Register):
 
             Model().save("user", data)
             self.close()
+            self.register_close_signal.emit("user created")
 
     def read_styles(self):
         styles = [
@@ -79,5 +81,9 @@ class Register(QDialog, Ui_Register):
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
 
+    def closeEvent(self, event):
+        # event.ignore()
+        # Message("You must create a user to use this application", "Invalid")
+        self.register_close_signal.emit("window closed")
 
 

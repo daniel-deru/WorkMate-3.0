@@ -2,8 +2,9 @@ import sys
 import time
 import re
 
-from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen, QTabWidget
+from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
 from PyQt5.QtGui import QFont, QIcon, QPixmap
+from PyQt5.QtCore import QCoreApplication
 
 
 from designs.python.main_widget import Ui_main_container
@@ -30,21 +31,27 @@ from windows.register_window import Register
 class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
-        self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
+        
         Model().start()
-        
 
-        user = Model().read("user")
-        if len(user) != 1:
-            self.hide()
-            register = Register()
-            register.exec_()
-        
+        self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
         self.setupUi(self)
         self.read_style()
         self.add_tabs()
         self.setTabIcons()
         self.tab_widget.currentChanged.connect(self.changed)
+
+        user = Model().read("user")
+        if len(user) != 1:
+            register = Register()
+            register.register_close_signal.connect(self.register_event)
+            register.exec_()
+
+    def register_event(self, event):
+        if event:
+            sys.exit()
+    
+            
         
        
     def read_style(self):
