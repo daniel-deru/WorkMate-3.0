@@ -37,6 +37,7 @@ class Main(QWidget, Ui_main_container):
 
         self.timer = QTimer(self)
         self.logged_in = False
+        self.count = 0
 
         self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
         self.setupUi(self)
@@ -133,10 +134,14 @@ class Main(QWidget, Ui_main_container):
         self.setTabIcons()
 
     def check_login(self, signal):
+        # The user wants to log in
         if signal == "login requested" and self.logged_in == False:
             login_window = Login()
             login_window.login_status.connect(self.login)
             login_window.exec_()
+        # The user wants to log out
+        elif signal == "logout requested" and self.logged_in == True:
+            self.update_status(False)
 
     
     def login(self, signal):
@@ -152,11 +157,14 @@ class Main(QWidget, Ui_main_container):
     
     def update_status(self, logged_in):
         if logged_in:
+            self.logged_in = True
             self.apps_tab.login_signal.emit("logged in")
             self.count = Model().read("settings")[0][5] * 60
             self.timer.timeout.connect(self.start_timer)
             self.timer.start(1000)
         elif not logged_in:
+            self.count = 0
+            self.logged_in = False
             self.apps_tab.login_signal.emit("logged out")
         
 

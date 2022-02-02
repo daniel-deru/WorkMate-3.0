@@ -27,7 +27,9 @@ from utils.helpers import clear_window
 class Apps_tab(QWidget, Ui_apps_tab):
     app_signal = pyqtSignal(str)
     table_signal = pyqtSignal(str)
+    # This signal is to communicate with the main window where the login will take place
     login_signal = pyqtSignal(str)
+
     def __init__(self):
         super(Apps_tab, self).__init__()
         self.setupUi(self)
@@ -42,12 +44,14 @@ class Apps_tab(QWidget, Ui_apps_tab):
         self.chkbox_pro_apps_edit.stateChanged.connect(self.edit_checked)
         self.chkbox_pro_apps_delete.stateChanged.connect(self.delete_checked)
         self.chkbox_pro_apps_view.stateChanged.connect(self.view_checked)
-        self.btn_pro_apps_login.clicked.connect(lambda: self.login_signal.emit("login requested"))
+        self.btn_pro_apps_login.clicked.connect(self.login_clicked)
+
+        self.logged_in = False
         
         # Signal slots for external signals
         self.app_signal.connect(self.update)
         # Login signal will run everytime the login signal is updated
-        self.login_signal.connect(self.login_status)
+        self.login_signal.connect(self.login)
     
     def create_tab(self):
         return self
@@ -194,22 +198,25 @@ class Apps_tab(QWidget, Ui_apps_tab):
             app_window.exec_()
             edit.setChecked(False)
         # app[4] tests to see if the app is open or protected
-        elif pro_delete.isChecked() and is_protected_app:
+        elif pro_delete.isChecked() and is_protected_app and self.logged_in:
             Model().delete('protected_apps', app[0])
             self.update()
             pro_delete.setChecked(False)
         # app[4] tests to see if the app is open or protected
-        elif pro_edit.isChecked() and is_protected_app:
+        elif pro_edit.isChecked() and is_protected_app and self.logged_in:
             app_window = ProtectedApps(app)
             app_window.protected_app_window_signal.connect(self.update)
             app_window.exec_()
             pro_edit.setChecked(False)
-        elif view_toggle.isChecked() and is_protected_app:
+        elif view_toggle.isChecked() and is_protected_app and self.logged_in:
             view_window = ProtectedView(app)
             view_window.exec_()
         else:
             try:
-                os.startfile(app[2])
+                if is_protected_app and self.logged_in:
+                    os.startfile(app[2])
+                elif not is_protected_app:
+                    os.startfile(app[2])
             except OSError:
                 pass
 
@@ -220,12 +227,19 @@ class Apps_tab(QWidget, Ui_apps_tab):
         self.create_apps()
         self.create_protected_apps()
         self.read_styles()
-    
-    def login_status(self, signal):
+
+    def login_clicked(self):
+        if self.logged_in:
+            self.login_signal.emit("logout requested")
+        elif not self.logged_in:
+            self.login_signal.emit("login requested")
+    def login(self, signal):
         if signal == "logged in":
             self.btn_pro_apps_login.setText("Logout")
+            self.logged_in = True
         elif signal == "logged out":
             self.btn_pro_apps_login.setText("login")
+            self.logged_in = False
 
 
         
