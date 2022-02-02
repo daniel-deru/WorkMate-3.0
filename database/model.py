@@ -75,8 +75,8 @@ class Model:
         vault_table = """
             CREATE TABLE IF NOT EXISTS vault(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                password TEXT NOT NULL
+                fields TEXT NOT NULL,
+                data TEXT NOT NULL
             )
         """
         self.cur.execute(apps_table)

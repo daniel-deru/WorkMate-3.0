@@ -19,118 +19,54 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QVBoxLayout" name="vbox_vault">
+    <layout class="QHBoxLayout" name="hbox_controls">
      <item>
-      <layout class="QHBoxLayout" name="hbox_login" stretch="0,0,0,0,0,0">
-       <property name="spacing">
-        <number>30</number>
+      <widget class="QCheckBox" name="chk_edit">
+       <property name="text">
+        <string>Edit Secret</string>
        </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>30</number>
-       </property>
-       <item>
-        <widget class="QPushButton" name="btn_login">
-         <property name="text">
-          <string>Login</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btn_username">
-         <property name="text">
-          <string>Show Username</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btn_password">
-         <property name="text">
-          <string>Show Password</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btn_vault_add">
-         <property name="text">
-          <string>Add Secret</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btn_vault_edit">
-         <property name="text">
-          <string>Edit Secret</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btn_vault_delete">
-         <property name="text">
-          <string>Delete Secret</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      </widget>
      </item>
      <item>
-      <widget class="QTableWidget" name="tbl_vault">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+      <widget class="QCheckBox" name="chk_view">
+       <property name="text">
+        <string>View Secret</string>
        </property>
-       <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="chk_delete">
+       <property name="text">
+        <string>Delete Secret</string>
        </property>
-       <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_add">
+       <property name="text">
+        <string>Add Secret</string>
        </property>
-       <property name="sizeAdjustPolicy">
-        <enum>QAbstractScrollArea::AdjustToContents</enum>
-       </property>
-       <property name="autoScroll">
-        <bool>false</bool>
-       </property>
-       <property name="rowCount">
-        <number>0</number>
-       </property>
-       <property name="columnCount">
-        <number>2</number>
-       </property>
-       <attribute name="horizontalHeaderVisible">
-        <bool>true</bool>
-       </attribute>
-       <attribute name="horizontalHeaderCascadingSectionResizes">
-        <bool>false</bool>
-       </attribute>
-       <attribute name="verticalHeaderHighlightSections">
-        <bool>true</bool>
-       </attribute>
-       <column>
-        <property name="text">
-         <string>Name</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Password</string>
-        </property>
-       </column>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gbox_secret"/>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

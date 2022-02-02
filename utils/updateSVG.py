@@ -14,7 +14,8 @@ images = [
     f"{ASSETS_FOLDER}up-arrow.svg",
     f"{ASSETS_FOLDER}calendar.svg",
     f"{ASSETS_FOLDER}right-arrow.svg",
-    f"{ASSETS_FOLDER}left-arrow.svg"
+    f"{ASSETS_FOLDER}left-arrow.svg",
+    f"{ASSETS_FOLDER}radio-on.svg"
     
 ]
 

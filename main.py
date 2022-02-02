@@ -44,6 +44,7 @@ class Main(QWidget, Ui_main_container):
         self.read_style()
         self.add_tabs()
         self.setTabIcons()
+        self.update_status(False)
         self.tab_widget.currentChanged.connect(self.changed)
 
         user = Model().read("user")
@@ -89,7 +90,6 @@ class Main(QWidget, Ui_main_container):
         # self.tab_widget.setTabPosition(QTabWidget.West)
         self.apps_tab = Apps_tab().create_tab()
         self.apps_tab.table_signal.connect(self.updateTable)
-        self.apps_tab.login_signal.emit("logged out")
         self.apps_tab.login_signal.connect(self.check_login)
         self.tab_widget.addTab(self.apps_tab, "Apps")
 
@@ -104,6 +104,7 @@ class Main(QWidget, Ui_main_container):
 
         self.settings_tab = SettingsTab().create_tab()
         self.settings_tab.settings_signal.connect(self.updateWindow)
+        self.settings_tab.login_signal.connect(self.check_login)
         self.tab_widget.addTab(self.settings_tab, "Settings")
 
         self.main_layout.addWidget(self.tab_widget)
@@ -143,29 +144,43 @@ class Main(QWidget, Ui_main_container):
         elif signal == "logout requested" and self.logged_in == True:
             self.update_status(False)
 
-    
+    # slot for the login window signal to verify if the user successfully logged in
     def login(self, signal):
         if signal == "success":
             self.update_status(True)
 
             
-
+    # This function gets called at a set interval by timer.timeout
     def start_timer(self):
         self.count -= 1
+        print(self.count)
         if self.count == 0:
             self.update_status(False)
+            self.timer.stop()
     
     def update_status(self, logged_in):
-        if logged_in:
+        # Check if the user wants authentication to be on
+        # vault_on = Model().read("settings")[0][4]
+        vault_on = Model().read("settings")[0][4]
+        # If auth is on and the user is logged in
+        if logged_in and vault_on:
             self.logged_in = True
-            self.apps_tab.login_signal.emit("logged in")
+            self.send_signals("logged in")
             self.count = Model().read("settings")[0][5] * 60
             self.timer.timeout.connect(self.start_timer)
             self.timer.start(1000)
-        elif not logged_in:
+        # If auth is on and the user is not logged in
+        elif not logged_in and vault_on:
             self.count = 0
             self.logged_in = False
-            self.apps_tab.login_signal.emit("logged out")
+            self.send_signals("logged out")
+        # The auth is off the user is always logged in
+        elif not vault_on:
+            self.send_signals("logged in")
+
+    def send_signals(self, signal):
+        self.apps_tab.login_signal.emit(signal)
+        self.settings_tab.login_signal.emit(signal)
         
 
 

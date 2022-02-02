@@ -6,6 +6,8 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QFont
 
+from utils.message import Message
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 
@@ -211,6 +213,9 @@ class Apps_tab(QWidget, Ui_apps_tab):
         elif view_toggle.isChecked() and is_protected_app and self.logged_in:
             view_window = ProtectedView(app)
             view_window.exec_()
+            view_toggle.setChecked(False)
+        elif is_protected_app and not self.logged_in:
+            Message("Please login before you can access the content of this app", "Restricted App").exec_()
         else:
             try:
                 if is_protected_app and self.logged_in:
@@ -233,6 +238,8 @@ class Apps_tab(QWidget, Ui_apps_tab):
             self.login_signal.emit("logout requested")
         elif not self.logged_in:
             self.login_signal.emit("login requested")
+
+
     def login(self, signal):
         if signal == "logged in":
             self.btn_pro_apps_login.setText("Logout")

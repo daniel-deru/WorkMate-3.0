@@ -2,6 +2,7 @@ import sys
 import os
 import csv
 import re
+from xml.parsers.expat import model
 from pebble import concurrent
 
 from PyQt5.QtWidgets import QWidget, QColorDialog, QFileDialog
@@ -35,6 +36,8 @@ DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
 class SettingsTab(QWidget, Ui_Settings_tab):
     settings_signal = pyqtSignal(str)
+    # This signal will communicate with the main window to get and set the login status
+    login_signal = pyqtSignal(str)
     def __init__(self):
         super(SettingsTab, self).__init__()
         self.setupUi(self)
@@ -58,7 +61,10 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.btn_vault_timer.clicked.connect(self.vault_timer)
         self.chkbox_calendar.stateChanged.connect(self.calendar_toggle)
 
-        self.settings_signal.connect(self.read_styles)    
+        # connect the custom signals to the slots
+        self.settings_signal.connect(self.read_styles)
+        self.login_signal.connect(self.check_login)
+
     
     def create_tab(self):
         return self
@@ -190,15 +196,19 @@ class SettingsTab(QWidget, Ui_Settings_tab):
     
     def vault(self):
         toggle = self.chkbox_vault
-        if not toggle.isChecked():
-            login = Login()
-            login.login_status.connect(self.login)
-            login.exec_()
-            if not self.logged_in:
+        if self.logged_in:
+            if toggle.isChecked():
+                Model().update('settings', {"vault_on": 1}, "settings")
+                self.login_signal.emit("login requested")
+            elif not toggle.isChecked():
+                Model().update("settings", {"vault_on": 0}, "settings")
+
+        elif not self.logged_in:
+            if not toggle.isChecked():
+                Message("The user must be logged in to change this setting", "Please login to change this setting" ).exec_()
                 toggle.setChecked(True)
                 toggle.setCheckState(Qt.Checked)
-            else:
-                self.logged_in = False
+
         self.updateWindow()
             
 
@@ -206,16 +216,21 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         vault_on = Model().read("settings")[0][4]
         if not vault_on:
             Message("The vault is not active, please turn on the vault in order to set the timer.", "The vault is off.").exec_()
-        elif vault_on:
-            login = Login()
-            login.login_status.connect(self.login)
-            login.exec_()
-            if self.logged_in:
+        elif vault_on and self.logged_in:
+                # this is the timer window to set the duration that the user should be logged in
                 Timer().exec_()
+        elif vault_on and not self.logged_in:
+            Message("Please log in before you can change this setting", "user not logged in").exec_()
     
     def login(self, signal):
         if signal == "success":
             self.logged_in = True
+    
+    def check_login(self, signal):
+        if signal == "logged in":
+            self.logged_in = True
+        elif signal == "logged out":
+            self.logged_in = False
 
     def calendar_toggle(self):
         toggle = self.chkbox_calendar

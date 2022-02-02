@@ -10,6 +10,7 @@ from designs.python.protected_apps_view_window import Ui_ProtectedView
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
+from widgetStyles.RadioButton import RadioButton
 
 from utils.helpers import StyleSheet
 
@@ -24,7 +25,8 @@ class ProtectedView(QDialog, Ui_ProtectedView):
         styles = [
             PushButton,
             Label,
-            Dialog
+            Dialog,
+            RadioButton
         ]
 
         stylesheet = StyleSheet(styles).create()
