@@ -28,6 +28,7 @@ class Register(QDialog, Ui_Register):
         self.lnedt_password2.setEchoMode(QLineEdit.Password)
         self.read_styles()
         self.btn_register.clicked.connect(self.register_clicked)
+        self.registered = False
 
     def register_clicked(self):
         name = self.lnedt_name.text()
@@ -67,6 +68,7 @@ class Register(QDialog, Ui_Register):
             }
 
             Model().save("user", data)
+            self.registered = True
             self.close()
             self.register_close_signal.emit("user created")
 
@@ -82,8 +84,9 @@ class Register(QDialog, Ui_Register):
         self.setStyleSheet(stylesheet)
 
     def closeEvent(self, event):
-        # event.ignore()
-        # Message("You must create a user to use this application", "Invalid")
-        self.register_close_signal.emit("window closed")
+        if not self.registered:
+            self.register_close_signal.emit("window closed")
+        elif self.registered:
+            self.register_close_signal.emit("registered")
 
 

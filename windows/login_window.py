@@ -44,9 +44,8 @@ class Login(QDialog, Ui_Login):
 
     def login(self):
         user = Model().read("user")[0]
-        db_password = user[2]
+        db_password = user[3]
         password = self.lnedt_password.text()
-
         if(password == db_password):
             self.login_status.emit("success")
             self.close()

@@ -4,7 +4,7 @@ import re
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
 from PyQt5.QtGui import QFont, QIcon, QPixmap
-from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtCore import QCoreApplication, QTimer
 
 
 from designs.python.main_widget import Ui_main_container
@@ -24,6 +24,7 @@ from widgetStyles.Widget import Widget
 
 from utils.helpers import StyleSheet
 from windows.register_window import Register
+from windows.login_window import Login
 
 
 
@@ -33,6 +34,9 @@ class Main(QWidget, Ui_main_container):
         super(Main, self).__init__()
         
         Model().start()
+
+        self.timer = QTimer(self)
+        self.logged_in = False
 
         self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
         self.setupUi(self)
@@ -48,7 +52,8 @@ class Main(QWidget, Ui_main_container):
             register.exec_()
 
     def register_event(self, event):
-        if event:
+        if event == "window closed":
+            print(event)
             sys.exit()
     
             
@@ -83,6 +88,8 @@ class Main(QWidget, Ui_main_container):
         # self.tab_widget.setTabPosition(QTabWidget.West)
         self.apps_tab = Apps_tab().create_tab()
         self.apps_tab.table_signal.connect(self.updateTable)
+        self.apps_tab.login_signal.emit("logged out")
+        self.apps_tab.login_signal.connect(self.check_login)
         self.tab_widget.addTab(self.apps_tab, "Apps")
 
         self.vault_tab = Vault_tab().create_tab()
@@ -121,12 +128,37 @@ class Main(QWidget, Ui_main_container):
 
         active_tab_index = self.tab_widget.currentIndex()
         self.tab_widget.setTabIcon(active_tab_index, QIcon(f"./assets/{active_icon_color}{icons[active_tab_index]}"))
-
-        
-        
     
     def changed(self):
         self.setTabIcons()
+
+    def check_login(self, signal):
+        if signal == "login requested" and self.logged_in == False:
+            login_window = Login()
+            login_window.login_status.connect(self.login)
+            login_window.exec_()
+
+    
+    def login(self, signal):
+        if signal == "success":
+            self.update_status(True)
+
+            
+
+    def start_timer(self):
+        self.count -= 1
+        if self.count == 0:
+            self.update_status(False)
+    
+    def update_status(self, logged_in):
+        if logged_in:
+            self.apps_tab.login_signal.emit("logged in")
+            self.count = Model().read("settings")[0][5] * 60
+            self.timer.timeout.connect(self.start_timer)
+            self.timer.start(1000)
+        elif not logged_in:
+            self.apps_tab.login_signal.emit("logged out")
+        
 
 
 if __name__ == "__main__":
