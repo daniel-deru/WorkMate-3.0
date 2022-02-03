@@ -2,7 +2,7 @@ import sys
 import os
 import json
 
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog,QHBoxLayout, QRadioButton, QLabel, QFrame
 from cryptography.fernet import Fernet
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -26,8 +26,9 @@ class ProtectedView(QDialog, Ui_ProtectedView):
         # This is a tuple of an entry from the database
         self.item = item
         self.type = type
-
-        self.display_item()
+        
+        # Format the data and add display it on screen
+        self.display_item(self.format_data())
 
     def read_styles(self):
         styles = [
@@ -40,8 +41,24 @@ class ProtectedView(QDialog, Ui_ProtectedView):
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
 
-    def display_item(self):
-        pass
+    def display_item(self, data):
+        container = self.vbox_data
+        for i in range(len(data)):
+            hbox = QHBoxLayout()
+
+            radio_label = QRadioButton(data[i][0])
+            data_entry = QLabel(data[i][1])
+
+            hbox.addWidget(radio_label)
+            hbox.addWidget(data_entry)
+
+            container.addLayout(hbox)
+
+            line = QFrame()
+            line.setFrameShape(QFrame.HLine)
+            line.setFrameShadow(QFrame.Sunken)
+
+            container.addWidget(line)
     
     def format_data(self):
         data = []

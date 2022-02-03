@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ProtectedView(object):
     def setupUi(self, ProtectedView):
         ProtectedView.setObjectName("ProtectedView")
-        ProtectedView.resize(409, 283)
+        ProtectedView.resize(409, 57)
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(ProtectedView)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()

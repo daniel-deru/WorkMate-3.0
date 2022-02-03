@@ -36,6 +36,8 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         self.create_secrets()
 
         self.btn_add.clicked.connect(self.add_clicked)
+        self.chk_delete.clicked.connect(self.checkHandler)
+        self.chk_edit.clicked.connect(self.checkHandler)
        
         self.vault_signal.connect(self.update)
 
@@ -51,6 +53,15 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
+
+    def checkHandler(self):
+        edit = self.chk_edit
+        delete = self.chk_delete
+
+        if edit.isChecked():
+            delete.setChecked(False)
+        elif delete.isChecked():
+            edit.setChecked(False)
 
     def add_clicked(self):
         new_secret = SecretWindow()
@@ -81,7 +92,17 @@ class Vault_tab(QWidget, Ui_Vault_tab):
                 self.gbox_secret.addWidget(app_button, row, col)
         
     def get_secret(self, secret):
-        protected_view = ProtectedView(secret, 'secret')
+        edit = self.chk_edit
+        delete = self.chk_delete
+
+        if not edit.isChecked() and not delete.isChecked():
+            protected_view = ProtectedView(secret, 'secret')
+            protected_view.exec_()
+        elif delete.isChecked():
+            Model().delete('vault', secret[0])
+            self.update()
+        elif edit.isChecked():
+            pass
     
     def update(self):
         clear_window(self.gbox_secret)
