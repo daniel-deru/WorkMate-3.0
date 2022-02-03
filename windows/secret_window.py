@@ -3,6 +3,7 @@ import sys
 import json
 
 from PyQt5.QtWidgets import QDialog
+from PyQt5.QtCore import pyqtSignal
 from cryptography.fernet import Fernet
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -22,7 +23,9 @@ from utils.message import Message
 
 
 class SecretWindow(QDialog, Ui_AddSecret_window):
+    secret_signal = pyqtSignal(str)
     def __init__(self):
+        
         super(SecretWindow, self).__init__()
         self.setupUi(self)
         self.read_styles()
@@ -57,6 +60,8 @@ class SecretWindow(QDialog, Ui_AddSecret_window):
             'key': encrypted['key']
         }
         Model().save('vault', data)
+        self.secret_signal.emit("saved")
+        self.close()
     
     def encrypt(self, data):
                 # Convert data to json
