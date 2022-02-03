@@ -24,13 +24,30 @@ from utils.message import Message
 
 class SecretWindow(QDialog, Ui_AddSecret_window):
     secret_signal = pyqtSignal(str)
-    def __init__(self):
+    def __init__(self, secret=None):
         
         super(SecretWindow, self).__init__()
         self.setupUi(self)
         self.read_styles()
-        self.btn_save.clicked.connect(self.get_data)
+        self.btn_save.clicked.connect(self.save)
         self.btn_cancel.clicked.connect(lambda: self.close())
+        if secret:
+            self.secret = secret if secret else None
+            self.display_secret()
+            print(self.secret)
+    
+    def display_secret(self):
+
+        container = self.vbox_column_def
+        self.lnedt_name.setText(self.secret[1])
+        f = Fernet(self.secret[3])
+
+        secret = json.loads(f.decrypt(self.secret[2]).decode("UTF-8"))
+        for i in range(len(secret)):
+            # Set the data to the fields
+            container.itemAt(i).layout().itemAt(0).widget().setText(secret[i][0])
+            container.itemAt(i).layout().itemAt(1).widget().setText(secret[i][1])
+
 
     def get_data(self):
         data = []
@@ -54,12 +71,19 @@ class SecretWindow(QDialog, Ui_AddSecret_window):
                 data.append([header_field.text(), data_field.text()])
 
         encrypted = self.encrypt(data)
-        data = {
+        return {
             'name': name,
             'data': encrypted['secret'],
             'key': encrypted['key']
         }
-        Model().save('vault', data)
+
+
+    def save(self, data):
+        data = self.get_data()
+        if not self.secret:
+            Model().save('vault', data)  
+        elif self.secret:
+            Model().update("vault", data, self.secret[0])
         self.secret_signal.emit("saved")
         self.close()
     
@@ -77,10 +101,6 @@ class SecretWindow(QDialog, Ui_AddSecret_window):
             'secret': secret,
             'key': key
             }
-
-
-
-    
 
     def read_styles(self):
         styles = [

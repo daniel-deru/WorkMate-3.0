@@ -102,7 +102,9 @@ class Vault_tab(QWidget, Ui_Vault_tab):
             Model().delete('vault', secret[0])
             self.update()
         elif edit.isChecked():
-            pass
+            secret_edit_window = SecretWindow(secret)
+            secret_edit_window.secret_signal.connect(lambda: self.update())
+            secret_edit_window.exec_()
     
     def update(self):
         clear_window(self.gbox_secret)

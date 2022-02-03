@@ -121,8 +121,6 @@ class Model:
         values = list(data.values())
         values.append(id)
         data_string = ", ".join(list(map(lambda a: f"{a} = ?", fields)))
-        
-
  
         query = f"UPDATE {table} SET {data_string} WHERE id = ?"
 
