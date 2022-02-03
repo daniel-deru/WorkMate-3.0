@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>625</width>
-    <height>407</height>
+    <height>234</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,22 +15,16 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="hbox_column_spinbox">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="lbl_columns">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
+      <widget class="QLabel" name="lbl_name">
        <property name="text">
-        <string>Columns</string>
+        <string>Display Name</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lnedt_columns"/>
+      <widget class="QLineEdit" name="lnedt_name"/>
      </item>
     </layout>
    </item>
@@ -39,7 +33,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Field</string>
+        <string>Add Headers</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -49,7 +43,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Data</string>
+        <string>Add Data</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -59,17 +53,58 @@
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="vbox_column_def"/>
-   </item>
-   <item>
-    <widget class="QPushButton" name="btn_add">
-     <property name="text">
-      <string>Add</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2"/>
+    <layout class="QVBoxLayout" name="vbox_column_def">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLineEdit" name="lnedt_header1"/>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lnedt_data1"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLineEdit" name="lnedt_header2"/>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lnedt_data2"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QLineEdit" name="lnedt_header3"/>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lnedt_data3"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QLineEdit" name="lnedt_header4"/>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lnedt_data4"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QLineEdit" name="lnedt_header5"/>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lnedt_data5"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="hbox_data">

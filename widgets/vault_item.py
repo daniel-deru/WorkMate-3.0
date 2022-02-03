@@ -10,27 +10,23 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from database.model import Model
 
-from widgetStyles.PushButton import IconButton, AppRunButton
-from widgetStyles.styles import color, default, mode
-
-
-class AppItem(QPushButton):
-    app_clicked_signal = pyqtSignal(tuple)
-    def __init__(self, app):
-        super(AppItem, self).__init__()
-        self.app = app
+class VaultItem(QPushButton):
+    vault_clicked_signal = pyqtSignal(tuple)
+    def __init__(self, secret):
+        super(VaultItem, self).__init__()
+        self.secret = secret
         self.setupUI()
         
 
         self.clicked.connect(self.app_clicked)
 
     def app_clicked(self):
-        self.app_clicked_signal.emit(self.app)
+        self.vault_clicked_signal.emit(self.secret)
 
     def create(self):
         return self
     
     def setupUI(self):
-        self.setText(self.app[1])
+        self.setText(self.secret)
         font = Model().read("settings")[0][2]
         self.setFont(QFont(font))

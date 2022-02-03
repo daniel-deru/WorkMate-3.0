@@ -13,7 +13,7 @@ from designs.python.vault_tab import Ui_Vault_tab
 from utils.helpers import StyleSheet
 from utils.message import Message
 
-from windows.vault_add_window import AddSecret
+from windows.secret_window import SecretWindow
 
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.PushButton import PushButton
@@ -45,6 +45,6 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         self.setStyleSheet(stylesheet)
 
     def add_clicked(self):
-        new_secret = AddSecret()
+        new_secret = SecretWindow()
         new_secret.exec_()
     
