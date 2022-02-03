@@ -17,7 +17,7 @@ from database.model import Model
 from windows.apps_window import Apps_window
 from windows.protected_apps_edit_window import ProtectedApps
 from windows.apps_edit_window import AppsEdit
-from windows.protected_apps_view_window import ProtectedView
+from windows.protected_view_window import ProtectedView
 
 from widgets.app_item import AppItem
 from widgetStyles.PushButton import PushButton
@@ -211,7 +211,7 @@ class Apps_tab(QWidget, Ui_apps_tab):
             app_window.exec_()
             pro_edit.setChecked(False)
         elif view_toggle.isChecked() and is_protected_app and self.logged_in:
-            view_window = ProtectedView(app)
+            view_window = ProtectedView(app, "app")
             view_window.exec_()
             view_toggle.setChecked(False)
         elif is_protected_app and not self.logged_in:

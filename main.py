@@ -187,12 +187,12 @@ class Main(QWidget, Ui_main_container):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    splash_image = QPixmap("assets/splash.svg").scaled(500, 500)
-    splash = QSplashScreen(splash_image)
-    splash.setMaximumWidth(500)
-    splash.show()
-    time.sleep(1)
-    splash.close()
+    # splash_image = QPixmap("assets/splash.svg").scaled(500, 500)
+    # splash = QSplashScreen(splash_image)
+    # splash.setMaximumWidth(500)
+    # splash.show()
+    # time.sleep(1)
+    # splash.close()
     main = Main()
     main.show()
     sys.exit(app.exec_())

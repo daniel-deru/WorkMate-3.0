@@ -27,15 +27,15 @@ class Ui_Vault_tab(object):
         self.chk_edit = QtWidgets.QCheckBox(Vault_tab)
         self.chk_edit.setObjectName("chk_edit")
         self.hbox_controls.addWidget(self.chk_edit)
-        self.chk_view = QtWidgets.QCheckBox(Vault_tab)
-        self.chk_view.setObjectName("chk_view")
-        self.hbox_controls.addWidget(self.chk_view)
         self.chk_delete = QtWidgets.QCheckBox(Vault_tab)
         self.chk_delete.setObjectName("chk_delete")
         self.hbox_controls.addWidget(self.chk_delete)
         self.btn_add = QtWidgets.QPushButton(Vault_tab)
         self.btn_add.setObjectName("btn_add")
         self.hbox_controls.addWidget(self.btn_add)
+        self.btn_login = QtWidgets.QPushButton(Vault_tab)
+        self.btn_login.setObjectName("btn_login")
+        self.hbox_controls.addWidget(self.btn_login)
         self.verticalLayout.addLayout(self.hbox_controls)
         self.gbox_secret = QtWidgets.QGridLayout()
         self.gbox_secret.setObjectName("gbox_secret")
@@ -50,9 +50,9 @@ class Ui_Vault_tab(object):
         _translate = QtCore.QCoreApplication.translate
         Vault_tab.setWindowTitle(_translate("Vault_tab", "Form"))
         self.chk_edit.setText(_translate("Vault_tab", "Edit Secret"))
-        self.chk_view.setText(_translate("Vault_tab", "View Secret"))
         self.chk_delete.setText(_translate("Vault_tab", "Delete Secret"))
         self.btn_add.setText(_translate("Vault_tab", "Add Secret"))
+        self.btn_login.setText(_translate("Vault_tab", "Login"))
 
 
 if __name__ == "__main__":

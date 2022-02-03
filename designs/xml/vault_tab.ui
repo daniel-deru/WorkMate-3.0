@@ -30,13 +30,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="chk_view">
-       <property name="text">
-        <string>View Secret</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QCheckBox" name="chk_delete">
        <property name="text">
         <string>Delete Secret</string>
@@ -47,6 +40,13 @@
       <widget class="QPushButton" name="btn_add">
        <property name="text">
         <string>Add Secret</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_login">
+       <property name="text">
+        <string>Login</string>
        </property>
       </widget>
      </item>
