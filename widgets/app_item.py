@@ -20,6 +20,8 @@ class AppItem(QPushButton):
         super(AppItem, self).__init__()
         self.app = app
         self.setupUI()
+
+        self.adjustSize()
         
 
         self.clicked.connect(self.app_clicked)

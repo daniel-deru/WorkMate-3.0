@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ProtectedView(object):
     def setupUi(self, ProtectedView):
         ProtectedView.setObjectName("ProtectedView")
-        ProtectedView.resize(409, 57)
+        ProtectedView.resize(409, 51)
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(ProtectedView)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
@@ -28,8 +28,6 @@ class Ui_ProtectedView(object):
         self.vbox_data = QtWidgets.QVBoxLayout()
         self.vbox_data.setObjectName("vbox_data")
         self.verticalLayout_6.addLayout(self.vbox_data)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_6.addItem(spacerItem1)
 
         self.retranslateUi(ProtectedView)
         QtCore.QMetaObject.connectSlotsByName(ProtectedView)

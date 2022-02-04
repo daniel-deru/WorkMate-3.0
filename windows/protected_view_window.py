@@ -22,6 +22,8 @@ class ProtectedView(QDialog, Ui_ProtectedView):
         super(ProtectedView, self).__init__()
         self.setupUi(self)
         self.read_styles()
+        self.setMinimumWidth(500)
+        self.setMinimumHeight(300)
 
         # This is a tuple of an entry from the database
         self.item = item

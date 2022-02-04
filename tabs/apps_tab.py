@@ -87,7 +87,7 @@ class Apps_tab(QWidget, Ui_apps_tab):
     def create_apps(self):
         apps = Model().read('apps')
         COLUMNS = 2
-        sorted_apps = sorted(apps, key=lambda item: item[COLUMNS])
+        sorted_apps = sorted(apps, key=lambda item: item[2])
         grid_items = []
         for i in range(math.ceil(len(sorted_apps)/COLUMNS)):
             subarr = []
@@ -247,6 +247,7 @@ class Apps_tab(QWidget, Ui_apps_tab):
         elif signal == "logged out":
             self.btn_pro_apps_login.setText("login")
             self.logged_in = False
+
 
 
         

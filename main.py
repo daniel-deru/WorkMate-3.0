@@ -4,8 +4,9 @@ import re
 
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
+from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtGui import QFont, QIcon, QPixmap
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, Qt
 
 
 from designs.python.main_widget import Ui_main_container
@@ -33,19 +34,21 @@ from windows.login_window import Login
 class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
+        self.windowSize()
         
         Model().start()
 
         self.timer = QTimer(self)
         self.logged_in = False
         self.count = 0
-
         self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
+        self.setWindowFlag(Qt.WindowMaximizeButtonHint, False)
         self.setupUi(self)
         self.read_style()
         self.add_tabs()
         self.setTabIcons()
         self.update_status(False)
+
         self.tab_widget.currentChanged.connect(self.changed)
 
         user = Model().read("user")
@@ -53,6 +56,8 @@ class Main(QWidget, Ui_main_container):
             register = Register()
             register.register_close_signal.connect(self.register_event)
             register.exec_()
+
+        
 
     def register_event(self, event):
         if event == "window closed":
@@ -95,6 +100,7 @@ class Main(QWidget, Ui_main_container):
         self.tab_widget.addTab(self.apps_tab, "Apps")
 
         self.vault_tab = Vault_tab().create_tab()
+        self.vault_tab.login_signal.connect(self.check_login)
         self.tab_widget.addTab(self.vault_tab, "Vault")
 
         self.notes_tab = Notes_tab().create_tab()
@@ -137,6 +143,7 @@ class Main(QWidget, Ui_main_container):
 
     def check_login(self, signal):
         # The user wants to log in
+
         if signal == "login requested" and self.logged_in == False:
             login_window = Login()
             login_window.login_status.connect(self.login)
@@ -182,6 +189,29 @@ class Main(QWidget, Ui_main_container):
     def send_signals(self, signal):
         self.apps_tab.login_signal.emit(signal)
         self.settings_tab.login_signal.emit(signal)
+        self.vault_tab.login_signal.emit(signal)
+
+    def windowSize(self):
+        app = QApplication.instance()
+
+        screen = app.primaryScreen()
+
+        available_size = screen.availableGeometry()
+        width = available_size.width()
+        height = available_size.height()
+
+        self.setFixedSize(int(width/2), int(height/1.5))
+        self.setMaximumSize(int(width/2), int(height/1.5))
+
+    def moveEvent(self, event):
+        old_screen = QApplication.screenAt(event.oldPos())
+        new_screen = QApplication.screenAt(event.pos())
+
+        if not old_screen == new_screen:
+            self.windowSize() 
+    
+
+            
         
 
 

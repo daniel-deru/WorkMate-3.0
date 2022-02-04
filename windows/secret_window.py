@@ -31,10 +31,10 @@ class SecretWindow(QDialog, Ui_AddSecret_window):
         self.read_styles()
         self.btn_save.clicked.connect(self.save)
         self.btn_cancel.clicked.connect(lambda: self.close())
+        self.secret = secret if secret else None
         if secret:
-            self.secret = secret if secret else None
             self.display_secret()
-            print(self.secret)
+
     
     def display_secret(self):
 

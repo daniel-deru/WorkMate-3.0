@@ -45,10 +45,13 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.logged_in = False
         settings = Model().read('settings')[0]
 
+
         self.chkbox_nightmode.setChecked(settings[1])
         self.chkbox_vault.setChecked(settings[4])
         self.chkbox_calendar.setChecked(settings[6])
-        
+
+
+        self.btn_login.clicked.connect(self.login_clicked)
         self.chkbox_nightmode.stateChanged.connect(self.set_night_mode)
         self.btn_color.clicked.connect(self.set_color)
         self.fcmbx_font.currentFontChanged.connect(self.get_font)
@@ -63,7 +66,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
 
         # connect the custom signals to the slots
         self.settings_signal.connect(self.read_styles)
-        self.login_signal.connect(self.check_login)
+        self.login_signal.connect(self.login)
 
     
     def create_tab(self):
@@ -110,7 +113,9 @@ class SettingsTab(QWidget, Ui_Settings_tab):
             self.lbl_calendar,
             self.lbl_vault,
             self.lbl_vault_timer,
-            self.lbl_reset
+            self.lbl_reset,
+            self.lbl_login,
+            self.btn_login
         ]
         for i in range(len(widget_list)):
             widget_list[i].setFont(QFont(font))
@@ -140,7 +145,6 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         self.set_font()
-        self.set_pic()
         
 
 
@@ -240,9 +244,20 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         elif not toggle.isChecked():
             Model().update("settings", {"calendar": 0}, "settings")
 
-    def set_pic(self):
-        pic = QPixmap("./assets/settings_logo.png").scaled(400, 400)
-        self.lbl_logo.setPixmap(pic)
+    def login_clicked(self):
+        if self.logged_in:
+            self.login_signal.emit("logout requested")
+        elif not self.logged_in:
+            self.login_signal.emit("login requested")
+
+
+    def login(self, signal):
+        if signal == "logged in":
+            self.btn_login.setText("Logout")
+            self.logged_in = True
+        elif signal == "logged out":
+            self.btn_login.setText("login")
+            self.logged_in = False
         
 
             
