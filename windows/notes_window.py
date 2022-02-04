@@ -35,7 +35,6 @@ class Note_window(QDialog, Ui_Note_Window):
         self.custom_text_edit = CustomTextEdit().create()
         self.layout().addWidget(self.custom_text_edit)
 
-
         self.read_styles()
 
         self.chkbx_edit.stateChanged.connect(self.set_delete_active)
@@ -109,7 +108,7 @@ class CustomTextEdit(QTextEdit):
 
         self.delete_active = False
 
-        self.delete_active.connect(self.set_delete_status)
+        self.delete_signal.connect(self.set_delete_status)
     
     def set_delete_status(self, signal):
         self.delete_active = signal
