@@ -5,7 +5,7 @@ import re
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
 from PyQt5.QtWidgets import QDesktopWidget
-from PyQt5.QtGui import QFont, QIcon, QPixmap
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QTextCursor
 from PyQt5.QtCore import QTimer, Qt
 
 

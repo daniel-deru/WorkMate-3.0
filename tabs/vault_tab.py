@@ -138,7 +138,6 @@ class Vault_tab(QWidget, Ui_Vault_tab):
 
     # Slot for the login signal and middleware event handler to check if the user is logged in when an event is triggered
     def login(self, signal):
-        print(signal)
         if signal == "logged in":
             self.btn_login.setText("Logout")
             self.logged_in = True
