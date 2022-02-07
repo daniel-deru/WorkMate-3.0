@@ -11,14 +11,6 @@ Widget = f"""
         padding: 5px 8px;
         background-color: {mode};
     }}
-
-    QFrame::Sunken {{
-        color: {color};
-    }}
-
-    QFrame[frameShape="5"] {{
-        color: {color};
-    }}
 """
 
 MainWidget = f"""

@@ -29,8 +29,8 @@ class ProtectedApps(QDialog, Ui_ProtectedAppsEdit):
         self.fill_fields()
         self.protected_apps = Model().read('protected_apps')
 
-        self.spnbox_index.setValue(len(self.protected_apps) + 1)
-        self.spnbox_index.setMaximum(len(self.protected_apps) + 1)
+        self.spnbox_index.setValue(len(self.protected_apps))
+        self.spnbox_index.setMaximum(len(self.protected_apps))
         self.spnbox_index.setMinimum(1)
 
         

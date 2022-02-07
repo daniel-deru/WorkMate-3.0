@@ -13,6 +13,7 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
 from widgetStyles.RadioButton import RadioButton
+from widgetStyles.Line import Line
 
 from utils.helpers import StyleSheet
 
@@ -37,7 +38,8 @@ class ProtectedView(QDialog, Ui_ProtectedView):
             PushButton,
             Label,
             Dialog,
-            RadioButton
+            RadioButton,
+            Line
         ]
 
         stylesheet = StyleSheet(styles).create()

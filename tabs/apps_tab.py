@@ -2,7 +2,7 @@ import sys
 import os
 import math
 
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QFrame,QSizePolicy
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QFont
 
@@ -22,6 +22,7 @@ from windows.protected_view_window import ProtectedView
 from widgets.app_item import AppItem
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
+from widgetStyles.Line import Line
 
 from utils.helpers import StyleSheet
 from utils.helpers import clear_window
@@ -36,6 +37,8 @@ class Apps_tab(QWidget, Ui_apps_tab):
         super(Apps_tab, self).__init__()
         self.setupUi(self)
         self.read_styles()
+
+
         
         self.create_apps()
         self.create_protected_apps()
@@ -59,7 +62,7 @@ class Apps_tab(QWidget, Ui_apps_tab):
         return self
 
     def read_styles(self):
-        styles = [CheckBox, PushButton]
+        styles = [CheckBox, PushButton, Line]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         widgetList = [
@@ -77,7 +80,8 @@ class Apps_tab(QWidget, Ui_apps_tab):
 
         for i in range(len(widgetList)):
             widgetList[i].setFont(QFont(font))
-        
+
+        # self.line.setStyleSheet("border: 2px solid green;")
 
     def add_app(self):
         app_window = Apps_window()
