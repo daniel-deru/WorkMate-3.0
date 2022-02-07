@@ -1,11 +1,12 @@
 import sqlite3
 import os
 
-path = os.getenv("APPDATA") + "\\WorkMate"
+path = os.getenv("APPDATA") + "\\Smart WorkMate" + "\\database\\workmate.db"
 
 class Model:
     def __init__(self):
-        self.db = sqlite3.connect(f"./database/workmate.db")
+        print(path)
+        self.db = sqlite3.connect(path)
         self.cur = self.db.cursor()
 
         self.create_tables()
@@ -155,8 +156,7 @@ class Model:
             }
             self.save('settings', data)
 
-# Model().clearTable("user")
-# Model().clearTable("settings")
+Model().clearTable("user")
 
 
 

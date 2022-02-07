@@ -43,6 +43,7 @@ class Main(QWidget, Ui_main_container):
         self.count = 0
         self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
         self.setWindowFlag(Qt.WindowMaximizeButtonHint, False)
+        self.setWindowTitle("Smart WorkMate")
         self.setupUi(self)
         self.read_style()
         self.add_tabs()
