@@ -5,7 +5,6 @@ path = os.getenv("APPDATA") + "\\Smart WorkMate" + "\\database\\workmate.db"
 
 class Model:
     def __init__(self):
-        print(path)
         self.db = sqlite3.connect(path)
         self.cur = self.db.cursor()
 
@@ -156,7 +155,7 @@ class Model:
             }
             self.save('settings', data)
 
-Model().clearTable("user")
+# Model().clearTable("user")
 
 
 

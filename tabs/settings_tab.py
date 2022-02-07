@@ -2,12 +2,11 @@ import sys
 import os
 import csv
 import re
-from xml.parsers.expat import model
 from pebble import concurrent
 
 from PyQt5.QtWidgets import QWidget, QColorDialog, QFileDialog
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QFont, QPixmap
+from PyQt5.QtGui import QFont
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))

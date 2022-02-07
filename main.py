@@ -4,8 +4,7 @@ import re
 
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
-from PyQt5.QtWidgets import QDesktopWidget
-from PyQt5.QtGui import QFont, QIcon, QPixmap, QTextCursor
+from PyQt5.QtGui import QFont, QIcon, QPixmap
 from PyQt5.QtCore import QTimer, Qt
 
 
@@ -62,7 +61,6 @@ class Main(QWidget, Ui_main_container):
 
     def register_event(self, event):
         if event == "window closed":
-            print(event)
             sys.exit()
     
             
@@ -162,7 +160,6 @@ class Main(QWidget, Ui_main_container):
     # This function gets called at a set interval by timer.timeout
     def start_timer(self):
         self.count -= 1
-        print(self.count)
         if self.count == 0:
             self.update_status(False)
             self.timer.stop()

@@ -5,7 +5,6 @@ import pyperclip
 from PyQt5.QtWidgets import QDialog, QTextEdit
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QFont, QIcon, QTextCursor
-from urllib3 import Retry
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 

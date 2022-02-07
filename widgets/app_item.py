@@ -10,10 +10,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from database.model import Model
 
-from widgetStyles.PushButton import IconButton, AppRunButton
-from widgetStyles.styles import color, default, mode
-
-
 class AppItem(QPushButton):
     app_clicked_signal = pyqtSignal(tuple)
     def __init__(self, app):

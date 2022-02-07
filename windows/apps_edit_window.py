@@ -1,6 +1,5 @@
 import os
 import sys
-import pyperclip
 
 from PyQt5.QtWidgets import QDialog, QFileDialog
 from PyQt5.QtCore import pyqtSignal

@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from database.model import Model
 
 from widgetStyles.Frame import TodoFrameComplete, TodoFrameDelete
-from widgetStyles.Label import Label, LabelMono
+from widgetStyles.Label import LabelMono
 from widgetStyles.PushButton import IconButton
 from utils.helpers import StyleSheet
 

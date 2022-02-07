@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>461</width>
-    <height>199</height>
+    <height>201</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,11 +79,15 @@
     </layout>
    </item>
    <item>
-    <widget class="QPushButton" name="btn_register">
-     <property name="text">
-      <string>Register</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="btn_register">
+       <property name="text">
+        <string>Register</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

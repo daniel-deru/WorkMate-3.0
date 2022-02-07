@@ -4,6 +4,7 @@ import json
 
 from PyQt5.QtWidgets import QDialog,QHBoxLayout, QRadioButton, QLabel, QFrame
 from cryptography.fernet import Fernet
+import pyperclip
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -24,11 +25,13 @@ class ProtectedView(QDialog, Ui_ProtectedView):
         self.setupUi(self)
         self.read_styles()
         self.setMinimumWidth(500)
-        # self.setMinimumHeight(300)
+
+        self.btn_copy.clicked.connect(self.copy_item)
 
         # This is a tuple of an entry from the database
         self.item = item
         self.type = type
+        self.entry = None
         
         # Format the data and add display it on screen
         self.display_item(self.format_data())
@@ -51,6 +54,7 @@ class ProtectedView(QDialog, Ui_ProtectedView):
             hbox = QHBoxLayout()
 
             radio_label = QRadioButton(data[i][0])
+            radio_label.toggled.connect(lambda: self.get_field(data[i][1]))
             data_entry = QLabel(data[i][1])
             data_entry.setStyleSheet("margin-top: 50px;")
             radio_label.setStyleSheet("margin-top: 50px;")
@@ -83,3 +87,9 @@ class ProtectedView(QDialog, Ui_ProtectedView):
                 data.append([LABELS[i], app[i]])
         
         return data
+    
+    def copy_item(self):
+        pyperclip.copy(self.entry)
+
+    def get_field(self, entry):
+        self.entry = entry
