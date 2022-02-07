@@ -24,7 +24,7 @@ class ProtectedView(QDialog, Ui_ProtectedView):
         self.setupUi(self)
         self.read_styles()
         self.setMinimumWidth(500)
-        self.setMinimumHeight(300)
+        # self.setMinimumHeight(300)
 
         # This is a tuple of an entry from the database
         self.item = item
@@ -52,6 +52,8 @@ class ProtectedView(QDialog, Ui_ProtectedView):
 
             radio_label = QRadioButton(data[i][0])
             data_entry = QLabel(data[i][1])
+            data_entry.setStyleSheet("margin-top: 50px;")
+            radio_label.setStyleSheet("margin-top: 50px;")
 
             hbox.addWidget(radio_label)
             hbox.addWidget(data_entry)

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>475</width>
-    <height>443</height>
+    <height>386</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,11 +55,15 @@
       <widget class="QLineEdit" name="lnedt_path"/>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_desktop">
-       <property name="text">
-        <string>Choose From Desktop</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="btn_desktop">
+         <property name="text">
+          <string>Choose From Desktop</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

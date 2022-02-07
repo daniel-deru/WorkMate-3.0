@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>596</width>
-    <height>297</height>
+    <height>369</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,11 +41,15 @@
       <widget class="QLineEdit" name="lnedt_path"/>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_desktop">
-       <property name="text">
-        <string>Choose From Destop</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QPushButton" name="btn_desktop">
+         <property name="text">
+          <string>Choose From Destop</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

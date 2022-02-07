@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_AppsEdit(object):
     def setupUi(self, AppsEdit):
         AppsEdit.setObjectName("AppsEdit")
-        AppsEdit.resize(596, 297)
+        AppsEdit.resize(596, 369)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(AppsEdit)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -34,9 +34,12 @@ class Ui_AppsEdit(object):
         self.lnedt_path = QtWidgets.QLineEdit(AppsEdit)
         self.lnedt_path.setObjectName("lnedt_path")
         self.verticalLayout_2.addWidget(self.lnedt_path)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.btn_desktop = QtWidgets.QPushButton(AppsEdit)
         self.btn_desktop.setObjectName("btn_desktop")
-        self.verticalLayout_2.addWidget(self.btn_desktop)
+        self.horizontalLayout_2.addWidget(self.btn_desktop)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
         self.verticalLayout_4.addLayout(self.verticalLayout_2)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")

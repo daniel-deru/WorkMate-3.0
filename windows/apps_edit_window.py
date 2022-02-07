@@ -30,8 +30,8 @@ class AppsEdit(QDialog, Ui_AppsEdit):
         self.fill_fields()
         self.apps = Model().read("apps")
 
-        self.spnbox_index.setValue(len(self.apps) + 1)
-        self.spnbox_index.setMaximum(len(self.apps) + 1)
+        self.spnbox_index.setValue(len(self.apps))
+        self.spnbox_index.setMaximum(len(self.apps))
         self.spnbox_index.setMinimum(1)
 
         self.btn_discard.clicked.connect(lambda: self.close())

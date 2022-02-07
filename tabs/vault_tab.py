@@ -116,10 +116,14 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         elif delete.isChecked() and self.logged_in:
             Model().delete('vault', secret[0])
             self.update()
+            # Set the delete check button to off after an app has been deleted
+            delete.setChecked(False)
         elif edit.isChecked() and self.logged_in:
             secret_edit_window = SecretWindow(secret)
             secret_edit_window.secret_signal.connect(lambda: self.update())
             secret_edit_window.exec_()
+            # Set the Edit checkbox to off after the secret has been edited
+            self.chk_edit.setChecked(False)
         elif not self.logged_in:
             Message("The Vault is a protected space please log in to use the functionality of this tab", "Restricted Access").exec_()
     
