@@ -4,6 +4,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from widgetStyles.styles import color, mode, default
+from utils.globals import ASSET_PATH
 
 DateEdit = f"""
     QDateEdit {{
@@ -17,6 +18,6 @@ DateEdit = f"""
         padding: 5px;
         border-radius: 5px;
         width: 40px;
-        image: url(assets/calendar.svg);
+        image: url({ASSET_PATH}calendar.svg);
     }}
 """

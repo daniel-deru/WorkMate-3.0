@@ -4,26 +4,8 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from widgetStyles.styles import color, mode, default, button
+from utils.globals import ASSET_PATH
 
-
-# Calendar = f"""
-#     QCalendarWidget {{
-#         margin-top: 20px;
-#         background-color: {mode};
-#         color: {color};
-#     }}
-#     QCalendarWidget QWidget {{
-#         background-color: {color};
-#         color: {button};
-#     }}
-#     QCalendarWidget QTableView {{
-#         background-color: {color};
-#     }}
-#     QCalendarWidget QTableView QLabel {{
-#         color: {default};
-#     }}
-
-# """
 
 Calendar = f"""
 QCalendarWidget {{
@@ -40,13 +22,13 @@ QCalendarWidget QToolButton {{
 
 
   QCalendarWidget QWidget#qt_calendar_prevmonth {{
-      qproperty-icon: url(assets/left-arrow.svg);
+      qproperty-icon: url({ASSET_PATH}left-arrow.svg);
       background-color: {mode};
       border-left: 2px solid {color};
       border-top: 2px solid {color}
   }}
   QCalendarWidget QWidget#qt_calendar_nextmonth {{
-      qproperty-icon: url(assets/right-arrow.svg);
+      qproperty-icon: url({ASSET_PATH}right-arrow.svg);
       background-color: {mode};
       border-right: 2px solid {color};
       border-top: 2px solid {color}
@@ -73,7 +55,7 @@ QCalendarWidget QToolButton {{
     QCalendarWidget QSpinBox::up-button {{ 
         subcontrol-origin: border;  
         subcontrol-position: top right;  
-        image: url(assets/up-arrow.svg);
+        image: url({ASSET_PATH}up-arrow.svg);
         width: 30px;
         height: 30px; 
     }}
@@ -81,7 +63,7 @@ QCalendarWidget QToolButton {{
     QCalendarWidget QSpinBox::down-button {{
         subcontrol-origin: border; 
         subcontrol-position: bottom right;  
-        image: url(assets/down-arrow.svg);
+        image: url({ASSET_PATH}down-arrow.svg);
         width: 30px;  
         height: 30px; 
     }}

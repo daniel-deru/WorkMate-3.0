@@ -1,11 +1,10 @@
 import sqlite3
 import os
-
-path = os.getenv("APPDATA") + "\\Smart WorkMate" + "\\database\\workmate.db"
+from utils.globals import DB_PATH
 
 class Model:
     def __init__(self):
-        self.db = sqlite3.connect(path)
+        self.db = sqlite3.connect(DB_PATH)
         self.cur = self.db.cursor()
 
         self.create_tables()

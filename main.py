@@ -23,6 +23,8 @@ from widgetStyles.TabBar import TabBar
 from widgetStyles.TabWidget import TabWidget
 from widgetStyles.Widget import Widget
 
+
+from utils.globals import ASSET_PATH
 from utils.helpers import StyleSheet
 from windows.register_window import Register
 from windows.login_window import Login
@@ -34,13 +36,13 @@ class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
         self.windowSize()
-        
+        print(ASSET_PATH)
         Model().start()
 
         self.timer = QTimer(self)
         self.logged_in = False
         self.count = 0
-        self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
+        self.setWindowIcon(QIcon(f"{ASSET_PATH}WorkMate.ico"))
         self.setWindowFlag(Qt.WindowMaximizeButtonHint, False)
         self.setWindowTitle("Smart WorkMate")
         self.setupUi(self)
@@ -132,10 +134,11 @@ class Main(QWidget, Ui_main_container):
         for i in range(len(icons)):
             icon_color = "black" if color == "#000000" else "white"
             active_icon_color = "black" if activeColor == "#000000" else "white" if activeColor == "#ffffff" else "color"
-            self.tab_widget.setTabIcon(i, QIcon(f"./assets/{icon_color}{icons[i]}"))
+            self.tab_widget.setTabIcon(i, QIcon(f"{ASSET_PATH}{icon_color}{icons[i]}"))
 
         active_tab_index = self.tab_widget.currentIndex()
-        self.tab_widget.setTabIcon(active_tab_index, QIcon(f"./assets/{active_icon_color}{icons[active_tab_index]}"))
+        self.tab_widget.setTabIcon(active_tab_index, QIcon(f"{ASSET_PATH}{active_icon_color}{icons[active_tab_index]}"))
+        print(f"./assets/color{icons[active_tab_index]}")
     
     def changed(self):
         self.setTabIcons()
@@ -215,7 +218,7 @@ class Main(QWidget, Ui_main_container):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    splash_image = QPixmap("assets/splash.png")
+    splash_image = QPixmap(f"{ASSET_PATH}splash.png")
     splash = QSplashScreen(splash_image)
     splash.setMaximumWidth(500)
     splash.show()

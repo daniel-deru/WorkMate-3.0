@@ -1,13 +1,16 @@
+from msilib.schema import CheckBox
 import os
 import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from widgetStyles.styles import color, mode, default
+from utils.globals import ASSET_PATH
 SIZE = 30
 RATIO = 3
 width = SIZE * RATIO
 height = SIZE * 1
+CheckBox = ""
 
 CheckBox = f"""
     QCheckBox {{
@@ -17,7 +20,7 @@ CheckBox = f"""
     }}
 
     QCheckBox::indicator:checked {{
-        image: url(assets/toggle-on.svg);
+        image: url({ASSET_PATH}toggle-on.svg);
         width: {width}px;
         height: {height}px;
         max-width: {width}px;
@@ -25,7 +28,7 @@ CheckBox = f"""
     }}
 
     QCheckBox::indicator{{
-        image: url(assets/toggle-off.svg);
+        image: url({ASSET_PATH}toggle-off.svg);
         width: {width}px;
         height: {height}px;
         max-width: {width}px;
@@ -33,6 +36,8 @@ CheckBox = f"""
     }}
 
 """
+
+SettingsCheckBox = ""
 
 SettingsCheckBox = f"""
     QCheckBox {{
@@ -43,7 +48,7 @@ SettingsCheckBox = f"""
     }}
 
     QCheckBox::indicator:checked {{
-        image: url(assets/toggle-on.svg);
+        image: url({ASSET_PATH}toggle-on.svg);
         width: {width}px;
         height: {height}px;
         max-width: {width}px;
@@ -51,7 +56,7 @@ SettingsCheckBox = f"""
     }}
 
     QCheckBox::indicator{{
-        image: url(assets/toggle-off.svg);
+        image: url({ASSET_PATH}toggle-off.svg);
         width: {width}px;
         height: {height}px;
         max-width: {width}px;

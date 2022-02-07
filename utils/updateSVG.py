@@ -1,21 +1,21 @@
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
-
-ASSETS_FOLDER = "assets/"
+from utils.globals import ASSET_PATH
+# PATH = "assets/"
 images = [
-    f'{ASSETS_FOLDER}toggle-on.svg',
-    f"{ASSETS_FOLDER}color_apps.svg",
-    f"{ASSETS_FOLDER}color_vault.svg",
-    f"{ASSETS_FOLDER}color_notes.svg",
-    f"{ASSETS_FOLDER}color_task.svg",
-    f"{ASSETS_FOLDER}color_settings.svg",
-    f"{ASSETS_FOLDER}down-arrow.svg",
-    f"{ASSETS_FOLDER}up-arrow.svg",
-    f"{ASSETS_FOLDER}calendar.svg",
-    f"{ASSETS_FOLDER}right-arrow.svg",
-    f"{ASSETS_FOLDER}left-arrow.svg",
-    f"{ASSETS_FOLDER}radio-on.svg"
+    f'{ASSET_PATH}toggle-on.svg',
+    f"{ASSET_PATH}color_apps.svg",
+    f"{ASSET_PATH}color_vault.svg",
+    f"{ASSET_PATH}color_notes.svg",
+    f"{ASSET_PATH}color_task.svg",
+    f"{ASSET_PATH}color_settings.svg",
+    f"{ASSET_PATH}down-arrow.svg",
+    f"{ASSET_PATH}up-arrow.svg",
+    f"{ASSET_PATH}calendar.svg",
+    f"{ASSET_PATH}right-arrow.svg",
+    f"{ASSET_PATH}left-arrow.svg",
+    f"{ASSET_PATH}radio-on.svg"
     
 ]
 
