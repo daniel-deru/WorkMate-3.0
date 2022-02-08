@@ -35,7 +35,6 @@ class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
         self.windowSize()
-        print(ASSET_PATH)
         Model().start()
 
         self.timer = QTimer(self)
@@ -92,7 +91,9 @@ class Main(QWidget, Ui_main_container):
         self.vault_tab.vault_signal.emit("update")
 
     def add_tabs(self):
-        self.setMinimumSize(1000, 600)
+        app = QApplication.primaryScreen()
+        screen = app.size()
+        self.setMinimumSize(int(screen.width() * 0.7), int(screen.height() * 0.7))
         # self.tab_widget.setTabPosition(QTabWidget.West)
         self.apps_tab = Apps_tab().create_tab()
         self.apps_tab.table_signal.connect(self.updateTable)

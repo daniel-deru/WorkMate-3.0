@@ -1,5 +1,6 @@
 from widgetStyles.styles import default, mode, button, color, dark_blue, light_blue, green
 from utils.globals import ASSET_PATH
+import assets.resources
 
 ComboBox = f"""
     QComboBox {{
@@ -40,7 +41,7 @@ ComboBox = f"""
         height: 15px;
         border: none;
         background-color: {mode};
-        image: url({ASSET_PATH}down-arrow.svg);
+        image: url(:/arrows/down-arrow.svg);
     }}
 
     QComboBox QListView {{

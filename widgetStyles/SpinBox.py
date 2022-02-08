@@ -5,6 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from widgetStyles.styles import color, mode, default, light_blue
 from utils.globals import ASSET_PATH
+import assets.resources
 
 SpinBox = f"""
     QSpinBox {{
@@ -19,7 +20,7 @@ SpinBox = f"""
     QSpinBox::down-button {{
         border: none;
         border-left: 2px solid {light_blue};
-        image: url({ASSET_PATH}down-arrow.svg);
+        image: url(:/arrows/down-arrow.svg);
         margin-top: 2px;
         width: 15px;
         height: 15px;
@@ -34,7 +35,7 @@ SpinBox = f"""
     QSpinBox::up-button {{
         border: none;
         border-left: 2px solid {light_blue};
-        image: url({ASSET_PATH}up-arrow.svg);
+        image: url(:/arrows/up-arrow.svg);
         width: 15px;
         height: 15px;
         padding: 0px 5px;
