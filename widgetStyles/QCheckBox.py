@@ -6,6 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from widgetStyles.styles import color, mode, default
 from utils.globals import ASSET_PATH
+import assets.resources
 SIZE = 30
 RATIO = 3
 width = SIZE * RATIO
@@ -20,7 +21,7 @@ CheckBox = f"""
     }}
 
     QCheckBox::indicator:checked {{
-        image: url({ASSET_PATH}toggle-on.svg);
+        image: url(:/input/toggle-on.svg);
         width: {width}px;
         height: {height}px;
         max-width: {width}px;
@@ -28,7 +29,7 @@ CheckBox = f"""
     }}
 
     QCheckBox::indicator{{
-        image: url({ASSET_PATH}toggle-off.svg);
+        image: url(:/input/toggle-off.svg);
         width: {width}px;
         height: {height}px;
         max-width: {width}px;
@@ -48,7 +49,7 @@ SettingsCheckBox = f"""
     }}
 
     QCheckBox::indicator:checked {{
-        image: url({ASSET_PATH}toggle-on.svg);
+        image: url(:/input/toggle-on.svg);
         width: {width}px;
         height: {height}px;
         max-width: {width}px;
@@ -56,7 +57,7 @@ SettingsCheckBox = f"""
     }}
 
     QCheckBox::indicator{{
-        image: url({ASSET_PATH}toggle-off.svg);
+        image: url(:/input/toggle-off.svg);
         width: {width}px;
         height: {height}px;
         max-width: {width}px;

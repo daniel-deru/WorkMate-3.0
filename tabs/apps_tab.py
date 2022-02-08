@@ -23,6 +23,7 @@ from widgets.app_item import AppItem
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.Line import Line
+from widgetStyles.Label import Label
 
 from utils.helpers import StyleSheet
 from utils.helpers import clear_window
@@ -62,7 +63,7 @@ class Apps_tab(QWidget, Ui_apps_tab):
         return self
 
     def read_styles(self):
-        styles = [CheckBox, PushButton, Line]
+        styles = [CheckBox, PushButton, Line, Label]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         widgetList = [

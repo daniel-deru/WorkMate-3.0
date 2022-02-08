@@ -1,4 +1,4 @@
-from widgetStyles.styles import default, mode, button, color
+from widgetStyles.styles import default, mode, button, color, dark_blue, light_blue, green
 from utils.globals import ASSET_PATH
 
 ComboBox = f"""
@@ -6,7 +6,7 @@ ComboBox = f"""
         subcontrol-origin: padding;
         subcontrol-position: top right;
         color: {default};
-        border: 2px solid {color};
+        border: 2px solid {dark_blue};
         background-color: {mode};
         border-radius: 5px;
         padding: 5px;
@@ -20,7 +20,7 @@ ComboBox = f"""
         width: 20px;
         font-size: 12px;
         border: none;
-        border-left: 2px solid {color};
+        border-left: 2px solid {dark_blue};
         background-color: {mode};
     }}
 
@@ -29,7 +29,7 @@ ComboBox = f"""
     }}
 
     QComboBox QAbstractItemView {{
-        background-color: {color};
+        background-color: {dark_blue};
         selection-background-color: {mode};
         selection-color: {default};
         color: {button};

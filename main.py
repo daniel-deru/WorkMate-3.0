@@ -1,6 +1,7 @@
 import sys
 import time
 import re
+import os
 
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
@@ -134,11 +135,10 @@ class Main(QWidget, Ui_main_container):
         for i in range(len(icons)):
             icon_color = "black" if color == "#000000" else "white"
             active_icon_color = "black" if activeColor == "#000000" else "white" if activeColor == "#ffffff" else "color"
-            self.tab_widget.setTabIcon(i, QIcon(f"{ASSET_PATH}{icon_color}{icons[i]}"))
+            self.tab_widget.setTabIcon(i, QIcon(f"{ASSET_PATH}/{icon_color}{icons[i]}"))
 
         active_tab_index = self.tab_widget.currentIndex()
-        self.tab_widget.setTabIcon(active_tab_index, QIcon(f"{ASSET_PATH}{active_icon_color}{icons[active_tab_index]}"))
-        print(f"./assets/color{icons[active_tab_index]}")
+        self.tab_widget.setTabIcon(active_tab_index, QIcon(f"{ASSET_PATH}/{active_icon_color}{icons[active_tab_index]}"))
     
     def changed(self):
         self.setTabIcons()
@@ -218,7 +218,7 @@ class Main(QWidget, Ui_main_container):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    splash_image = QPixmap(f"{ASSET_PATH}splash.png")
+    splash_image = QPixmap(f"{ASSET_PATH}/splash.png")
     splash = QSplashScreen(splash_image)
     splash.setMaximumWidth(500)
     splash.show()
