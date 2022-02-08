@@ -8,6 +8,7 @@ from PyQt5.QtGui import QIcon, QFont
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from windows.notes_window import Note_window
+import assets.resources
 from database.model import Model
 from widgetStyles.Frame import Frame
 from widgetStyles.Label import Label
@@ -47,13 +48,13 @@ class NoteItem(QFrame):
 
         self.btn_edit = QPushButton()
         self.btn_edit.setObjectName("btn_edit")
-        self.btn_edit.setIcon(QIcon("assets/edit.png"))
+        self.btn_edit.setIcon(QIcon(":/other/edit.png"))
         self.btn_edit.setIconSize(QSize(20, 20))
         self.hbox.addWidget(self.btn_edit)
 
         self.btn_delete = QPushButton()
         self.btn_delete.setObjectName("btn_delete")
-        self.btn_delete.setIcon(QIcon("assets/delete-red.png"))
+        self.btn_delete.setIcon(QIcon(":/other/delete-red.png"))
         self.btn_delete.setIconSize(QSize(20, 20))
         self.hbox.addWidget(self.btn_delete)
 
