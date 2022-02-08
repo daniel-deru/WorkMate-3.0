@@ -1,8 +1,6 @@
 import sys
 import time
-import re
-import os
-
+import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
 from PyQt5.QtGui import QFont, QIcon, QPixmap
@@ -133,10 +131,10 @@ class Main(QWidget, Ui_main_container):
             # Set the icon color for the tabbar
             icon_color = "black"
             active_icon_color = "white" if nightModeOn else "black"
-            self.tab_widget.setTabIcon(i, QIcon(f"{ASSET_PATH}/{icon_color}{icons[i]}"))
+            self.tab_widget.setTabIcon(i, QIcon(f":/tabicons/{icon_color}{icons[i]}"))
 
         active_tab_index = self.tab_widget.currentIndex()
-        self.tab_widget.setTabIcon(active_tab_index, QIcon(f"{ASSET_PATH}/{active_icon_color}{icons[active_tab_index]}"))
+        self.tab_widget.setTabIcon(active_tab_index, QIcon(f":/tabicons/{active_icon_color}{icons[active_tab_index]}"))
     
     def changed(self):
         self.setTabIcons()
@@ -216,7 +214,7 @@ class Main(QWidget, Ui_main_container):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    splash_image = QPixmap(f"{ASSET_PATH}/splash.png")
+    splash_image = QPixmap(f":/other/splash.png")
     splash = QSplashScreen(splash_image)
     splash.setMaximumWidth(500)
     splash.show()

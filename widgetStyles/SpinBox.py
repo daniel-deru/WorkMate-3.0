@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from widgetStyles.styles import color, mode, default
+from widgetStyles.styles import color, mode, default, light_blue
 from utils.globals import ASSET_PATH
 
 SpinBox = f"""
@@ -13,12 +13,12 @@ SpinBox = f"""
         font-size: 16px;
         padding: 5px 8px;
         border-radius: 5px;
-        border: 2px solid {color};
+        border: 2px solid {light_blue};
     }}
 
     QSpinBox::down-button {{
         border: none;
-        border-left: 2px solid {color};
+        border-left: 2px solid {light_blue};
         image: url({ASSET_PATH}down-arrow.svg);
         margin-top: 2px;
         width: 15px;
@@ -33,7 +33,7 @@ SpinBox = f"""
 
     QSpinBox::up-button {{
         border: none;
-        border-left: 2px solid {color};
+        border-left: 2px solid {light_blue};
         image: url({ASSET_PATH}up-arrow.svg);
         width: 15px;
         height: 15px;

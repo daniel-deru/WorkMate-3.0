@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from widgetStyles.styles import color, mode, default
+from widgetStyles.styles import color, mode, default, light_blue
 
 Frame = f"""
     QFrame {{
@@ -12,8 +12,8 @@ Frame = f"""
         font-size: 16px;
         padding: 0px;
         background-color: {mode};
-        color: {color};
-        border: 2px solid {color};
+        color: {default};
+        border: 2px solid {light_blue};
     }}
 """
 

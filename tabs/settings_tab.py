@@ -4,7 +4,7 @@ import csv
 import re
 from pebble import concurrent
 
-from PyQt5.QtWidgets import QWidget, QColorDialog, QFileDialog
+from PyQt5.QtWidgets import QWidget, QFileDialog
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QFont
 
@@ -52,7 +52,6 @@ class SettingsTab(QWidget, Ui_Settings_tab):
 
         self.btn_login.clicked.connect(self.login_clicked)
         self.chkbox_nightmode.stateChanged.connect(self.set_night_mode)
-        self.btn_color.clicked.connect(self.set_color)
         self.fcmbx_font.currentFontChanged.connect(self.get_font)
         self.btn_reset.clicked.connect(self.reset)
         self.btn_export_apps.clicked.connect(lambda: self.export_data("apps"))
@@ -74,8 +73,6 @@ class SettingsTab(QWidget, Ui_Settings_tab):
     # color is at index 3 and nightmode is at index 1
     def set_night_mode(self):
         toggle = self.chkbox_nightmode
-        settings = Model().read("settings")[0]
-        color = settings[3]
 
         if toggle.isChecked():
             Model().update("settings", {'nightmode': 1}, 'settings')
@@ -95,10 +92,8 @@ class SettingsTab(QWidget, Ui_Settings_tab):
     def set_font(self):
         font = Model().read('settings')[0][2]
         widget_list = [
-            self.lbl_color,
             self.lbl_night_mode,
             self.lbl_font,
-            self.btn_color,
             self.btn_export_apps,
             self.btn_export_notes,
             self.btn_import_apps,
@@ -116,17 +111,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
             widget_list[i].setFont(QFont(font))
         
 
-    def set_color(self):
-        old_color = Model().read('settings')[0][3]
-        new_color = QColorDialog().getColor().name()
-        if new_color != "#000000":
-            Model().update("settings", {'color': new_color}, 'settings')
-            change_color(old_color, new_color)
-            self.settings_signal.emit("settings changed")
-
     def reset(self):
-        old_color = Model().read('settings')[0][3]
-        change_color(old_color, "#000000")
         Model().reset()
         self.settings_signal.emit("settings changed")
         self.chkbox_nightmode.setChecked(False)

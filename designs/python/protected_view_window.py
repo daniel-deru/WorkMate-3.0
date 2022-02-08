@@ -19,8 +19,14 @@ class Ui_ProtectedView(object):
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem)
+        self.lbl_title = QtWidgets.QLabel(ProtectedView)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lbl_title.sizePolicy().hasHeightForWidth())
+        self.lbl_title.setSizePolicy(sizePolicy)
+        self.lbl_title.setObjectName("lbl_title")
+        self.horizontalLayout_2.addWidget(self.lbl_title)
         self.btn_copy = QtWidgets.QPushButton(ProtectedView)
         self.btn_copy.setObjectName("btn_copy")
         self.horizontalLayout_2.addWidget(self.btn_copy)
@@ -35,6 +41,7 @@ class Ui_ProtectedView(object):
     def retranslateUi(self, ProtectedView):
         _translate = QtCore.QCoreApplication.translate
         ProtectedView.setWindowTitle(_translate("ProtectedView", "View Your App Details"))
+        self.lbl_title.setText(_translate("ProtectedView", "title"))
         self.btn_copy.setText(_translate("ProtectedView", "Copy"))
 
 

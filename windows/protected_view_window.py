@@ -27,7 +27,8 @@ class ProtectedView(QDialog, Ui_ProtectedView):
         self.setMinimumWidth(500)
 
         self.btn_copy.clicked.connect(self.copy_item)
-
+        # Set the title of the protected information
+        self.lbl_title.setText(item[1])
         # This is a tuple of an entry from the database
         self.item = item
         self.type = type
