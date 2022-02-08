@@ -6,7 +6,7 @@ ComboBox = f"""
         subcontrol-origin: padding;
         subcontrol-position: top right;
         color: {default};
-        border: 2px solid {dark_blue};
+        border: 2px solid {light_blue};
         background-color: {mode};
         border-radius: 5px;
         padding: 5px;
@@ -20,7 +20,7 @@ ComboBox = f"""
         width: 20px;
         font-size: 12px;
         border: none;
-        border-left: 2px solid {dark_blue};
+        border-left: 2px solid {light_blue};
         background-color: {mode};
     }}
 
@@ -29,7 +29,7 @@ ComboBox = f"""
     }}
 
     QComboBox QAbstractItemView {{
-        background-color: {dark_blue};
+        background-color: {light_blue};
         selection-background-color: {mode};
         selection-color: {default};
         color: {button};

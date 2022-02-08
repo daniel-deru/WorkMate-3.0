@@ -119,12 +119,9 @@ class Main(QWidget, Ui_main_container):
         self.main_layout.addWidget(self.tab_widget)
 
     def setTabIcons(self):
-        stylesheet = self.tab_widget.styleSheet()
-        colorWidget = re.search(r"QTabBar::tab {(.|\n|\r)*}", stylesheet).group()
-        activeColorWidget = re.search(r"QTabBar::tab:selected {(.|\n|\r)*}", stylesheet).group()
 
-        color = re.search(r"(?<=(?<!background-)color: )#.{6}(?=;)", colorWidget).group()
-        activeColor = re.search(r"(?<=(?<!background-)color: )#.{6}(?=;)", activeColorWidget).group()
+        # Get the night mode setting from the database
+        nightModeOn = Model().read("settings")[0][1]
         icons = [
                 "_apps.svg",
                 "_vault.svg",
@@ -133,8 +130,9 @@ class Main(QWidget, Ui_main_container):
                 "_settings.svg"
         ]
         for i in range(len(icons)):
-            icon_color = "black" if color == "#000000" else "white"
-            active_icon_color = "black" if activeColor == "#000000" else "white" if activeColor == "#ffffff" else "color"
+            # Set the icon color for the tabbar
+            icon_color = "black"
+            active_icon_color = "white" if nightModeOn else "black"
             self.tab_widget.setTabIcon(i, QIcon(f"{ASSET_PATH}/{icon_color}{icons[i]}"))
 
         active_tab_index = self.tab_widget.currentIndex()

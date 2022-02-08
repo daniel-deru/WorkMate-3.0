@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from widgetStyles.styles import color, mode, default
+from widgetStyles.styles import color, mode, default, light_blue
 
 # #bbb grey
 # #66e purple
@@ -18,8 +18,8 @@ HSlider = f"""
     }}
 
     QSlider::sub-page:horizontal {{
-        background: {color};
-        background: {color};
+        background: {light_blue};
+        background: {light_blue};
         border: 1px solid #777;
         height: 10px;
         border-radius: 4px;

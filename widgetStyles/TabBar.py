@@ -17,12 +17,12 @@ TabBar = f"""
         height: 40px;
         border: none;
         background-color: {green};
-        color: {dark_blue};
+        color: black;
         padding-left: 15px;
     }}
 
         QTabBar::tab:selected {{
         background: {mode};
-        color: {dark_blue};    
+        color: {default};    
     }}
 """

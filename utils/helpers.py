@@ -35,7 +35,9 @@ class StyleSheet():
     def __init__(self, stylesheet):
         self.stylesheet = stylesheet
         settings = Model().read("settings")[0]
+        # Get the nightmode setting
         self.settings_mode = "#000000" if settings[1] else "#ffffff"
+        # Set the contrast to the opposite of the nightmode
         self.settings_contrast = "#ffffff" if settings[1] else  "#000000"
         self.settings_color = settings[3]
 
@@ -67,12 +69,12 @@ class StyleSheet():
     def create(self):
         black_contrast = self.contrast(self.settings_color, "#000000")
         white_contrast = self.contrast(self.settings_color, "#ffffff")
-        color_contrast = self.contrast(self.settings_color, self.settings_mode)
-
 
         settings_button = "#000000" if black_contrast > white_contrast else "#ffffff"
         settings_default = self.settings_contrast
 
+        # map the settings to the same index as the placeholders array
+        # default will always be the opposite of the nightmode color
         values = [self.settings_color, self.settings_mode, settings_default, settings_button]
 
         stylesheet = reduce(lambda a, b: a + b, self.stylesheet)
@@ -80,6 +82,3 @@ class StyleSheet():
             stylesheet = re.sub(placeholders[i], values[i], stylesheet)
         return stylesheet
 
-def import_file(table, file):
-    pass
-        

@@ -11,11 +11,6 @@
         <file alias="black_settings.svg">black_settings.svg</file>
         <file alias="black_task.svg">black_task.svg</file>
         <file alias="black_vault.svg">black_vault.svg</file>
-        <file alias="color_apps.svg">color_apps.svg</file>
-        <file alias="color_notes.svg">color_notes.svg</file>
-        <file alias="color_settings.svg">color_settings.svg</file>
-        <file alias="color_task.svg">color_task.svg</file>
-        <file alias="color_vault.svg">color_vault.svg</file>
     </qresource>
     <qresource prefix="arrows">
         <file alias="left-arrow.svg">left-arrow.svg</file>
@@ -25,7 +20,7 @@
     </qresource>
     <qresource prefix="input">
         <file alias="radio-on.svg">radio-on.svg</file>
-        <file alias="radio-off.svg">radio-off.svg</file>
+        <file alias="radio-off.svg">radio-on.svg</file>
         <file alias="toggle-on.svg">toggle-on.svg</file>
         <file alias="toggle-off.svg">toggle-off.svg</file>
     </qresource>

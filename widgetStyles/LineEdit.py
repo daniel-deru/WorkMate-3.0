@@ -13,6 +13,6 @@ LineEdit = f"""
         padding: 5px 8px;
         font-size: 16px;
         border-radius: 5px;
-        border: 2px solid {dark_blue};
+        border: 2px solid {light_blue};
     }}
 """

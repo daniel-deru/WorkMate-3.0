@@ -77,11 +77,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         settings = Model().read("settings")[0]
         color = settings[3]
 
-        if toggle.isChecked() and color == "#000000":
-            Message("You cannot activate nightmode if the default color is black.", "Please select a color.").exec_()
-            toggle.setChecked(False)
-            toggle.setCheckState(Qt.Unchecked)
-        elif toggle.isChecked() and color != "#000000":
+        if toggle.isChecked():
             Model().update("settings", {'nightmode': 1}, 'settings')
             self.settings_signal.emit("settings changed")
             self.updateWindow()
