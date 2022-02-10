@@ -20,7 +20,7 @@
     </qresource>
     <qresource prefix="input">
         <file alias="radio-on.svg">radio-on.svg</file>
-        <file alias="radio-off.svg">radio-on.svg</file>
+        <file alias="radio-off.svg">radio-off.svg</file>
         <file alias="toggle-on.svg">toggle-on.svg</file>
         <file alias="toggle-off.svg">toggle-off.svg</file>
     </qresource>
