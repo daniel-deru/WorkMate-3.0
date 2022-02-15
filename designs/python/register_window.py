@@ -14,9 +14,20 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Register(object):
     def setupUi(self, Register):
         Register.setObjectName("Register")
-        Register.resize(461, 201)
+        Register.resize(461, 291)
         self.verticalLayout = QtWidgets.QVBoxLayout(Register)
         self.verticalLayout.setObjectName("verticalLayout")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.lbl_intro = QtWidgets.QLabel(Register)
+        self.lbl_intro.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_intro.setObjectName("lbl_intro")
+        self.verticalLayout_2.addWidget(self.lbl_intro)
+        self.lbl_company = QtWidgets.QLabel(Register)
+        self.lbl_company.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_company.setObjectName("lbl_company")
+        self.verticalLayout_2.addWidget(self.lbl_company)
+        self.verticalLayout.addLayout(self.verticalLayout_2)
         self.form_register = QtWidgets.QFormLayout()
         self.form_register.setObjectName("form_register")
         self.lbl_name = QtWidgets.QLabel(Register)
@@ -69,6 +80,8 @@ class Ui_Register(object):
     def retranslateUi(self, Register):
         _translate = QtCore.QCoreApplication.translate
         Register.setWindowTitle(_translate("Register", "Register"))
+        self.lbl_intro.setText(_translate("Register", "Proudly brought to you by"))
+        self.lbl_company.setText(_translate("Register", "Smart MetaTec"))
         self.lbl_name.setText(_translate("Register", "Name"))
         self.lbl_password.setText(_translate("Register", "Password"))
         self.lbl_question.setText(_translate("Register", "Security Question"))

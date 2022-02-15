@@ -35,6 +35,7 @@
         <file alias="splash.svg">splash.svg</file>
         <file alias="splash.png">splash.png</file>
         <file alias="WorkMate.ico">WorkMate.ico</file>
+        <file alias="SMT Logo.png">SMT Logo.png</file>
 
     </qresource>
 

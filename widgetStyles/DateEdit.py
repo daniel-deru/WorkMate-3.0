@@ -9,6 +9,7 @@ import assets.resources
 
 DateEdit = f"""
     QDateEdit {{
+        border: none;
         color: {default};
     }}
     QDateEdit::drop-down {{

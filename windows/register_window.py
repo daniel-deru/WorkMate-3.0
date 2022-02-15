@@ -2,7 +2,7 @@ import sys
 import os
 
 from PyQt5.QtWidgets import QDialog, QLineEdit
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt, pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -11,6 +11,7 @@ from designs.python.register_window import Ui_Register
 from utils.message import Message
 from database.model import Model
 from utils.helpers import StyleSheet
+import assets.resources
 
 from widgetStyles.PushButton import PushButton
 from widgetStyles.LineEdit import LineEdit
@@ -22,6 +23,8 @@ class Register(QDialog, Ui_Register):
     def __init__(self):
         super(Register, self).__init__()
         self.setupUi(self)
+        pixmap = QPixmap(":/other/SMT Logo.png")
+        self.lbl_company.setPixmap(pixmap)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
         self.lnedt_password.setEchoMode(QLineEdit.Password)
