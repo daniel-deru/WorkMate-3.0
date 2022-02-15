@@ -11,6 +11,8 @@ from database.model import Model
 from utils.message import Message
 from utils.helpers import StyleSheet
 
+import assets.resources
+
 from widgetStyles.Dialog import Dialog
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.PushButton import PushButton
@@ -29,7 +31,7 @@ class Apps_window(QDialog, Ui_App_Window):
         super(Apps_window, self).__init__()
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
-        self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
+        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
         self.setWindowTitle("Add Your App")
         self.read_styles()
         self.apps = Model().read('apps')

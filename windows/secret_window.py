@@ -4,6 +4,7 @@ import json
 
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QIcon
 from cryptography.fernet import Fernet
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -29,6 +30,7 @@ class SecretWindow(QDialog, Ui_AddSecret_window):
         super(SecretWindow, self).__init__()
         self.setupUi(self)
         self.read_styles()
+        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
         self.btn_save.clicked.connect(self.save)
         self.btn_cancel.clicked.connect(lambda: self.close())
         self.secret = secret if secret else None

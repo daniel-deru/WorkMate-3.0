@@ -14,6 +14,7 @@ from designs.python.note_window import Ui_Note_Window
 
 from utils.message import Message
 from database.model import Model
+import assets.resources
 from widgetStyles.PushButton import PushButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.QCheckBox import CheckBox
@@ -29,7 +30,7 @@ class Note_window(QDialog, Ui_Note_Window):
 
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
-        self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
+        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
 
         self.custom_text_edit = CustomTextEdit().create()
         self.layout().addWidget(self.custom_text_edit)

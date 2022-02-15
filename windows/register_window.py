@@ -23,7 +23,7 @@ class Register(QDialog, Ui_Register):
         super(Register, self).__init__()
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
-        self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
+        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
         self.lnedt_password.setEchoMode(QLineEdit.Password)
         self.lnedt_password2.setEchoMode(QLineEdit.Password)
         self.read_styles()

@@ -17,6 +17,7 @@ from widgetStyles.RadioButton import RadioButton
 from widgetStyles.Line import Line
 
 from utils.helpers import StyleSheet
+from PyQt5.QtGui import QIcon
 
 
 class ProtectedView(QDialog, Ui_ProtectedView):
@@ -25,7 +26,7 @@ class ProtectedView(QDialog, Ui_ProtectedView):
         self.setupUi(self)
         self.read_styles()
         self.setMinimumWidth(500)
-
+        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
         self.btn_copy.clicked.connect(self.copy_item)
         # Set the title of the protected information
         self.lbl_title.setText(item[1])

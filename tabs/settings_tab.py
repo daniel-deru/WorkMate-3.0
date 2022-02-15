@@ -3,6 +3,8 @@ import os
 import csv
 import re
 from pebble import concurrent
+import threading
+import time
 
 from PyQt5.QtWidgets import QWidget, QFileDialog
 from PyQt5.QtCore import pyqtSignal, Qt
@@ -219,7 +221,8 @@ class SettingsTab(QWidget, Ui_Settings_tab):
     def calendar_toggle(self):
         toggle = self.chkbox_calendar
         if toggle.isChecked():
-            google_thread()
+            th = threading.Thread(target=google_thread, daemon=True)
+            th.start()
             Model().update("settings", {"calendar": 1}, "settings")
         elif not toggle.isChecked():
             Model().update("settings", {"calendar": 0}, "settings")
@@ -240,10 +243,11 @@ class SettingsTab(QWidget, Ui_Settings_tab):
             self.logged_in = False
         
 
+
             
-            
-@concurrent.process(timeout=30)
+# @concurrent.process(timeout=30)
 def google_thread():
+    print("inside the google thread")
     Google_calendar.connect()
     
         

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 import os.path
 import tzlocal
 
@@ -8,6 +8,8 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+
+from utils.globals import PATH
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/calendar']
@@ -22,19 +24,19 @@ class Google_calendar:
         # The file token.json stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
         # time.
-        if os.path.exists('./integrations/calendar/token.json'):
-            creds = Credentials.from_authorized_user_file('./integrations/calendar/token.json', SCOPES)
+        if os.path.exists(f'{PATH}/integrations/calendar/token.json'):
+            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/calendar/token.json', SCOPES)
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    './integrations/calendar/client_secret_dev.json', SCOPES)
+                    f'{PATH}/integrations/calendar/client_secret_dev.json', SCOPES)
                 creds = flow.run_local_server(port=0)
                 
             # Save the credentials for the next run
-            with open('./integrations/calendar/token.json', 'w') as token:
+            with open(f'{PATH}/integrations/calendar/token.json', 'w') as token:
                 token.write(creds.to_json())
         
         # try:
@@ -69,19 +71,19 @@ class Google_calendar:
         # The file token.json stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
         # time.
-        if os.path.exists('./integrations/calendar/token.json'):
-            creds = Credentials.from_authorized_user_file('./integrations/calendar/token.json', SCOPES)
+        if os.path.exists(f'{PATH}/integrations/calendar/token.json'):
+            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/calendar/token.json', SCOPES)
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    './integrations/calendar/client_secret_dev.json', SCOPES)
+                    f'{PATH}/integrations/calendar/client_secret_dev.json', SCOPES)
                 creds = flow.run_local_server(port=0)
                 
             # Save the credentials for the next run
-            with open('./integrations/calendar/token.json', 'w') as token:
+            with open(f'{PATH}/integrations/calendar/token.json', 'w') as token:
                 token.write(creds.to_json())
         
         try:

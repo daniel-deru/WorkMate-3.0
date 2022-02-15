@@ -40,7 +40,7 @@ class Main(QWidget, Ui_main_container):
         self.timer = QTimer(self)
         self.logged_in = False
         self.count = 0
-        self.setWindowIcon(QIcon(f"{ASSET_PATH}WorkMate.ico"))
+        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
         self.setWindowFlag(Qt.WindowMaximizeButtonHint, False)
         self.setWindowTitle("Smart WorkMate")
         self.setupUi(self)
@@ -209,13 +209,10 @@ class Main(QWidget, Ui_main_container):
             self.windowSize() 
     
 
-            
-        
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    splash_image = QPixmap(f":/other/splash.png")
+    splash_image = QPixmap(":/other/splash.png")
     splash = QSplashScreen(splash_image)
     splash.setMaximumWidth(500)
     splash.show()

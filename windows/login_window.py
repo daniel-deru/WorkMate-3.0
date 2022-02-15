@@ -11,6 +11,7 @@ from designs.python.login_window import Ui_Login
 from utils.helpers import StyleSheet
 from database.model import Model
 from utils.message import Message
+import assets.resources
 
 from widgetStyles.Label import Label
 from widgetStyles.LineEdit import LineEdit
@@ -24,7 +25,7 @@ class Login(QDialog, Ui_Login):
         super(Login, self).__init__()
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
-        self.setWindowIcon(QIcon("./assets/WorkMate.ico"))
+        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
         self.read_styles()
 
         self.btn_login.clicked.connect(self.login)

@@ -3,12 +3,14 @@ import sys
 
 from PyQt5.QtWidgets import QDialog, QFileDialog
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from designs.python.protected_apps_edit_window import Ui_ProtectedAppsEdit
 from utils.helpers import StyleSheet
 from utils.message import Message
+import assets.resources
 from widgetStyles.PushButton import PushButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.SpinBox import SpinBox
@@ -24,6 +26,7 @@ class ProtectedApps(QDialog, Ui_ProtectedAppsEdit):
         super(ProtectedApps, self).__init__()
         self.app = app
         self.setupUi(self)
+        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
         self.read_styles()
         self.fill_fields()
         self.protected_apps = Model().read('protected_apps')
