@@ -34,14 +34,14 @@ from windows.login_window import Login
 class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
-        self.windowSize()
+        # self.windowSize()
         Model().start()
 
         self.timer = QTimer(self)
         self.logged_in = False
         self.count = 0
         self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
-        self.setWindowFlag(Qt.WindowMaximizeButtonHint, False)
+        # self.setWindowFlag(Qt.WindowMaximizeButtonHint, False)
         self.setWindowTitle("Smart WorkMate")
         self.setupUi(self)
         self.read_style()
@@ -206,7 +206,8 @@ class Main(QWidget, Ui_main_container):
         new_screen = QApplication.screenAt(event.pos())
 
         if not old_screen == new_screen:
-            self.windowSize() 
+            # self.windowSize() 
+            pass
     
 
 

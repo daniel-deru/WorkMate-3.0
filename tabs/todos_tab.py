@@ -1,11 +1,12 @@
 import sys
 import os
 from datetime import date, datetime
+from threading import Thread
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QFont
-from pebble import concurrent
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from database.model import Model
@@ -66,7 +67,8 @@ class Todo_tab(QWidget, Ui_todo_tab):
             deadline = self.dte_date_select.date().toPyDate()
             time = datetime.now()
             date = datetime(deadline.year, deadline.month, deadline.day, time.hour, time.minute, time.second)
-            google_save(date)
+            th = Thread(target=google_thread, daemon=True, args=(date,))
+            th.start()
 
         if not name:
             Message("Please enter a name for the todo.", "To-do").exec_()
@@ -97,8 +99,8 @@ class Todo_tab(QWidget, Ui_todo_tab):
         self.read_style()
 
 
-@concurrent.process(timeout=30)
-def google_save(date):
+# @concurrent.process(timeout=30)
+def google_thread(date):
     Google_calendar.save(date)
 
 

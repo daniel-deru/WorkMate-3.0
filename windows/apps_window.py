@@ -43,6 +43,7 @@ class Apps_window(QDialog, Ui_App_Window):
         self.btn_save.clicked.connect(self.save_clicked)
         self.btn_desktop.clicked.connect(self.add_from_desktop)
         self.chkbox_protected_app.stateChanged.connect(self.protected_toggle)
+        self.btn_discard.clicked.connect(lambda: self.close())
 
 
 
