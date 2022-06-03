@@ -27,7 +27,7 @@ class Login(QDialog, Ui_Login):
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
         self.read_styles()
-
+        self.setWindowFlags(Qt.WindowCloseButtonHint)
         self.btn_login.clicked.connect(self.login)
         self.lnedt_password.setEchoMode(QLineEdit.Password)
 

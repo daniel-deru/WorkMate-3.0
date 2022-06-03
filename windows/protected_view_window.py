@@ -3,6 +3,7 @@ import os
 import json
 
 from PyQt5.QtWidgets import QDialog,QHBoxLayout, QRadioButton, QLabel, QFrame
+from PyQt5.QtCore import Qt
 from cryptography.fernet import Fernet
 import pyperclip
 
@@ -27,6 +28,9 @@ class ProtectedView(QDialog, Ui_ProtectedView):
         self.read_styles()
         self.setMinimumWidth(500)
         self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowFlags(Qt.WindowCloseButtonHint)
+
         self.btn_copy.clicked.connect(self.copy_item)
         # Set the title of the protected information
         self.lbl_title.setText(item[1])

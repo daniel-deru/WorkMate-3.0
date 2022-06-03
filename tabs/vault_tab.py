@@ -84,7 +84,7 @@ class Vault_tab(QWidget, Ui_Vault_tab):
     
     def create_secrets(self):
         apps = Model().read('vault')
-        COLUMNS = 5
+        COLUMNS = 4
         sorted_secrets = sorted(apps, key=lambda item: item[3])
         grid_items = []
         # Create the grid for the layout

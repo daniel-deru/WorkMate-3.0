@@ -27,20 +27,20 @@ class TodoItem(QFrame):
         self.setupUI()
         self.read_styles()
 
-        # self.action.clicked.connect(self.button_clicked)
+        self.action.clicked.connect(self.state_change_button_clicked)
 
     
     def create_widget(self):
         return self
 
   
-    def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-                if self.completed:
-                    Model().delete("todos", self.todo_id)
-                else:
-                    Model().update("todos", {'complete': 1}, self.todo_id)
-        self.todo_item_signal.emit(self.todo)
+    # def mousePressEvent(self, event):
+    #     if event.button() == Qt.LeftButton:
+    #             if self.completed:
+    #                 Model().delete("todos", self.todo_id)
+    #             else:
+    #                 Model().update("todos", {'complete': 1}, self.todo_id)
+    #     self.todo_item_signal.emit(self.todo)
         
 
     
@@ -89,6 +89,13 @@ class TodoItem(QFrame):
         font = Model().read("settings")[0][2]
         self.name.setFont(QFont(font))
         self.date.setFont(QFont(font))
+    
+    def state_change_button_clicked(self):
+        if self.completed:
+                    Model().delete("todos", self.todo_id)
+        else:
+            Model().update("todos", {'complete': 1}, self.todo_id)
+        self.todo_item_signal.emit(self.todo)
 
 
 

@@ -67,8 +67,12 @@ class Todo_tab(QWidget, Ui_todo_tab):
             deadline = self.dte_date_select.date().toPyDate()
             time = datetime.now()
             date = datetime(deadline.year, deadline.month, deadline.day, time.hour, time.minute, time.second)
-            th = Thread(target=google_thread, daemon=True, args=(date,))
-            th.start()
+            # Get the calendar integration setting
+            calendar_integration = Model().read('settings')[0][6]
+            # Check to see if the calendar integration should be used
+            if(calendar_integration):
+                th = Thread(target=google_thread, daemon=True, args=(date,))
+                th.start()
 
         if not name:
             Message("Please enter a name for the todo.", "To-do").exec_()
