@@ -11,7 +11,8 @@ DateEdit = f"""
     QDateEdit {{
         border: none;
         color: {default};
-        font-size: 12px
+        font-size: 12px;
+        height: 30px;
     }}
     QDateEdit::drop-down {{
         background-color: {mode};
@@ -20,6 +21,7 @@ DateEdit = f"""
         padding: 5px;
         border-radius: 5px;
         width: 40px;
+
         image: url(:/other/calendar.svg);
     }}
 """

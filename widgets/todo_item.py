@@ -49,9 +49,9 @@ class TodoItem(QFrame):
         self.name.setObjectName("lbl_todo_name")
         self.name.setStyleSheet("color: #ffffff")
 
-        self.date = QLabel(self.date)
-        self.date.setObjectName("lbl_date")
-        self.date.setStyleSheet("color: #ffffff")
+        self.lbl_date = QLabel(self.date)
+        self.lbl_date.setObjectName("lbl_date")
+        self.lbl_date.setStyleSheet("color: #ffffff")
 
         self.HSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -72,7 +72,7 @@ class TodoItem(QFrame):
 
 
         self.hbox.addWidget(self.name)
-        self.hbox.addWidget(self.date)
+        self.hbox.addWidget(self.lbl_date)
         # self.hbox.addSpacerItem(self.HSpacer)
         self.hbox.addWidget(self.editButton)
         self.hbox.addWidget(self.statusButton)
@@ -91,7 +91,7 @@ class TodoItem(QFrame):
         self.setStyleSheet(stylesheet)
         font = Model().read("settings")[0][2]
         self.name.setFont(QFont(font))
-        self.date.setFont(QFont(font))
+        self.lbl_date.setFont(QFont(font))
     
     def state_change_button_clicked(self):
         if self.completed:
@@ -102,9 +102,18 @@ class TodoItem(QFrame):
 
     # Fire an event when the edit button is clicked
     def editButtonClick(self):
-        # todoEditWindow = TodoEditWindow()
-        # todoEditWindow.exec_()
-        pass
+        todo_data = {
+            'name': self.todo,
+            'date': self.date,
+            'status': self.completed,
+            'id': self.todo_id
+        }
+        todoEditWindow = TodoEditWindow(todo_data)
+        todoEditWindow.todo_edit_signal.connect(self.update)
+        todoEditWindow.exec_()
 
+    # send signal to the main tab to update the view
+    def update(self):
+        self.todo_item_signal.emit(self.todo)
 
 
