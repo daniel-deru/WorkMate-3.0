@@ -1,7 +1,7 @@
 import sys
 import os
 
-from PyQt5.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QSpacerItem, QSizePolicy, QWidget
+from PyQt5.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QSpacerItem, QSizePolicy, QToolButton
 from PyQt5.QtCore import pyqtSignal, QSize, Qt
 from PyQt5.QtGui import QIcon, QFont
 
@@ -12,7 +12,10 @@ from database.model import Model
 from widgetStyles.Frame import TodoFrameComplete, TodoFrameDelete
 from widgetStyles.Label import LabelMono
 from widgetStyles.PushButton import IconButton
+from widgetStyles.ToolButton import ToolButton
 from utils.helpers import StyleSheet
+
+from windows.todo_edit_window import TodoEditWindow
 
 
 
@@ -27,26 +30,17 @@ class TodoItem(QFrame):
         self.setupUI()
         self.read_styles()
 
-        self.action.clicked.connect(self.state_change_button_clicked)
+        self.editButton.clicked.connect(self.editButtonClick)
+        self.statusButton.clicked.connect(self.state_change_button_clicked)
 
     
     def create_widget(self):
-        return self
-
-  
-    # def mousePressEvent(self, event):
-    #     if event.button() == Qt.LeftButton:
-    #             if self.completed:
-    #                 Model().delete("todos", self.todo_id)
-    #             else:
-    #                 Model().update("todos", {'complete': 1}, self.todo_id)
-    #     self.todo_item_signal.emit(self.todo)
-        
+        return self        
 
     
     def setupUI(self):
         self.setObjectName("TodoItem")
-
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         
         self.hbox = QHBoxLayout()
         self.hbox.setObjectName("hbox_todo_item")
@@ -61,18 +55,29 @@ class TodoItem(QFrame):
 
         self.HSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
+        editIcon = QIcon("assets/edit.png")
+        self.editButton = QToolButton()
+        self.editButton.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.editButton.setObjectName("btn_edit")
+        # self.editButton.setText("Edit")
+        self.editButton.setIcon(editIcon)
+        self.editButton.setIconSize(QSize(20, 20))
+
         icon = QIcon("assets/delete.png") if self.completed else QIcon("assets/done.png")
-        self.action = QPushButton()
-        self.action.setObjectName("btn_action")
-        self.action.setIcon(icon)
-        self.action.setIconSize(QSize(15, 15))
+        self.statusButton = QToolButton()
+
+        self.statusButton.setObjectName("btn_status")
+        # self.statusButton.setText("Update")
+        self.statusButton.setIcon(icon)
+        self.statusButton.setIconSize(QSize(20, 20))
 
 
 
         self.hbox.addWidget(self.name)
         self.hbox.addWidget(self.date)
-        self.hbox.addSpacerItem(self.HSpacer)
-        self.hbox.addWidget(self.action)
+        # self.hbox.addSpacerItem(self.HSpacer)
+        self.hbox.addWidget(self.editButton)
+        self.hbox.addWidget(self.statusButton)
 
         self.setLayout(self.hbox)
 
@@ -81,8 +86,8 @@ class TodoItem(QFrame):
         Background = TodoFrameDelete if self.completed else TodoFrameComplete
         styles = [
             LabelMono,
-            IconButton,
-            Background
+            Background,
+            ToolButton
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
@@ -96,6 +101,12 @@ class TodoItem(QFrame):
         else:
             Model().update("todos", {'complete': 1}, self.todo_id)
         self.todo_item_signal.emit(self.todo)
+
+    # Fire an event when the edit button is clicked
+    def editButtonClick(self):
+        # todoEditWindow = TodoEditWindow()
+        # todoEditWindow.exec_()
+        pass
 
 
 

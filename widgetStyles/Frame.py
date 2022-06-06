@@ -24,8 +24,8 @@ TodoFrameDelete = f"""
         font-size: 16px;
         background-color: #A60000;
         color: #ffffff;
-        max-height: 40px;
-        height: 40px;
+        max-height: 100px;
+        height: 100px;
         padding: 0px;
     }}
 """
@@ -37,8 +37,8 @@ TodoFrameComplete = f"""
         font-size: 16px;
         background-color: #00A62E;
         color: #ffffff;
-        max-height: 40px;
-        height: 40px;
+        max-height: 100px;
+        height: 100px;
         padding: 0px;
     }}
 """
