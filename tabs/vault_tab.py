@@ -109,8 +109,9 @@ class Vault_tab(QWidget, Ui_Vault_tab):
     def get_secret(self, secret):
         edit = self.chk_edit
         delete = self.chk_delete
-
-        if not edit.isChecked() and not delete.isChecked() and self.logged_in:
+        if not self.logged_in:
+            self.login_clicked()
+        elif not edit.isChecked() and not delete.isChecked() and self.logged_in:
             protected_view = ProtectedView(secret, 'secret')
             protected_view.exec_()
         elif delete.isChecked() and self.logged_in:
@@ -124,8 +125,6 @@ class Vault_tab(QWidget, Ui_Vault_tab):
             secret_edit_window.exec_()
             # Set the Edit checkbox to off after the secret has been edited
             self.chk_edit.setChecked(False)
-        elif not self.logged_in:
-            Message("The Vault is a protected space please log in to use the functionality of this tab", "Restricted Access").exec_()
     
     # Clear the window from the data add the data back and read the styles
     def update(self):

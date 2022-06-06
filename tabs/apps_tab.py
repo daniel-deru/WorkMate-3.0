@@ -219,14 +219,11 @@ class Apps_tab(QWidget, Ui_apps_tab):
             view_window = ProtectedView(app, "app")
             view_window.exec_()
             view_toggle.setChecked(False)
-        elif is_protected_app and not self.logged_in:
-            Message("Please login before you can access the content of this app", "Restricted App").exec_()
+        elif (is_protected_app and not self.logged_in) and (view_toggle.isChecked() or pro_edit.isChecked() or pro_delete.isChecked()):
+            self.login_clicked()
         else:
             try:
-                if is_protected_app and self.logged_in:
-                    os.startfile(app[2])
-                elif not is_protected_app:
-                    os.startfile(app[2])
+                os.startfile(app[2])
             except OSError:
                 pass
 

@@ -17,7 +17,7 @@ class VaultItem(QPushButton):
         self.secret = secret
         self.setupUI()
         
-
+        if(len(self.text()) > 25): self.setStyleSheet("text-align: left;")
         self.clicked.connect(self.app_clicked)
 
     def app_clicked(self):
