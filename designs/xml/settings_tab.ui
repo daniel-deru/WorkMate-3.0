@@ -295,6 +295,13 @@
        </item>
       </layout>
      </item>
+     <item>
+      <widget class="QPushButton" name="btn_forgot_password">
+       <property name="text">
+        <string>Forgot Password</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>

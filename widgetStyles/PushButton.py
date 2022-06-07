@@ -22,8 +22,12 @@ QPushButton:pressed {{
     color: {default};
     border: 2px solid {light_blue};
 }}
+"""
 
-
+ForgotPasswordButton = f"""
+    QPushButton#btn_forgot_password {{
+        max-width: 1000000px;
+    }}
 """
 
 VaultButton = f"""

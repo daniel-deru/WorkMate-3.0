@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'settings_tab.ui'
+# Form implementation generated from reading ui file './xml/settings_tab.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -151,6 +151,9 @@ class Ui_Settings_tab(object):
         self.btn_reset.setObjectName("btn_reset")
         self.horizontalLayout.addWidget(self.btn_reset)
         self.verticalLayout.addLayout(self.horizontalLayout)
+        self.btn_forgot_password = QtWidgets.QPushButton(Settings_tab)
+        self.btn_forgot_password.setObjectName("btn_forgot_password")
+        self.verticalLayout.addWidget(self.btn_forgot_password)
         self.horizontalLayout_5.addLayout(self.verticalLayout)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_5.addItem(spacerItem)
@@ -175,13 +178,4 @@ class Ui_Settings_tab(object):
         self.btn_import_notes.setText(_translate("Settings_tab", "Import Notes"))
         self.lbl_reset.setText(_translate("Settings_tab", "Reset Settings"))
         self.btn_reset.setText(_translate("Settings_tab", "Reset"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Settings_tab = QtWidgets.QWidget()
-    ui = Ui_Settings_tab()
-    ui.setupUi(Settings_tab)
-    Settings_tab.show()
-    sys.exit(app.exec_())
+        self.btn_forgot_password.setText(_translate("Settings_tab", "Forgot Password"))

@@ -70,6 +70,7 @@ class Main(QWidget, Ui_main_container):
         stylesheet = StyleSheet(styles).create()
         self.tab_widget.setStyleSheet(stylesheet)
         font = Model().read('settings')[0][2]
+
         self.tab_widget.setFont(QFont(font))
         self.setTabIcons()
       

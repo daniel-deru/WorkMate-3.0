@@ -2,8 +2,8 @@ import os
 import sys
 
 from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QFont
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtGui import QFont, QCursor
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -32,3 +32,5 @@ class AppItem(QPushButton):
         self.setText(self.app[1])
         font = Model().read("settings")[0][2]
         self.setFont(QFont(font))
+
+        self.setCursor(QCursor(Qt.PointingHandCursor))

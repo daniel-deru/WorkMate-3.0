@@ -16,7 +16,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from designs.python.settings_tab import Ui_Settings_tab
 
 from widgetStyles.Label import Label
-from widgetStyles.PushButton import PushButton
+from widgetStyles.PushButton import PushButton, ForgotPasswordButton
 from widgetStyles.QCheckBox import SettingsCheckBox
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.ScrollBar import ScrollBar
@@ -28,6 +28,7 @@ from database.model import Model
 
 from windows.timer_window import Timer
 from windows.login_window import Login
+from windows.forgot_question import PasswordQuestion
 
 from integrations.calendar.c import Google_calendar
 
@@ -63,6 +64,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.chkbox_vault.stateChanged.connect(self.vault)
         self.btn_vault_timer.clicked.connect(self.vault_timer)
         self.chkbox_calendar.stateChanged.connect(self.calendar_toggle)
+        self.btn_forgot_password.clicked.connect(self.forgot_password_clicked)
 
         # connect the custom signals to the slots
         self.settings_signal.connect(self.read_styles)
@@ -123,7 +125,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.settings_signal.emit("settings")
 
     def read_styles(self):
-        styles = [Label, PushButton, SettingsCheckBox, ComboBox, ScrollBar]
+        styles = [Label, PushButton, SettingsCheckBox, ComboBox, ScrollBar, ForgotPasswordButton]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         self.set_font()
@@ -241,6 +243,10 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         elif signal == "logged out":
             self.btn_login.setText("login")
             self.logged_in = False
+
+    def forgot_password_clicked(self):
+        ask_question = PasswordQuestion()
+        ask_question.exec_()
         
 
 
