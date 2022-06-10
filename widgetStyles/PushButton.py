@@ -24,6 +24,24 @@ QPushButton:pressed {{
 }}
 """
 
+ButtonFullWidth = f"""
+    QPushButton {{
+    background-color: {light_blue};
+    color: white;
+    border: 2px solid {light_blue};
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 5px 8px;
+    min-width: 100px;
+}}
+
+QPushButton:pressed {{
+    background-color: transparent;
+    color: {default};
+    border: 2px solid {light_blue};
+}}
+"""
+
 ForgotPasswordButton = f"""
     QPushButton#btn_forgot_password {{
         max-width: 1000000px;

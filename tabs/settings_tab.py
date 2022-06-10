@@ -29,6 +29,7 @@ from database.model import Model
 from windows.timer_window import Timer
 from windows.login_window import Login
 from windows.forgot_question import PasswordQuestion
+from windows.twofa_window import TwofaDialog
 
 from integrations.calendar.c import Google_calendar
 
@@ -47,14 +48,17 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.logged_in = False
         settings = Model().read('settings')[0]
 
-
+        # Set the default value of the settings
         self.chkbox_nightmode.setChecked(settings[1])
         self.chkbox_vault.setChecked(settings[4])
         self.chkbox_calendar.setChecked(settings[6])
+        self.chkbox_2fa.setChecked(settings[7])
 
 
+        # Signals
         self.btn_login.clicked.connect(self.login_clicked)
         self.chkbox_nightmode.stateChanged.connect(self.set_night_mode)
+        self.chkbox_2fa.stateChanged.connect(self.twofa)
         self.fcmbx_font.currentFontChanged.connect(self.get_font)
         self.btn_reset.clicked.connect(self.reset)
         self.btn_export_apps.clicked.connect(lambda: self.export_data("apps"))
@@ -86,6 +90,19 @@ class SettingsTab(QWidget, Ui_Settings_tab):
             Model().update("settings", {'nightmode': 0}, 'settings')
             self.settings_signal.emit("settings changed")
             self.updateWindow()
+    
+    # 2fa slot
+    def twofa(self):
+        toggle = self.chkbox_2fa
+        if(toggle.isChecked()):
+            Model().update("settings", {'twofa': 1}, 'settings')
+            twofa_window = TwofaDialog()
+            twofa_window.exec_()
+        else:
+            Model().update('user', {'twofa_key': None}, 'user')
+            Model().update("settings", {'twofa': 0}, 'settings')
+
+
 
 
     def get_font(self):

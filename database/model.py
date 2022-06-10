@@ -1,5 +1,8 @@
 import sqlite3
 import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from utils.globals import DB_PATH
 
 class Model:
@@ -56,7 +59,8 @@ class Model:
                 color TEXT DEFAULT '#000000',
                 vault_on INTEGER DEFAULT 1 NOT NULL,
                 timer INTEGER DEFAULT 5 NOT NULL,
-                calendar INTEGER DEFAULT 0 NOT NULL
+                calendar INTEGER DEFAULT 0 NOT NULL,
+                twofa INTEGER DEFAULT 0 NOT NULL
             )
         """
 
@@ -67,7 +71,8 @@ class Model:
                 email TEXT NOT NULL,
                 password TEXT NOT NULL,
                 question TEXT NOT NULL,
-                answer TEXT NOT NULL
+                answer TEXT NOT NULL,
+                twofa_key TEXT
             )
         """
 
@@ -154,7 +159,13 @@ class Model:
             }
             self.save('settings', data)
 
-# Model().clearTable("user")
+    def add_column(self, table_name, column_name, column_definition):
+        query = f"ALTER TABLE {table_name} ADD {column_name} {column_definition}"
+        self.cur.execute(query)
+
+# model = Model()
+# model.add_column("settings", "twofa", "INTEGER DEFAULT 0 NOT NULL")
+# model.add_column("user", "twofa_key", "TEXT")
 
 
 

@@ -18,6 +18,8 @@ from widgetStyles.LineEdit import LineEdit
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Dialog import Dialog
 
+from windows.twofa_verify_window import TwofaVerifyWindow
+
 
 class Login(QDialog, Ui_Login):
     login_status = pyqtSignal(str)
@@ -48,8 +50,22 @@ class Login(QDialog, Ui_Login):
         db_password = user[3]
         password = self.lnedt_password.text()
         if(password == db_password):
-            self.login_status.emit("success")
-            self.close()
+            has_2fa = Model().read('settings')[0][7]
+            if(has_2fa):
+                self.hide()
+                twofa_verify_window = TwofaVerifyWindow()
+                twofa_verify_window.opt_verify_signal.connect(self.verify_otp)
+                twofa_verify_window.exec_()
+                # Go to the two fa login window
+            else:
+                self.login_status.emit("success")
+                self.close()
         else:
             Message("The password is incorrect", "Wrong Password").exec_()
             self.login_status.emit("failure")
+    
+    def verify_otp(self, verified):
+        if(verified):
+            self.login_status.emit("success")
+            self.close()
+            
