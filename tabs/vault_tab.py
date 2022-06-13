@@ -27,6 +27,7 @@ from windows.vault_type_window import VaultType
 
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.PushButton import PushButton
+from widgetStyles.Label import Label
 
 from database.model import Model
 
@@ -37,7 +38,7 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         super(Vault_tab, self).__init__()
         self.setupUi(self)
         self.read_styles()
-        self.create_secrets()
+        # self.create_secrets()
 
         self.btn_add.clicked.connect(self.add_clicked)
         self.chk_delete.clicked.connect(self.checkHandler)
@@ -56,7 +57,8 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         font = Model().read('settings')[0][2]
         styles = [
             PushButton,
-            CheckBox
+            CheckBox,
+            Label
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
@@ -145,7 +147,7 @@ class Vault_tab(QWidget, Ui_Vault_tab):
     # Clear the window from the data add the data back and read the styles
     def update(self):
         clear_window(self.gbox_secret)
-        self.create_secrets()
+        # self.create_secrets()
         self.read_styles()
 
     # Slot for when the login button is clicked
@@ -163,5 +165,9 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         elif signal == "logged out":
             self.btn_login.setText("login")
             self.logged_in = False
+
+    def display_apps(self):
+        apps = Model().read('appvault')
+        print(apps)
             
     

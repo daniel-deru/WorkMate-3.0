@@ -84,6 +84,27 @@ class Model:
                 key TEXT NOT NULL
             )
         """
+
+        crypto_vault_table = """
+            CREATE TABLE IF NOT EXISTS cryptovault(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                num_words INT NOT NULL,
+                words TEXT NOT NULL
+            )
+        """
+
+        app_vault_table = """
+            CREATE TABLE IF NOT EXISTS appvault(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                sequence INT NOT NULL,
+                path TEXT NOT NULL,
+                username TEXT NOT NULL,
+                email TEXT NOT NULL,
+                password TEXT NOT NULL
+            )
+        """
         self.cur.execute(apps_table)
         self.cur.execute(notes_table)
         self.cur.execute(todos_table)
@@ -91,6 +112,8 @@ class Model:
         self.cur.execute(users_table)
         self.cur.execute(vault_table)
         self.cur.execute(protected_apps_table)
+        self.cur.execute(crypto_vault_table)
+        self.cur.execute(app_vault_table)
 
     def save(self, table, data): 
         keys = f'{", ".join(data.keys())}'

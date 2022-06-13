@@ -21,6 +21,8 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.setupUi(self)
         self.read_styles()
 
+        self.btn_save.clicked.connect(self.save)
+
     def read_styles(self):
         widget_list = [
             Label,
@@ -32,3 +34,19 @@ class AppVaultWindow(Ui_AppVault, QDialog):
 
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
+
+    def save(self):
+        name = self.lne_name.text()
+        index = self.spn_index.text()
+        path = self.lne_path.text()
+
+        username = self.lne_username.text()
+        email = self.lne_email.text()
+        password = self.lne_password.text()
+
+        print(name)
+        print(index)
+        print(path)
+        print(username)
+        print(email)
+        print(password)
