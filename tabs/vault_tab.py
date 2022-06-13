@@ -21,6 +21,9 @@ from utils.helpers import clear_window
 from widgets.vault_item import VaultItem
 
 from windows.secret_window import SecretWindow
+from windows.crypto_vault_window import CryptoVaultWindow
+from windows.app_vault_window import AppVaultWindow
+from windows.vault_type_window import VaultType
 
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.PushButton import PushButton
@@ -78,9 +81,22 @@ class Vault_tab(QWidget, Ui_Vault_tab):
             edit.setChecked(False)
 
     def add_clicked(self):
-        new_secret = SecretWindow()
-        new_secret.secret_signal.connect(self.update)
-        new_secret.exec_()
+        vault_type = VaultType()
+        vault_type.vault_type_signal.connect(self.open_vault)
+        vault_type.exec_()
+
+    
+    def open_vault(self, signal):
+        if(signal == "general"):
+            new_secret = SecretWindow()
+            new_secret.secret_signal.connect(self.update)
+            new_secret.exec_()
+        elif signal == "app":
+            app_secret = AppVaultWindow()
+            app_secret.exec_()
+        elif signal == "crypto":
+            new_crypto_secret = CryptoVaultWindow()
+            new_crypto_secret.exec_()
     
     def create_secrets(self):
         apps = Model().read('vault')

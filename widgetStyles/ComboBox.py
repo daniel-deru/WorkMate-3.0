@@ -11,6 +11,7 @@ ComboBox = f"""
         background-color: {mode};
         border-radius: 5px;
         padding: 5px;
+        font-size: 16px;
     }}
 
     QComboBox::drop-down {{
@@ -19,7 +20,7 @@ ComboBox = f"""
         color: white;
         padding: 0px 5px;
         width: 20px;
-        font-size: 12px;
+        font-size: 16px;
         border: none;
         border-left: 2px solid {light_blue};
         background-color: {mode};
@@ -45,6 +46,6 @@ ComboBox = f"""
     }}
 
     QComboBox QListView {{
-        font-size: 5px
+        font-size: 16px
     }}
 """
