@@ -2,7 +2,7 @@ import sys
 import os
 import re
 import math
-from PyQt5.QtWidgets import QDialog, QPushButton, QHBoxLayout, QLabel, QLineEdit, QWidget
+from PyQt5.QtWidgets import QDialog, QPushButton, QHBoxLayout, QLabel, QLineEdit, QWidget, QGridLayout
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -15,6 +15,9 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.LineEdit import LineEdit
 
 from utils.helpers import StyleSheet, clear_window
+from utils.message import Message
+
+from database.model import Model
 
 class CryptoVaultWindow(Ui_CryptoVault, QDialog):
     def __init__(self):
@@ -24,6 +27,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         self.read_styles()
 
         self.cmb_num_words.currentIndexChanged.connect(self.update)
+        self.btn_save.clicked.connect(self.save)
 
     def read_styles(self):
         widget_list = [
@@ -33,31 +37,26 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
             PushButton,
             LineEdit
         ]
-        self.setMinimumHeight(600)
+        self.setMinimumHeight(750)
         stylesheet = StyleSheet(widget_list).create()
 
         self.setStyleSheet(stylesheet)
 
     def displayWordBoxes(self):
-        num_words: str = self.cmb_num_words.currentText()
-        # Get the start and end index matching the regex 
-        (start, end) = re.match("^\d+", num_words).span()
-        # Get the number of words that needs to be represented
-        words: int = int(num_words[start: end])
-        grid_items = []
+        words: int = self.get_num_words()
 
-        COLUMNS = 3
-        count = 1
+        COLUMNS: int = 3
+        count: int = 1
         for i in range(math.ceil(words/COLUMNS)):
             subarr = []
             print(i)
             for j in range(COLUMNS):
-                hbox = QHBoxLayout()
-                widget = QWidget()
+                hbox: QHBoxLayout = QHBoxLayout()
+                widget: QWidget = QWidget()
                 widget.setMinimumWidth(300)
 
-                number = QLabel(f"{str(count).zfill(2)}. ")
-                field = QLineEdit()
+                number: QLabel = QLabel(f"{str(count).zfill(2)}. ")
+                field: QLineEdit = QLineEdit()
 
                 widget.setLayout(hbox)
 
@@ -66,13 +65,62 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
 
                 if(count > words):
                     break
-                button = QPushButton(f"Button {count}")
                 self.gbox_words.addWidget(widget, i, j)
                 count += 1
 
         
 
-    def update(self):
+    def update(self) -> None:
         clear_window(self.gbox_words)
         self.displayWordBoxes()
         self.read_styles()
+
+    def save(self) -> None:
+        password1: str = self.lne_password1
+        password2: str = self.lne_password2
+
+        description:str = self.lne_description
+        username: str = self.lne_name
+        num_words: int = self.get_num_words()
+        words_layout: QGridLayout = self.gbox_words
+        words: list[str] = []
+
+        valid_submit: bool = True
+
+        for i in range(words_layout.count()):
+            line_edit: QLineEdit = words_layout.itemAt(i).widget().layout().itemAt(1).widget()
+            word: str = line_edit.text()
+            if(not word):
+                Message(f"There is no word in block {i + 1}.", "Missing Word")
+                valid_submit = False
+            words.push(word)
+
+
+        if(password1 and password1 is not password2):
+            Message("The passwords don't match", "Passwords Incorrect").exec_()
+            valid_submit = False
+
+        if(not description.text()): 
+            valid_submit = False
+            Message("Please Provide a description", "No Description").exec_()
+        if(not username.text()): 
+            valid_submit = False
+            Message("Please Provide a username", "No Username").exec_()
+        
+        if(valid_submit):
+            Model().save("cryptovault", {
+                'name': username,
+                'num_words': num_words,
+                'words': " ".join(words),
+                'description': description,
+                'password': password1
+            })
+    
+    def get_num_words(self) -> int:
+        num_words: str = self.cmb_num_words.currentText()
+        # Get the start and end index matching the regex 
+        (start, end) = re.match("^\d+", num_words).span()
+        # Get the number of words that needs to be represented
+        words: int = int(num_words[start: end])
+
+        return words

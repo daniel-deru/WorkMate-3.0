@@ -15,13 +15,13 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_7">
        <item>
-        <widget class="QLabel" name="lbl_name">
+        <widget class="QLabel" name="lbl_description">
          <property name="text">
-          <string>Name</string>
+          <string>Description</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -29,60 +29,132 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lne_name"/>
+        <widget class="QLineEdit" name="lne_description"/>
        </item>
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QLabel" name="lbl_words">
-         <property name="text">
-          <string>Number of Words</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QLabel" name="lbl_name">
+           <property name="text">
+            <string>Username</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lne_name"/>
+         </item>
+        </layout>
        </item>
        <item>
-        <widget class="QComboBox" name="cmb_num_words">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <property name="text">
-           <string>12 Words</string>
-          </property>
+          <widget class="QLabel" name="lbl_words">
+           <property name="text">
+            <string>Number of Words</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
          </item>
          <item>
-          <property name="text">
-           <string>15 Words</string>
-          </property>
+          <widget class="QComboBox" name="cmb_num_words">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <item>
+            <property name="text">
+             <string>12 Words</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>15 Words</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>18 Words</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>21 Words</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>24 Words</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <widget class="QLabel" name="lbl_password">
+           <property name="text">
+            <string>Password</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
          </item>
          <item>
-          <property name="text">
-           <string>18 Words</string>
-          </property>
+          <widget class="QLineEdit" name="lne_password1"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_6">
+         <item>
+          <widget class="QLabel" name="lbl_password2">
+           <property name="text">
+            <string>Confirm Password</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
          </item>
          <item>
-          <property name="text">
-           <string>21 Words</string>
-          </property>
+          <widget class="QLineEdit" name="lne_password2"/>
          </item>
-         <item>
-          <property name="text">
-           <string>24 Words</string>
-          </property>
-         </item>
-        </widget>
+        </layout>
        </item>
       </layout>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="styleSheet">
+      <string notr="true">background-color: #9ecd16;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::HLine</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="gbox_words"/>

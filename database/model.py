@@ -90,7 +90,9 @@ class Model:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 num_words INT NOT NULL,
-                words TEXT NOT NULL
+                words TEXT NOT NULL,
+                description TEXT NOT NULL,
+                password TEXT NOT NULL
             )
         """
 

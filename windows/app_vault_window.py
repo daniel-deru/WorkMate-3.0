@@ -15,6 +15,8 @@ from widgetStyles.SpinBox import SpinBox
 
 from utils.helpers import StyleSheet
 
+from database.model import Model
+
 class AppVaultWindow(Ui_AppVault, QDialog):
     def __init__(self):
         super(Ui_AppVault, self).__init__()
@@ -44,9 +46,11 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         email = self.lne_email.text()
         password = self.lne_password.text()
 
-        print(name)
-        print(index)
-        print(path)
-        print(username)
-        print(email)
-        print(password)
+        Model().save("appvault", {
+            'name': name,
+            'sequence': index,
+            'path': path,
+            'username': username,
+            'email': email,
+            'password': password
+        })
