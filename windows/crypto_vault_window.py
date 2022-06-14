@@ -2,7 +2,8 @@ import sys
 import os
 import re
 import math
-from PyQt5.QtWidgets import QDialog, QPushButton, QHBoxLayout, QLabel, QLineEdit, QWidget, QGridLayout
+from json import dumps, load, loads
+from PyQt5.QtWidgets import QDialog, QHBoxLayout, QLabel, QLineEdit, QWidget, QGridLayout
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -20,11 +21,14 @@ from utils.message import Message
 from database.model import Model
 
 class CryptoVaultWindow(Ui_CryptoVault, QDialog):
-    def __init__(self):
+    def __init__(self, secret):
         super(CryptoVaultWindow, self).__init__()
         self.setupUi(self)
         self.displayWordBoxes()
         self.read_styles()
+
+        self.secret: tuple or None = secret
+        if self.secret: self.fill_data()
 
         self.cmb_num_words.currentIndexChanged.connect(self.update)
         self.btn_save.clicked.connect(self.save)
@@ -76,11 +80,11 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         self.read_styles()
 
     def save(self) -> None:
-        password1: str = self.lne_password1
-        password2: str = self.lne_password2
+        password1: str = self.lne_password1.text()
+        password2: str = self.lne_password2.text()
 
-        description:str = self.lne_description
-        username: str = self.lne_name
+        description:str = self.lne_description.text()
+        username: str = self.lne_name.text()
         num_words: int = self.get_num_words()
         words_layout: QGridLayout = self.gbox_words
         words: list[str] = []
@@ -93,28 +97,31 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
             if(not word):
                 Message(f"There is no word in block {i + 1}.", "Missing Word")
                 valid_submit = False
-            words.push(word)
+            words.append(word)
 
 
-        if(password1 and password1 is not password2):
+        if(password1 and (password1 != password2)):
             Message("The passwords don't match", "Passwords Incorrect").exec_()
             valid_submit = False
 
-        if(not description.text()): 
+        if(not description): 
             valid_submit = False
             Message("Please Provide a description", "No Description").exec_()
-        if(not username.text()): 
+        if(not username): 
             valid_submit = False
             Message("Please Provide a username", "No Username").exec_()
         
         if(valid_submit):
-            Model().save("cryptovault", {
+            data: str = dumps({
                 'name': username,
                 'num_words': num_words,
                 'words': " ".join(words),
                 'description': description,
                 'password': password1
             })
+
+            Model().save("vault", {'type': 'crypto', 'name': description, 'data': data})
+            self.close()
     
     def get_num_words(self) -> int:
         num_words: str = self.cmb_num_words.currentText()
@@ -124,3 +131,16 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         words: int = int(num_words[start: end])
 
         return words
+
+    def fill_data(self):
+        data: object = loads(self.secret[3])
+        self.lne_description.setText(data['description'])
+        self.lne_password1.setText(data['password'])
+        self.lne_password2.setText(data['password'])
+        self.lne_name.setText(data['name'])
+        
+        words = self.gbox_words
+        db_words: list[str] = data['words'].split(" ")
+
+        for i in range(words.count()):
+            words.itemAt(i).widget().layout().itemAt(1).widget().setText(db_words[i])

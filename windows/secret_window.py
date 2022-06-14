@@ -53,8 +53,8 @@ class SecretWindow(QDialog, Ui_AddSecret_window):
             container.itemAt(i).layout().itemAt(1).widget().setText(secret[i][1])
 
 
-    def get_data(self):
-        data = []
+    def get_data(self) -> object:
+        data: object[str, str] = {}
         fields = self.vbox_column_def.layout()
 
         name = self.lnedt_name.text()
@@ -72,22 +72,27 @@ class SecretWindow(QDialog, Ui_AddSecret_window):
             elif header_field.text() and not data_field.text():
                 Message("One or more of your header fields is missing a data entry.", "Please check your information.").exec_()
             elif header_field.text() and data_field.text():
-                data.append([header_field.text(), data_field.text()])
+                data[header_field.text()] = data_field.text()
+            
 
-        encrypted = self.encrypt(data)
+        # encrypted = self.encrypt(data)
         return {
             'name': name,
-            'data': encrypted['secret'],
-            'key': encrypted['key']
+            'data': data
         }
 
 
-    def save(self, data):
+    def save(self, data) -> None:
         data = self.get_data()
+        if(len(data['data'].keys()) <= 0):
+            Message("Please Enter data into the vault.", "No Data").exec_()
+            return
+        # The secret does not exist in the database (save the secret)
         if not self.secret:
-            Model().save('vault', data)  
+            Model().save('vault', {'type': 'general', 'name': data['name'], 'data': json.dumps(data["data"])})
+        # The secret does exist (update the secret)
         elif self.secret:
-            Model().update("vault", data, self.secret[0])
+            Model().update("vault", {'name': data['name'], 'data': data["data"]}, self.secret[0])
         self.secret_signal.emit("saved")
         self.close()
     
@@ -106,7 +111,7 @@ class SecretWindow(QDialog, Ui_AddSecret_window):
             'key': key
             }
 
-    def read_styles(self):
+    def read_styles(self) -> None:
         styles = [
             PushButton,
             SpinBox,

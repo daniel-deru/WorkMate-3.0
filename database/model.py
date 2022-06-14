@@ -79,9 +79,9 @@ class Model:
         vault_table = """
             CREATE TABLE IF NOT EXISTS vault(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                type TEXT NOT NULL,
                 name TEXT NOT NULL,
-                data TEXT NOT NULL,
-                key TEXT NOT NULL
+                data TEXT NOT NULL
             )
         """
 
@@ -114,8 +114,8 @@ class Model:
         self.cur.execute(users_table)
         self.cur.execute(vault_table)
         self.cur.execute(protected_apps_table)
-        self.cur.execute(crypto_vault_table)
-        self.cur.execute(app_vault_table)
+        # self.cur.execute(crypto_vault_table)
+        # self.cur.execute(app_vault_table)
 
     def save(self, table, data): 
         keys = f'{", ".join(data.keys())}'
@@ -187,10 +187,12 @@ class Model:
     def add_column(self, table_name, column_name, column_definition):
         query = f"ALTER TABLE {table_name} ADD {column_name} {column_definition}"
         self.cur.execute(query)
+    
+    def drop_table(self, table):
+        self.cur.execute(f"DROP TABLE {table}")
 
-# model = Model()
-# model.add_column("settings", "twofa", "INTEGER DEFAULT 0 NOT NULL")
-# model.add_column("user", "twofa_key", "TEXT")
+model = Model()
+# model.drop_table("vault")
 
 
 
