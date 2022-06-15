@@ -76,8 +76,6 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
                     break
                 self.gbox_words.addWidget(widget, i, j)
                 count += 1
-        print(count)
-
         
 
     def update(self) -> None:
@@ -98,7 +96,9 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         valid_submit: bool = True
 
         for i in range(words_layout.count()):
-            line_edit: QLineEdit = words_layout.itemAt(i).widget().layout().itemAt(1).widget()
+            widget_container: QWidget = words_layout.itemAt(i).widget()
+            password_widget: QWidget = widget_container.layout().itemAt(1).widget()
+            line_edit: QLineEdit = password_widget.layout().itemAt(0).widget()
             word: str = line_edit.text()
             if(not word):
                 Message(f"There is no word in block {i + 1}.", "Missing Word")
@@ -125,9 +125,10 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
                 'description': description,
                 'password': password1
             })
+            print(data)
 
-            Model().save("vault", {'type': 'crypto', 'name': description, 'data': data})
-            self.close()
+            # Model().save("vault", {'type': 'crypto', 'name': description, 'data': data})
+            # self.close()
     
     def get_num_words(self) -> int:
         num_words: str = self.cmb_num_words.currentText()

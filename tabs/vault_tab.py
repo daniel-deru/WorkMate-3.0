@@ -1,3 +1,4 @@
+from ctypes import alignment
 import os
 import sys
 import math
@@ -112,13 +113,13 @@ class Vault_tab(QWidget, Ui_Vault_tab):
 
             vault_item = VaultItem(secret).create()
             vault_item.vault_clicked_signal.connect(self.get_secret)
-
+            align = Qt.AlignCenter
             if(secret[1] == "crypto"):
-                crypto_container.addWidget(vault_item)
+                crypto_container.addWidget(vault_item, alignment=align)
             elif secret[1] == "app":
-                app_container.addWidget(vault_item)
+                app_container.addWidget(vault_item, alignment=align)
             elif secret[1] == "general":
-                general_container.addWidget(vault_item)
+                general_container.addWidget(vault_item, alignment=align)
         
     # Main event handler for when a button is clicked
     def get_secret(self, secret):
