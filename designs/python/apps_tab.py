@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'apps_tab.ui'
+# Form implementation generated from reading ui file './xml/apps_tab.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -38,6 +38,7 @@ class Ui_apps_tab(object):
         self.btn_add_app = QtWidgets.QPushButton(apps_tab)
         self.btn_add_app.setMinimumSize(QtCore.QSize(150, 0))
         self.btn_add_app.setMaximumSize(QtCore.QSize(150, 16777215))
+        self.btn_add_app.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_add_app.setObjectName("btn_add_app")
         self.hbox_open_apps_buttons.addWidget(self.btn_add_app)
         self.btn_pro_apps_login = QtWidgets.QPushButton(apps_tab)
@@ -71,9 +72,11 @@ class Ui_apps_tab(object):
         self.hbox_apps.setSpacing(0)
         self.hbox_apps.setObjectName("hbox_apps")
         self.chk_delete_apps = QtWidgets.QCheckBox(apps_tab)
+        self.chk_delete_apps.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.chk_delete_apps.setObjectName("chk_delete_apps")
         self.hbox_apps.addWidget(self.chk_delete_apps)
         self.chk_edit_apps = QtWidgets.QCheckBox(apps_tab)
+        self.chk_edit_apps.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.chk_edit_apps.setObjectName("chk_edit_apps")
         self.hbox_apps.addWidget(self.chk_edit_apps)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -158,13 +161,3 @@ class Ui_apps_tab(object):
         self.chkbox_pro_apps_delete.setText(_translate("apps_tab", "Delete"))
         self.chkbox_pro_apps_edit.setText(_translate("apps_tab", "Edit"))
         self.chkbox_pro_apps_view.setText(_translate("apps_tab", "View"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    apps_tab = QtWidgets.QWidget()
-    ui = Ui_apps_tab()
-    ui.setupUi(apps_tab)
-    apps_tab.show()
-    sys.exit(app.exec_())

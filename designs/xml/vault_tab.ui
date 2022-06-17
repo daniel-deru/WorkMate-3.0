@@ -24,6 +24,9 @@
     <layout class="QHBoxLayout" name="hbox_controls">
      <item>
       <widget class="QCheckBox" name="chk_edit">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
         <string>Edit Secret</string>
        </property>
@@ -31,8 +34,14 @@
      </item>
      <item>
       <widget class="QCheckBox" name="chk_delete">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
         <string>Delete Secret</string>
+       </property>
+       <property name="tristate">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -51,6 +60,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="btn_add">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
         <string>Add Secret</string>
        </property>
@@ -58,6 +70,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="btn_login">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
         <string>Login</string>
        </property>

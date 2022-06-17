@@ -46,6 +46,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="btn_login">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>Login</string>
          </property>
@@ -70,6 +73,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="chkbox_2fa">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -100,6 +106,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="chkbox_vault">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -136,6 +145,9 @@
            <height>25</height>
           </size>
          </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>Set Timer</string>
          </property>
@@ -159,6 +171,9 @@
            <height>25</height>
           </size>
          </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>Export Apps</string>
          </property>
@@ -171,6 +186,9 @@
            <width>100</width>
            <height>25</height>
           </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Export Notes</string>
@@ -189,6 +207,9 @@
            <height>25</height>
           </size>
          </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>Import Apps</string>
          </property>
@@ -201,6 +222,9 @@
            <width>100</width>
            <height>25</height>
           </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
           <string>Import Notes</string>
@@ -238,6 +262,9 @@
            <height>25</height>
           </size>
          </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>Reset</string>
          </property>
@@ -247,6 +274,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="btn_forgot_password">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
         <string>Forgot Password</string>
        </property>
@@ -324,6 +354,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="chkbox_nightmode">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -359,6 +392,9 @@
            <width>100</width>
            <height>25</height>
           </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
         </widget>
        </item>
@@ -439,6 +475,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="chkbox_calendar">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string/>
          </property>

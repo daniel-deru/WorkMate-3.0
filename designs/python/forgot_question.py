@@ -29,6 +29,7 @@ class Ui_AnswerQuestionDialog(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.btn_enter = QtWidgets.QPushButton(AnswerQuestionDialog)
+        self.btn_enter.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_enter.setObjectName("btn_enter")
         self.horizontalLayout.addWidget(self.btn_enter)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
