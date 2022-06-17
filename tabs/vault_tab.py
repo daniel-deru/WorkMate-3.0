@@ -97,9 +97,11 @@ class Vault_tab(QWidget, Ui_Vault_tab):
             new_secret.exec_()
         elif signal == "app":
             app_secret = AppVaultWindow()
+            app_secret.app_update_signal.connect(self.update)
             app_secret.exec_()
         elif signal == "crypto":
             new_crypto_secret = CryptoVaultWindow()
+            new_crypto_secret.crypto_update_signal.connect(self.update)
             new_crypto_secret.exec_()
     
     def create_secrets(self):

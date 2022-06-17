@@ -20,8 +20,19 @@ def clear_window(container):
         for i in range(container.count()):
             item = container.itemAt(i)
             if item.widget():
+                # print("removed widget")
+                # print(f"widget items: {item.widget().layout().count()}")
+                items = item.widget().layout()
+                if items and items.count() > 0:
+                    clear_window(items)
                 item.widget().deleteLater()
             elif item.layout():
+                print("removed layout")
+                # if item.layout().count() > 0:
+                #     print(f"{item.layout()}: This item is not empty: {item.layout().count()}")
+                #     for i in range(item.layout().count()):
+                #         clear_window(item.layout().itemAt(i))
+
                 item.layout().deleteLater()
             elif item.spacerItem():
                 container.removeItem(item.spacerItem())

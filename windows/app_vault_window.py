@@ -3,6 +3,7 @@ import os
 from json import dumps
 
 from PyQt5.QtWidgets import QDialog
+from PyQt5.QtCore import pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -20,6 +21,7 @@ from utils.message import Message
 from database.model import Model
 
 class AppVaultWindow(Ui_AppVault, QDialog):
+    app_update_signal = pyqtSignal(bool)
     def __init__(self):
         super(Ui_AppVault, self).__init__()
         self.setupUi(self)
@@ -73,4 +75,5 @@ class AppVaultWindow(Ui_AppVault, QDialog):
                 'name': name,
                 'data': data
             })
+            self.app_update_signal.emit(True)
             self.close()
