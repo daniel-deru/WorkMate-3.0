@@ -27,7 +27,7 @@ class VaultItem(QPushButton):
         return self
     
     def setupUI(self):
-        self.setText(self.secret[1])
+        self.setText(self.secret[2])
         font = Model().read("settings")[0][2]
         self.setFont(QFont(font))
         # self.setAlign

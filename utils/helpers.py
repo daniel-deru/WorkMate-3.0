@@ -4,6 +4,9 @@ import os
 import re
 from functools import reduce
 
+from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout
+from numpy import sometrue
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
@@ -11,28 +14,20 @@ DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 from widgetStyles.styles import placeholders
 from database.model import Model
 
+layouts = [QGridLayout, QVBoxLayout, QHBoxLayout]
+
 # clears the window so it can be repainted
 def clear_window(container):
     # This is to remove the previous widgets that were painted so the widgets don't get added twice
     prevItems = container.count()
+
     # check if there are widgets
     if prevItems > 0:
         for i in range(container.count()):
             item = container.itemAt(i)
             if item.widget():
-                # print("removed widget")
-                # print(f"widget items: {item.widget().layout().count()}")
-                items = item.widget().layout()
-                if items and items.count() > 0:
-                    clear_window(items)
                 item.widget().deleteLater()
             elif item.layout():
-                print("removed layout")
-                # if item.layout().count() > 0:
-                #     print(f"{item.layout()}: This item is not empty: {item.layout().count()}")
-                #     for i in range(item.layout().count()):
-                #         clear_window(item.layout().itemAt(i))
-
                 item.layout().deleteLater()
             elif item.spacerItem():
                 container.removeItem(item.spacerItem())

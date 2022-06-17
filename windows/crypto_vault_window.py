@@ -55,13 +55,12 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
 
         self.setStyleSheet(stylesheet)
 
-    def displayWordBoxes(self):
-
-        print(f"before display func: {self.gbox_words.layout().count()}")
+    def displayWordBoxes(self):        
         words: int = self.get_num_words()
 
         COLUMNS: int = 3
         count: int = 1
+        existing_words: None = None
         if(self.secret):
             data: object = self.get_data()
             existing_words: list[str] = data['words'].split(" ")
@@ -75,7 +74,8 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
                 widget: QWidget = QWidget()
 
                 number: QLabel = QLabel(f"{str(count).zfill(2)}. ")
-                password: PasswordWidget = PasswordWidget(existing_words[count-1])
+                param = existing_words[count-1] if existing_words else None
+                password: PasswordWidget = PasswordWidget(param)
 
                 hbox.addWidget(number)
                 hbox.addWidget(password)
@@ -87,7 +87,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
                 self.gbox_words.addWidget(widget, i, j)
                 
                 count += 1
-        print(f"after display func: {self.gbox_words.layout().count()}")
+        
         
 
     def update(self) -> None:
@@ -110,15 +110,16 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         for i in range(words_layout.count()):
             widget_container: QWidget = words_layout.itemAt(i).widget()
             password_widget: QWidget = widget_container.layout().itemAt(1).widget()
-            print(f"{i+1}: {password_widget}")
+            # print(f"{i+1}: {password_widget}")
             
             line_edit: QLineEdit = password_widget.layout().itemAt(0).widget()
-            if(line_edit == QLineEdit):
+            # print(f"{str(i+1).zfill(2)}: <{type(line_edit) == QLineEdit}>{type(line_edit)}")
+            if(type(line_edit) == QLineEdit):
                 word: str = line_edit.text()
-                if(not word):
-                    Message(f"There is no word in block {i + 1}.", "Missing Word")
-                    valid_submit = False
-                words.append(word)
+                # if(not word):
+                    # Message(f"There is no word in block {i + 1}.", "Missing Word").exec_()
+                    # valid_submit = False
+                if word: words.append(word)
 
         if(password1 and (password1 != password2)):
             Message("The passwords don't match", "Passwords Incorrect").exec_()
@@ -131,6 +132,13 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
             valid_submit = False
             Message("Please Provide a username", "No Username").exec_()
         
+
+        num_words = self.get_num_words()
+        if(len(words) < num_words):
+            Message(f"You have {len(words)} words but, you need {num_words} words. Please check for missing fields", "Missing Words").exec_()
+            valid_submit = False
+
+        
         if(valid_submit):
             data: str = dumps({
                 'name': username,
@@ -140,18 +148,15 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
                 'password': password1
             })
 
-            # if self.secret:
-            #     Model().update("vault", {'type': 'crypto', 'name': description, 'data':data}, self.secret[0])
-            # else:
-            #     Model().save("vault", {'type': 'crypto', 'name': description, 'data': data})
+            if self.secret:
+                Model().update("vault", {'type': 'crypto', 'name': description, 'data':data}, self.secret[0])
+            else:
+                Model().save("vault", {'type': 'crypto', 'name': description, 'data': data})
 
-            # self.crypto_update_signal.emit(True)
-            # self.close()
+            self.crypto_update_signal.emit(True)
+            self.close()
     
     def get_num_words(self) -> int:
-        if self.secret:
-            data = self.get_data()
-            return data['num_words']
         num_words: str = self.cmb_num_words.currentText()
         # Get the start and end index matching the regex 
         (start, end) = re.match("^\d+", num_words).span()
@@ -176,7 +181,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         for i in range(combobox.count()):
             if(re.match(regex, combobox.itemText(i))):
                 combobox.setCurrentIndex(i)
-        # self.update()
+        self.update()
     
     def get_data(self) -> object:
         data: object = loads(self.secret[3])
