@@ -19,7 +19,7 @@ from widgetStyles.Label import Label
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Dialog import Dialog
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, json_to_dict
 from utils.message import Message
 
 
@@ -41,16 +41,18 @@ class SecretWindow(QDialog, Ui_AddSecret_window):
 
     
     def display_secret(self):
-
+        data: object = json_to_dict(self.secret[3])
+        keys: list[str] = list(data.keys())
+        values: list[str] = list(data.values())
         container = self.vbox_column_def
-        self.lnedt_name.setText(self.secret[1])
-        f = Fernet(self.secret[3])
+        self.lnedt_name.setText(self.secret[2])
+        # f = Fernet(self.secret[3])
 
-        secret = json.loads(f.decrypt(self.secret[2]).decode("UTF-8"))
-        for i in range(len(secret)):
+        # secret = json.loads(f.decrypt(self.secret[2]).decode("UTF-8"))
+        for i in range(len(keys)):
             # Set the data to the fields
-            container.itemAt(i).layout().itemAt(0).widget().setText(secret[i][0])
-            container.itemAt(i).layout().itemAt(1).widget().setText(secret[i][1])
+            container.itemAt(i).layout().itemAt(0).widget().setText(keys[i])
+            container.itemAt(i).layout().itemAt(1).widget().setText(values[i])
 
 
     def get_data(self) -> object:
@@ -92,7 +94,7 @@ class SecretWindow(QDialog, Ui_AddSecret_window):
             Model().save('vault', {'type': 'general', 'name': data['name'], 'data': json.dumps(data["data"])})
         # The secret does exist (update the secret)
         elif self.secret:
-            Model().update("vault", {'name': data['name'], 'data': data["data"]}, self.secret[0])
+            Model().update("vault", {'type': 'general', 'name': data['name'], 'data': json.dumps(data["data"])}, self.secret[0])
         self.secret_signal.emit("saved")
         self.close()
     

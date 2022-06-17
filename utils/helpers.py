@@ -3,6 +3,7 @@ import sys
 import os
 import re
 from functools import reduce
+from json import loads
 
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout
 from numpy import sometrue
@@ -88,3 +89,7 @@ class StyleSheet():
             stylesheet = re.sub(placeholders[i], values[i], stylesheet)
         return stylesheet
 
+
+# Turn JSON data into dict
+def json_to_dict(json):
+    return loads(json)

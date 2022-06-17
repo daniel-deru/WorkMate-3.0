@@ -4,7 +4,6 @@ import sys
 from PyQt5.QtWidgets import QPushButton, QWidget, QLineEdit, QToolButton, QHBoxLayout
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QFont, QIcon
-from colorama import Style
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))

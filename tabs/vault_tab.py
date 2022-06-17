@@ -26,6 +26,7 @@ from windows.secret_window import SecretWindow
 from windows.crypto_vault_window import CryptoVaultWindow
 from windows.app_vault_window import AppVaultWindow
 from windows.vault_type_window import VaultType
+from windows.app_vault_view_window import AppVaultView
 
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.PushButton import PushButton
@@ -43,8 +44,8 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         self.create_secrets()
 
         self.btn_add.clicked.connect(self.add_clicked)
-        self.chk_delete.clicked.connect(self.checkHandler)
-        self.chk_edit.clicked.connect(self.checkHandler)
+        self.chk_delete.clicked.connect(self.deleteCheckHandler)
+        self.chk_edit.clicked.connect(self.editCheckHandler)
         self.btn_login.clicked.connect(self.login_clicked)
        
         self.vault_signal.connect(self.update)
@@ -75,14 +76,11 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         for widget in widget_list:
             widget.setFont(QFont(font))
 
-    def checkHandler(self):
-        edit = self.chk_edit
-        delete = self.chk_delete
-
-        if edit.isChecked():
-            delete.setChecked(False)
-        elif delete.isChecked():
-            edit.setChecked(False)
+    def deleteCheckHandler(self):
+        self.chk_edit.setChecked(False)
+            
+    def editCheckHandler(self):
+        self.chk_delete.setChecked(False)
 
     def add_clicked(self):
         vault_type = VaultType()
@@ -127,42 +125,16 @@ class Vault_tab(QWidget, Ui_Vault_tab):
     def get_secret(self, secret):
         edit = self.chk_edit
         delete = self.chk_delete
+        
         if delete.isChecked():
+            # Delete the secret that was clicked
             self.delete_secret(secret)
         elif edit.isChecked():
+            # Edit the secret that was clicked
             self.edit_secret(secret)
-
-        # Replace this
-        if(secret[1] == "app"):
-            self.app_vault_click(secret)
-        elif secret[1] == "crypto":
-            self.crypto_vault_click(secret)
-        elif secret[1] == "general":
-            self.general_vault_click(secret)
-        # Allow Opening the app without loggin in
-        if (secret[1] == "app") and not (edit.isChecked() or delete.isChecked()):
-            data = json.loads(secret[3])
-            try:
-                os.startfile(data['path'])
-            except OSError:
-                pass
-        # Prompt user to log in if not logged in
-        elif not self.logged_in:
-            self.login_clicked()
-        elif not edit.isChecked() and not delete.isChecked() and self.logged_in:
-            protected_view = ProtectedView(secret, 'secret')
-            protected_view.exec_()
-        elif delete.isChecked() and self.logged_in:
-            Model().delete('vault', secret[0])
-            self.update()
-            # Set the delete check button to off after an app has been deleted
-            delete.setChecked(False)
-        # elif edit.isChecked() and self.logged_in:
-        #     secret_edit_window = SecretWindow(secret)
-        #     secret_edit_window.secret_signal.connect(lambda: self.update())
-        #     secret_edit_window.exec_()
-            # Set the Edit checkbox to off after the secret has been edited
-            self.chk_edit.setChecked(False)
+        else:
+            # Open the secret in view mode
+            self.open_secret(secret)
     
     # Clear the window from the data add the data back and read the styles
     def update(self):
@@ -201,22 +173,6 @@ class Vault_tab(QWidget, Ui_Vault_tab):
                 os.startfile(data['path'])
             except OSError:
                 pass
-        else:
-            if not self.logged_in:
-                self.login_clicked()
-            else:
-                if edit.isChecked():
-                    pass
-                    # edit the app
-                elif delete.isChecked():
-                    pass
-                    # delete the app
-
-    def crypto_vault_click(self, secret):
-        pass
-
-    def general_vault_click(self, secret):
-        pass
 
     def delete_secret(self, secret):
         if not self.logged_in:
@@ -224,20 +180,30 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         else:
             Model().delete("vault", secret[0])
             self.update()
+            self.chk_edit.setChecked(False)
     
     def edit_secret(self, secret):
         if not self.logged_in:
             self.login_clicked()
         else:
             if secret[1] == "app":
-                pass
-                # Open the app edit window
+                edit_app = AppVaultWindow(secret)
+                edit_app.app_update_signal.connect(self.update)
+                edit_app.exec_()
             elif secret[1] == "crypto":
                 crypto_vault_window = CryptoVaultWindow(secret)
+                crypto_vault_window.crypto_update_signal.connect(self.update)
                 crypto_vault_window.exec_()
                 # open the crypto edit window
             elif secret[1] == "general":
-                pass
-                # Open edit general window
+                general_vault_window = SecretWindow(secret)
+                general_vault_window.secret_signal.connect(self.update)
+                general_vault_window.exec_()
+            self.chk_edit.setChecked(False)
+    
+    def open_secret(self, secret: tuple):
+        if secret[1] == "app":
+            app_view = AppVaultView(secret)
+            app_view.exec_()
             
     

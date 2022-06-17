@@ -15,17 +15,22 @@ from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Label import Label
 from widgetStyles.SpinBox import SpinBox
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, json_to_dict
 from utils.message import Message
 
 from database.model import Model
 
 class AppVaultWindow(Ui_AppVault, QDialog):
     app_update_signal = pyqtSignal(bool)
-    def __init__(self):
+    def __init__(self, app=None):
         super(Ui_AppVault, self).__init__()
+        self.app = app
         self.setupUi(self)
+
+        if self.app:
+            self.fill_data()
         self.read_styles()
+
 
         self.btn_save.clicked.connect(self.save)
 
@@ -70,10 +75,20 @@ class AppVaultWindow(Ui_AppVault, QDialog):
                 'password': password
             })
 
-            Model().save("vault", {
-                'type': "app",
-                'name': name,
-                'data': data
-            })
+            if self.app:
+                Model().update("vault", {'type': 'app', 'name': name, 'data': data}, self.app[0])
+            else:
+                Model().save("vault", {'type': "app", 'name': name, 'data': data })
+                
             self.app_update_signal.emit(True)
             self.close()
+    
+    def fill_data(self):
+        data: object = json_to_dict(self.app[3])
+        
+        self.lne_name.setText(data['name'])
+        self.lne_password.setText(data['password'])
+        self.lne_email.setText(data['email'])
+        self.lne_username.setText(data['username'])
+        self.lne_path.setText(data['path'])
+        self.spn_index.setValue(int(data['sequence']))

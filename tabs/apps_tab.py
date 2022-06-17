@@ -2,7 +2,7 @@ import sys
 import os
 import math
 
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QLabel
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QFont
 
@@ -39,8 +39,6 @@ class Apps_tab(QWidget, Ui_apps_tab):
         self.setupUi(self)
         self.read_styles()
 
-
-        
         self.create_apps()
         self.create_protected_apps()
 
@@ -58,6 +56,7 @@ class Apps_tab(QWidget, Ui_apps_tab):
         self.app_signal.connect(self.update)
         # Login signal will run everytime the login signal is updated
         self.login_signal.connect(self.login)
+        # self.lbl_open_apps.setText(u"\u2022"*10)
     
     def create_tab(self):
         return self
