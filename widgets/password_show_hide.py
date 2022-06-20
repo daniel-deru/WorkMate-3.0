@@ -2,8 +2,8 @@ import os
 import sys
 
 from PyQt5.QtWidgets import QPushButton, QWidget, QLineEdit, QToolButton, QHBoxLayout
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtGui import QFont, QIcon, QCursor
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -26,10 +26,12 @@ class PasswordWidget(QWidget):
         hbox: QHBoxLayout = QHBoxLayout()
 
         self.text_field: QLineEdit = QLineEdit()
+        self.text_field.setEchoMode(QLineEdit.Password)
         if(self.input):
             self.text_field.setText(self.input)
         self.show_button: QToolButton = QToolButton()
         self.show_button.setIcon(QIcon("./assets/eye_white_open.svg"))
+        self.show_button.setCursor(Qt.PointingHandCursor)
         self.show_button.clicked.connect(self.show_hide_password)
 
         hbox.addWidget(self.text_field)
@@ -39,12 +41,13 @@ class PasswordWidget(QWidget):
         self.setMinimumWidth(200)
 
     def show_hide_password(self):
-        if self.text_field.echoMode() == QLineEdit.Normal:
-            self.text_field.setEchoMode(QLineEdit.Password)
+        if self.text_field.echoMode() == QLineEdit.Password:
+            self.text_field.setEchoMode(QLineEdit.Normal)
             self.show_button.setIcon(QIcon("./assets/eye_white_closed.svg"))
         else:
-            self.text_field.setEchoMode(QLineEdit.Normal)
+            self.text_field.setEchoMode(QLineEdit.Password)
             self.show_button.setIcon(QIcon("./assets/eye_white_open.svg"))
+
     
     def returnWidget(self):
         return self

@@ -18,6 +18,7 @@ from widgetStyles.Label import Label
 from widgetStyles.PushButton import PushButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.ToolButton import ToolButton
+from widgetStyles.QCheckBox import WhiteEyeCheckBox, BlackEyeCheckBox
 
 from utils.helpers import StyleSheet, clear_window
 from utils.message import Message
@@ -39,10 +40,16 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
 
 
         self.cmb_num_words.currentIndexChanged.connect(self.update)
+        self.chk_password1.stateChanged.connect(lambda: self.show_hide_password(self.chk_password1, self.lne_password1))
+        self.chk_password2.stateChanged.connect(lambda: self.show_hide_password(self.chk_password2, self.lne_password2))
+        self.chk_private_key.stateChanged.connect(lambda: self.show_hide_password(self.chk_private_key, self.lne_private))
         self.btn_save.clicked.connect(self.save)
 
     def read_styles(self):
+        night_mode_on = Model().read("settings")[0][1]
+        checkbox = WhiteEyeCheckBox if night_mode_on else BlackEyeCheckBox
         widget_list = [
+            checkbox,
             Dialog,
             ComboBox,
             Label,
@@ -50,7 +57,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
             LineEdit,
             ToolButton
         ]
-        self.setMinimumHeight(750)
+        self.setMinimumHeight(850)
         stylesheet = StyleSheet(widget_list).create()
 
         self.setStyleSheet(stylesheet)
@@ -104,6 +111,9 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         num_words: int = self.get_num_words()
         words_layout: QGridLayout = self.gbox_words
         words: list[str] = []
+        
+        public_key: str = self.lne_public.text()
+        private_key: str = self.lne_public.text()
 
         valid_submit: bool = True
 
@@ -140,13 +150,21 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
 
         
         if(valid_submit):
-            data: str = dumps({
+            data = {
                 'name': username,
                 'num_words': num_words,
                 'words': " ".join(words),
                 'description': description,
                 'password': password1
-            })
+            }
+            
+            
+            if private_key:
+                data['private_key'] = private_key
+            if public_key:
+                data['public_key'] = public_key
+                
+            data: str = dumps(data)
 
             if self.secret:
                 Model().update("vault", {'type': 'crypto', 'name': description, 'data':data}, self.secret[0])
@@ -171,6 +189,12 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         self.lne_password1.setText(data['password'])
         self.lne_password2.setText(data['password'])
         self.lne_name.setText(data['name'])
+        
+        if data['private_key']:
+            self.lne_private.setText(data['private_key'])
+            
+        if data['public_key']:
+            self.lne_public.setText(data['public_key'])
 
         combobox: QComboBox = self.cmb_num_words
 
@@ -186,3 +210,9 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
     def get_data(self) -> object:
         data: object = loads(self.secret[3])
         return data
+    
+    def show_hide_password(self, checkbox, line_edit):
+        if checkbox.isChecked():
+            line_edit.setEchoMode(QLineEdit.Normal)
+        else:
+            line_edit.setEchoMode(QLineEdit.Password)

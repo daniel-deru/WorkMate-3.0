@@ -62,3 +62,51 @@ SettingsCheckBox = f"""
         subcontrol-position: right center;
     }}
 """
+
+WhiteEyeCheckBox = f"""
+    QCheckBox {{
+        color: {default};
+        font-size: 16px;
+        border-radius: 5px;
+    }}
+
+    QCheckBox::indicator:checked {{
+        image: url(:/input/eye_white_open.svg);
+        width: {width * (2/3)}px;
+        height: {height * (2/3)}px;
+        max-width: {width * (2/3)}px;
+        max-height: {height * (2/3)}px;
+    }}
+
+    QCheckBox::indicator{{
+        image: url(:/input/eye_white_closed.svg);
+        width: {width * (2/3)}px;
+        height: {height * (2/3)}px;
+        max-width: {width * (2/3)}px;
+        max-height: {height * (2/3)}px;
+    }}
+"""
+
+BlackEyeCheckBox = f"""
+    QCheckBox {{
+        color: {default};
+        font-size: 16px;
+        border-radius: 5px;
+    }}
+
+    QCheckBox::indicator:checked {{
+        image: url(:/input/eye_black_open.svg);
+        width: {width * (2/3)}px;
+        height: {height * (2/3)}px;
+        max-width: {width * (2/3)}px;
+        max-height: {height * (2/3)}px;
+    }}
+
+    QCheckBox::indicator{{
+        image: url(:/input/eye_black_closed.svg);
+        width: {width * (2/3)}px;
+        height: {height * (2/3)}px;
+        max-width: {width * (2/3)}px;
+        max-height: {height * (2/3)}px;
+    }}
+"""

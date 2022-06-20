@@ -23,6 +23,10 @@
         <file alias="radio-off.svg">radio-off.svg</file>
         <file alias="toggle-on.svg">toggle-on.svg</file>
         <file alias="toggle-off.svg">toggle-off.svg</file>
+        <file alias="eye_black_closed.svg">eye_black_closed.svg</file>
+        <file alias="eye_black_open.svg">eye_black_open.svg</file>
+        <file alias="eye_white_closed.svg">eye_white_closed.svg</file>
+        <file alias="eye_white_open.svg">eye_white_open.svg</file>
     </qresource>
     <qresource prefix="other">
         <file alias="calendar.svg">calendar.svg</file>

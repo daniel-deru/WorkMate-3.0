@@ -27,6 +27,7 @@ from windows.crypto_vault_window import CryptoVaultWindow
 from windows.app_vault_window import AppVaultWindow
 from windows.vault_type_window import VaultType
 from windows.app_vault_view_window import AppVaultView
+from windows.crypto_vault_view_window import CryptoVaultViewWindow
 
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.PushButton import PushButton
@@ -205,5 +206,8 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         if secret[1] == "app":
             app_view = AppVaultView(secret)
             app_view.exec_()
+        if secret[1] == "crypto":
+            crypto_vault = CryptoVaultViewWindow(secret)
+            crypto_vault.exec_()
             
     
