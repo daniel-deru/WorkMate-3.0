@@ -3,7 +3,7 @@ import sys
 
 from PyQt5.QtWidgets import QDialog, QLineEdit
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QCloseEvent
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -25,6 +25,8 @@ class Login(QDialog, Ui_Login):
     login_status = pyqtSignal(str)
     def __init__(self):
         super(Login, self).__init__()
+        
+        self.login_state = "failure"
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
@@ -59,13 +61,20 @@ class Login(QDialog, Ui_Login):
                 # Go to the two fa login window
             else:
                 self.login_status.emit("success")
+                self.login_state = "success"
                 self.close()
         else:
             Message("The password is incorrect", "Wrong Password").exec_()
             self.login_status.emit("failure")
+            self.login_state = "failure"
     
     def verify_otp(self, verified):
         if(verified):
             self.login_status.emit("success")
+            self.login_state = "success"
             self.close()
+            
+    def closeEvent(self, a0: QCloseEvent) -> None:
+        self.login_status.emit(self.login_state)
+        return super().closeEvent(a0)
             

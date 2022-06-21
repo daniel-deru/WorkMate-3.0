@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_CryptoViewWindow(object):
     def setupUi(self, CryptoViewWindow):
         CryptoViewWindow.setObjectName("CryptoViewWindow")
-        CryptoViewWindow.resize(379, 544)
+        CryptoViewWindow.resize(379, 334)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(CryptoViewWindow)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.lbl_description = QtWidgets.QLabel(CryptoViewWindow)

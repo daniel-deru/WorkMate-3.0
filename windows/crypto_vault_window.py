@@ -113,7 +113,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         words: list[str] = []
         
         public_key: str = self.lne_public.text()
-        private_key: str = self.lne_public.text()
+        private_key: str = self.lne_private.text()
 
         valid_submit: bool = True
 
