@@ -25,9 +25,12 @@ from widgets.vault_item import VaultItem
 from windows.secret_window import SecretWindow
 from windows.crypto_vault_window import CryptoVaultWindow
 from windows.app_vault_window import AppVaultWindow
+
 from windows.vault_type_window import VaultType
+
 from windows.app_vault_view_window import AppVaultView
 from windows.crypto_vault_view_window import CryptoVaultViewWindow
+from windows.general_vault_view_window import GeneralVaultView
 
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.PushButton import PushButton
@@ -178,6 +181,7 @@ class Vault_tab(QWidget, Ui_Vault_tab):
     def delete_secret(self, secret):
         if not self.logged_in:
             self.login_clicked()
+            return
         else:
             Model().delete("vault", secret[0])
             self.update()
@@ -186,6 +190,7 @@ class Vault_tab(QWidget, Ui_Vault_tab):
     def edit_secret(self, secret):
         if not self.logged_in:
             self.login_clicked()
+            return
         else:
             if secret[1] == "app":
                 edit_app = AppVaultWindow(secret)
@@ -203,11 +208,17 @@ class Vault_tab(QWidget, Ui_Vault_tab):
             self.chk_edit.setChecked(False)
     
     def open_secret(self, secret: tuple):
+        if not self.logged_in:
+            self.login_clicked()
+            return
         if secret[1] == "app":
             app_view = AppVaultView(secret)
             app_view.exec_()
-        if secret[1] == "crypto":
+        elif secret[1] == "crypto":
             crypto_vault = CryptoVaultViewWindow(secret)
             crypto_vault.exec_()
+        elif secret[1] == "general":
+            general_vault = GeneralVaultView(secret)
+            general_vault.exec_()
             
     
