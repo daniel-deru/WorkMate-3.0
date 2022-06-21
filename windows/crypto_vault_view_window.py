@@ -2,7 +2,7 @@ import json
 import sys
 import os
 import math
-from PyQt5.QtWidgets import QDialog, QFileDialog, QLabel, QLineEdit, QVBoxLayout, QHBoxLayout, QToolButton, QCheckBox
+from PyQt5.QtWidgets import QDialog, QLabel, QHBoxLayout, QToolButton, QCheckBox, QFrame, QSpacerItem, QSizePolicy
 from PyQt5.QtCore import pyqtSignal, Qt, QSize
 from PyQt5.QtGui import QFont, QIcon
 
@@ -26,11 +26,13 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         super(CryptoVaultViewWindow, self).__init__()
         self.secret = secret
         self.data = json_to_dict(self.secret[3])
+        self.night_mode_on: int = Model().read("settings")[0][1]
         self.setupUi(self)
         self.read_styles()
         self.set_dots()
         self.set_data()
         self.set_icons()
+        
         
         
     def read_styles(self):
@@ -57,8 +59,8 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         count = 1
         for i in range(math.ceil(len(words)/COLUMNS)):
             for j in range(COLUMNS):
-                hbox = self.create_word_boxes()
-                self.gbox_words.addLayout(hbox, i, j)
+                frame = self.create_word_boxes(count, words[count - 1])
+                self.gbox_words.addWidget(frame, i, j)
                 count += 1
         
     def set_dots(self):
@@ -71,7 +73,7 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
     def set_icons(self):
         night_mode_on: int = Model().read("settings")[0][1]
         
-        icon_path: str = "./assets/copy_white.svg" if night_mode_on else "./assets/copy_black.svg"
+        icon_path: str = "./assets/copy_white.svg" if self.night_mode_on else "./assets/copy_black.svg"
         icon: QIcon = QIcon(icon_path)
         
         self.tbtn_password.setIcon(icon)
@@ -83,18 +85,36 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         self.tbtn_public.setIcon(icon)
         self.tbtn_public.setIconSize(QSize(20, 20))
         
-    def create_word_boxes(self, count: int, word: str) -> QHBoxLayout:
+    def create_word_boxes(self, count: int, word: str) -> QFrame:
         hbox = QHBoxLayout()
+        tool_button_icon_path = "./assets/copy_white.svg" if self.night_mode_on else "./assets/copy_black.svg"
+        icon = QIcon(tool_button_icon_path)
         
-        num = QLabel()
-        word = QLabel()
+        num = QLabel(f"{str(count).zfill(2)} ")
+        num_color = "#9ecd16" if self.night_mode_on else "#FF4400"
+        num.setStyleSheet(f"color: {num_color};")
+        
+        word = QLabel(word)
+        word.setMinimumWidth(100)
+        
         copy = QToolButton()
+        copy.setIcon(icon)
+        copy.setIconSize(QSize(20, 20))
+        
         view = QCheckBox()
+        
+        hspacer = QSpacerItem(20, 40, QSizePolicy.Expanding, QSizePolicy.Minimum)
         
         hbox.addWidget(num)
         hbox.addWidget(word)
-        hbox.addWidget(view)
+        hbox.addItem(hspacer)
         hbox.addWidget(copy)
+        hbox.addWidget(view)
         
-        return hbox
+        frame: QFrame = QFrame()
+        frame.setObjectName("view_frame")
+        frame.setStyleSheet("QFrame#view_frame{border: 2px solid #005BC6;border-radius: 5px;}")
+        frame.setLayout(hbox)
+        
+        return frame
         
