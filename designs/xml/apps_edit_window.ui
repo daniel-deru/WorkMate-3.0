@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>596</width>
-    <height>369</height>
+    <height>215</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,6 +25,20 @@
      </item>
      <item>
       <widget class="QLineEdit" name="lnedt_name"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QLabel" name="lbl_index">
+       <property name="text">
+        <string>Index</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spnbox_index"/>
      </item>
     </layout>
    </item>
@@ -50,20 +64,6 @@
         </widget>
        </item>
       </layout>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_3">
-     <item>
-      <widget class="QLabel" name="lbl_index">
-       <property name="text">
-        <string>Index</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSpinBox" name="spnbox_index"/>
      </item>
     </layout>
    </item>

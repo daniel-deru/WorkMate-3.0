@@ -2,10 +2,12 @@ import sys
 import os
 from json import dumps
 
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QFileDialog
 from PyQt5.QtCore import pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
+DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
 from designs.python.app_vault_window import Ui_AppVault
 
@@ -25,14 +27,22 @@ class AppVaultWindow(Ui_AppVault, QDialog):
     def __init__(self, app=None):
         super(Ui_AppVault, self).__init__()
         self.app = app
+        self.secrets = list(filter(lambda a: a[1] == "app", Model().read("vault")))
         self.setupUi(self)
+        
+        maxValue = len(self.secrets) if self.app else len(self.secrets)+1
+        
+        self.spn_index.setMaximum(maxValue)
+        self.spn_index.setValue(maxValue)
+        self.spn_index.setMinimum(1)
+        
 
-        if self.app:
-            self.fill_data()
+        if self.app: self.fill_data()
+        
         self.read_styles()
-
-
         self.btn_save.clicked.connect(self.save)
+        self.btn_desktop.clicked.connect(self.add_from_desktop)
+        
 
     def read_styles(self):
         widget_list = [
@@ -47,6 +57,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.setStyleSheet(stylesheet)
 
     def save(self):
+        
         name: str = self.lne_name.text()
         index: str = self.spn_index.text()
         path: str = self.lne_path.text()
@@ -74,16 +85,25 @@ class AppVaultWindow(Ui_AppVault, QDialog):
                 'email': email,
                 'password': password
             })
+            
+            if int(index) <= len(self.secrets):
+                self.update_sequence(str(index))
 
             if self.app:
                 Model().update("vault", {'type': 'app', 'name': name, 'data': data}, self.app[0])
             else:
                 Model().save("vault", {'type': "app", 'name': name, 'data': data })
                 
+                
+                
             self.app_update_signal.emit(True)
             self.close()
     
     def fill_data(self):
+        
+        self.btn_save.setText("Update")
+        self.setWindowTitle("Update App")
+        
         data: object = json_to_dict(self.app[3])
         
         self.lne_name.setText(data['name'])
@@ -92,3 +112,26 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.lne_username.setText(data['username'])
         self.lne_path.setText(data['path'])
         self.spn_index.setValue(int(data['sequence']))
+        
+    def add_from_desktop(self):
+        file = QFileDialog.getOpenFileName(self, "Open a file", DESKTOP, "All Files (*.*)")[0]
+        self.lne_path.setText(file)
+        
+    def update_sequence(self, index: str):
+        # Get the app that needs to be updated
+        update_app = list(filter(lambda a: json_to_dict(a[3])['sequence'] == index, self.secrets))[0]
+        # Get the data from the app that needs to be updated
+        update_app_data = json_to_dict(update_app[3])
+        # The app was edited
+        if self.app:
+            # Get the data from the current app being updated
+            data = json_to_dict(self.app[3])
+            # Get the sequence to put in the app the needs to be updated
+            new_sequence = data['sequence']
+            update_app_data['sequence'] = new_sequence
+            Model().update("vault", {'data': dumps(update_app_data)}, update_app[0])
+        # It's a new app
+        else:
+            # its a new app
+            update_app_data['sequence'] = str(len(self.secrets)+1)
+            Model().update("vault", {'data': dumps(update_app_data)}, update_app[0])

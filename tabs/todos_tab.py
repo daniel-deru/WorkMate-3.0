@@ -15,7 +15,7 @@ from designs.python.todo_widget import Ui_todo_tab
 from widgets.todo_item import TodoItem
 from utils.helpers import StyleSheet
 from utils.message import Message
-from integrations.calendar.c import Google_calendar
+from integrations.calendar.c import Google
 from widgetStyles.PushButton import PushButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Label import Label
@@ -115,7 +115,7 @@ class Todo_tab(QWidget, Ui_todo_tab):
 
 # @concurrent.process(timeout=30)
 def google_thread(date):
-    Google_calendar.save(date)
+    Google.save(date)
 
 
         

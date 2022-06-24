@@ -3,10 +3,11 @@ import sys
 import os
 import re
 from functools import reduce
-from json import loads
+import json
+import pickle
+from cryptography.fernet import Fernet
 
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout
-from numpy import sometrue
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -14,6 +15,7 @@ DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
 from widgetStyles.styles import placeholders
 from database.model import Model
+from utils.globals import DB_PATH, PICKLE_ENC
 
 layouts = [QGridLayout, QVBoxLayout, QHBoxLayout]
 
@@ -32,11 +34,6 @@ def clear_window(container):
                 item.layout().deleteLater()
             elif item.spacerItem():
                 container.removeItem(item.spacerItem())
-
-
-def display_grid():
-    pass
- 
 
 class StyleSheet():
     def __init__(self, stylesheet):
@@ -91,5 +88,5 @@ class StyleSheet():
 
 
 # Turn JSON data into dict
-def json_to_dict(json):
-    return loads(json)
+def json_to_dict(json_data):
+    return json.loads(json_data)

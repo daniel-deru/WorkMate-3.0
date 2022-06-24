@@ -30,7 +30,7 @@ class GeneralVaultView(Ui_GeneralVaultView, QDialog):
         self.read_styles()
         self.set_data()
         
-        print(self.data)
+        # print(self.data)
         
     def read_styles(self):
         checkbox = WhiteEyeCheckBox if self.night_mode_on else BlackEyeCheckBox

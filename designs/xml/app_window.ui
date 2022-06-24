@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>514</width>
-    <height>441</height>
+    <height>313</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -167,27 +167,6 @@
       </spacer>
      </item>
     </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="hbox_protected_toggle">
-     <item>
-      <widget class="QLabel" name="lbl_protected_app">
-       <property name="text">
-        <string>Protected App</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="chkbox_protected_app">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="vbox_protected_fields"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="hbox_save">

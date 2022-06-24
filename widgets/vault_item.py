@@ -2,8 +2,8 @@ import os
 import sys
 
 from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QFont
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtGui import QFont, QCursor
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -16,6 +16,7 @@ class VaultItem(QPushButton):
         super(VaultItem, self).__init__()
         self.secret = secret
         self.setupUI()
+        self.setCursor(QCursor(Qt.PointingHandCursor))
         
         if(len(self.text()) > 25): self.setStyleSheet("text-align: left;")
         self.clicked.connect(self.app_clicked)

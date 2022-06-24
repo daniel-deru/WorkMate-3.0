@@ -3,7 +3,7 @@ import time
 import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
-from PyQt5.QtGui import QFont, QIcon, QPixmap
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor
 from PyQt5.QtCore import QTimer, Qt
 
 
@@ -28,14 +28,13 @@ from utils.helpers import StyleSheet
 from windows.register_window import Register
 from windows.login_window import Login
 
-
-
+from integrations.calendar.c import Google
 
 class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
         # self.windowSize()
-        Model().start()
+        # Model().start()
 
         self.timer = QTimer(self)
         self.logged_in = False
@@ -114,6 +113,8 @@ class Main(QWidget, Ui_main_container):
         self.settings_tab.settings_signal.connect(self.updateWindow)
         self.settings_tab.login_signal.connect(self.check_login)
         self.tab_widget.addTab(self.settings_tab, "Settings")
+        
+        self.tab_widget.tabBar().setCursor(QCursor(Qt.PointingHandCursor))
 
         self.main_layout.addWidget(self.tab_widget)
 

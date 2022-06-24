@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'apps_edit_window.ui'
+# Form implementation generated from reading ui file './xml/apps_edit_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_AppsEdit(object):
     def setupUi(self, AppsEdit):
         AppsEdit.setObjectName("AppsEdit")
-        AppsEdit.resize(596, 369)
+        AppsEdit.resize(596, 215)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(AppsEdit)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -26,6 +26,15 @@ class Ui_AppsEdit(object):
         self.lnedt_name.setObjectName("lnedt_name")
         self.verticalLayout.addWidget(self.lnedt_name)
         self.verticalLayout_4.addLayout(self.verticalLayout)
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.lbl_index = QtWidgets.QLabel(AppsEdit)
+        self.lbl_index.setObjectName("lbl_index")
+        self.verticalLayout_3.addWidget(self.lbl_index)
+        self.spnbox_index = QtWidgets.QSpinBox(AppsEdit)
+        self.spnbox_index.setObjectName("spnbox_index")
+        self.verticalLayout_3.addWidget(self.spnbox_index)
+        self.verticalLayout_4.addLayout(self.verticalLayout_3)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.lbl_path = QtWidgets.QLabel(AppsEdit)
@@ -41,15 +50,6 @@ class Ui_AppsEdit(object):
         self.horizontalLayout_2.addWidget(self.btn_desktop)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
         self.verticalLayout_4.addLayout(self.verticalLayout_2)
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.lbl_index = QtWidgets.QLabel(AppsEdit)
-        self.lbl_index.setObjectName("lbl_index")
-        self.verticalLayout_3.addWidget(self.lbl_index)
-        self.spnbox_index = QtWidgets.QSpinBox(AppsEdit)
-        self.spnbox_index.setObjectName("spnbox_index")
-        self.verticalLayout_3.addWidget(self.spnbox_index)
-        self.verticalLayout_4.addLayout(self.verticalLayout_3)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.btn_discard = QtWidgets.QPushButton(AppsEdit)
@@ -67,18 +67,8 @@ class Ui_AppsEdit(object):
         _translate = QtCore.QCoreApplication.translate
         AppsEdit.setWindowTitle(_translate("AppsEdit", "Update App"))
         self.lbl_name.setText(_translate("AppsEdit", "Name"))
+        self.lbl_index.setText(_translate("AppsEdit", "Index"))
         self.lbl_path.setText(_translate("AppsEdit", "URL/Path"))
         self.btn_desktop.setText(_translate("AppsEdit", "Choose From Destop"))
-        self.lbl_index.setText(_translate("AppsEdit", "Index"))
         self.btn_discard.setText(_translate("AppsEdit", "Cancel"))
         self.btn_save.setText(_translate("AppsEdit", "Update"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    AppsEdit = QtWidgets.QDialog()
-    ui = Ui_AppsEdit()
-    ui.setupUi(AppsEdit)
-    AppsEdit.show()
-    sys.exit(app.exec_())

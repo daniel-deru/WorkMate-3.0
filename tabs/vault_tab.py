@@ -16,7 +16,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from designs.python.vault_tab import Ui_Vault_tab
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, json_to_dict
 from utils.message import Message
 from utils.helpers import clear_window
 
@@ -33,7 +33,7 @@ from windows.crypto_vault_view_window import CryptoVaultViewWindow
 from windows.general_vault_view_window import GeneralVaultView
 
 from widgetStyles.QCheckBox import CheckBox
-from widgetStyles.PushButton import PushButton
+from widgetStyles.PushButton import PushButton, VaultButton
 from widgetStyles.Label import Label
 
 from database.model import Model
@@ -63,7 +63,7 @@ class Vault_tab(QWidget, Ui_Vault_tab):
     def read_styles(self):
         font = Model().read('settings')[0][2]
         styles = [
-            PushButton,
+            VaultButton,
             CheckBox,
             Label
         ]
@@ -112,6 +112,8 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         crypto_container = self.vbox_crypto_vault
         app_container = self.vbox_app_vault
         general_container = self.vbox_general_vault
+        
+        app_list: list[tuple] = []
 
         for secret in secrets:
 
@@ -121,9 +123,19 @@ class Vault_tab(QWidget, Ui_Vault_tab):
             if(secret[1] == "crypto"):
                 crypto_container.addWidget(vault_item, alignment=align)
             elif secret[1] == "app":
-                app_container.addWidget(vault_item, alignment=align)
+                app_list.append(secret)
+                # app_container.addWidget(vault_item, alignment=align)
             elif secret[1] == "general":
                 general_container.addWidget(vault_item, alignment=align)
+        
+        # Sort the apps first before adding them
+        app_list.sort(key=lambda sec: int(json_to_dict(sec[3])['sequence']))
+        
+        # Add the apps separately because they need to be sorted first
+        for app in app_list:
+            vault_item = VaultItem(app).create()
+            vault_item.vault_clicked_signal.connect(self.get_secret)
+            app_container.addWidget(vault_item, alignment=align)
         
     # Main event handler for when a button is clicked
     def get_secret(self, secret):
@@ -166,7 +178,7 @@ class Vault_tab(QWidget, Ui_Vault_tab):
 
     def display_apps(self):
         apps = Model().read('appvault')
-        print(apps)
+        # print(apps)
     
     def app_vault_click(self, secret):
         edit = self.chk_edit

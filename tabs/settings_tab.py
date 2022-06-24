@@ -31,7 +31,7 @@ from windows.login_window import Login
 from windows.forgot_question import PasswordQuestion
 from windows.twofa_window import TwofaDialog
 
-from integrations.calendar.c import Google_calendar
+from integrations.calendar.c import Google
 
 
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
@@ -271,7 +271,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
 # @concurrent.process(timeout=30)
 def google_thread():
     print("inside the google thread")
-    Google_calendar.connect()
+    Google.connect()
     
         
 

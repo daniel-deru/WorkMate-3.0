@@ -49,19 +49,21 @@ ForgotPasswordButton = f"""
 """
 
 VaultButton = f"""
-  QPushButton {{
-    background-color: {color};
-    color: {button};
-    border: 2px solid {color};
+QPushButton {{
+    background-color: {light_blue};
+    color: white;
+    border: 2px solid {light_blue};
     border-radius: 5px;
     font-size: 16px;
     padding: 5px 8px;
+    max-width: 300px;
+    min-width: 300px;
 }}
 
 QPushButton:pressed {{
-    background-color: {mode};
-    color: {color};
-    border: 2px solid {color};
+    background-color: transparent;
+    color: {default};
+    border: 2px solid {light_blue};
 }}
 """
 
@@ -71,23 +73,4 @@ IconButton = """
     border: none;
     width: 20px;
 }
-"""
-
-AppRunButton = f"""
-QPushButton#run {{
-    background-color: {color};
-    color: #ffffff;
-    border: 2px solid {color};
-    border-radius: 5px;
-    font-size: 16px;
-    padding: 5px 8px;
-    width: 40px
-}}
-
-QPushButton#run:pressed {{
-    background-color: {mode};
-    color: {color};
-    border: 2px solid {color};
-}}
-
 """

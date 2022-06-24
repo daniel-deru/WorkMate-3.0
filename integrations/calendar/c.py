@@ -1,21 +1,24 @@
 from datetime import timedelta
 import os.path
 import tzlocal
+import io
+import shutil
 
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from googleapiclient.errors import HttpError
 
 from utils.globals import PATH
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/calendar']
+SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/drive']
 
 
-class Google_calendar:
+class Google:
     def connect():
         """Shows basic usage of the Google Calendar API.
             Prints the start and name of the next 10 events on the user's calendar.
@@ -24,44 +27,20 @@ class Google_calendar:
         # The file token.json stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
         # time.
-        if os.path.exists(f'{PATH}/integrations/calendar/token.json'):
-            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/calendar/token.json', SCOPES)
+        if os.path.exists(f'{PATH}/integrations/token.json'):
+            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/token.json', SCOPES)
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    f'{PATH}/integrations/calendar/client_secret_dev.json', SCOPES)
+                    f'{PATH}/integrations/client_secret_dev.json', SCOPES)
                 creds = flow.run_local_server(port=0)
                 
             # Save the credentials for the next run
-            with open(f'{PATH}/integrations/calendar/token.json', 'w') as token:
+            with open(f'{PATH}/integrations/token.json', 'w') as token:
                 token.write(creds.to_json())
-        
-        # try:
-        #     now = datetime().now()
-        #     date = datetime(now.year, now.month, now.day, now.hour, now.minute, now.second)
-        #     service = build('calendar', 'v3', credentials=creds)
-        #     start_date = date
-        #     end_date = start_date + timedelta(minutes=5)
-        #     timezone = str(tzlocal.get_localzone())
-            
-        #     event = {
-        #         'summary': 'You connected Google Calendar with WorkMate',
-        #         'start': {
-        #             'dateTime': start_date.strftime("%Y-%m-%dT%H:%M:%S"),
-        #             'timeZone': timezone,
-        #         },
-        #         'end': {
-        #             'dateTime': end_date.strftime("%Y-%m-%dT%H:%M:%S"),
-        #             'timeZone': timezone,
-        #         },
-        #     }
-
-        #     event = service.events().insert(calendarId='primary', body=event).execute()
-        # except HttpError as error:
-        #     print('An error occurred: %s' % error)
     
     def save(date):
         """Shows basic usage of the Google Calendar API.
@@ -71,19 +50,19 @@ class Google_calendar:
         # The file token.json stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
         # time.
-        if os.path.exists(f'{PATH}/integrations/calendar/token.json'):
-            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/calendar/token.json', SCOPES)
+        if os.path.exists(f'{PATH}/integrations/token.json'):
+            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/token.json', SCOPES)
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    f'{PATH}/integrations/calendar/client_secret_dev.json', SCOPES)
+                    f'{PATH}/integrations/client_secret_dev.json', SCOPES)
                 creds = flow.run_local_server(port=0)
                 
             # Save the credentials for the next run
-            with open(f'{PATH}/integrations/calendar/token.json', 'w') as token:
+            with open(f'{PATH}/integrations/token.json', 'w') as token:
                 token.write(creds.to_json())
         
         try:
@@ -112,6 +91,81 @@ class Google_calendar:
             }
 
             event = service.events().insert(calendarId='primary', body=event).execute()
+            
+        except HttpError as error:
+            print('An error occurred: %s' % error)
+            
+    def upload_backup():
+        """Shows basic usage of the Google Calendar API.
+        Prints the start and name of the next 10 events on the user's calendar.
+        """
+        creds = None
+        # The file token.json stores the user's access and refresh tokens, and is
+        # created automatically when the authorization flow completes for the first
+        # time.
+        if os.path.exists(f'{PATH}/integrations/token.json'):
+            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/token.json', SCOPES)
+        # If there are no (valid) credentials available, let the user log in.
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    f'{PATH}/integrations/client_secret_dev.json', SCOPES)
+                creds = flow.run_local_server(port=0)
+                
+            # Save the credentials for the next run
+            with open(f'{PATH}/integrations/token.json', 'w') as token:
+                token.write(creds.to_json())
+        
+        try:
+            service = build("drive", "v3", credentials=creds)
+            file_metadata = {'name': 'model.py'}
+            media = MediaFileUpload('./assets/done.png', mimetype='image/png')
+            file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+            print("FILE ID: " + file.get("id"))
+            
+        except HttpError as error:
+            print('An error occurred: %s' % error)
+            
+    def download_backup():
+        """Shows basic usage of the Google Calendar API.
+        Prints the start and name of the next 10 events on the user's calendar.
+        """
+        creds = None
+        # The file token.json stores the user's access and refresh tokens, and is
+        # created automatically when the authorization flow completes for the first
+        # time.
+        if os.path.exists(f'{PATH}/integrations/token.json'):
+            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/token.json', SCOPES)
+        # If there are no (valid) credentials available, let the user log in.
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    f'{PATH}/integrations/client_secret_dev.json', SCOPES)
+                creds = flow.run_local_server(port=0)
+                
+            # Save the credentials for the next run
+            with open(f'{PATH}/integrations/token.json', 'w') as token:
+                token.write(creds.to_json())
+        
+        try:
+            service = build("drive", "v3", credentials=creds)
+            file = service.files().get_media(fileId="1V5j3kcn1BdNGM94qsSA5qWTyQx_ijNjB")
+            
+            download = io.BytesIO()
+            downloader = MediaIoBaseDownload(download, file)
+            done = False
+            
+            while not done:
+                status, done = downloader.next_chunk()
+                print(f"Download {int(status.progress() * 100)}%")
+            
+            download.seek(0)
+            with open("test.txt", "wb") as f:
+                shutil.copyfileobj(download, f)
             
         except HttpError as error:
             print('An error occurred: %s' % error)

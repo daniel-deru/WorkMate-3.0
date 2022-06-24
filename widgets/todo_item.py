@@ -11,7 +11,6 @@ from database.model import Model
 
 from widgetStyles.Frame import TodoFrameComplete, TodoFrameDelete
 from widgetStyles.Label import LabelMono
-from widgetStyles.PushButton import IconButton
 from widgetStyles.ToolButton import ToolButton
 from utils.helpers import StyleSheet
 
