@@ -53,7 +53,7 @@ class Login(QDialog, Ui_Login):
         password = self.lnedt_password.text()
         if(password == db_password):
             has_2fa = Model().read('settings')[0][7]
-            if(has_2fa):
+            if(int(has_2fa)):
                 self.hide()
                 twofa_verify_window = TwofaVerifyWindow()
                 twofa_verify_window.opt_verify_signal.connect(self.verify_otp)

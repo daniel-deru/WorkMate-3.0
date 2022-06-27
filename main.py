@@ -173,7 +173,7 @@ class Main(QWidget, Ui_main_container):
         if logged_in and vault_on:
             self.logged_in = True
             self.send_signals("logged in")
-            self.count = Model().read("settings")[0][5] * 60
+            self.count = int(Model().read("settings")[0][5]) * 60
             self.timer.timeout.connect(self.start_timer)
             self.timer.start(1000)
         # If auth is on and the user is not logged in

@@ -58,7 +58,7 @@ class AppsEdit(QDialog, Ui_AppsEdit):
 
         name.setText(self.app[1])
         path.setText(self.app[2])
-        sequence.setValue(self.app[3])
+        sequence.setValue(int(self.app[3]))
 
 
     def add_from_desktop(self):
@@ -91,7 +91,7 @@ class AppsEdit(QDialog, Ui_AppsEdit):
             
             if self.app is not None:
                 if self.app[3] != sequence:
-                    old = self.app[3] - 1
+                    old = int(self.app[3]) - 1
                     new = sequence - 1
                     move_up = True if old > new else False
                     global array

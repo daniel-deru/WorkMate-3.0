@@ -22,7 +22,7 @@ class VaultItem(QPushButton):
         self.clicked.connect(self.app_clicked)
 
     def app_clicked(self):
-        self.vault_clicked_signal.emit(self.secret)
+        self.vault_clicked_signal.emit(tuple(self.secret))
 
     def create(self):
         return self

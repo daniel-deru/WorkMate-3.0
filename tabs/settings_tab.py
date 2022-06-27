@@ -47,12 +47,13 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.read_styles()
         self.logged_in = False
         settings = Model().read('settings')[0]
-
+        print(settings)
+        
         # Set the default value of the settings
-        self.chkbox_nightmode.setChecked(settings[1])
-        self.chkbox_vault.setChecked(settings[4])
-        self.chkbox_calendar.setChecked(settings[6])
-        self.chkbox_2fa.setChecked(settings[7])
+        self.chkbox_nightmode.setChecked(int(settings[1]))
+        self.chkbox_vault.setChecked(int(settings[4]))
+        self.chkbox_calendar.setChecked(int(settings[6]))
+        self.chkbox_2fa.setChecked(int(settings[7]))
 
 
         # Signals
@@ -95,12 +96,12 @@ class SettingsTab(QWidget, Ui_Settings_tab):
     def twofa(self):
         toggle = self.chkbox_2fa
         if(toggle.isChecked()):
-            Model().update("settings", {'twofa': 1}, 'settings')
+            Model().update("settings", {'twofa': '1'}, 'settings')
             twofa_window = TwofaDialog()
             twofa_window.exec_()
         else:
             Model().update('user', {'twofa_key': None}, 'user')
-            Model().update("settings", {'twofa': 0}, 'settings')
+            Model().update("settings", {'twofa': '0'}, 'settings')
 
 
 

@@ -54,6 +54,7 @@ class Encryption:
         
     
     def decrypt(self, string: str):
+        if string == None: return string
         decryptor = Fernet(self.key)
         decrypted_string = decryptor.decrypt(string.encode()).decode()
         return decrypted_string

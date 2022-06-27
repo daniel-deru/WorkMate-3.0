@@ -90,14 +90,15 @@ class Todo_tab(QWidget, Ui_todo_tab):
     def display_todos(self):
 
         todos = Model().read("todos")
-        completed_todos = list(filter(lambda todo: todo[2] == 1, todos))
-        incomplete_todos = list(filter(lambda todo: todo[2] == 0, todos))
+        print(todos)
+        completed_todos = list(filter(lambda todo: int(todo[2]) == 1, todos))
+        incomplete_todos = list(filter(lambda todo: int(todo[2]) == 0, todos))
 
         completed_todos.sort(key=lambda date: datetime.strptime(date[3], "%Y-%m-%d"))
         incomplete_todos.sort(key=lambda date: datetime.strptime(date[3], "%Y-%m-%d"))
         
         todos = incomplete_todos + completed_todos
-
+        print(todos)
         for i in range(len(todos)):
             self.todo_item = TodoItem(todos[i]).create_widget()
             self.todo_item.todo_item_signal.connect(self.update)

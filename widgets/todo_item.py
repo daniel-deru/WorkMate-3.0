@@ -24,7 +24,7 @@ class TodoItem(QFrame):
         super(TodoItem, self).__init__()
         self.todo_id = todo[0]
         self.todo = todo[1]
-        self.completed = todo[2]
+        self.completed = int(todo[2])
         self.date = todo[3]
         self.setupUI()
         self.read_styles()
@@ -94,9 +94,9 @@ class TodoItem(QFrame):
     
     def state_change_button_clicked(self):
         if self.completed:
-                    Model().delete("todos", self.todo_id)
+            Model().delete("todos", self.todo_id)
         else:
-            Model().update("todos", {'complete': 1}, self.todo_id)
+            Model().update("todos", {'complete': "1"}, self.todo_id)
         self.todo_item_signal.emit(self.todo)
 
     # Fire an event when the edit button is clicked

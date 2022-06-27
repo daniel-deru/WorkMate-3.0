@@ -36,12 +36,12 @@ class TwofaVerifyWindow(Ui_TwofaDialog, QDialog):
     def verify_otp(self):
         code = Model().read('user')[0][6]
         totp = pyotp.TOTP(code)
-
-        if(totp.verify(self.lnedt_code.text())):
-            self.opt_verify_signal.emit(True)
-            self.close()
-        else:
-            self.lbl_message.setText("Invalid Code")
-            self.opt_verify_signal.emit(False)
+        print(self.lnedt_code.text())
+        # if(totp.verify(self.lnedt_code.text())):
+        #     self.opt_verify_signal.emit(True)
+        #     self.close()
+        # else:
+        #     self.lbl_message.setText("Invalid Code")
+        #     self.opt_verify_signal.emit(False)
         
 

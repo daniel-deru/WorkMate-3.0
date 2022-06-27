@@ -1,4 +1,3 @@
-import json
 import sys
 import os
 import math
@@ -18,6 +17,7 @@ from widgetStyles.Dialog import Dialog
 from widgetStyles.QCheckBox import BlackEyeCheckBox, WhiteEyeCheckBox
 
 from utils.helpers import StyleSheet, json_to_dict
+from utils.message import Message
 
 from designs.python.crypto_vault_view_window import Ui_CryptoViewWindow
 
@@ -136,11 +136,19 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         return frame
     
     def copy(self, field_name: str):
-        pyperclip.copy(self.data[field_name])
+        try:
+            pyperclip.copy(self.data[field_name])
+        except KeyError:
+            pass
         
     def view(self, field_name, label, checkbox):
         if checkbox.isChecked():
-            label.setText(self.data[field_name])
+            try:
+                label.setText(self.data[field_name])
+            except KeyError:
+                Message("There is no public key.", "No public key").exec_()
+                checkbox.setChecked(False)
+                checkbox.setCheckState(Qt.Unchecked)
         else:
             label.setText(u"\u2022"*10)
             
@@ -157,9 +165,15 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         if type(widget) == QCheckBox and not widget.isChecked():
             self.lbl_private.setText(u"\u2022"*10)
         else:
-            login_window = Login()
-            login_window.login_status.connect(lambda s: self.show_private(s, widget))
-            login_window.exec_()
+            if not "private_key" in self.data:
+                Message("There is no private key.", "No private key").exec_()
+                if type(widget) == QCheckBox:
+                    widget.setChecked(False)
+                    widget.setCheckState(Qt.Unchecked)
+            else:
+                login_window = Login()
+                login_window.login_status.connect(lambda s: self.show_private(s, widget))
+                login_window.exec_()
         
     def show_private(self, status, widget):
         if status == "success":

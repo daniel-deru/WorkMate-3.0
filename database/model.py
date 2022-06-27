@@ -7,6 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from utils.globals import DB_PATH
 from utils.encryption import Encryption
+from database.tables import Tables
 
 encryption = Encryption()
 
@@ -19,65 +20,14 @@ class Model:
         self.fill_defaults()
         
 
-    def create_tables(self):
-        # enc = encryption.encrypt
-        enc = lambda s: s
-        apps_table_def = {
-            "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
-            "name": "TEXT NOT NULL",
-            "path": "TEXT NOT NULL",
-            "sequence": "INTEGER NOT NULL"
-        }
+    def create_tables(self):      
         
-        notes_table_def = {
-            "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
-            "name": "TEXT NOT NULL",
-            "body": "TEXT"
-        }
-        
-        todos_table_def = {
-            "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
-            "name": "TEXT NOT NULL",
-            "complete": f"TEXT DEFAULT '{enc('0')}' NOT NULL",
-            "deadline": "TEXT"
-        }
-        
-        settings_table_def = {
-            "id": f"TEXT DEFAULT '{enc('settings')}' PRIMARY KEY",
-            "nightmode": f"TEXT DEFAULT '{enc('0')}'",
-            "font": f"TEXT DEFAULT '{enc('Arial')}'",
-            "color": f"TEXT DEFAULT '{enc('#000000')}'",
-            "vault_on": f"TEXT DEFAULT '{enc('0')}' NOT NULL",
-            "timer": f"TEXT DEFAULT '{enc('5')}' NOT NULL",
-            "calendar": f"TEXT DEFAULT '{enc('0')}' NOT NULL",
-            "twofa": f"TEXT DEFAULT '{enc('0')}' NOT NULL"
-        }
-        
-        users_table_def = {
-            "id": f"TEXT DEFAULT '{enc('user')}' PRIMARY KEY",
-            "name": "TEXT NOT NULL",
-            "email": "TEXT NOT NULL",
-            "password": "TEXT NOT NULL",
-            "question": "TEXT NOT NULL",
-            "answer": "TEXT NOT NULL",
-            "twofa_key": "TEXT"
-        }
-        
-        vault_table_def = {
-            "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
-            "type": "TEXT NOT NULL",
-            "name": "TEXT NOT NULL",
-            "data": "TEXT NOT NULL"
-        }
-        
-        
-        
-        self.create_table("apps", apps_table_def)
-        self.create_table("notes", notes_table_def)
-        self.create_table("todos", todos_table_def)
-        self.create_table("settings", settings_table_def)
-        self.create_table("user", users_table_def)
-        self.create_table("vault", vault_table_def)
+        self.create_table("apps", Tables.apps)
+        self.create_table("notes", Tables.notes)
+        self.create_table("todos", Tables.todos)
+        self.create_table("settings", Tables.settings)
+        self.create_table("user", Tables.users)
+        self.create_table("vault", Tables.vault)
         
     def create_table(self, tablename: str, fields: object):
         encrypted_table_name = encryption.encrypt(tablename)
@@ -102,14 +52,36 @@ class Model:
         if new_table: self.cur.execute(table_query)
 
     def save(self, table, data):
-        keys = f'{", ".join(data.keys())}'
+        # Generate the question marks required
         values = ", ".join(list(map(lambda v: "?", data.keys())))
         
+        # Get the encrypted names of the columns and table
+        table_cols = self.get_encrypted_table_cols(table)
+        encrypted_tablename = self.get_encrypted_table_name(table)
         
+        field_name_list = []
+        for name in list(data.keys()):
+            # If the column exists in the table add the encrypted name to list
+            if name in table_cols: 
+                field_name_list.append(f"[{table_cols[name]}]")
+            # Throw an error if an invalid column name was passed to this method
+            else:
+                raise Exception("Invalid colum name provided")
+                
+        # Create a string from the encrypted column names that will be used to reference the columns names 
+        keys = ", ".join(field_name_list)
+        
+        # encrypt the data and add it to the list of data that must be added
+        values_list = []
+        for entry in data.values():
+            values_list.append(f'{encryption.encrypt(entry)}')
+        
+        # Convert to tuple for proper sqlite handling
+        values_list = tuple(values_list)
+            
+        query = f"INSERT INTO [{encrypted_tablename}]({keys}) VALUES ({values})"
 
-        query = f"INSERT INTO {table}({keys}) VALUES ({values})"
-
-        self.cur.executemany(query, [tuple(data.values())])
+        self.cur.executemany(query, [values_list])
         self.db.commit()
         self.db.close()
         
@@ -117,35 +89,71 @@ class Model:
 
     def read(self, table):
         if table != "tablenames":
-            table = self.get_encrypted_table_name(table)
+            encrypted_table = self.get_encrypted_table_name(table)
             
-        query = f"SELECT * FROM [{table}]"
-        meta = self.cur.execute(query)
+        query = f"SELECT * FROM [{encrypted_table}]"
+        self.cur.execute(query)
         data = self.cur.fetchall()
-        for desc in list(meta.description):
-            print(encryption.decrypt(desc[0]))
+        decrypted_data = []
+        if table != "tablenames":
+            for entry in data:
+                entry_list = []
+                for i in range(len(list(entry))):
+                    if (table == "user" or table == "settings"):
+                            decrypted = encryption.decrypt(entry[i])
+                            entry_list.append(decrypted)
+                    else:
+                        if i > 0:
+                            decrypted = encryption.decrypt(entry[i])
+                            entry_list.append(decrypted)
+                        else:
+                            entry_list.append(entry[i])
+                decrypted_data.append(entry_list)
+            
         self.db.close()
 
-        return data
+        return decrypted_data
 
     def delete(self, table, id):
-        query = f"DELETE FROM {table} WHERE id = (?)"
+        encrypted_table = self.get_encrypted_table_name(table)
+        
+        encrypted_cols = self.get_encrypted_table_cols(table)
+        # The id identifier is encrypted change this
+        query = f"DELETE FROM [{encrypted_table}] WHERE [{encrypted_cols['id']}] = (?)"
+        
+        # print(query)
         self.cur.execute(query, (id,))
         self.db.commit()
         self.db.close()
 
     def update(self, table, data, id):
+        # Get the field names
         fields = data.keys()
-        values = list(data.values())
+        # Get the encrypted cols
+        encrypted_cols = self.get_encrypted_table_cols(table)
+        
+        # Create list of encrypted values and append id for query
+        values = list(map(lambda v: encryption.encrypt(v), list(data.values())))
         values.append(id)
-        data_string = ", ".join(list(map(lambda a: f"{a} = ?", fields)))
+        
+        # Create the data string that will set the data in the query
+        data_string_list = []
+        for field in fields:
+            if field in encrypted_cols:
+                data_string_list.append(f"[{encrypted_cols[field]}] = ?")
+            else:
+                raise Exception(" Invalid column name provided")
+        data_string = ", ".join(data_string_list)
+        
+        # Get the encrypted table name
+        encrypted_table = self.get_encrypted_table_name(table)
  
-        query = f"UPDATE {table} SET {data_string} WHERE id = ?"
+        query = f"UPDATE [{encrypted_table}] SET {data_string} WHERE [{encrypted_cols['id']}] = ?"
 
         self.cur.execute(query, values)
         self.db.commit()
         self.db.close()
-    
+    # Start fixing from here
     def clearTable(self, table):
         query = f"""
             DROP TABLE IF EXISTS {table}
@@ -238,10 +246,14 @@ class Model:
         
         if len(settings_data) < 1:
             query = f"INSERT INTO [{settings}] VALUES ('{enc('settings')}', '{enc('0')}', '{enc('Arial')}', '{enc('#000000')}', '{enc('0')}', '{enc('5')}', '{enc('0')}', '{enc('0')}')"
-            print(query)
             self.cur.execute(query)
             self.db.commit()
         
 model = Model()
-settings = model.read("settings")
+settings = model.read("user")
 # print(settings)
+# model.save("apps", {"name": "another test", "path": "https://hello2.com", "sequence": "2"})
+
+# model.update("apps", {"name": "changed name", "path": "https://hi.com"}, 1)
+# model.delete("apps", 2)
+# print(model.read("apps"))

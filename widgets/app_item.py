@@ -23,7 +23,7 @@ class AppItem(QPushButton):
         self.clicked.connect(self.app_clicked)
 
     def app_clicked(self):
-        self.app_clicked_signal.emit(self.app)
+        self.app_clicked_signal.emit(tuple(self.app))
 
     def create(self):
         return self
