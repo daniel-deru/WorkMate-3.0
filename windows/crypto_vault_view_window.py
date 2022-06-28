@@ -179,7 +179,6 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         if status == "success":
             if type(widget) is QToolButton:
                 pyperclip.copy(self.data['private_key'])
-                # print(self.data)
             else:
                 widget.setChecked(True)
                 # widget.setCheckState(Qt.Checked)

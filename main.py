@@ -121,7 +121,7 @@ class Main(QWidget, Ui_main_container):
     def setTabIcons(self):
 
         # Get the night mode setting from the database
-        nightModeOn = Model().read("settings")[0][1]
+        nightModeOn = int(Model().read("settings")[0][1])
         icons = [
                 "_apps.svg",
                 "_vault.svg",

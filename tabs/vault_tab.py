@@ -63,7 +63,7 @@ class Vault_tab(QWidget, Ui_Vault_tab):
     def read_styles(self):
         font = Model().read('settings')[0][2]
         styles = [
-            VaultButton,
+            PushButton,
             CheckBox,
             Label
         ]
@@ -178,7 +178,6 @@ class Vault_tab(QWidget, Ui_Vault_tab):
 
     def display_apps(self):
         apps = Model().read('appvault')
-        # print(apps)
     
     def app_vault_click(self, secret):
         edit = self.chk_edit

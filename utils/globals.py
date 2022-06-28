@@ -11,5 +11,3 @@ ASSET_PATH = "./assets/"
 
 PICKLE_ENC = 'SqQ1-jsiAXjOmRWQqLWoMyzTWgW_Kxy8rc5aGKLG91k='
 # ASSET_PATH = PATH + "\\assets"
-
-# print(random_string(64))

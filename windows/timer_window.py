@@ -24,7 +24,7 @@ class Timer(Ui_Timer, QDialog):
 
         time = Model().read("settings")[0][5]
         self.lcd_timer.display(time)
-        self.hslide_timer.setValue(time)
+        self.hslide_timer.setValue(int(time))
 
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/WorkMate.ico"))

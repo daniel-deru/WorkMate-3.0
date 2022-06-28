@@ -52,7 +52,7 @@ class Model:
         if new_table: self.cur.execute(table_query)
 
     def save(self, table, data):
-        # Generate the question marks required
+        # Generate the question marks required for parameterized queries
         values = ", ".join(list(map(lambda v: "?", data.keys())))
         
         # Get the encrypted names of the columns and table
@@ -94,6 +94,7 @@ class Model:
         query = f"SELECT * FROM [{encrypted_table}]"
         self.cur.execute(query)
         data = self.cur.fetchall()
+        
         decrypted_data = []
         if table != "tablenames":
             for entry in data:
@@ -118,10 +119,8 @@ class Model:
         encrypted_table = self.get_encrypted_table_name(table)
         
         encrypted_cols = self.get_encrypted_table_cols(table)
-        # The id identifier is encrypted change this
         query = f"DELETE FROM [{encrypted_table}] WHERE [{encrypted_cols['id']}] = (?)"
         
-        # print(query)
         self.cur.execute(query, (id,))
         self.db.commit()
         self.db.close()
@@ -133,8 +132,13 @@ class Model:
         encrypted_cols = self.get_encrypted_table_cols(table)
         
         # Create list of encrypted values and append id for query
-        values = list(map(lambda v: encryption.encrypt(v), list(data.values())))
-        values.append(id)
+        values = list(map(lambda v: f"[{encryption.encrypt(v)}]", list(data.values())))
+        
+        if id == "settings" or id == "user":
+            encrypted_id = self.get_config_table_id(id)
+            values.append(f"{encrypted_id}")
+        else:
+            values.append(id)
         
         # Create the data string that will set the data in the query
         data_string_list = []
@@ -149,8 +153,8 @@ class Model:
         encrypted_table = self.get_encrypted_table_name(table)
  
         query = f"UPDATE [{encrypted_table}] SET {data_string} WHERE [{encrypted_cols['id']}] = ?"
-
         self.cur.execute(query, values)
+
         self.db.commit()
         self.db.close()
     # Start fixing from here
@@ -234,6 +238,15 @@ class Model:
             table_columns[name] = meta[0]
             
         return table_columns
+    
+    def get_config_table_id(self, table):
+        tablename = self.get_encrypted_table_name(table)
+        
+        query = f"SELECT * FROM [{tablename}]"
+        
+        self.cur.execute(query)
+        data = self.cur.fetchall()
+        return data[0][0]
         
     
     def fill_defaults(self):
@@ -250,10 +263,8 @@ class Model:
             self.db.commit()
         
 model = Model()
-settings = model.read("user")
-# print(settings)
+# settings = model.read("user")
 # model.save("apps", {"name": "another test", "path": "https://hello2.com", "sequence": "2"})
 
 # model.update("apps", {"name": "changed name", "path": "https://hi.com"}, 1)
 # model.delete("apps", 2)
-# print(model.read("apps"))

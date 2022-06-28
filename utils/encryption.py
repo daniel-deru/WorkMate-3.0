@@ -29,7 +29,7 @@ class Encryption:
             
     def get_key(self):
         if not os.path.exists(f"{DB_PATH}workmate.pkl"): raise FileNotFoundError
-        # print("The key was fetched")
+
         data = None
         with open(f"{DB_PATH}workmate.pkl", "rb") as file:
             data = pickle.load(file)

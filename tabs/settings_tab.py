@@ -47,7 +47,6 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.read_styles()
         self.logged_in = False
         settings = Model().read('settings')[0]
-        print(settings)
         
         # Set the default value of the settings
         self.chkbox_nightmode.setChecked(int(settings[1]))
@@ -84,11 +83,11 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         toggle = self.chkbox_nightmode
 
         if toggle.isChecked():
-            Model().update("settings", {'nightmode': 1}, 'settings')
+            Model().update("settings", {'nightmode': "1"}, 'settings')
             self.settings_signal.emit("settings changed")
             self.updateWindow()
         elif not toggle.isChecked():
-            Model().update("settings", {'nightmode': 0}, 'settings')
+            Model().update("settings", {'nightmode': "0"}, 'settings')
             self.settings_signal.emit("settings changed")
             self.updateWindow()
     
@@ -204,10 +203,10 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         toggle = self.chkbox_vault
         if self.logged_in:
             if toggle.isChecked():
-                Model().update('settings', {"vault_on": 1}, "settings")
+                Model().update('settings', {"vault_on": "1"}, "settings")
                 self.login_signal.emit("login requested")
             elif not toggle.isChecked():
-                Model().update("settings", {"vault_on": 0}, "settings")
+                Model().update("settings", {"vault_on": "0"}, "settings")
 
         elif not self.logged_in:
             if not toggle.isChecked():

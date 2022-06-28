@@ -120,10 +120,10 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         for i in range(words_layout.count()):
             widget_container: QWidget = words_layout.itemAt(i).widget()
             password_widget: QWidget = widget_container.layout().itemAt(1).widget()
-            # print(f"{i+1}: {password_widget}")
+
             
             line_edit: QLineEdit = password_widget.layout().itemAt(0).widget()
-            # print(f"{str(i+1).zfill(2)}: <{type(line_edit) == QLineEdit}>{type(line_edit)}")
+
             if(type(line_edit) == QLineEdit):
                 word: str = line_edit.text()
                 # if(not word):

@@ -40,9 +40,9 @@ class StyleSheet():
         self.stylesheet = stylesheet
         settings = Model().read("settings")[0]
         # Get the nightmode setting
-        self.settings_mode = "#000000" if settings[1] else "#ffffff"
+        self.settings_mode = "#000000" if int(settings[1]) else "#ffffff"
         # Set the contrast to the opposite of the nightmode
-        self.settings_contrast = "#ffffff" if settings[1] else  "#000000"
+        self.settings_contrast = "#ffffff" if int(settings[1]) else  "#000000"
         self.settings_color = settings[3]
 
     def rgb(self, color):

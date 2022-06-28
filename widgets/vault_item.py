@@ -10,12 +10,17 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from database.model import Model
 
+from widgetStyles.PushButton import VaultButton
+
+from utils.helpers import StyleSheet
+
 class VaultItem(QPushButton):
     vault_clicked_signal = pyqtSignal(tuple)
     def __init__(self, secret):
         super(VaultItem, self).__init__()
         self.secret = secret
         self.setupUI()
+        self.read_styles()
         self.setCursor(QCursor(Qt.PointingHandCursor))
         
         if(len(self.text()) > 25): self.setStyleSheet("text-align: left;")
@@ -31,5 +36,10 @@ class VaultItem(QPushButton):
         self.setText(self.secret[2])
         font = Model().read("settings")[0][2]
         self.setFont(QFont(font))
-        # self.setAlign
+    
+    def read_styles(self):
+        widget_list = [VaultButton]
+        
+        stylesheet = StyleSheet(widget_list).create()
+        self.setStyleSheet(stylesheet)
         
