@@ -47,3 +47,10 @@ TodoItemWidgetDelete = f"""
         border: 2px solid {color};
     }}
 """
+
+SideWidget = f"""
+    QWidget#sidewidget {{
+        background-image: url(:/other/background.jpg);
+    }}
+
+"""

@@ -1,11 +1,11 @@
 import sys
 import time
+import threading
 import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
-from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor
-from PyQt5.QtCore import QTimer, Qt
-
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent
+from PyQt5.QtCore import QTimer, Qt, QPropertyAnimation
 
 from designs.python.main_widget import Ui_main_container
 from tabs.apps_tab import Apps_tab
@@ -36,7 +36,8 @@ class Main(QWidget, Ui_main_container):
         # self.windowSize()
         # Model().start()
 
-        self.timer = QTimer(self)
+
+        self.timer = QTimer(self) 
         self.logged_in = False
         self.count = 0
         self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
@@ -46,6 +47,8 @@ class Main(QWidget, Ui_main_container):
         self.add_tabs()
         self.setTabIcons()
         self.update_status(False)
+        
+        # prop: QPropertyAnimation = QPropertyAnimation(self, )
 
         self.tab_widget.currentChanged.connect(self.changed)
 
@@ -209,6 +212,13 @@ class Main(QWidget, Ui_main_container):
         if not old_screen == new_screen:
             # self.windowSize() 
             pass
+        
+    def closeEvent(self, event: QCloseEvent) -> None:
+        Google.upload_backup()
+        return super().closeEvent(event)
+    
+def google_thread():
+    Google.upload_backup()
     
 
 

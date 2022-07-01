@@ -190,10 +190,10 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         self.lne_password2.setText(data['password'])
         self.lne_name.setText(data['name'])
         
-        if data['private_key']:
+        if 'private_key' in data:
             self.lne_private.setText(data['private_key'])
             
-        if data['public_key']:
+        if 'public_key' in data:
             self.lne_public.setText(data['public_key'])
 
         combobox: QComboBox = self.cmb_num_words

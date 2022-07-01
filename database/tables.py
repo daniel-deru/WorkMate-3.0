@@ -35,7 +35,8 @@ class Tables:
             "vault_on": f"TEXT NOT NULL",
             "timer": f"TEXT NOT NULL",
             "calendar": f"TEXT NOT NULL",
-            "twofa": f"TEXT"
+            "twofa": f"TEXT",
+            "google_drive": "TEXT NOT NULL"
         }
         
         users = {
@@ -43,8 +44,7 @@ class Tables:
             "name": "TEXT NOT NULL",
             "email": "TEXT NOT NULL",
             "password": "TEXT NOT NULL",
-            "question": "TEXT NOT NULL",
-            "answer": "TEXT NOT NULL",
+            "passphrase": "TEXT NOT NULL",
             "twofa_key": "TEXT"
         }
         
@@ -54,20 +54,3 @@ class Tables:
             "name": "TEXT NOT NULL",
             "data": "TEXT NOT NULL"
         }
-    
-    
-    
-    
-    
-    
-    
-# settings_table_def = {
-#             "id": f"TEXT DEFAULT '{enc('settings')}' PRIMARY KEY",
-#             "nightmode": f"TEXT DEFAULT '{enc('0')}'",
-#             "font": f"TEXT DEFAULT '{enc('Arial')}'",
-#             "color": f"TEXT DEFAULT '{enc('#000000')}'",
-#             "vault_on": f"TEXT DEFAULT '{enc('0')}' NOT NULL",
-#             "timer": f"TEXT DEFAULT '{enc('5')}' NOT NULL",
-#             "calendar": f"TEXT DEFAULT '{enc('0')}' NOT NULL",
-#             "twofa": f"TEXT DEFAULT '{enc('0')}' NOT NULL"
-#         }

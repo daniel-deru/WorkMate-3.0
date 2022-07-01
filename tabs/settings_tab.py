@@ -1,3 +1,4 @@
+from concurrent.futures import thread
 import sys
 import os
 import csv
@@ -21,7 +22,6 @@ from widgetStyles.QCheckBox import SettingsCheckBox
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.ScrollBar import ScrollBar
 
-from utils.updateSVG import change_color
 from utils.message import Message
 from utils.helpers import StyleSheet
 from database.model import Model
@@ -50,25 +50,32 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         
         # Set the default value of the settings
         self.chkbox_nightmode.setChecked(int(settings[1]))
-        self.chkbox_vault.setChecked(int(settings[4]))
+        # self.chkbox_vault.setChecked(int(settings[4]))
         self.chkbox_calendar.setChecked(int(settings[6]))
         self.chkbox_2fa.setChecked(int(settings[7]))
+        self.chk_google_drive.setChecked(int(settings[8]))
 
 
         # Signals
-        self.btn_login.clicked.connect(self.login_clicked)
+        
         self.chkbox_nightmode.stateChanged.connect(self.set_night_mode)
         self.chkbox_2fa.stateChanged.connect(self.twofa)
+        self.chkbox_calendar.stateChanged.connect(self.calendar_toggle)
+        self.chk_google_drive.stateChanged.connect(self.google_drive_toggle)
+        
         self.fcmbx_font.currentFontChanged.connect(self.get_font)
+        
+        self.btn_login.clicked.connect(self.login_clicked)
         self.btn_reset.clicked.connect(self.reset)
         self.btn_export_apps.clicked.connect(lambda: self.export_data("apps"))
         self.btn_export_notes.clicked.connect(lambda: self.export_data("notes"))
         self.btn_import_apps.clicked.connect(lambda: self.import_data("apps"))
         self.btn_import_notes.clicked.connect(lambda: self.import_data("notes"))
-        self.chkbox_vault.stateChanged.connect(self.vault)
-        self.btn_vault_timer.clicked.connect(self.vault_timer)
-        self.chkbox_calendar.stateChanged.connect(self.calendar_toggle)
+        self.btn_vault_timer.clicked.connect(self.vault_timer) 
         self.btn_forgot_password.clicked.connect(self.forgot_password_clicked)
+        self.btn_google_drive_sync.clicked.connect(self.sync_google)
+        
+        
 
         # connect the custom signals to the slots
         self.settings_signal.connect(self.read_styles)
@@ -122,11 +129,16 @@ class SettingsTab(QWidget, Ui_Settings_tab):
             self.btn_reset,
             self.btn_vault_timer,
             self.lbl_calendar,
-            self.lbl_vault,
+            # self.lbl_vault,
             self.lbl_vault_timer,
             self.lbl_reset,
             self.lbl_login,
-            self.btn_login
+            self.btn_login,
+            self.lbl_security,
+            self.lbl_appearance,
+            self.lbl_integration,
+            self.lbl_2fa,
+            self.btn_forgot_password
         ]
         for i in range(len(widget_list)):
             widget_list[i].setFont(QFont(font))
@@ -242,9 +254,14 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         if toggle.isChecked():
             th = threading.Thread(target=google_thread, daemon=True)
             th.start()
-            Model().update("settings", {"calendar": 1}, "settings")
+            Model().update("settings", {"calendar": "1"}, "settings")
         elif not toggle.isChecked():
-            Model().update("settings", {"calendar": 0}, "settings")
+            Model().update("settings", {"calendar": "0"}, "settings")
+            
+    def google_drive_toggle(self):
+        th = threading.Thread(target=google_thread, daemon=True)
+        th.start()
+        Model().update("settings", {"google_drive":int(self.chk_google_drive.isChecked())}, "settings")
 
     def login_clicked(self):
         if self.logged_in:
@@ -265,6 +282,11 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         ask_question = PasswordQuestion()
         ask_question.exec_()
         
+    def sync_google(self):
+        print("method to sync ran")
+        th = threading.Thread(target=google_download, daemon=True)
+        th.start()
+        
 
 
             
@@ -272,6 +294,10 @@ class SettingsTab(QWidget, Ui_Settings_tab):
 def google_thread():
     print("inside the google thread")
     Google.connect()
+    
+def google_download():
+    print("inside download thread")
+    Google.download_backup()
     
         
 

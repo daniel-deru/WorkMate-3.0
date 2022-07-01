@@ -1,5 +1,6 @@
 from datetime import timedelta
 import os.path
+from urllib import response
 import tzlocal
 import io
 import shutil
@@ -120,10 +121,30 @@ class Google:
         
         try:
             service = build("drive", "v3", credentials=creds)
-            file_metadata = {'name': 'model.py'}
-            media = MediaFileUpload('./assets/done.png', mimetype='image/png')
+                      
+            files = []
+            page_token = None
+            while True:
+                response = service.files().list(q="mimeType='application/octet-stream'").execute()
+                files.extend(response.get('files', []))
+                page_token = response.get("nextPageToken", None)
+                if page_token == None: break
+            
+
+            file_id: str or None = None
+            file_exists: bool = False
+            for file in files:
+                if "name" in file and file['name'] == "workmate.db":
+                    file_id = file['id']
+                    file_exists = True
+                    break
+            
+            if file_exists:
+                service.files().delete(fileId=file_id).execute()
+
+            file_metadata = {'name': 'workmate.db'}
+            media = MediaFileUpload('./database/test.db', mimetype='application/octet-stream')
             file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-            print("FILE ID: " + file.get("id"))
             
         except HttpError as error:
             print('An error occurred: %s' % error)
@@ -132,6 +153,7 @@ class Google:
         """Shows basic usage of the Google Calendar API.
         Prints the start and name of the next 10 events on the user's calendar.
         """
+        print("inside the google download method")
         creds = None
         # The file token.json stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
@@ -153,7 +175,22 @@ class Google:
         
         try:
             service = build("drive", "v3", credentials=creds)
-            file = service.files().get_media(fileId="1V5j3kcn1BdNGM94qsSA5qWTyQx_ijNjB")
+            
+            files = []
+            page_token = None
+            while True:
+                response = service.files().list(q="mimeType='application/octet-stream'").execute()
+                files.extend(response.get('files', []))
+                page_token = response.get("nextPageToken", None)
+                if page_token == None: break
+                
+                
+            file_id: str or None = None    
+            for file in files:
+                if "name" in file and file['name'] == "workmate.db":
+                    file_id = file['id']
+            
+            file = service.files().get_media(fileId=file_id)
             
             download = io.BytesIO()
             downloader = MediaIoBaseDownload(download, file)
@@ -164,7 +201,7 @@ class Google:
                 print(f"Download {int(status.progress() * 100)}%")
             
             download.seek(0)
-            with open("test.txt", "wb") as f:
+            with open("test.db", "wb") as f:
                 shutil.copyfileobj(download, f)
             
         except HttpError as error:

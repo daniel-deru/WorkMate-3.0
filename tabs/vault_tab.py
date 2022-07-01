@@ -74,7 +74,10 @@ class Vault_tab(QWidget, Ui_Vault_tab):
             self.chk_delete,
             self.chk_edit,
             self.btn_add,
-            self.btn_login
+            self.btn_login,
+            self.lbl_app_vault,
+            self.lbl_crypto_vault,
+            self.lbl_general_vault
         ]
 
         for widget in widget_list:
@@ -195,8 +198,8 @@ class Vault_tab(QWidget, Ui_Vault_tab):
             return
         else:
             Model().delete("vault", secret[0])
+            self.chk_delete.setChecked(False)
             self.update()
-            self.chk_edit.setChecked(False)
     
     def edit_secret(self, secret):
         if not self.logged_in:

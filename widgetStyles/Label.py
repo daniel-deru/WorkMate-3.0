@@ -20,3 +20,4 @@ QLabel{{
         border: none;
     }}
 """
+

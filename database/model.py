@@ -186,7 +186,10 @@ class Model:
             self.save('settings', data)
 
     def add_column(self, table_name, column_name, column_definition):
-        query = f"ALTER TABLE {table_name} ADD {column_name} {column_definition}"
+        encrypted_table_name = self.get_encrypted_table_name(table_name)
+        
+        encrypted_column_name = encryption.encrypt(column_name)
+        query = f"ALTER TABLE [{encrypted_table_name}] ADD [{encrypted_column_name}] {column_definition}"
         self.cur.execute(query)
     
     def drop_table(self, table):
@@ -197,7 +200,8 @@ class Model:
                 name TEXT NOT NULL
             )"""
         self.cur.execute(query)
-        
+    
+    # Insert the table names in the table that tracks the table names
     def insert_table_name(self, value: str):
         get_query = "SELECT * FROM tablenames"
         self.cur.execute(get_query)
@@ -258,7 +262,7 @@ class Model:
         settings_data = self.cur.fetchall()
         
         if len(settings_data) < 1:
-            query = f"INSERT INTO [{settings}] VALUES ('{enc('settings')}', '{enc('0')}', '{enc('Arial')}', '{enc('#000000')}', '{enc('0')}', '{enc('5')}', '{enc('0')}', '{enc('0')}')"
+            query = f"INSERT INTO [{settings}] VALUES ('{enc('settings')}', '{enc('0')}', '{enc('Arial')}', '{enc('#000000')}', '{enc('0')}', '{enc('5')}', '{enc('0')}', '{enc('0')}', '{enc('0')}')"
             self.cur.execute(query)
             self.db.commit()
         

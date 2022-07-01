@@ -4,8 +4,7 @@ import os
 import re
 from functools import reduce
 import json
-import pickle
-from cryptography.fernet import Fernet
+from random import randint
 
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout
 
@@ -15,7 +14,7 @@ DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
 from widgetStyles.styles import placeholders
 from database.model import Model
-from utils.globals import DB_PATH, PICKLE_ENC
+from utils.globals import WORDS
 
 layouts = [QGridLayout, QVBoxLayout, QHBoxLayout]
 
@@ -90,3 +89,12 @@ class StyleSheet():
 # Turn JSON data into dict
 def json_to_dict(json_data):
     return json.loads(json_data)
+
+def random_words(num_words=12, words=[]):
+    word = WORDS[randint(0, 998)]
+    
+    if len(words) >= num_words: return words
+    if word not in words: words.append(word)
+             
+    return random_words(num_words, words)
+    
