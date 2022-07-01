@@ -11,27 +11,26 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(413, 241)
-        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
+class Ui_LoaderWidget(object):
+    def setupUi(self, LoaderWidget):
+        LoaderWidget.setObjectName("LoaderWidget")
+        LoaderWidget.resize(400, 300)
+        self.verticalLayout = QtWidgets.QVBoxLayout(LoaderWidget)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.lbl_loader = QtWidgets.QLabel(Dialog)
-        self.lbl_loader.setMinimumSize(QtCore.QSize(0, 200))
-        self.lbl_loader.setAlignment(QtCore.Qt.AlignCenter)
-        self.lbl_loader.setObjectName("lbl_loader")
-        self.verticalLayout.addWidget(self.lbl_loader)
-        self.lbl_backup_message = QtWidgets.QLabel(Dialog)
+        self.lbl_image = QtWidgets.QLabel(LoaderWidget)
+        self.lbl_image.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_image.setObjectName("lbl_image")
+        self.verticalLayout.addWidget(self.lbl_image)
+        self.lbl_backup_message = QtWidgets.QLabel(LoaderWidget)
         self.lbl_backup_message.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl_backup_message.setObjectName("lbl_backup_message")
         self.verticalLayout.addWidget(self.lbl_backup_message)
 
-        self.retranslateUi(Dialog)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        self.retranslateUi(LoaderWidget)
+        QtCore.QMetaObject.connectSlotsByName(LoaderWidget)
 
-    def retranslateUi(self, Dialog):
+    def retranslateUi(self, LoaderWidget):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Loading Please Wait"))
-        self.lbl_loader.setText(_translate("Dialog", "Loading Image"))
-        self.lbl_backup_message.setText(_translate("Dialog", "Backing Up To Remote Storage..."))
+        LoaderWidget.setWindowTitle(_translate("LoaderWidget", "Please Wait"))
+        self.lbl_image.setText(_translate("LoaderWidget", "Loading Image"))
+        self.lbl_backup_message.setText(_translate("LoaderWidget", "Backing Up To Remote Storage. Please Wait..."))

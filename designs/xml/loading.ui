@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>LoaderWidget</class>
+ <widget class="QWidget" name="LoaderWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>413</width>
-    <height>241</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Loading Please Wait</string>
+   <string>Please Wait</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="lbl_loader">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>200</height>
-      </size>
-     </property>
+    <widget class="QLabel" name="lbl_image">
      <property name="text">
       <string>Loading Image</string>
      </property>
@@ -33,7 +27,7 @@
    <item>
     <widget class="QLabel" name="lbl_backup_message">
      <property name="text">
-      <string>Backing Up To Remote Storage...</string>
+      <string>Backing Up To Remote Storage. Please Wait...</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

@@ -30,7 +30,6 @@
     </qresource>
     <qresource prefix="other">
         <file alias="calendar.svg">calendar.svg</file>
-        <file alias="delete-red.png">delete-red.png</file>
         <file alias="delete.png">delete.png</file>
         <file alias="delete.svg">delete.svg</file>
         <file alias="done.png">done.png</file>

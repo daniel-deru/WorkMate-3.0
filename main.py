@@ -1,11 +1,13 @@
+from concurrent.futures import thread
 import sys
 import time
 import threading
+import time
 import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent
-from PyQt5.QtCore import QTimer, Qt, QPropertyAnimation
+from PyQt5.QtCore import QTimer, Qt, QPropertyAnimation, QThread
 
 from designs.python.main_widget import Ui_main_container
 from tabs.apps_tab import Apps_tab
@@ -25,18 +27,19 @@ from widgetStyles.Widget import Widget
 
 from utils.globals import ASSET_PATH
 from utils.helpers import StyleSheet
+
 from windows.register_window import Register
 from windows.login_window import Login
-
+# from windows.loading_worker import LoadingWorker
+from windows.loading import LoadingScreen
 from integrations.calendar.c import Google
 
 class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
-        # self.windowSize()
-        # Model().start()
 
 
+        
         self.timer = QTimer(self) 
         self.logged_in = False
         self.count = 0
@@ -58,7 +61,6 @@ class Main(QWidget, Ui_main_container):
             register.register_close_signal.connect(self.register_event)
             register.exec_()
 
-        
 
     def register_event(self, event):
         if event == "window closed":
@@ -214,12 +216,10 @@ class Main(QWidget, Ui_main_container):
             pass
         
     def closeEvent(self, event: QCloseEvent) -> None:
+        loader: LoadingScreen = LoadingScreen()
+        loader.show()
         Google.upload_backup()
-        return super().closeEvent(event)
-    
-def google_thread():
-    Google.upload_backup()
-    
+        # return super().closeEvent(event)
 
 
 if __name__ == "__main__":

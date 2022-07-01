@@ -145,6 +145,7 @@ class Google:
             file_metadata = {'name': 'workmate.db'}
             media = MediaFileUpload('./database/test.db', mimetype='application/octet-stream')
             file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+            # return True
             
         except HttpError as error:
             print('An error occurred: %s' % error)
