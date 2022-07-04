@@ -1,8 +1,10 @@
 import sys
 import os
 import threading
+import shutil
+import json
 
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QFileDialog
 from PyQt5.QtCore import pyqtSignal, Qt, QThread
 from PyQt5.QtGui import QFont
 
@@ -23,8 +25,9 @@ from utils.globals import DB_PATH
 
 from database.model import Model
 
-from windows.timer_window import Timer
+
 from windows.forgot_question import PasswordQuestion
+from windows.drive_window import DriveWindow
 from windows.twofa_window import TwofaDialog
 from windows.loading import Loading
 
@@ -58,11 +61,14 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.chkbox_nightmode.stateChanged.connect(self.set_night_mode)
         self.chkbox_2fa.stateChanged.connect(self.twofa)
         self.chkbox_calendar.stateChanged.connect(self.calendar_toggle)
+        self.chk_auto_save.stateChanged.connect(self.auto_save)
         
         self.btn_login.clicked.connect(self.login_clicked)
         self.btn_forgot_password.clicked.connect(self.forgot_password_clicked)
         self.btn_google_drive_sync.clicked.connect(self.sync_google)
         self.btn_save_google_drive.clicked.connect(self.save_to_google_drive)
+        self.btn_save_local.clicked.connect(self.save_local)
+        self.btn_restore_local.clicked.connect(self.restore_from_local)
         
         
 
@@ -181,12 +187,40 @@ class SettingsTab(QWidget, Ui_Settings_tab):
     def update_db(self, name: str):
         if Model().is_valid(name):
             os.replace(name, f"{DB_PATH}test.db")
-            # message: Message = Message("Your data has been synced from google", "Sync Successful")
-            # message.exec_()
         else:
             message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
             message.exec_()
         self.loading.close()
+        
+    def save_local(self):
+        path = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
+        shutil.copy(f"{DB_PATH}test.db", f"{path}/test.db")
+        
+    def restore_from_local(self):
+        file = QFileDialog.getOpenFileName(self, "Choose a file", DESKTOP, "DB File (test.db)")[0]
+        
+        if Model().is_valid(file):
+            shutil.copy(file, f"{DB_PATH}test.db")
+        else:
+            message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
+            message.exec_()
+            
+    def auto_save(self):
+        if self.chk_auto_save.isChecked():
+            drive_window = DriveWindow()
+            drive_window.drive_dict.connect(self.save_drives)
+            drive_window.exec_()
+        else:
+            Model().update("settings", {"auto_save": json.dumps({"auto_save": False})}, "settings")
+            
+    def save_drives(self, drives: object):
+        drives["auto_save"] = True
+        
+        json_string = json.dumps(drives)
+        
+        Model().update('settings', {'auto_save': json_string}, 'settings')
+        
+        
         
             
 # @concurrent.process(timeout=30)

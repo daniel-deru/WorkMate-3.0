@@ -35,7 +35,8 @@ class Tables:
             "vault_on": f"TEXT NOT NULL",
             "timer": f"TEXT NOT NULL",
             "calendar": f"TEXT NOT NULL",
-            "twofa": f"TEXT"
+            "twofa": f"TEXT",
+            "auto_save": f"TEXT"
         }
         
         users = {
