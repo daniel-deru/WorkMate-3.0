@@ -18,7 +18,7 @@ class Ui_AnswerQuestionDialog(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(AnswerQuestionDialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.lbl_question = QtWidgets.QLabel(AnswerQuestionDialog)
-        self.lbl_question.setText("")
+        self.lbl_question.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl_question.setObjectName("lbl_question")
         self.verticalLayout.addWidget(self.lbl_question)
         self.lnedt_answer = QtWidgets.QLineEdit(AnswerQuestionDialog)
@@ -42,4 +42,5 @@ class Ui_AnswerQuestionDialog(object):
     def retranslateUi(self, AnswerQuestionDialog):
         _translate = QtCore.QCoreApplication.translate
         AnswerQuestionDialog.setWindowTitle(_translate("AnswerQuestionDialog", "Answer the question below"))
+        self.lbl_question.setText(_translate("AnswerQuestionDialog", "Please enter your recovery phrase"))
         self.btn_enter.setText(_translate("AnswerQuestionDialog", "Enter"))

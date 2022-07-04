@@ -28,10 +28,8 @@ class PasswordQuestion(Ui_AnswerQuestionDialog, QDialog):
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
 
         user: list[tuple] = Model().read('user')[0]
-        question: str = user[4]
-        self.correct_answer: str = user[5]
+        self.correct_phrase: str = user[4]
 
-        self.lbl_question.setText(question)
 
         self.btn_enter.clicked.connect(self.verify_answer)
 
@@ -48,7 +46,7 @@ class PasswordQuestion(Ui_AnswerQuestionDialog, QDialog):
 
     def verify_answer(self):
         answer: str = self.lnedt_answer.text()
-        if(answer == self.correct_answer):
+        if(answer == self.correct_phrase):
             self.close()
             reset_password_window = ResetPassword()
             reset_password_window.exec_()

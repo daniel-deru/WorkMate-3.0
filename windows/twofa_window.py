@@ -34,14 +34,13 @@ class TwofaDialog(Ui_TwoFADialog, QDialog):
     def create_qrcode(self):
         secret = self.get_otp()
         email = Model().read("user")[0][2]
-
         auth_string = f"otpauth://totp/Smart WorkMate:{email}?secret={secret}&issuer=Smart WorkMate"
 
         self.lbl_qrcode.setPixmap(qrcode.make(auth_string, image_factory=QRCodeTemplate).pixmap())
 
     def get_otp(self):
         otp = Model().read("user")[0][5]
-        if not otp:
+        if otp == "None":
             otp = pyotp.random_base32()
             Model().update('user', {'twofa_key': otp}, 'user')
         self.lbl_setupkey.setText(otp)

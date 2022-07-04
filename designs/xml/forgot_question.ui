@@ -17,7 +17,10 @@
    <item>
     <widget class="QLabel" name="lbl_question">
      <property name="text">
-      <string/>
+      <string>Please enter your recovery phrase</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>
