@@ -11,26 +11,21 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_LoaderWidget(object):
-    def setupUi(self, LoaderWidget):
-        LoaderWidget.setObjectName("LoaderWidget")
-        LoaderWidget.resize(400, 300)
-        self.verticalLayout = QtWidgets.QVBoxLayout(LoaderWidget)
+class Ui_LoadingDialog(object):
+    def setupUi(self, LoadingDialog):
+        LoadingDialog.setObjectName("LoadingDialog")
+        LoadingDialog.resize(400, 300)
+        self.verticalLayout = QtWidgets.QVBoxLayout(LoadingDialog)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.lbl_image = QtWidgets.QLabel(LoaderWidget)
-        self.lbl_image.setAlignment(QtCore.Qt.AlignCenter)
-        self.lbl_image.setObjectName("lbl_image")
-        self.verticalLayout.addWidget(self.lbl_image)
-        self.lbl_backup_message = QtWidgets.QLabel(LoaderWidget)
-        self.lbl_backup_message.setAlignment(QtCore.Qt.AlignCenter)
-        self.lbl_backup_message.setObjectName("lbl_backup_message")
-        self.verticalLayout.addWidget(self.lbl_backup_message)
+        self.lbl_loading_message = QtWidgets.QLabel(LoadingDialog)
+        self.lbl_loading_message.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_loading_message.setObjectName("lbl_loading_message")
+        self.verticalLayout.addWidget(self.lbl_loading_message)
 
-        self.retranslateUi(LoaderWidget)
-        QtCore.QMetaObject.connectSlotsByName(LoaderWidget)
+        self.retranslateUi(LoadingDialog)
+        QtCore.QMetaObject.connectSlotsByName(LoadingDialog)
 
-    def retranslateUi(self, LoaderWidget):
+    def retranslateUi(self, LoadingDialog):
         _translate = QtCore.QCoreApplication.translate
-        LoaderWidget.setWindowTitle(_translate("LoaderWidget", "Please Wait"))
-        self.lbl_image.setText(_translate("LoaderWidget", "Loading Image"))
-        self.lbl_backup_message.setText(_translate("LoaderWidget", "Backing Up To Remote Storage. Please Wait..."))
+        LoadingDialog.setWindowTitle(_translate("LoadingDialog", "Loading..."))
+        self.lbl_loading_message.setText(_translate("LoadingDialog", "Loading..."))

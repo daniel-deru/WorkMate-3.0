@@ -36,7 +36,7 @@ CheckBox = f"""
     }}
 
 """
-
+#                       
 SettingsCheckBox = f"""
     QCheckBox {{
         color: {default};

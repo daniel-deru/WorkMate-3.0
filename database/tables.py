@@ -35,8 +35,7 @@ class Tables:
             "vault_on": f"TEXT NOT NULL",
             "timer": f"TEXT NOT NULL",
             "calendar": f"TEXT NOT NULL",
-            "twofa": f"TEXT",
-            "google_drive": "TEXT NOT NULL"
+            "twofa": f"TEXT"
         }
         
         users = {

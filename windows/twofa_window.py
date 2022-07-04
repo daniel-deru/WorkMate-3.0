@@ -40,7 +40,7 @@ class TwofaDialog(Ui_TwoFADialog, QDialog):
         self.lbl_qrcode.setPixmap(qrcode.make(auth_string, image_factory=QRCodeTemplate).pixmap())
 
     def get_otp(self):
-        otp = Model().read("user")[0][6]
+        otp = Model().read("user")[0][5]
         if not otp:
             otp = pyotp.random_base32()
             Model().update('user', {'twofa_key': otp}, 'user')

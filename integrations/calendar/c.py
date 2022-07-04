@@ -202,8 +202,11 @@ class Google:
                 print(f"Download {int(status.progress() * 100)}%")
             
             download.seek(0)
-            with open("test.db", "wb") as f:
+            name = "test.db"
+            with open(name, "wb") as f:
                 shutil.copyfileobj(download, f)
+            
+            return name
             
         except HttpError as error:
             print('An error occurred: %s' % error)

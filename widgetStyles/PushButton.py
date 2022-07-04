@@ -33,6 +33,7 @@ ButtonFullWidth = f"""
     font-size: 16px;
     padding: 5px 8px;
     min-width: 100px;
+    max-width: 250px;
 }}
 
 QPushButton:pressed {{
@@ -44,7 +45,7 @@ QPushButton:pressed {{
 
 ForgotPasswordButton = f"""
     QPushButton#btn_forgot_password {{
-        max-width: 1000000px;
+        max-width: 1000px;
     }}
 """
 

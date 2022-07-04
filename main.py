@@ -1,5 +1,5 @@
-from concurrent.futures import thread
 import sys
+import os
 import time
 import threading
 import time
@@ -7,7 +7,7 @@ import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent
-from PyQt5.QtCore import QTimer, Qt, QPropertyAnimation, QThread
+from PyQt5.QtCore import QTimer, Qt, QThread
 
 from designs.python.main_widget import Ui_main_container
 from tabs.apps_tab import Apps_tab
@@ -24,21 +24,21 @@ from widgetStyles.TabBar import TabBar
 from widgetStyles.TabWidget import TabWidget
 from widgetStyles.Widget import Widget
 
-
-from utils.globals import ASSET_PATH
 from utils.helpers import StyleSheet
+from utils.globals import DB_PATH
+from utils.message import Message
 
 from windows.register_window import Register
 from windows.login_window import Login
-# from windows.loading_worker import LoadingWorker
-from windows.loading import LoadingScreen
+from windows.loading import Loading
+
+from workers.google_download_worker import GoogleDownload
+
 from integrations.calendar.c import Google
 
 class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
-
-
         
         self.timer = QTimer(self) 
         self.logged_in = False
@@ -53,8 +53,8 @@ class Main(QWidget, Ui_main_container):
         
         # prop: QPropertyAnimation = QPropertyAnimation(self, )
 
-        self.tab_widget.currentChanged.connect(self.changed)
-
+        self.tab_widget.currentChanged.connect(self.changed)    
+        
         user = Model().read("user")
         if len(user) != 1:
             register = Register()
@@ -216,10 +216,40 @@ class Main(QWidget, Ui_main_container):
             pass
         
     def closeEvent(self, event: QCloseEvent) -> None:
-        loader: LoadingScreen = LoadingScreen()
-        loader.show()
-        Google.upload_backup()
-        # return super().closeEvent(event)
+                
+        # Create a new thread
+        # self.google_download_thread = QThread()
+        
+        # # Create instance of worker
+        # self.google_download_worker = GoogleDownload()
+        
+        # # Move the worker to the new thread
+        # self.google_download_worker.moveToThread(self.google_download_thread)
+        
+        # # Connect thread started signal to worker to start worker when thread is started
+        # self.google_download_thread.started.connect(self.google_download_worker.download)
+        
+        # # Connect worker finished signal to slot for processing after worker is done
+        # self.google_download_worker.finished.connect(self.update_db)
+        
+        # # Clean up the processes for better memory management
+        # self.google_download_worker.finished.connect(self.google_download_worker.deleteLater)
+        # self.google_download_thread.finished.connect(self.google_download_thread.deleteLater)
+        
+        # self.google_download_thread.start()
+        
+        # self.loading = Loading()
+        # self.loading.exec_()
+        return super().closeEvent(event)
+    
+    def update_db(self, name: str):
+        if Model().is_valid(name):
+            os.replace(name, f"{DB_PATH}test.db")
+        else:
+            message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
+            message.exec_()
+        self.loading.close()
+        
 
 
 if __name__ == "__main__":

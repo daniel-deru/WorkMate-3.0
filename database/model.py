@@ -1,7 +1,6 @@
 import sqlite3
 import os
 import sys
-from cryptography.fernet import Fernet
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -191,6 +190,25 @@ class Model:
         encrypted_column_name = encryption.encrypt(column_name)
         query = f"ALTER TABLE [{encrypted_table_name}] ADD [{encrypted_column_name}] {column_definition}"
         self.cur.execute(query)
+        
+    def delete_column(self, table: str, column: str):
+        encrypted_table_name: str = self.get_encrypted_table_name(table)
+        encrypted_column_name: str or None = None
+        
+        encrypted_column_names: object = self.get_encrypted_table_cols(table)
+        if column in encrypted_column_names:
+            encrypted_column_name = encrypted_column_names[column]
+        
+        query = f"ALTER TABLE [{encrypted_table_name}] DROP COLUMN [{encrypted_column_name}]"
+        
+        if encrypted_column_name:
+            self.cur.execute(query)
+            self.db.commit()
+            self.db.close()
+        
+        
+        print(encrypted_column_names)
+        
     
     def drop_table(self, table):
         self.cur.execute(f"DROP TABLE {table}")
@@ -217,6 +235,7 @@ class Model:
         self.cur.execute(query, (value,))
         self.db.commit()
         return True
+
 
     def get_encrypted_table_name(self, tablename):
         self.cur.execute("SELECT * FROM tablenames")
@@ -265,10 +284,16 @@ class Model:
             query = f"INSERT INTO [{settings}] VALUES ('{enc('settings')}', '{enc('0')}', '{enc('Arial')}', '{enc('#000000')}', '{enc('0')}', '{enc('5')}', '{enc('0')}', '{enc('0')}', '{enc('0')}')"
             self.cur.execute(query)
             self.db.commit()
+            
+    def is_valid(self, db_path):
+        new_db = sqlite3.connect(db_path)
+        cursor = new_db.cursor()
         
-model = Model()
-# settings = model.read("user")
-# model.save("apps", {"name": "another test", "path": "https://hello2.com", "sequence": "2"})
-
-# model.update("apps", {"name": "changed name", "path": "https://hi.com"}, 1)
-# model.delete("apps", 2)
+        query = "PRAGMA integrity_check;"
+        
+        cursor.execute(query)
+        
+        data = cursor.fetchone()
+        return data[0] == "ok"
+         
+# model = Model()
