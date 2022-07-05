@@ -13,3 +13,10 @@ class GoogleDownload(QObject):
         name: str = Google.download_backup()
         self.finished.emit(name)
         
+class GoogleUpload(QObject):
+    finished: pyqtSignal = pyqtSignal(bool)
+    def upload(self):
+        Google.upload_backup()
+        self.finished.emit(True)
+        
+        

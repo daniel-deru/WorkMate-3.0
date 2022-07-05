@@ -31,7 +31,7 @@ from windows.drive_window import DriveWindow
 from windows.twofa_window import TwofaDialog
 from windows.loading import Loading
 
-from workers.google_download_worker import GoogleDownload
+from workers.google_drive_worker import GoogleDownload, GoogleUpload
 
 from integrations.calendar.c import Google
 
@@ -49,7 +49,6 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.read_styles()
         self.logged_in = False
         settings = Model().read('settings')[0]
-        print(settings)
         # Set the default value of the settings
         self.chkbox_nightmode.setChecked(int(settings[1]))
         self.chkbox_calendar.setChecked(int(settings[6]))
@@ -69,7 +68,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.btn_login.clicked.connect(self.login_clicked)
         self.btn_forgot_password.clicked.connect(self.forgot_password_clicked)
         self.btn_google_drive_sync.clicked.connect(self.sync_google)
-        self.btn_save_google_drive.clicked.connect(self.save_to_google_drive)
+        self.btn_save_google_drive.clicked.connect(self.save_to_remote_storage)
         self.btn_save_local.clicked.connect(self.save_local)
         self.btn_restore_local.clicked.connect(self.restore_from_local)
         
@@ -115,7 +114,6 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         styles = [Label, ButtonFullWidth, SettingsCheckBox, ComboBox, ScrollBar]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
-        # print(self.styleSheet())
     
     def login(self, signal):
         if signal == "success":
@@ -155,7 +153,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         ask_question = PasswordQuestion()
         ask_question.exec_()
         
-    def sync_google(self):
+    def download_google(self):
         
         # Create a new thread
         self.google_download_thread = QThread()
@@ -180,12 +178,34 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         
         self.loading = Loading()
         self.loading.exec_()
-
         
-    def save_to_google_drive(self):
-        Google.upload_backup()
-        message: Message = Message("The backup is complete", "Backup Successful")
-        message.exec_()
+    def upload_google(self):
+        self.upload_google_thread = QThread()  
+        self.google_upload_worker = GoogleUpload()
+        
+        self.google_upload_worker.moveToThread(self.upload_google_thread)
+        
+        self.upload_google_thread.started.connect(self.google_upload_worker.upload)
+        
+        self.google_upload_worker.finished.connect(lambda: self.google_upload_loading.close())
+        
+        self.google_upload_worker.finished.connect(self.google_upload_worker.deleteLater())
+        self.upload_google_thread.finished.connect(self.upload_google_thread.deleteLater())
+        
+        self.upload_google_thread.start()
+        
+        self.google_upload_loading = Loading()
+        self.google_upload_loading.exec_()
+
+    # Slot for the btn_save_google_drive Signal to save to remote storage manually
+    def save_to_remote_storage(self):
+        
+        drive_window: DriveWindow = DriveWindow()
+        drive_window.drive_dict.connect(self.manual_remote_save)
+        drive_window.exec_()
+        # Google.upload_backup()
+        # message: Message = Message("The backup is complete", "Backup Successful")
+        # message.exec_()
         
     def update_db(self, name: str):
         if Model().is_valid(name):
@@ -225,19 +245,14 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         
         Model().update('settings', {'auto_save': json_string}, 'settings')
         
+    def manual_remote_save(self, drives):
+        print(drives)
+        
+        
         
         
             
-# @concurrent.process(timeout=30)
+# This is for the calendar integration
 def google_thread():
     print("inside the google thread")
     Google.connect()
-    
-def google_download():
-    print("inside download thread")
-    Google.download_backup()
-    
-        
-
-
-        
