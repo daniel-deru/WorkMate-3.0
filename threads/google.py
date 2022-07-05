@@ -12,7 +12,7 @@ from workers.google_drive_worker import GoogleUpload
 from windows.loading import Loading
 
 # Method to create Thread for uploading to Google Drive
-def upload_google(self):
+def upload_google(self, show_message=True):
     
     # Create Google upload thread and google upload worker
     self.upload_google_thread = QThread()  
@@ -37,5 +37,6 @@ def upload_google(self):
     self.google_upload_loading = Loading()
     self.google_upload_loading.exec_()
     
-    message: Message = Message("The backup is complete", "Backup Successful")
-    message.exec_()
+    if show_message:
+        message: Message = Message("The backup is complete", "Backup Successful")
+        message.exec_()

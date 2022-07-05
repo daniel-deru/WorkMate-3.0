@@ -14,13 +14,15 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_LoadingDialog(object):
     def setupUi(self, LoadingDialog):
         LoadingDialog.setObjectName("LoadingDialog")
-        LoadingDialog.resize(400, 300)
+        LoadingDialog.resize(400, 400)
         self.verticalLayout = QtWidgets.QVBoxLayout(LoadingDialog)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.lbl_loading_message = QtWidgets.QLabel(LoadingDialog)
-        self.lbl_loading_message.setAlignment(QtCore.Qt.AlignCenter)
-        self.lbl_loading_message.setObjectName("lbl_loading_message")
-        self.verticalLayout.addWidget(self.lbl_loading_message)
+        self.lbl_spinner = QtWidgets.QLabel(LoadingDialog)
+        self.lbl_spinner.setMinimumSize(QtCore.QSize(0, 225))
+        self.lbl_spinner.setText("")
+        self.lbl_spinner.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_spinner.setObjectName("lbl_spinner")
+        self.verticalLayout.addWidget(self.lbl_spinner)
 
         self.retranslateUi(LoadingDialog)
         QtCore.QMetaObject.connectSlotsByName(LoadingDialog)
@@ -28,4 +30,3 @@ class Ui_LoadingDialog(object):
     def retranslateUi(self, LoadingDialog):
         _translate = QtCore.QCoreApplication.translate
         LoadingDialog.setWindowTitle(_translate("LoadingDialog", "Loading..."))
-        self.lbl_loading_message.setText(_translate("LoadingDialog", "Loading..."))

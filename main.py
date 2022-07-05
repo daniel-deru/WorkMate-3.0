@@ -32,9 +32,7 @@ from windows.register_window import Register
 from windows.login_window import Login
 from windows.loading import Loading
 
-from workers.google_drive_worker import GoogleDownload
-
-from integrations.calendar.c import Google
+from threads.google import upload_google
 
 class Main(QWidget, Ui_main_container):
     def __init__(self):
@@ -216,36 +214,13 @@ class Main(QWidget, Ui_main_container):
             pass
         
     def closeEvent(self, event: QCloseEvent) -> None:
-                
-        # Create a new thread
-        # self.google_download_thread = QThread()
-        
-        # # Create instance of worker
-        # self.google_download_worker = GoogleDownload()
-        
-        # # Move the worker to the new thread
-        # self.google_download_worker.moveToThread(self.google_download_thread)
-        
-        # # Connect thread started signal to worker to start worker when thread is started
-        # self.google_download_thread.started.connect(self.google_download_worker.download)
-        
-        # # Connect worker finished signal to slot for processing after worker is done
-        # self.google_download_worker.finished.connect(self.update_db)
-        
-        # # Clean up the processes for better memory management
-        # self.google_download_worker.finished.connect(self.google_download_worker.deleteLater)
-        # self.google_download_thread.finished.connect(self.google_download_thread.deleteLater)
-        
-        # self.google_download_thread.start()
-        
-        # self.loading = Loading()
-        # self.loading.exec_()
         
         auto_save_json = Model().read("settings")[0][8]
         auto_save_dict = json.loads(auto_save_json)
         
         if auto_save_dict['auto_save']:
-            pass
+            if auto_save_dict['google']: upload_google(self, False)
+            
         return super().closeEvent(event)
     
     def update_db(self, name: str):

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,9 +15,15 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="lbl_loading_message">
+    <widget class="QLabel" name="lbl_spinner">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>225</height>
+      </size>
+     </property>
      <property name="text">
-      <string>Loading...</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

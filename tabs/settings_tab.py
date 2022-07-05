@@ -182,41 +182,12 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         
         message: Message = Message("The restore is complete", "Restore Successful")
         message.exec_()
-        
-    # Method to create Thread for uploading to Google Drive
-    def upload_google(self):
-        
-        # Create Google upload thread and google upload worker
-        self.upload_google_thread = QThread()  
-        self.google_upload_worker = GoogleUpload()
-        
-        # Move the worker process to the thread
-        self.google_upload_worker.moveToThread(self.upload_google_thread)
-        
-        # signal to start the worker code when the thread starts
-        self.upload_google_thread.started.connect(self.google_upload_worker.upload)
-        
-        # Close the loading screen after the worker thread is done
-        self.google_upload_worker.finished.connect(lambda: self.google_upload_loading.close())
-        
-        # Clean up the thread and worker
-        self.google_upload_worker.finished.connect(self.google_upload_worker.deleteLater)
-        self.upload_google_thread.finished.connect(self.upload_google_thread.deleteLater)
-        
-        self.upload_google_thread.start()
-        
-        # Show loading screen while worker is busy
-        self.google_upload_loading = Loading()
-        self.google_upload_loading.exec_()
-        
-        message: Message = Message("The backup is complete", "Backup Successful")
-        message.exec_()
 
     # Slot for the btn_save_google_drive Signal to save to remote storage manually
     def save_to_remote_storage(self):     
-        drive_window: DriveWindow = DriveWindow()
-        drive_window.drive_dict.connect(self.manual_remote_save)
-        drive_window.exec_()
+        self.drive_window: DriveWindow = DriveWindow()
+        self.drive_window.drive_dict.connect(self.manual_remote_save)
+        self.drive_window.exec_()
 
         
     def update_db(self, name: str):
@@ -265,16 +236,16 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         Model().update('settings', {'auto_save': json_string}, 'settings')
         
     def manual_remote_save(self, drives):
-        if drives["google"]: upload_google(self)
+        if drives["google"]:
+            self.drive_window.close()
+            upload_google(self)
             
     def manual_remote_download(self, drives):
         if drives["google"]:
+            self.drive_window.close()
             self.download_google()
         
-        
-        
-        
-            
+          
 # This is for the calendar integration
 def google_thread():
     print("inside the google thread")
