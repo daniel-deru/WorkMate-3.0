@@ -33,6 +33,8 @@ from windows.loading import Loading
 
 from workers.google_drive_worker import GoogleDownload, GoogleUpload
 
+from threads.google import upload_google
+
 from integrations.calendar.c import Google
 
 
@@ -58,8 +60,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.chk_auto_save.setChecked(auto_save_on)
 
 
-        # Signals
-        
+        # checkbox signals        
         self.chkbox_nightmode.stateChanged.connect(self.set_night_mode)
         self.chkbox_2fa.stateChanged.connect(self.twofa)
         self.chkbox_calendar.stateChanged.connect(self.calendar_toggle)
@@ -67,7 +68,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         
         self.btn_login.clicked.connect(self.login_clicked)
         self.btn_forgot_password.clicked.connect(self.forgot_password_clicked)
-        self.btn_google_drive_sync.clicked.connect(self.sync_google)
+        self.btn_google_drive_sync.clicked.connect(self.restore_from_remote)
         self.btn_save_google_drive.clicked.connect(self.save_to_remote_storage)
         self.btn_save_local.clicked.connect(self.save_local)
         self.btn_restore_local.clicked.connect(self.restore_from_local)
@@ -179,33 +180,44 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.loading = Loading()
         self.loading.exec_()
         
+        message: Message = Message("The restore is complete", "Restore Successful")
+        message.exec_()
+        
+    # Method to create Thread for uploading to Google Drive
     def upload_google(self):
+        
+        # Create Google upload thread and google upload worker
         self.upload_google_thread = QThread()  
         self.google_upload_worker = GoogleUpload()
         
+        # Move the worker process to the thread
         self.google_upload_worker.moveToThread(self.upload_google_thread)
         
+        # signal to start the worker code when the thread starts
         self.upload_google_thread.started.connect(self.google_upload_worker.upload)
         
+        # Close the loading screen after the worker thread is done
         self.google_upload_worker.finished.connect(lambda: self.google_upload_loading.close())
         
-        self.google_upload_worker.finished.connect(self.google_upload_worker.deleteLater())
-        self.upload_google_thread.finished.connect(self.upload_google_thread.deleteLater())
+        # Clean up the thread and worker
+        self.google_upload_worker.finished.connect(self.google_upload_worker.deleteLater)
+        self.upload_google_thread.finished.connect(self.upload_google_thread.deleteLater)
         
         self.upload_google_thread.start()
         
+        # Show loading screen while worker is busy
         self.google_upload_loading = Loading()
         self.google_upload_loading.exec_()
+        
+        message: Message = Message("The backup is complete", "Backup Successful")
+        message.exec_()
 
     # Slot for the btn_save_google_drive Signal to save to remote storage manually
-    def save_to_remote_storage(self):
-        
+    def save_to_remote_storage(self):     
         drive_window: DriveWindow = DriveWindow()
         drive_window.drive_dict.connect(self.manual_remote_save)
         drive_window.exec_()
-        # Google.upload_backup()
-        # message: Message = Message("The backup is complete", "Backup Successful")
-        # message.exec_()
+
         
     def update_db(self, name: str):
         if Model().is_valid(name):
@@ -217,10 +229,17 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         
     def save_local(self):
         path = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
-        shutil.copy(f"{DB_PATH}test.db", f"{path}/test.db")
+        if path: shutil.copy(f"{DB_PATH}test.db", f"{path}/test.db")
+        
+    def restore_from_remote(self):
+        self.drive_window: DriveWindow = DriveWindow()
+        self.drive_window.drive_dict.connect(self.manual_remote_download)
+        self.drive_window.exec_()
         
     def restore_from_local(self):
         file = QFileDialog.getOpenFileName(self, "Choose a file", DESKTOP, "DB File (test.db)")[0]
+        
+        if not file: return
         
         if Model().is_valid(file):
             shutil.copy(file, f"{DB_PATH}test.db")
@@ -246,7 +265,11 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         Model().update('settings', {'auto_save': json_string}, 'settings')
         
     def manual_remote_save(self, drives):
-        print(drives)
+        if drives["google"]: upload_google(self)
+            
+    def manual_remote_download(self, drives):
+        if drives["google"]:
+            self.download_google()
         
         
         

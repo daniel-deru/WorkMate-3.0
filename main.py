@@ -32,7 +32,7 @@ from windows.register_window import Register
 from windows.login_window import Login
 from windows.loading import Loading
 
-from workers.google_download_worker import GoogleDownload
+from workers.google_drive_worker import GoogleDownload
 
 from integrations.calendar.c import Google
 
@@ -240,6 +240,12 @@ class Main(QWidget, Ui_main_container):
         
         # self.loading = Loading()
         # self.loading.exec_()
+        
+        auto_save_json = Model().read("settings")[0][8]
+        auto_save_dict = json.loads(auto_save_json)
+        
+        if auto_save_dict['auto_save']:
+            pass
         return super().closeEvent(event)
     
     def update_db(self, name: str):
