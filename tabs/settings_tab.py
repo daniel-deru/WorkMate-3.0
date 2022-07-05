@@ -49,11 +49,14 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.read_styles()
         self.logged_in = False
         settings = Model().read('settings')[0]
-        
+        print(settings)
         # Set the default value of the settings
         self.chkbox_nightmode.setChecked(int(settings[1]))
         self.chkbox_calendar.setChecked(int(settings[6]))
         self.chkbox_2fa.setChecked(int(settings[7]))
+        
+        auto_save_on = json.loads(settings[8])['auto_save']
+        self.chk_auto_save.setChecked(auto_save_on)
 
 
         # Signals
@@ -210,9 +213,11 @@ class SettingsTab(QWidget, Ui_Settings_tab):
             drive_window = DriveWindow()
             drive_window.drive_dict.connect(self.save_drives)
             drive_window.exec_()
-        else:
-            Model().update("settings", {"auto_save": json.dumps({"auto_save": False})}, "settings")
-            
+        else:   
+            auto_save = { "auto_save": False, "google": False, "onedrive": False }
+            Model().update("settings", {"auto_save": json.dumps(auto_save)}, "settings")
+    
+    # Slot to handle the drive_dict signal from the DriveWindow  
     def save_drives(self, drives: object):
         drives["auto_save"] = True
         

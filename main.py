@@ -1,8 +1,8 @@
 import sys
 import os
 import time
-import threading
 import time
+import json
 import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen

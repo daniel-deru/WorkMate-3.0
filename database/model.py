@@ -1,6 +1,7 @@
 import sqlite3
 import os
 import sys
+import json
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -279,9 +280,14 @@ class Model:
         get_query = f"SELECT * FROM [{settings}]"
         self.cur.execute(get_query)
         settings_data = self.cur.fetchall()
+        auto_save = {
+            "auto_save": False,
+            "google": False,
+            "onedrive": False
+        }
         
         if len(settings_data) < 1:
-            query = f"INSERT INTO [{settings}] VALUES ('{enc('settings')}', '{enc('0')}', '{enc('Arial')}', '{enc('#000000')}', '{enc('0')}', '{enc('5')}', '{enc('0')}', '{enc('0')}', '{enc('0')}')"
+            query = f"INSERT INTO [{settings}] VALUES ('{enc('settings')}', '{enc('0')}', '{enc('Arial')}', '{enc('#000000')}', '{enc('0')}', '{enc('5')}', '{enc('0')}', '{enc('0')}', '{enc(json.dumps(auto_save))}')"
             self.cur.execute(query)
             self.db.commit()
             
