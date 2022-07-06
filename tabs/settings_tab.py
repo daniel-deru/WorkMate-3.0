@@ -34,7 +34,7 @@ from windows.loading import Loading
 from workers.google_drive_worker import GoogleDownload, GoogleUpload
 
 from threads.google import upload_google, download_google
-from threads.onedrive import upload_onedrive
+from threads.onedrive import upload_onedrive, download_onedrive
 
 from integrations.calendar.c import Google
 
@@ -161,15 +161,6 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.drive_window: DriveWindow = DriveWindow()
         self.drive_window.drive_dict.connect(self.manual_remote_save)
         self.drive_window.exec_()
-
-        
-    def update_db(self, name: str):
-        if Model().is_valid(name):
-            os.replace(name, f"{DB_PATH}test.db")
-        else:
-            message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
-            message.exec_()
-        self.loading.close()
         
     def save_local(self):
         path = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
@@ -210,9 +201,11 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         
     def manual_remote_save(self, drives):
         self.drive_window.close()
+        
         if drives["google"]:
             upload_google(self)
-        elif drives['onedrive']:
+            
+        if drives['onedrive']:
             upload_onedrive(self)
             
             
@@ -220,6 +213,8 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.drive_window.close()
         if drives["google"]:
             download_google(self)
+        elif drives['onedrive']:
+            download_onedrive(self)
         
           
 # This is for the calendar integration

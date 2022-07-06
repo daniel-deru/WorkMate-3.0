@@ -14,7 +14,7 @@ DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
 from widgetStyles.styles import placeholders
 from database.model import Model
-from utils.globals import WORDS
+from utils.globals import WORDS, DB_PATH
 
 layouts = [QGridLayout, QVBoxLayout, QHBoxLayout]
 
@@ -97,4 +97,6 @@ def random_words(num_words=12, words=[]):
     if word not in words: words.append(word)
              
     return random_words(num_words, words)
+
+
     

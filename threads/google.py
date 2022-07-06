@@ -6,10 +6,13 @@ from PyQt5.QtCore import QThread
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from utils.message import Message
+from utils.globals import DB_PATH
 
 from workers.google_drive_worker import GoogleUpload, GoogleDownload
 
 from windows.loading import Loading
+
+from database.model import Model
 
 # Method to create Thread for uploading to Google Drive
 def upload_google(self, show_message=True):
@@ -56,7 +59,7 @@ def download_google(self):
     self.google_download_thread.started.connect(self.google_download_worker.download)
     
     # Connect worker finished signal to slot for processing after worker is done
-    self.google_download_worker.finished.connect(self.update_db)
+    self.google_download_worker.finished.connect(update_db)
     
     # Clean up the processes for better memory management
     self.google_download_worker.finished.connect(self.google_download_worker.deleteLater)
@@ -69,5 +72,14 @@ def download_google(self):
     
     message: Message = Message("The restore is complete", "Restore Successful")
     message.exec_()
+    
+def update_db(self, name: str):
+    if Model().is_valid(name):
+        os.replace(name, f"{DB_PATH}test.db")
+    else:
+        message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
+        message.exec_()
+    # Close the loading dialog after thread is finished
+    self.loading.close()
         
     

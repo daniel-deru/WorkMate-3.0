@@ -13,7 +13,7 @@ class Microsoft():
     _AUTHORITY_URL: str = "https://login.microsoftonline.com/consumers/"
     _SCOPES: list[str] = ["Files.ReadWrite", "Files.Read", "Files.Read.All", "Files.ReadWrite.All", "Sites.Read.All", "Sites.ReadWrite.All"]
     _GRAPH_API_ENDPOINT: str = "https://graph.microsoft.com/v1.0/"
-    TOKEN_FILE: str = "./integrations/microsoft/tokens.json"
+    TOKEN_FILE: str = "./integrations/tokens.json"
     
     def __init__(self):
         # Create an instance of a public client application
@@ -36,6 +36,8 @@ class Microsoft():
         # Start the device flow
         self.flow = self.app.initiate_device_flow(scopes=self._SCOPES)
         
+        print(self.flow)
+        
         # Get the code that the user needs to authenticate the app and copy the code
         self.code: None or Match[str] = re.search(r"(?<=code )[A-Z0-9]{1,20}", self.flow['message'])
         pyperclip.copy(self.code.group())
@@ -56,14 +58,13 @@ class Microsoft():
     
     def get_access_token(self) -> str:
         # Boolean to check if the token file exists 
-        token_file_exists: bool = os.path.exists("./integrations/microsoft/tokens.json")
+        token_file_exists: bool = os.path.exists("./integrations/tokens.json")
         
         # Initialize variable to hold tokens
         tokens: None or object
         
         # if the file doesn't exist authenticate the app to create the tokens and token file
         if not token_file_exists:
-            
             tokens = self.authenticate_app()
         else:
            
@@ -93,8 +94,9 @@ class Microsoft():
         else:
             
             # get the new tokens from the access token and save them in the token file
-            new_tokens = self.app.acquire_token_by_refresh_token(tokens['refresh_token'], scopes=self._SCOPES)
-            new_tokens = self.create_token_object(new_tokens)
+            response = self.app.acquire_token_by_refresh_token(tokens['refresh_token'], scopes=self._SCOPES)
+            print(response)
+            new_tokens = self.create_token_object(response)
             self.create_token_file(new_tokens)
             
         return new_tokens
@@ -122,3 +124,6 @@ class Microsoft():
         } 
         
         return tokens_dict
+    
+# m = Microsoft()
+# print(m.get_access_token())

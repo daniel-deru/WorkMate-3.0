@@ -1,8 +1,10 @@
 import requests
 import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from integrations.graph_api import Microsoft
-
 
 class OneDrive(Microsoft):
     
@@ -38,7 +40,9 @@ class OneDrive(Microsoft):
         file_id = "2EFAE4DC031AAE4E!18647"
         endpoint = self._GRAPH_API_ENDPOINT + f"/me/drive/items/{file_id}/content"
         
-        response_file = requests.get(endpoint, headers=self.headers)
+        response_file: requests.Response = requests.get(endpoint, headers=self.headers)
+        
+        print(response_file.status_code)
         with open("test.db", "wb") as file:
             file.write(response_file.content)
             
