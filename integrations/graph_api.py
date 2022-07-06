@@ -1,7 +1,6 @@
 import webbrowser
 import os
 import re
-import requests
 import pyperclip
 import json
 import time
@@ -12,7 +11,7 @@ from msal import PublicClientApplication
 class Microsoft():
     _APPLICATION_ID: str = '8bcf81ba-398d-4e2c-a23e-823c517d6681'
     _AUTHORITY_URL: str = "https://login.microsoftonline.com/consumers/"
-    _SCOPES: list[str] = ["Files.ReadWrite"]
+    _SCOPES: list[str] = ["Files.ReadWrite", "Files.Read", "Files.Read.All", "Files.ReadWrite.All", "Sites.Read.All", "Sites.ReadWrite.All"]
     _GRAPH_API_ENDPOINT: str = "https://graph.microsoft.com/v1.0/"
     TOKEN_FILE: str = "./integrations/microsoft/tokens.json"
     
@@ -22,6 +21,7 @@ class Microsoft():
             self._APPLICATION_ID,
             authority=self._AUTHORITY_URL
         )
+        self.access_token = self.get_access_token()
 
     
     def create_token_file(self, tokens: object) -> None:
@@ -45,7 +45,6 @@ class Microsoft():
         
         # Get the access and refresh tokens to use the Graph API
         tokens: object = self.app.acquire_token_by_device_flow(self.flow)
-        print(tokens)
         
         # Create the custom token object
         tokens_dict: object = self.create_token_object(tokens=tokens)
@@ -64,10 +63,10 @@ class Microsoft():
         
         # if the file doesn't exist authenticate the app to create the tokens and token file
         if not token_file_exists:
-            print("The token file does not exist authenticating the app")
+            
             tokens = self.authenticate_app()
         else:
-            print("gettings tokens from token file")
+           
             # Open the token file and get the tokens
             with open(self.TOKEN_FILE, "r") as token_file:
                 token_json = token_file.read()
@@ -77,7 +76,7 @@ class Microsoft():
             
             # if the access token has expired generate a new access token with the refresh token
             if int(tokens['access_token_expiry']) <=  current_time:
-                print("the token has expired getting new access token from refresh token")
+                
                 tokens = self.generate_new_tokens(tokens)
                 
         return tokens["access_token"]
@@ -89,10 +88,10 @@ class Microsoft():
         
         # If the refresh token expired authenticate the app to get new tokens
         if int(tokens['refresh_token_expiry']) <= current_time:
-            print("The refresh token has expired authenticating the app")
+            
             new_tokens = self.authenticate_app()
         else:
-            print("generating new access token from refresh token and saving it in the token file")
+            
             # get the new tokens from the access token and save them in the token file
             new_tokens = self.app.acquire_token_by_refresh_token(tokens['refresh_token'], scopes=self._SCOPES)
             new_tokens = self.create_token_object(new_tokens)
@@ -123,6 +122,3 @@ class Microsoft():
         } 
         
         return tokens_dict
-
-access_token = Microsoft().get_access_token()
-print(access_token)

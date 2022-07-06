@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from utils.message import Message
 
-from workers.google_drive_worker import GoogleUpload
+from workers.google_drive_worker import GoogleUpload, GoogleDownload
 
 from windows.loading import Loading
 
@@ -40,3 +40,34 @@ def upload_google(self, show_message=True):
     if show_message:
         message: Message = Message("The backup is complete", "Backup Successful")
         message.exec_()
+        
+def download_google(self):
+        
+    # Create a new thread
+    self.google_download_thread = QThread()
+    
+    # Create instance of worker
+    self.google_download_worker = GoogleDownload()
+    
+    # Move the worker to the new thread
+    self.google_download_worker.moveToThread(self.google_download_thread)
+    
+    # Connect thread started signal to worker to start worker when thread is started
+    self.google_download_thread.started.connect(self.google_download_worker.download)
+    
+    # Connect worker finished signal to slot for processing after worker is done
+    self.google_download_worker.finished.connect(self.update_db)
+    
+    # Clean up the processes for better memory management
+    self.google_download_worker.finished.connect(self.google_download_worker.deleteLater)
+    self.google_download_thread.finished.connect(self.google_download_thread.deleteLater)
+    
+    self.google_download_thread.start()
+    
+    self.loading = Loading()
+    self.loading.exec_()
+    
+    message: Message = Message("The restore is complete", "Restore Successful")
+    message.exec_()
+        
+    

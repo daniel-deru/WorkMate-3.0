@@ -1,6 +1,5 @@
 from datetime import timedelta
 import os.path
-from urllib import response
 import tzlocal
 import io
 import shutil

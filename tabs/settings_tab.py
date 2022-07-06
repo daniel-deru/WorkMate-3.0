@@ -33,7 +33,8 @@ from windows.loading import Loading
 
 from workers.google_drive_worker import GoogleDownload, GoogleUpload
 
-from threads.google import upload_google
+from threads.google import upload_google, download_google
+from threads.onedrive import upload_onedrive
 
 from integrations.calendar.c import Google
 
@@ -153,35 +154,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
     def forgot_password_clicked(self):
         ask_question = PasswordQuestion()
         ask_question.exec_()
-        
-    def download_google(self):
-        
-        # Create a new thread
-        self.google_download_thread = QThread()
-        
-        # Create instance of worker
-        self.google_download_worker = GoogleDownload()
-        
-        # Move the worker to the new thread
-        self.google_download_worker.moveToThread(self.google_download_thread)
-        
-        # Connect thread started signal to worker to start worker when thread is started
-        self.google_download_thread.started.connect(self.google_download_worker.download)
-        
-        # Connect worker finished signal to slot for processing after worker is done
-        self.google_download_worker.finished.connect(self.update_db)
-        
-        # Clean up the processes for better memory management
-        self.google_download_worker.finished.connect(self.google_download_worker.deleteLater)
-        self.google_download_thread.finished.connect(self.google_download_thread.deleteLater)
-        
-        self.google_download_thread.start()
-        
-        self.loading = Loading()
-        self.loading.exec_()
-        
-        message: Message = Message("The restore is complete", "Restore Successful")
-        message.exec_()
+
 
     # Slot for the btn_save_google_drive Signal to save to remote storage manually
     def save_to_remote_storage(self):     
@@ -236,14 +209,17 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         Model().update('settings', {'auto_save': json_string}, 'settings')
         
     def manual_remote_save(self, drives):
+        self.drive_window.close()
         if drives["google"]:
-            self.drive_window.close()
             upload_google(self)
+        elif drives['onedrive']:
+            upload_onedrive(self)
+            
             
     def manual_remote_download(self, drives):
+        self.drive_window.close()
         if drives["google"]:
-            self.drive_window.close()
-            self.download_google()
+            download_google(self)
         
           
 # This is for the calendar integration
