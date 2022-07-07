@@ -28,6 +28,7 @@ class Model:
         self.create_table("settings", Tables.settings)
         self.create_table("user", Tables.users)
         self.create_table("vault", Tables.vault)
+        self.create_table("metadata", Tables.metadata)
         
     def create_table(self, tablename: str, fields: object):
         encrypted_table_name = encryption.encrypt(tablename)
@@ -302,4 +303,4 @@ class Model:
         data = cursor.fetchone()
         return data[0] == "ok"
          
-# model = Model()
+model = Model()

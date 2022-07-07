@@ -33,8 +33,8 @@ from windows.loading import Loading
 
 from workers.google_drive_worker import GoogleDownload, GoogleUpload
 
-from threads.google import upload_google, download_google
-from threads.onedrive import upload_onedrive, download_onedrive
+from threads.google_thread import upload_google, download_google
+from threads.onedrive_thread import upload_onedrive, download_onedrive
 
 from integrations.calendar.c import Google
 
@@ -192,11 +192,17 @@ class SettingsTab(QWidget, Ui_Settings_tab):
             Model().update("settings", {"auto_save": json.dumps(auto_save)}, "settings")
             
     def update_db(self, name: str):
-        if Model().is_valid(name):
-            os.replace(name, f"{DB_PATH}test.db")
-        else:
-            message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
+        if name == None:
+            message: Message = Message("The database sync was not successfull", "Sync Failed")
             message.exec_()
+        else:  
+            if Model().is_valid(name):
+                shutil.move(name, f"{DB_PATH}test.db")
+                # os.replace(name, f"{DB_PATH}test.db")
+            else:
+                message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
+                message.exec_()
+        
         # Close the loading dialog after thread is finished
         self.loading.close()
     

@@ -32,7 +32,7 @@ from windows.register_window import Register
 from windows.login_window import Login
 from windows.loading import Loading
 
-from threads.google import upload_google
+from threads.google_thread import upload_google
 
 class Main(QWidget, Ui_main_container):
     def __init__(self):

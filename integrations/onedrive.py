@@ -34,10 +34,13 @@ class OneDrive(Microsoft):
         # returning a value from a thread is too complicated to this is the best solution
         with open("id.txt", "w") as file:
             file.write(response['id'])
-
-    def download(self):
         
-        file_id = "2EFAE4DC031AAE4E!18648"
+        # Return the file id to the onedrive worker to save in the database
+        return response['id']
+
+    def download(self, file_id):
+        
+        # file_id = "2EFAE4DC031AAE4E!18648"
         endpoint = self._GRAPH_API_ENDPOINT + f"/me/drive/items/{file_id}/content"
         
         response_file: requests.Response = requests.get(endpoint, headers=self.headers)
@@ -45,13 +48,15 @@ class OneDrive(Microsoft):
         if response_file.status_code == 200:
             with open("test.db", "wb") as file:
                 file.write(response_file.content)
-            return self.get_file_name()
+            return self.get_file_name(file_id)
         else:
             print("response file get request failed")
+            print(response_file.status_code)
+            # print(response_file.headers)
             return None
             
-    def get_file_name(self) -> str:
-        file_id = "2EFAE4DC031AAE4E!18648"
+    def get_file_name(self, file_id) -> str:
+ 
         file_name_request = requests.get(
             self._GRAPH_API_ENDPOINT + f"/me/drive/items/{file_id}",
             headers=self.headers,

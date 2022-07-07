@@ -54,3 +54,9 @@ class Tables:
             "name": "TEXT NOT NULL",
             "data": "TEXT NOT NULL"
         }
+        
+        metadata = {
+            "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
+            "name": "TEXT NOT NULL",
+            "data": "TEXT NOT NULL"
+        }
