@@ -1,11 +1,14 @@
-from json import tool
 import os
 import sys
 import pyperclip
+import keyboard
+import time
+from threading import Thread
+from pynput.mouse import Listener, Button
 
 from PyQt5.QtWidgets import QDialog, QCheckBox, QToolButton
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import QSize
+from PyQt5.QtCore import QSize, QThread
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -22,8 +25,12 @@ from widgetStyles.ToolButton import ToolButton
 
 from database.model import Model
 
+from workers.auto_type_worker import AutoType
+
 
 class AppVaultView(Ui_AppVaultViewDialog, QDialog):
+    previous_left = 0
+    auto_type_thread_active = False
     def __init__(self, app):
         super(AppVaultView, self).__init__()
         self.app = app
@@ -47,7 +54,7 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         self.tbtn_password.clicked.connect(lambda: self.copy_data("password"))
         self.tbtn_path.clicked.connect(lambda: self.copy_data("path"))
         
-        self.btn_open.clicked.connect(lambda: os.startfile(self.data['path']))
+        self.btn_open.clicked.connect(self.open_app)
         
     
     def read_styles(self):
@@ -88,3 +95,29 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
             tool_button: QToolButton = self.layout().itemAt(i).layout().itemAt(3).widget()
             tool_button.setIcon(icon)
             tool_button.setIconSize(QSize(25, 25))
+        
+    def open_app(self):
+        os.startfile(self.data['path'])
+        if not self.auto_type_thread_active:
+            self.activate_auto_type()
+             
+    def activate_auto_type(self):
+        things_to_type = [self.data['email'], self.data['password']]
+        
+        self.auto_type_thread = QThread()
+        self.auto_typer = AutoType(things_to_type)
+        
+        self.auto_typer.moveToThread(self.auto_type_thread)
+        
+        self.auto_typer.finished.connect(self.auto_type_thread_off)
+        
+        self.auto_type_thread.started.connect(self.auto_typer.auto_type)
+        
+        self.auto_typer.finished.connect(self.auto_typer.deleteLater)
+        self.auto_type_thread.finished.connect(self.auto_type_thread.deleteLater)
+        
+        self.auto_type_thread.start()
+        self.auto_type_thread_active = True
+        
+    def auto_type_thread_off(self):
+        self.auto_type_thread_active = False
