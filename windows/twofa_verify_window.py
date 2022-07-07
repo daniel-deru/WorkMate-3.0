@@ -34,7 +34,7 @@ class TwofaVerifyWindow(Ui_TwofaDialog, QDialog):
         self.setStyleSheet(stylesheet)
 
     def verify_otp(self):
-        code = Model().read('user')[0][6]
+        code = Model().read('user')[0][5]
         totp = pyotp.TOTP(code)
         if(totp.verify(self.lnedt_code.text())):
             self.opt_verify_signal.emit(True)

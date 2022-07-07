@@ -109,15 +109,19 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         
         self.auto_typer.moveToThread(self.auto_type_thread)
         
-        self.auto_typer.finished.connect(self.auto_type_thread_off)
+        # self.auto_typer.finished.connect(self.auto_type_thread_off)
         
         self.auto_type_thread.started.connect(self.auto_typer.auto_type)
         
         self.auto_typer.finished.connect(self.auto_typer.deleteLater)
-        self.auto_type_thread.finished.connect(self.auto_type_thread.deleteLater)
+        self.auto_type_thread.finished.connect(self.auto_type_off)
         
         self.auto_type_thread.start()
         self.auto_type_thread_active = True
         
     def auto_type_thread_off(self):
+        self.auto_type_thread_active = False
+        
+    def auto_type_off(self):
+        self.auto_type_thread.deleteLater
         self.auto_type_thread_active = False

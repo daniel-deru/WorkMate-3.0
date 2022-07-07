@@ -29,9 +29,6 @@ from database.model import Model
 from windows.forgot_question import PasswordQuestion
 from windows.drive_window import DriveWindow
 from windows.twofa_window import TwofaDialog
-from windows.loading import Loading
-
-from workers.google_drive_worker import GoogleDownload, GoogleUpload
 
 from threads.google_thread import upload_google, download_google
 from threads.onedrive_thread import upload_onedrive, download_onedrive

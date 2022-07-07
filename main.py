@@ -168,22 +168,22 @@ class Main(QWidget, Ui_main_container):
     def update_status(self, logged_in):
         # Check if the user wants authentication to be on
         # vault_on = Model().read("settings")[0][4]
-        vault_on = Model().read("settings")[0][4]
+        # vault_on = Model().read("settings")[0][4]
         # If auth is on and the user is logged in
-        if logged_in and vault_on:
+        if logged_in:
             self.logged_in = True
             self.send_signals("logged in")
             self.count = int(Model().read("settings")[0][5]) * 60
             self.timer.timeout.connect(self.start_timer)
             self.timer.start(1000)
         # If auth is on and the user is not logged in
-        elif not logged_in and vault_on:
+        elif not logged_in:
             self.count = 0
             self.logged_in = False
             self.send_signals("logged out")
         # The auth is off the user is always logged in
-        elif not vault_on:
-            self.send_signals("logged in")
+        # elif not vault_on:
+        #     self.send_signals("logged in")
 
     def send_signals(self, signal):
         self.apps_tab.login_signal.emit(signal)
