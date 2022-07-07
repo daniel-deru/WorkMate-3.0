@@ -1,5 +1,4 @@
 import sys
-import os
 import time
 import time
 import json
@@ -7,7 +6,7 @@ import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent
-from PyQt5.QtCore import QTimer, Qt, QThread
+from PyQt5.QtCore import QTimer, Qt
 
 from designs.python.main_widget import Ui_main_container
 from tabs.apps_tab import Apps_tab
@@ -25,14 +24,12 @@ from widgetStyles.TabWidget import TabWidget
 from widgetStyles.Widget import Widget
 
 from utils.helpers import StyleSheet
-from utils.globals import DB_PATH
-from utils.message import Message
 
 from windows.register_window import Register
 from windows.login_window import Login
-from windows.loading import Loading
 
 from threads.google_thread import upload_google
+from threads.onedrive_thread import upload_onedrive
 
 class Main(QWidget, Ui_main_container):
     def __init__(self):
@@ -218,18 +215,14 @@ class Main(QWidget, Ui_main_container):
         auto_save_json = Model().read("settings")[0][8]
         auto_save_dict = json.loads(auto_save_json)
         
-        if auto_save_dict['auto_save']:
-            if auto_save_dict['google']: upload_google(self, False)
+        if not auto_save_dict['auto_save']: return
+        
+        if auto_save_dict['google']: 
+            upload_google(self, False)
+        if auto_save_dict['onedrive']: 
+            upload_onedrive(self, False)
             
         return super().closeEvent(event)
-    
-    def update_db(self, name: str):
-        if Model().is_valid(name):
-            os.replace(name, f"{DB_PATH}test.db")
-        else:
-            message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
-            message.exec_()
-        self.loading.close()
         
 
 

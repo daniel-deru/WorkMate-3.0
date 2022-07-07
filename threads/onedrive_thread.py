@@ -37,7 +37,7 @@ def upload_onedrive(self, show_message=True):
     self.upload_onedrive_thread.start()
     
     # Show loading screen while worker is busy
-    self.onedrive_upload_loading = Loading()
+    self.onedrive_upload_loading = Loading("Saving to OneDrive...")
     self.onedrive_upload_loading.exec_()
     
     if show_message:
@@ -68,7 +68,7 @@ def download_onedrive(self):
     
     self.onedrive_download_thread.start()
     
-    self.loading = Loading()
+    self.loading = Loading("Syncing from OneDrive...")
     self.loading.exec_()
     
     message: Message = Message("The restore is complete", "Restore Successful")

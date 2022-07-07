@@ -52,7 +52,6 @@ class OneDrive(Microsoft):
         else:
             print("response file get request failed")
             print(response_file.status_code)
-            # print(response_file.headers)
             return None
             
     def get_file_name(self, file_id) -> str:

@@ -37,7 +37,7 @@ def upload_google(self, show_message=True):
     self.upload_google_thread.start()
     
     # Show loading screen while worker is busy
-    self.google_upload_loading = Loading()
+    self.google_upload_loading = Loading("Saving to Google Drive...")
     self.google_upload_loading.exec_()
     
     if show_message:
@@ -67,7 +67,7 @@ def download_google(self):
     
     self.google_download_thread.start()
     
-    self.loading = Loading()
+    self.loading = Loading("Syncing from Google Drive...")
     self.loading.exec_()
     
     message: Message = Message("The restore is complete", "Restore Successful")

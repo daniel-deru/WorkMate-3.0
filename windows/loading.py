@@ -46,6 +46,8 @@ class Spinner(QLabel):
             valueChanged=self.on_valueChanged
                         
         )
+        
+        self.animation.setLoopCount(-1)
     
     
     @pyqtSlot(QVariant)
