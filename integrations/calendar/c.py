@@ -27,8 +27,8 @@ class Google:
         # The file token.json stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
         # time.
-        if os.path.exists(f'{PATH}/integrations/token.json'):
-            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/token.json', SCOPES)
+        if os.path.exists(f'{PATH}/integrations/google_token.json'):
+            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/google_token.json', SCOPES)
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
@@ -39,7 +39,7 @@ class Google:
                 creds = flow.run_local_server(port=0)
                 
             # Save the credentials for the next run
-            with open(f'{PATH}/integrations/token.json', 'w') as token:
+            with open(f'{PATH}/integrations/google_token.json', 'w') as token:
                 token.write(creds.to_json())
     
     def save(date):
@@ -50,8 +50,8 @@ class Google:
         # The file token.json stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
         # time.
-        if os.path.exists(f'{PATH}/integrations/token.json'):
-            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/token.json', SCOPES)
+        if os.path.exists(f'{PATH}/integrations/google_token.json'):
+            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/google_token.json', SCOPES)
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
@@ -62,7 +62,7 @@ class Google:
                 creds = flow.run_local_server(port=0)
                 
             # Save the credentials for the next run
-            with open(f'{PATH}/integrations/token.json', 'w') as token:
+            with open(f'{PATH}/integrations/google_token.json', 'w') as token:
                 token.write(creds.to_json())
         
         try:
@@ -103,8 +103,8 @@ class Google:
         # The file token.json stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
         # time.
-        if os.path.exists(f'{PATH}/integrations/token.json'):
-            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/token.json', SCOPES)
+        if os.path.exists(f'{PATH}/integrations/google_token.json'):
+            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/google_token.json', SCOPES)
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
@@ -115,7 +115,7 @@ class Google:
                 creds = flow.run_local_server(port=0)
                 
             # Save the credentials for the next run
-            with open(f'{PATH}/integrations/token.json', 'w') as token:
+            with open(f'{PATH}/integrations/google_token.json', 'w') as token:
                 token.write(creds.to_json())
         
         try:
@@ -158,8 +158,8 @@ class Google:
         # The file token.json stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
         # time.
-        if os.path.exists(f'{PATH}/integrations/token.json'):
-            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/token.json', SCOPES)
+        if os.path.exists(f'{PATH}/integrations/google_token.json'):
+            creds = Credentials.from_authorized_user_file(f'{PATH}/integrations/google_token.json', SCOPES)
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
@@ -170,7 +170,7 @@ class Google:
                 creds = flow.run_local_server(port=0)
                 
             # Save the credentials for the next run
-            with open(f'{PATH}/integrations/token.json', 'w') as token:
+            with open(f'{PATH}/integrations/google_token.json', 'w') as token:
                 token.write(creds.to_json())
         
         try:

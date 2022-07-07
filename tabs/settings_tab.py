@@ -190,6 +190,15 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         else:   
             auto_save = { "auto_save": False, "google": False, "onedrive": False }
             Model().update("settings", {"auto_save": json.dumps(auto_save)}, "settings")
+            
+    def update_db(self, name: str):
+        if Model().is_valid(name):
+            os.replace(name, f"{DB_PATH}test.db")
+        else:
+            message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
+            message.exec_()
+        # Close the loading dialog after thread is finished
+        self.loading.close()
     
     # Slot to handle the drive_dict signal from the DriveWindow  
     def save_drives(self, drives: object):

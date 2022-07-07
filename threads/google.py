@@ -59,7 +59,7 @@ def download_google(self):
     self.google_download_thread.started.connect(self.google_download_worker.download)
     
     # Connect worker finished signal to slot for processing after worker is done
-    self.google_download_worker.finished.connect(update_db)
+    self.google_download_worker.finished.connect(self.update_db)
     
     # Clean up the processes for better memory management
     self.google_download_worker.finished.connect(self.google_download_worker.deleteLater)
@@ -71,15 +71,5 @@ def download_google(self):
     self.loading.exec_()
     
     message: Message = Message("The restore is complete", "Restore Successful")
-    message.exec_()
-    
-def update_db(self, name: str):
-    if Model().is_valid(name):
-        os.replace(name, f"{DB_PATH}test.db")
-    else:
-        message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
-        message.exec_()
-    # Close the loading dialog after thread is finished
-    self.loading.close()
-        
+    message.exec_()        
     

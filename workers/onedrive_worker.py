@@ -17,9 +17,10 @@ class OneDriveUpload(QObject):
         
     
 class OneDriveDownload(QObject):
-    finished: pyqtSignal = pyqtSignal(bool)
+    finished: pyqtSignal = pyqtSignal(str)
     
     def download(self):
         onedrive = OneDrive()
-        onedrive.download()
-        self.finished.emit(True)
+        name: str = onedrive.download()
+        if name != None:
+            self.finished.emit(name)

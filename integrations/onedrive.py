@@ -37,14 +37,29 @@ class OneDrive(Microsoft):
 
     def download(self):
         
-        file_id = "2EFAE4DC031AAE4E!18647"
+        file_id = "2EFAE4DC031AAE4E!18648"
         endpoint = self._GRAPH_API_ENDPOINT + f"/me/drive/items/{file_id}/content"
         
         response_file: requests.Response = requests.get(endpoint, headers=self.headers)
         
-        print(response_file.status_code)
-        with open("test.db", "wb") as file:
-            file.write(response_file.content)
+        if response_file.status_code == 200:
+            with open("test.db", "wb") as file:
+                file.write(response_file.content)
+            return self.get_file_name()
+        else:
+            print("response file get request failed")
+            return None
+            
+    def get_file_name(self) -> str:
+        file_id = "2EFAE4DC031AAE4E!18648"
+        file_name_request = requests.get(
+            self._GRAPH_API_ENDPOINT + f"/me/drive/items/{file_id}",
+            headers=self.headers,
+            params={'select': 'name'}
+        )
+        file_name = file_name_request.json().get('name')
+        
+        return file_name
             
            
 # onedrive = OneDrive()

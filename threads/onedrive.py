@@ -25,10 +25,10 @@ def upload_onedrive(self, show_message=True):
     self.onedrive_upload_worker.moveToThread(self.upload_onedrive_thread)
     
     # signal to start the worker code when the thread starts
-    self.upload_google_thread.started.connect(self.onedrive_upload_worker.upload)
+    self.upload_onedrive_thread.started.connect(self.onedrive_upload_worker.upload)
     
     # Close the loading screen after the worker thread is done
-    self.onedrive_onedrive_worker.finished.connect(lambda: self.onedrive_upload_loading.close())
+    self.onedrive_upload_worker.finished.connect(lambda: self.onedrive_upload_loading.close())
     
     # Clean up the thread and worker
     self.onedrive_upload_worker.finished.connect(self.onedrive_upload_worker.deleteLater)
@@ -60,7 +60,7 @@ def download_onedrive(self):
     self.onedrive_download_thread.started.connect(self.onedrive_download_worker.download)
     
     # Connect worker finished signal to slot for processing after worker is done
-    self.onedrive_download_worker.finished.connect(update_db)
+    self.onedrive_download_worker.finished.connect(self.update_db)
     
     # Clean up the processes for better memory management
     self.onedrive_download_worker.finished.connect(self.onedrive_download_worker.deleteLater)
