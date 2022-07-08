@@ -23,7 +23,7 @@ class Loading(QDialog):
         
         self.label = QLabel(message)
         self.label.setAlignment(Qt.AlignCenter)
-        self.label.setStyleSheet("font-size: 30px;font-weight: 800; color: white;")
+        self.label.setStyleSheet("font-size: 20px;font-weight: 700; color: white;")
         self.label.setFixedWidth(400)
         # QSpacerItem()
         vbox = QVBoxLayout()

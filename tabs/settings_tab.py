@@ -194,7 +194,6 @@ class SettingsTab(QWidget, Ui_Settings_tab):
             message.exec_()
         else:  
             if Model().is_valid(name):
-                print(name)
                 shutil.move(name, f"{DB_PATH}test.db")
             else:
                 message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")

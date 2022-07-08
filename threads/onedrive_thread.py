@@ -76,13 +76,4 @@ def download_onedrive(self):
     
     message: Message = Message("The restore is complete", "Restore Successful")
     message.exec_()
-    
-def update_db(self, name: str):
-    if Model().is_valid(name):
-        os.replace(name, f"{DB_PATH}test.db")
-    else:
-        message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
-        message.exec_()
-    # Close the loading dialog after thread is finished
-    self.loading.close()
         

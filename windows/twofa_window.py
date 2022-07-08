@@ -40,7 +40,11 @@ class TwofaDialog(Ui_TwoFADialog, QDialog):
 
     def get_otp(self):
         otp = Model().read("user")[0][5]
-        if otp == "None":
+        print(otp)
+        print(otp == "None")
+        print(otp == None)
+        if otp == None or otp == "None":
+            
             otp = pyotp.random_base32()
             Model().update('user', {'twofa_key': otp}, 'user')
         self.lbl_setupkey.setText(otp)

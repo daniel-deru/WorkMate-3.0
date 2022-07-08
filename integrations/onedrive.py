@@ -33,8 +33,6 @@ class OneDrive(Microsoft):
         return response['id']
 
     def download(self, file_id):
-        print(file_id)
-        file_id = "2EFAE4DC031AAE4E!18649"
         # file_id = "2EFAE4DC031AAE4E!18648"
         endpoint = self._GRAPH_API_ENDPOINT + f"/me/drive/items/{file_id}/content"
         
@@ -45,6 +43,8 @@ class OneDrive(Microsoft):
                 file.write(response_file.content)
             return self.get_file_name(file_id)
         else:
+            if response_file.status_code == 404:
+                return Exception()
             print("response file get request failed")
             print(response_file.status_code)
             return None

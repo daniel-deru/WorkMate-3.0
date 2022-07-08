@@ -5,12 +5,15 @@ import re
 import pyperclip
 import json
 import time
+from threading import Thread, Timer
 from typing import Match
 from msal import PublicClientApplication
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from utils.globals import PATH
+
+from utils.message import Message
 
 
 class Microsoft():
@@ -46,6 +49,12 @@ class Microsoft():
         
         # Get the code that the user needs to authenticate the app and copy the code
         self.code: None or Match[str] = re.search(r"(?<=code )[A-Z0-9]{1,20}", self.flow['message'])
+        
+        Message(
+            f"You will be asked to enter the following code: {self.code.group()}. The code is already copied to your clipboard.", 
+            "Enter Authentication Code"
+        ).exec_()
+        
         pyperclip.copy(self.code.group())
         
         # Open a webbrowser to authenticate the app

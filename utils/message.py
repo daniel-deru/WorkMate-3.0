@@ -3,6 +3,7 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtCore import Qt
 
 from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
@@ -13,6 +14,7 @@ from utils.helpers import StyleSheet
 class Message(QMessageBox):
     def __init__(self, message, title):
         super(Message, self).__init__()
+        self.setWindowFlags(Qt.WindowStaysOnTopHint);
         self.setIcon(QMessageBox.Warning)
         self.setText(message)
         self.setWindowTitle(title)
