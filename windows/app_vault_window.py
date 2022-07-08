@@ -2,7 +2,7 @@ import sys
 import os
 from json import dumps
 
-from PyQt5.QtWidgets import QDialog, QFileDialog
+from PyQt5.QtWidgets import QDialog, QFileDialog, QLineEdit
 from PyQt5.QtCore import pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -17,7 +17,7 @@ from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Label import Label
 from widgetStyles.SpinBox import SpinBox
 
-from utils.helpers import StyleSheet, json_to_dict
+from utils.helpers import StyleSheet, json_to_dict, get_checkbox
 from utils.message import Message
 
 from database.model import Model
@@ -35,6 +35,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.spn_index.setMaximum(maxValue)
         self.spn_index.setValue(maxValue)
         self.spn_index.setMinimum(1)
+        self.lne_password.setEchoMode(QLineEdit.Password)
         
 
         if self.app: self.fill_data()
@@ -43,14 +44,18 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.btn_save.clicked.connect(self.save)
         self.btn_desktop.clicked.connect(self.add_from_desktop)
         
+        self.chk_show_password.stateChanged.connect(self.show_password)
+        
 
     def read_styles(self):
+        checkbox = get_checkbox()
         widget_list = [
             Label,
             Dialog,
             PushButton,
             LineEdit,
-            SpinBox
+            SpinBox,
+            checkbox
         ]
 
         stylesheet: str = StyleSheet(widget_list).create()
@@ -135,3 +140,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
             # its a new app
             update_app_data['sequence'] = str(len(self.secrets)+1)
             Model().update("vault", {'data': dumps(update_app_data)}, update_app[0])
+            
+    def show_password(self, show):
+        if show: self.lne_password.setEchoMode(QLineEdit.Normal)
+        else: self.lne_password.setEchoMode(QLineEdit.Password)

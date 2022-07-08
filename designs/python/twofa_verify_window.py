@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_TwofaDialog(object):
     def setupUi(self, TwofaDialog):
         TwofaDialog.setObjectName("TwofaDialog")
-        TwofaDialog.resize(400, 86)
+        TwofaDialog.resize(400, 88)
         self.verticalLayout = QtWidgets.QVBoxLayout(TwofaDialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.lbl_message = QtWidgets.QLabel(TwofaDialog)
@@ -24,9 +24,12 @@ class Ui_TwofaDialog(object):
         self.lnedt_code = QtWidgets.QLineEdit(TwofaDialog)
         self.lnedt_code.setObjectName("lnedt_code")
         self.verticalLayout.addWidget(self.lnedt_code)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
         self.btn_verify = QtWidgets.QPushButton(TwofaDialog)
         self.btn_verify.setObjectName("btn_verify")
-        self.verticalLayout.addWidget(self.btn_verify)
+        self.horizontalLayout.addWidget(self.btn_verify)
+        self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.retranslateUi(TwofaDialog)
         QtCore.QMetaObject.connectSlotsByName(TwofaDialog)

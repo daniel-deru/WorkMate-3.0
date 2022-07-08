@@ -13,6 +13,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
 from widgetStyles.styles import placeholders
+from widgetStyles.QCheckBox import WhiteEyeCheckBox, BlackEyeCheckBox
 from database.model import Model
 from utils.globals import WORDS, DB_PATH
 
@@ -98,5 +99,8 @@ def random_words(num_words=12, words=[]):
              
     return random_words(num_words, words)
 
-
+def get_checkbox():
+    dark_mode_on = Model().read('settings')[0][1]
+    checkbox = WhiteEyeCheckBox if dark_mode_on else BlackEyeCheckBox
+    return checkbox
     

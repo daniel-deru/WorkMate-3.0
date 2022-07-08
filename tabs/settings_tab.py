@@ -175,8 +175,10 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         
         if Model().is_valid(file):
             shutil.copy(file, f"{DB_PATH}test.db")
+            message: Message = Message("Local data sync was successful.", "Sync Successful")
+            message.exec_()
         else:
-            message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
+            message: Message = Message("Your data was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
             message.exec_()
             
     def auto_save(self):

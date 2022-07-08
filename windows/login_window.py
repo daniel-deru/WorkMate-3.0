@@ -17,6 +17,7 @@ from widgetStyles.Label import Label
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Dialog import Dialog
+from widgetStyles.QCheckBox import BlackEyeCheckBox, WhiteEyeCheckBox
 
 from windows.twofa_verify_window import TwofaVerifyWindow
 
@@ -32,16 +33,28 @@ class Login(QDialog, Ui_Login):
         self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
         self.read_styles()
         self.setWindowFlags(Qt.WindowCloseButtonHint)
+        
+        
         self.btn_login.clicked.connect(self.login)
+        
+        pass_field = self.lnedt_password
+        show_pass = QLineEdit.Normal
+        hide_pass = QLineEdit.Password
+        show_password_callback = lambda show: pass_field.setEchoMode(show_pass) if show else pass_field.setEchoMode(hide_pass)
+        self.chk_show_password.stateChanged.connect(show_password_callback)
         self.lnedt_password.setEchoMode(QLineEdit.Password)
 
 
     def read_styles(self):
+        dark_mode_on = Model().read('settings')[0][1]
+        checkbox = WhiteEyeCheckBox if dark_mode_on else BlackEyeCheckBox
+        
         styles = [
             PushButton,
             Label,
             LineEdit,
-            Dialog
+            Dialog,
+            checkbox
             ]
         
         stylesheet = StyleSheet(styles).create()
@@ -77,4 +90,8 @@ class Login(QDialog, Ui_Login):
     def closeEvent(self, a0: QCloseEvent) -> None:
         self.login_status.emit(self.login_state)
         return super().closeEvent(a0)
+    
+    def show_password(self, show):
+        if show: self.lnedt_password.setEchoMode(QLineEdit.Normal)
+        else: self.lnedt_password.setEchoMode(QLineEdit.Password)
             

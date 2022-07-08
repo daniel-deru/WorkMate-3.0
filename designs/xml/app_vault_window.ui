@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>453</width>
-    <height>450</height>
+    <height>416</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -80,7 +80,21 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lne_password"/>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLineEdit" name="lne_password"/>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="chk_show_password">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
