@@ -16,7 +16,20 @@ class OneDriveUpload(QObject):
     def upload(self):
         onedrive = OneDrive()
         file_id: str = onedrive.upload()
-        Model().save("metadata", {"name": self.META_DATA_NAME, "data": file_id})
+        meta_data = Model().read("metadata")
+        if len(meta_data) < 1:
+            print("there is no metadata so just add the file_id")
+            Model().save("metadata", {"name": self.META_DATA_NAME, "data": file_id})
+        else:
+            onedrive_file_id = list(filter(lambda entry: entry[1] == self.META_DATA_NAME, meta_data))
+            if len(onedrive_file_id) < 1:
+                print("there is metadata but the file id metadata doesn't exist")
+                Model().save("metadata", {"name": self.META_DATA_NAME, "data": file_id})
+            else:
+                print("the file id meta data exists so just update the file id")
+                Model().update("metadata", {"data": file_id}, onedrive_file_id[0][0])         
+            
+
         self.finished.emit(True)
         
     

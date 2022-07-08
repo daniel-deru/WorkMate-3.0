@@ -2,6 +2,7 @@ import sqlite3
 import os
 import sys
 import json
+import pyperclip
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -158,15 +159,17 @@ class Model:
 
         self.db.commit()
         self.db.close()
-    # Start fixing from here
+
     def clearTable(self, table):
+        encrypted_table_name = self.get_encrypted_table_name(table)
         query = f"""
-            DROP TABLE IF EXISTS {table}
+            DROP TABLE IF EXISTS [{encrypted_table_name}]
         """
         self.cur.execute(query)
         self.db.commit()
         self.db.close()
-    
+        
+    # Start fixing from here
     def reset(self):
         query = """
             UPDATE settings SET nightmode = 0, font = 'Arial', color = '#000000' WHERE id = 'settings'
@@ -303,4 +306,7 @@ class Model:
         data = cursor.fetchone()
         return data[0] == "ok"
          
-model = Model()
+# model = Model()
+# name = model.get_encrypted_table_name("notes")
+# pyperclip.copy(name)
+# model.read("metadata")

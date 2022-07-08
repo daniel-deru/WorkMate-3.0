@@ -20,7 +20,7 @@ def upload_onedrive(self, show_message=True):
     # Create Google upload thread and google upload worker
     self.upload_onedrive_thread = QThread()  
     self.onedrive_upload_worker = OneDriveUpload()
-    
+
     # Move the worker process to the thread
     self.onedrive_upload_worker.moveToThread(self.upload_onedrive_thread)
     
@@ -29,6 +29,9 @@ def upload_onedrive(self, show_message=True):
     
     # Close the loading screen after the worker thread is done
     self.onedrive_upload_worker.finished.connect(lambda: self.onedrive_upload_loading.close())
+    self.onedrive_upload_worker.finished.connect(self.upload_onedrive_thread.exit)
+    self.onedrive_upload_worker.finished.connect(self.upload_onedrive_thread.quit)
+    
     
     # Clean up the thread and worker
     self.onedrive_upload_worker.finished.connect(self.onedrive_upload_worker.deleteLater)

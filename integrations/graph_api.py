@@ -1,5 +1,6 @@
 import webbrowser
 import os
+import sys
 import re
 import pyperclip
 import json
@@ -7,13 +8,17 @@ import time
 from typing import Match
 from msal import PublicClientApplication
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
+from utils.globals import PATH
+
 
 class Microsoft():
     _APPLICATION_ID: str = '8bcf81ba-398d-4e2c-a23e-823c517d6681'
     _AUTHORITY_URL: str = "https://login.microsoftonline.com/consumers/"
     _SCOPES: list[str] = ["Files.ReadWrite", "Files.Read", "Files.Read.All", "Files.ReadWrite.All"]
     _GRAPH_API_ENDPOINT: str = "https://graph.microsoft.com/v1.0/"
-    TOKEN_FILE: str = "./integrations/microsoft_tokens.json"
+    TOKEN_FILE: str = f"{PATH}/integrations/microsoft_tokens.json"
     
     def __init__(self):
         # Create an instance of a public client application
@@ -59,7 +64,7 @@ class Microsoft():
     
     def get_access_token(self) -> str:
         # Boolean to check if the token file exists 
-        token_file_exists: bool = os.path.exists("./integrations/microsoft_tokens.json")
+        token_file_exists: bool = os.path.exists(self.TOKEN_FILE)
         
         # Initialize variable to hold tokens
         tokens: None or object

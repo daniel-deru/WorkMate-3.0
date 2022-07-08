@@ -142,7 +142,7 @@ class Google:
                 service.files().delete(fileId=file_id).execute()
 
             file_metadata = {'name': 'workmate.db'}
-            media = MediaFileUpload('./database/test.db', mimetype='application/octet-stream')
+            media = MediaFileUpload(f'{PATH}/database/test.db', mimetype='application/octet-stream')
             file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
             # return True
             
