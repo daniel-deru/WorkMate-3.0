@@ -3,9 +3,19 @@ import os
 import math
 import pyperclip
 
-from PyQt5.QtWidgets import QDialog, QLabel, QHBoxLayout, QToolButton, QCheckBox, QFrame, QSpacerItem, QSizePolicy
+from PyQt5.QtWidgets import (
+    QDialog, 
+    QLabel, 
+    QHBoxLayout, 
+    QToolButton,
+    QCheckBox, 
+    QFrame, 
+    QSpacerItem, 
+    QSizePolicy,
+    QWidget
+)
 from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QIcon, QCursor
+from PyQt5.QtGui import QIcon, QCursor, QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -29,8 +39,11 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
     def __init__(self, secret):
         super(CryptoVaultViewWindow, self).__init__()
         self.secret = secret
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.data = json_to_dict(self.secret[3])
-        self.night_mode_on: int = Model().read("settings")[0][1]
+        self.settings = Model().read("settings")[0]
+        self.night_mode_on: int = self.settings[1]
+        self.font_name = self.settings[2]
         self.setupUi(self)
         self.read_styles()
         self.set_dots()
@@ -50,7 +63,8 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         self.chk_private.stateChanged.connect(lambda: self.private_login(self.chk_private))
         
     def read_styles(self):
-        night_mode_on: int = Model().read("settings")[0][1]
+        settings = Model().read("settings")[0]
+        night_mode_on: int = settings[1]
         
         checkbox = WhiteEyeCheckBox if night_mode_on else BlackEyeCheckBox
         widget_list = [
@@ -64,6 +78,29 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
+        
+        font_name = settings[2]
+        
+        font_widgets = [
+            self.btn_copyall,
+            self.lbl_description,
+            self.lbl_password,
+            self.lbl_private,
+            self.lbl_public,
+            self.lbl_username,
+            self.lbl_password_view,
+            self.lbl_private_view,
+            self.lbl_public_view,
+            self.lbl_username_view,
+        ]
+
+        widget: QWidget
+        
+        for widget in font_widgets:
+            widget.setFont(QFont(font_name))
+        
+        
+        
         
     def set_data(self):
         self.lbl_description.setText(self.data['description'])
@@ -104,10 +141,13 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         icon = QIcon(tool_button_icon_path)
         
         num = QLabel(f"{str(count).zfill(2)} ")
+        num.setFont(QFont(self.font_name))
+        num.setFixedWidth(30)
         num_color = "#9ecd16" if self.night_mode_on else "#FF4400"
         num.setStyleSheet(f"color: {num_color};")
         
         lbl_word = QLabel(u"\u2022"*10)
+        lbl_word.setFont(QFont(self.font_name))
         lbl_word.setMinimumWidth(100)
         
         copy = QToolButton()

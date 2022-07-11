@@ -2,7 +2,7 @@ import os
 import sys
 
 from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -25,6 +25,7 @@ class AppsEdit(QDialog, Ui_AppsEdit):
     def __init__(self, app):
         super(AppsEdit, self).__init__()
         self.app = app
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setupUi(self)
         self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
         self.read_styles()
@@ -59,7 +60,10 @@ class AppsEdit(QDialog, Ui_AppsEdit):
             self.lbl_path,
             self.lnedt_name,
             self.lnedt_path,
-            self.spnbox_index
+            self.spnbox_index,
+            self.btn_desktop,
+            self.btn_discard,
+            self.btn_save
         ]
 
         widget: QWidget

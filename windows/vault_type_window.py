@@ -2,7 +2,7 @@ import os
 import sys
 
 from PyQt5.QtWidgets import QDialog, QWidget
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -20,6 +20,7 @@ class VaultType(Ui_VaultTypeDialog, QDialog):
     vault_type_signal = pyqtSignal(str)
     def __init__(self):
         super(Ui_VaultTypeDialog, self).__init__()
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setupUi(self)
         self.readStyles()
 

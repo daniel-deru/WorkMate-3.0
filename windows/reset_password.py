@@ -24,6 +24,7 @@ from database.model import Model
 class ResetPassword(Ui_ResetPassword, QDialog):
     def __init__(self):
         super(ResetPassword, self).__init__()
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setupUi(self)
         self.read_styles()
 

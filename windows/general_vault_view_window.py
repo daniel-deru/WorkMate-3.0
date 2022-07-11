@@ -4,7 +4,7 @@ from json import dumps
 
 from PyQt5.QtWidgets import QDialog, QLabel, QSpacerItem, QSizePolicy, QToolButton, QCheckBox, QHBoxLayout, QVBoxLayout, QFrame
 from PyQt5.QtCore import pyqtSignal, Qt, QSize
-from PyQt5.QtGui import QIcon, QCursor
+from PyQt5.QtGui import QIcon, QCursor, QFont
 import pyperclip
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -23,7 +23,10 @@ from database.model import Model
 class GeneralVaultView(Ui_GeneralVaultView, QDialog):
     def __init__(self, secret) -> None:
         super(GeneralVaultView, self).__init__()
-        self.night_mode_on = Model().read('settings')[0][1]
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        settings = Model().read('settings')[0]
+        self.night_mode_on = settings[1]
+        self.font_name = settings[2]
         self.secret = secret
         self.data = json_to_dict(secret[3])
         self.setupUi(self)
@@ -45,6 +48,8 @@ class GeneralVaultView(Ui_GeneralVaultView, QDialog):
         
         self.setStyleSheet(stylesheet)
         
+        self.lbl_description.setFont(QFont(self.font_name))
+        
     def set_data(self):
         self.lbl_description.setText(self.secret[2])
         
@@ -61,9 +66,11 @@ class GeneralVaultView(Ui_GeneralVaultView, QDialog):
         hbox = QHBoxLayout()
         
         lbl_key: QLabel = QLabel(key)
+        lbl_key.setFont(QFont(self.font_name))
         lbl_key.setMinimumWidth(200)
         
         lbl_value: QLabel = QLabel(u"\u2022"*10)
+        lbl_value.setFont(QFont(self.font_name))
         
         hspacer: QSpacerItem = QSpacerItem(20, 40, QSizePolicy.Expanding, QSizePolicy.Minimum)
         

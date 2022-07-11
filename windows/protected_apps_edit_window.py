@@ -2,7 +2,7 @@ import os
 import sys
 
 from PyQt5.QtWidgets import QDialog, QFileDialog
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -24,6 +24,7 @@ class ProtectedApps(QDialog, Ui_ProtectedAppsEdit):
     protected_app_window_signal = pyqtSignal(str)
     def __init__(self, app):
         super(ProtectedApps, self).__init__()
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.app = app
         self.setupUi(self)
         self.setWindowIcon(QIcon(":/other/WorkMate.ico"))

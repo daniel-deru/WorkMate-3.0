@@ -15,6 +15,7 @@ from designs.python.loading import Ui_LoadingDialog
 class Loading(QDialog):
     def __init__(self, message="Loading... Please wait."):
         super(Loading, self).__init__()
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setStyleSheet("background-color: black;")
         image = Spinner(alignment=Qt.AlignCenter)
         image.setFixedSize(QSize(400, 200))

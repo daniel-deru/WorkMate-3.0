@@ -8,7 +8,7 @@ from pynput.mouse import Listener, Button
 
 from PyQt5.QtWidgets import QDialog, QCheckBox, QToolButton, QWidget
 from PyQt5.QtGui import QIcon, QFont
-from PyQt5.QtCore import QSize, QThread
+from PyQt5.QtCore import QSize, QThread, Qt
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -33,6 +33,7 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
     auto_type_thread_active = False
     def __init__(self, app):
         super(AppVaultView, self).__init__()
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.app = app
         self.setupUi(self)
         self.set_icons()

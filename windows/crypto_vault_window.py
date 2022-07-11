@@ -14,7 +14,7 @@ from PyQt5.QtWidgets import (
     QComboBox, 
     QWidget
 )
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -40,6 +40,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
     crypto_update_signal = pyqtSignal(bool)
     def __init__(self, secret=None):
         super(CryptoVaultWindow, self).__init__()
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.secret: tuple or None = secret
         
         self.setupUi(self)

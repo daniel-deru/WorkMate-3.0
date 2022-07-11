@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'vault_add_window.ui'
+# Form implementation generated from reading ui file './xml/vault_add_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -28,14 +28,14 @@ class Ui_AddSecret_window(object):
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.label = QtWidgets.QLabel(AddSecret_window)
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
-        self.horizontalLayout.addWidget(self.label)
-        self.label_2 = QtWidgets.QLabel(AddSecret_window)
-        self.label_2.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_2.setObjectName("label_2")
-        self.horizontalLayout.addWidget(self.label_2)
+        self.lbl_headers = QtWidgets.QLabel(AddSecret_window)
+        self.lbl_headers.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_headers.setObjectName("lbl_headers")
+        self.horizontalLayout.addWidget(self.lbl_headers)
+        self.lbl_data = QtWidgets.QLabel(AddSecret_window)
+        self.lbl_data.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_data.setObjectName("lbl_data")
+        self.horizontalLayout.addWidget(self.lbl_data)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.vbox_column_def = QtWidgets.QVBoxLayout()
         self.vbox_column_def.setObjectName("vbox_column_def")
@@ -88,9 +88,11 @@ class Ui_AddSecret_window(object):
         self.hbox_data = QtWidgets.QHBoxLayout()
         self.hbox_data.setObjectName("hbox_data")
         self.btn_cancel = QtWidgets.QPushButton(AddSecret_window)
+        self.btn_cancel.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_cancel.setObjectName("btn_cancel")
         self.hbox_data.addWidget(self.btn_cancel)
         self.btn_save = QtWidgets.QPushButton(AddSecret_window)
+        self.btn_save.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_save.setObjectName("btn_save")
         self.hbox_data.addWidget(self.btn_save)
         self.verticalLayout.addLayout(self.hbox_data)
@@ -102,17 +104,7 @@ class Ui_AddSecret_window(object):
         _translate = QtCore.QCoreApplication.translate
         AddSecret_window.setWindowTitle(_translate("AddSecret_window", "Add Secret"))
         self.lbl_name.setText(_translate("AddSecret_window", "Display Name"))
-        self.label.setText(_translate("AddSecret_window", "Add Headers"))
-        self.label_2.setText(_translate("AddSecret_window", "Add Data"))
+        self.lbl_headers.setText(_translate("AddSecret_window", "Add Headers"))
+        self.lbl_data.setText(_translate("AddSecret_window", "Add Data"))
         self.btn_cancel.setText(_translate("AddSecret_window", "Cancel"))
         self.btn_save.setText(_translate("AddSecret_window", "Save"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    AddSecret_window = QtWidgets.QDialog()
-    ui = Ui_AddSecret_window()
-    ui.setupUi(AddSecret_window)
-    AddSecret_window.show()
-    sys.exit(app.exec_())

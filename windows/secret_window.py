@@ -2,9 +2,9 @@ import os
 import sys
 import json
 
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QFont
 from cryptography.fernet import Fernet
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -124,3 +124,29 @@ class SecretWindow(QDialog, Ui_AddSecret_window):
 
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
+        
+        font_name = Model().read("settings")[0][2]
+        
+        font_widgets = [
+            self.lbl_name,
+            self.lbl_data,
+            self.lbl_headers,
+            self.btn_cancel,
+            self.btn_save,
+            self.lnedt_name,
+            self.lnedt_data1,
+            self.lnedt_data2,
+            self.lnedt_data3,
+            self.lnedt_data4,
+            self.lnedt_data5,
+            self.lnedt_header1,
+            self.lnedt_header2,
+            self.lnedt_header3,
+            self.lnedt_header4,
+            self.lnedt_header5,
+        ]
+
+        widget: QWidget
+        
+        for widget in font_widgets:
+            widget.setFont(QFont(font_name))
