@@ -3,7 +3,7 @@ import os
 
 from PyQt5.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QSpacerItem, QSizePolicy, QToolButton
 from PyQt5.QtCore import pyqtSignal, QSize, Qt
-from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtGui import QIcon, QFont, QCursor
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -60,6 +60,7 @@ class TodoItem(QFrame):
         self.editButton.setObjectName("btn_edit")
         self.editButton.setIcon(editIcon)
         self.editButton.setIconSize(QSize(20, 20))
+        self.editButton.setCursor(QCursor(Qt.PointingHandCursor))
 
         icon = QIcon("./assets/delete.png") if self.completed else QIcon("./assets/done.png")
         self.statusButton = QToolButton()
@@ -67,6 +68,7 @@ class TodoItem(QFrame):
         self.statusButton.setObjectName("btn_status")
         self.statusButton.setIcon(icon)
         self.statusButton.setIconSize(QSize(20, 20))
+        self.statusButton.setCursor(QCursor(Qt.PointingHandCursor))
 
 
 

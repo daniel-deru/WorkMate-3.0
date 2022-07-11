@@ -6,8 +6,8 @@ import time
 from threading import Thread
 from pynput.mouse import Listener, Button
 
-from PyQt5.QtWidgets import QDialog, QCheckBox, QToolButton
-from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QDialog, QCheckBox, QToolButton, QWidget
+from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtCore import QSize, QThread
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -58,13 +58,36 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         
     
     def read_styles(self):
-        dark_mode_on = Model().read('settings')[0][1]
+        settings = Model().read('settings')[0]
+        dark_mode_on = settings[1]
         checkbox = WhiteEyeCheckBox if dark_mode_on else BlackEyeCheckBox
         
         widget_list = [checkbox, Label, PushButton, RadioButton, Dialog, ToolButton]
         stylesheet = StyleSheet(widget_list).create()
         
         self.setStyleSheet(stylesheet)
+        
+        font_name = settings[2]
+        
+        font_widgets = [
+            self.lbl_email,
+            self.lbl_name,
+            self.lbl_password,
+            self.lbl_path,
+            self.lbl_username,
+            self.lbl_email_view,
+            self.lbl_name_view,
+            self.lbl_password_view,
+            self.lbl_path_view,
+            self.lbl_username_view,
+            self.btn_open            
+        ]
+        
+        widget: QWidget
+        
+        for widget in font_widgets:
+            widget.setFont(QFont(font_name))
+        
         
     def hideText(self):
         dots = u"\u2022"*10

@@ -2,8 +2,9 @@ import sys
 import os
 from json import dumps
 
-from PyQt5.QtWidgets import QDialog, QFileDialog, QLineEdit
+from PyQt5.QtWidgets import QDialog, QFileDialog, QLineEdit, QWidget
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -60,6 +61,30 @@ class AppVaultWindow(Ui_AppVault, QDialog):
 
         stylesheet: str = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
+        
+        font_name = Model().read("settings")[0][2]
+        
+        font_widget = [
+            self.lbl_email,
+            self.lbl_index,
+            self.lbl_name,
+            self.lbl_password,
+            self.lbl_path,
+            self.lbl_username,
+            self.lne_email,
+            self.spn_index,
+            self.lne_name,
+            self.lne_password,
+            self.lne_path,
+            self.lne_username,
+            self.btn_desktop,
+            self.btn_save
+        ]
+        
+        widget: QWidget
+        
+        for widget in font_widget:
+            widget.setFont(QFont(font_name))
 
     def save(self):
         

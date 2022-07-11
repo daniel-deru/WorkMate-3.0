@@ -1,9 +1,9 @@
 import os
 import sys
 
-from PyQt5.QtWidgets import QDialog, QLineEdit
+from PyQt5.QtWidgets import QDialog, QLineEdit, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QIcon, QCloseEvent
+from PyQt5.QtGui import QIcon, QCloseEvent, QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -46,7 +46,9 @@ class Login(QDialog, Ui_Login):
 
 
     def read_styles(self):
-        dark_mode_on = Model().read('settings')[0][1]
+        settings = Model().read('settings')[0]
+        dark_mode_on = settings[1]
+        font: str = settings[2]
         checkbox = WhiteEyeCheckBox if dark_mode_on else BlackEyeCheckBox
         
         styles = [
@@ -59,6 +61,17 @@ class Login(QDialog, Ui_Login):
         
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
+        
+        font_widgets = [
+            self.lbl_password,
+            self.lnedt_password,
+            self.btn_login
+        ]
+        
+        widget: QWidget
+        for widget in font_widgets:
+            widget.setFont(QFont(font))
+        
 
     def login(self):
         user = Model().read("user")[0]

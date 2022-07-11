@@ -1,8 +1,9 @@
 import sys
 import os
 
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QWidget
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -43,6 +44,18 @@ class PasswordQuestion(Ui_AnswerQuestionDialog, QDialog):
 
         stylesheet: str = StyleSheet(widgetlist).create()
         self.setStyleSheet(stylesheet)
+        
+        font_name = Model().read("settings")[0][2]
+        
+        font_widgets = [
+            self.lbl_question,
+            self.lnedt_answer,
+            self.btn_enter
+        ]
+        
+        widget: QWidget
+        for widget in font_widgets:
+            widget.setFont(QFont(font_name))
 
     def verify_answer(self):
         answer: str = self.lnedt_answer.text()

@@ -1,7 +1,7 @@
 import os
 import sys
 
-from PyQt5.QtWidgets import QPushButton, QWidget, QLineEdit, QToolButton, QHBoxLayout
+from PyQt5.QtWidgets import QPushButton, QWidget, QLineEdit, QToolButton, QHBoxLayout, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QFont, QIcon, QCursor
 
@@ -13,6 +13,8 @@ from widgetStyles.LineEdit import LineEdit
 from widgetStyles.ToolButton import ToolButton
 
 from utils.helpers import StyleSheet
+
+from database.model import Model
 
 class PasswordWidget(QWidget):
     def __init__(self, input=None):
@@ -60,4 +62,15 @@ class PasswordWidget(QWidget):
         ]
         stylesheet: str = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
+        
+        font_name = Model().read("settings")[0][2]
+        
+        font_widgets = [
+            self.text_field
+        ]
+        
+        widget: QWidget
+        
+        for widget in font_widgets:
+            widget.setFont(QFont(font_name))
     

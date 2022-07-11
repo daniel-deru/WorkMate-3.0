@@ -1,8 +1,8 @@
 import os
 import sys
 
-from PyQt5.QtWidgets import QDialog
-from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import QDialog, QWidget
+from PyQt5.QtGui import QFont, QCursor
 from PyQt5.QtCore import QDate, Qt, pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -16,6 +16,8 @@ from widgetStyles.DateEdit import DateEdit
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Dialog import Dialog
+from widgetStyles.DateEdit import DateEdit
+from widgetStyles.Widget import Widget
 
 
 from database.model import Model
@@ -27,6 +29,7 @@ class TodoEditWindow(Ui_todo_edit, QDialog):
         super(TodoEditWindow, self).__init__()
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.cmbx_status.setCursor(QCursor(Qt.PointingHandCursor))
         self.read_styles()
         self.todo: object = todo
         
@@ -38,23 +41,38 @@ class TodoEditWindow(Ui_todo_edit, QDialog):
 
     def read_styles(self):
         widget_list = [
+            Widget,
+            Dialog,
             PushButton,
+            LineEdit,
             Label,
             ComboBox,
-            LineEdit,
             DateEdit,
             Calendar,
-            Dialog
         ]
 
         stylesheet: str = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
         font_name: str = Model().read("settings")[0][2]
-        font: QFont = QFont(font_name)
 
-        self.lbl_name.setFont(font)
-        self.lbl_date.setFont(font)
-        self.lbl_status.setFont(font)
+        font_widgets = [
+            self.lbl_name,
+            self.lbl_date,
+            self.lbl_status,
+            self.btn_save,
+            self.cmbx_status,
+            self.dtedt_date,
+            self.lnedt_name
+        ]
+        
+        widget: QWidget
+        
+        for widget in font_widgets:
+            widget.setFont(QFont(font_name))
+            
+        self.dtedt_date.setFont(QFont(font_name, 5))
+        
+
     
     def set_data(self):
         if self.todo:

@@ -217,11 +217,10 @@ class Main(QWidget, Ui_main_container):
         
         if not auto_save_dict['auto_save']: return
         
-        if auto_save_dict['google']: 
+        if auto_save_dict['google']:
             upload_google(self, False)
         if auto_save_dict['onedrive']: 
-            upload_onedrive(self, False)
-            
+            upload_onedrive(self, False)  
         return super().closeEvent(event)
         
 

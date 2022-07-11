@@ -64,6 +64,7 @@ class Ui_todo_edit(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem)
         self.btn_save = QtWidgets.QPushButton(todo_edit)
+        self.btn_save.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_save.setObjectName("btn_save")
         self.horizontalLayout_3.addWidget(self.btn_save)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)

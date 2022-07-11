@@ -113,6 +113,25 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         styles = [Label, ButtonFullWidth, SettingsCheckBox, ComboBox, ScrollBar]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
+        
+        font_name = Model().read("settings")[0][2]
+        
+        font_widgets = [
+            self.btn_login,
+            self.btn_forgot_password,
+            self.lbl_2fa,
+            self.lbl_night_mode,
+            self.lbl_calendar,
+            self.lbl_auto_save,
+            self.btn_save_google_drive,
+            self.btn_google_drive_sync,
+            self.btn_save_local,
+            self.btn_restore_local
+        ]
+        
+        widget: QWidget
+        for widget in font_widgets:
+            widget.setFont(QFont(font_name))
     
     def login(self, signal):
         if signal == "success":

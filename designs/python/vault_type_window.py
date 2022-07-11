@@ -23,6 +23,7 @@ class Ui_VaultTypeDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.btn_crypto.sizePolicy().hasHeightForWidth())
         self.btn_crypto.setSizePolicy(sizePolicy)
+        self.btn_crypto.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_crypto.setObjectName("btn_crypto")
         self.verticalLayout.addWidget(self.btn_crypto)
         self.btn_app = QtWidgets.QPushButton(VaultTypeDialog)
@@ -31,6 +32,7 @@ class Ui_VaultTypeDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.btn_app.sizePolicy().hasHeightForWidth())
         self.btn_app.setSizePolicy(sizePolicy)
+        self.btn_app.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_app.setObjectName("btn_app")
         self.verticalLayout.addWidget(self.btn_app)
         self.btn_general = QtWidgets.QPushButton(VaultTypeDialog)
@@ -39,6 +41,7 @@ class Ui_VaultTypeDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.btn_general.sizePolicy().hasHeightForWidth())
         self.btn_general.setSizePolicy(sizePolicy)
+        self.btn_general.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_general.setObjectName("btn_general")
         self.verticalLayout.addWidget(self.btn_general)
 

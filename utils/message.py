@@ -1,14 +1,19 @@
 import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFont
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
 
 from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
 from widgetStyles.PushButton import PushButton
 from utils.helpers import StyleSheet
+
+from database.model import Model
 
 
 class Message(QMessageBox):
@@ -25,6 +30,9 @@ class Message(QMessageBox):
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
+        
+        font_name = Model().read("settings")[0][2]
+        self.setFont(QFont(font_name))
     
     def create(self):
         return self

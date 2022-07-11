@@ -1,9 +1,9 @@
 import os
 import sys
 
-from PyQt5.QtWidgets import QDialog, QFileDialog
+from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -50,6 +50,22 @@ class AppsEdit(QDialog, Ui_AppsEdit):
 
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
+        
+        font_name = Model().read("settings")[0][2]
+        
+        font_widgets = [
+            self.lbl_index,
+            self.lbl_name,
+            self.lbl_path,
+            self.lnedt_name,
+            self.lnedt_path,
+            self.spnbox_index
+        ]
+
+        widget: QWidget
+                
+        for widget in font_widgets:
+            widget.setFont(QFont(font_name))
     
     def fill_fields(self):
         name = self.lnedt_name

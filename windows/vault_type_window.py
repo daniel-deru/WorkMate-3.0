@@ -1,8 +1,9 @@
 import os
 import sys
 
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QWidget
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -12,6 +13,8 @@ from widgetStyles.Dialog import Dialog
 from widgetStyles.PushButton import ButtonFullWidth
 
 from utils.helpers import StyleSheet
+
+from database.model import Model
 
 class VaultType(Ui_VaultTypeDialog, QDialog):
     vault_type_signal = pyqtSignal(str)
@@ -30,6 +33,19 @@ class VaultType(Ui_VaultTypeDialog, QDialog):
         stylesheet = StyleSheet(widget_list).create()
 
         self.setStyleSheet(stylesheet)
+        
+        font_name = Model().read("settings")[0][2]
+        
+        font_widget = [
+            self.btn_app,
+            self.btn_crypto,
+            self.btn_general
+        ]
+        
+        widget: QWidget
+        
+        for widget in font_widget:
+            widget.setFont(QFont(font_name))
 
     def open_general_vault(self):
         self.vault_type_signal.emit("general")

@@ -3,8 +3,9 @@ import sys
 import qrcode
 import pyotp
 
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QWidget
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -30,6 +31,17 @@ class TwofaDialog(Ui_TwoFADialog, QDialog):
 
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
+        
+        font_name = Model().read("settings")[0][2]
+        
+        font_widgets =[
+            self.lbl_message,
+            self.lbl_setupkey
+        ]
+        
+        widget: QWidget
+        for widget in font_widgets:
+            widget.setFont(QFont(font_name))
 
     def create_qrcode(self):
         secret = self.get_otp()
@@ -40,9 +52,7 @@ class TwofaDialog(Ui_TwoFADialog, QDialog):
 
     def get_otp(self):
         otp = Model().read("user")[0][5]
-        print(otp)
-        print(otp == "None")
-        print(otp == None)
+
         if otp == None or otp == "None":
             
             otp = pyotp.random_base32()

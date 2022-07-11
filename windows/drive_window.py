@@ -1,8 +1,9 @@
 import os
 import sys
 
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QWidget
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -13,6 +14,8 @@ from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.Dialog import Dialog
 
 from utils.helpers import StyleSheet
+
+from database.model import Model
 
 
 class DriveWindow(Ui_DriveDialog, QDialog):
@@ -29,6 +32,18 @@ class DriveWindow(Ui_DriveDialog, QDialog):
         
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
+        
+        font_name = Model().read("settings")[0][2]
+        
+        font_widgets = [
+            self.chk_google,
+            self.chk_onedrive,
+            self.btn_save
+        ]
+        
+        widget: QWidget
+        for widget in font_widgets:
+            widget.setFont(QFont(font_name))
         
     def save(self):
         drives = {

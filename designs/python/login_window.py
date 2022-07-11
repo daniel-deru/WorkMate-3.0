@@ -34,6 +34,7 @@ class Ui_Login(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.btn_login = QtWidgets.QPushButton(Login)
+        self.btn_login.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_login.setObjectName("btn_login")
         self.horizontalLayout.addWidget(self.btn_login)
         self.verticalLayout.addLayout(self.horizontalLayout)

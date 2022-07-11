@@ -4,9 +4,18 @@ import re
 import math
 from typing import Match, Pattern
 from json import dumps, loads
-from PyQt5.QtWidgets import QDialog, QHBoxLayout, QLabel, QLineEdit, QWidget, QGridLayout, QComboBox
+from PyQt5.QtWidgets import (
+    QDialog, 
+    QHBoxLayout, 
+    QLabel, 
+    QLineEdit, 
+    QWidget, 
+    QGridLayout, 
+    QComboBox, 
+    QWidget
+)
 from PyQt5.QtCore import pyqtSignal
-from pyparsing import line
+from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -46,7 +55,8 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         self.btn_save.clicked.connect(self.save)
 
     def read_styles(self):
-        night_mode_on = Model().read("settings")[0][1]
+        settings = Model().read("settings")[0]
+        night_mode_on = settings[1]
         checkbox = WhiteEyeCheckBox if night_mode_on else BlackEyeCheckBox
         widget_list = [
             checkbox,
@@ -61,6 +71,31 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         stylesheet = StyleSheet(widget_list).create()
 
         self.setStyleSheet(stylesheet)
+        
+        font_name = settings[2]
+        
+        font_widgets = [
+            self.lbl_description,
+            self.lbl_name,
+            self.lbl_password,
+            self.lbl_password2,
+            self.lbl_private,
+            self.lbl_public,
+            self.lbl_words,
+            self.lne_description,
+            self.lne_name,
+            self.cmb_num_words,
+            self.lne_password2,
+            self.lne_private,
+            self.lne_public,
+            self.lbl_words,
+            self.btn_save  
+        ]
+        
+        widget: QWidget
+        
+        for widget in font_widgets:
+            widget.setFont(QFont(font_name))
 
     def displayWordBoxes(self):        
         words: int = self.get_num_words()
@@ -73,6 +108,8 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
             existing_words: list[str] = data['words'].split(" ")
             if words > len(existing_words):
                 existing_words += ["" for _ in range(words - len(existing_words))]
+                
+        font_name = Model().read("settings")[0][2]
 
         for i in range(math.ceil(words/COLUMNS)):
             for j in range(COLUMNS):
@@ -80,11 +117,14 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
                 hbox.setContentsMargins(0, 0, 0, 0)
                 widget: QWidget = QWidget()
 
-                number: QLabel = QLabel(f"{str(count).zfill(2)}. ")
+                self.number: QLabel = QLabel(f"{str(count).zfill(2)}. ")
+                self.number.setFont(QFont(font_name))
+                self.number.setFixedWidth(30)
+                
                 param = existing_words[count-1] if existing_words else None
                 password: PasswordWidget = PasswordWidget(param)
 
-                hbox.addWidget(number)
+                hbox.addWidget(self.number)
                 hbox.addWidget(password)
 
                 widget.setLayout(hbox)
