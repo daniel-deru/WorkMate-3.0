@@ -2,8 +2,8 @@ import sys
 import os
 
 from PyQt5.QtWidgets import QHBoxLayout, QLabel, QPushButton, QFrame, QSpacerItem, QSizePolicy
-from PyQt5.QtCore import pyqtSignal, QSize
-from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtCore import pyqtSignal, QSize, Qt
+from PyQt5.QtGui import QIcon, QFont, QCursor
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -50,12 +50,16 @@ class NoteItem(QFrame):
         self.btn_edit.setObjectName("btn_edit")
         self.btn_edit.setIcon(QIcon(":/other/edit.png"))
         self.btn_edit.setIconSize(QSize(20, 20))
+        self.btn_edit.setStyleSheet("background-color: #FF4400;")
+        self.btn_edit.setCursor(QCursor(Qt.PointingHandCursor))
         self.hbox.addWidget(self.btn_edit)
 
         self.btn_delete = QPushButton()
         self.btn_delete.setObjectName("btn_delete")
-        self.btn_delete.setIcon(QIcon(":/other/delete-red.png"))
+        self.btn_delete.setIcon(QIcon(":/other/delete.png"))
         self.btn_delete.setIconSize(QSize(20, 20))
+        self.btn_delete.setStyleSheet("background-color: #FF4400;")
+        self.btn_delete.setCursor(QCursor(Qt.PointingHandCursor))
         self.hbox.addWidget(self.btn_delete)
 
         self.setLayout(self.hbox)

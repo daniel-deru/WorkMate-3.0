@@ -182,5 +182,5 @@ class Apps_tab(QWidget, Ui_apps_tab):
             self.btn_pro_apps_login.setText("Logout")
             self.logged_in = True
         elif signal == "logged out":
-            self.btn_pro_apps_login.setText("login")
+            self.btn_pro_apps_login.setText("Login")
             self.logged_in = False

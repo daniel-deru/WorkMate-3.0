@@ -41,8 +41,9 @@
         <file alias="SMT Logo.png">SMT Logo.png</file>
         <file alias="background.jpg">background.jpg</file>
         <file alias="loader.svg">loader.svg</file>
-
-
+    </qresource>
+    <qresource prefix="fonts">
+        <file alias="RobotoCondensed">RobotoCondensed-Bold.ttf</file>
     </qresource>
 
 </RCC>

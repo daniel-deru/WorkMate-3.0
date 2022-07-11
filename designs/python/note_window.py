@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'note_window.ui'
+# Form implementation generated from reading ui file './xml/note_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -20,16 +20,19 @@ class Ui_Note_Window(object):
         self.notes_window_hbox = QtWidgets.QHBoxLayout()
         self.notes_window_hbox.setObjectName("notes_window_hbox")
         self.chkbx_edit = QtWidgets.QCheckBox(Note_Window)
+        self.chkbx_edit.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.chkbx_edit.setObjectName("chkbx_edit")
         self.notes_window_hbox.addWidget(self.chkbx_edit)
         self.btn_save = QtWidgets.QPushButton(Note_Window)
         self.btn_save.setMinimumSize(QtCore.QSize(150, 0))
         self.btn_save.setMaximumSize(QtCore.QSize(150, 16777215))
+        self.btn_save.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_save.setObjectName("btn_save")
         self.notes_window_hbox.addWidget(self.btn_save)
         self.btn_copy_note = QtWidgets.QPushButton(Note_Window)
         self.btn_copy_note.setMinimumSize(QtCore.QSize(150, 0))
         self.btn_copy_note.setMaximumSize(QtCore.QSize(150, 16777215))
+        self.btn_copy_note.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_copy_note.setObjectName("btn_copy_note")
         self.notes_window_hbox.addWidget(self.btn_copy_note)
         self.verticalLayout.addLayout(self.notes_window_hbox)
@@ -43,16 +46,6 @@ class Ui_Note_Window(object):
     def retranslateUi(self, Note_Window):
         _translate = QtCore.QCoreApplication.translate
         Note_Window.setWindowTitle(_translate("Note_Window", "Note"))
-        self.chkbx_edit.setText(_translate("Note_Window", "Editable"))
+        self.chkbx_edit.setText(_translate("Note_Window", "Enable Delete"))
         self.btn_save.setText(_translate("Note_Window", "Save"))
         self.btn_copy_note.setText(_translate("Note_Window", "Copy"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Note_Window = QtWidgets.QWidget()
-    ui = Ui_Note_Window()
-    ui.setupUi(Note_Window)
-    Note_Window.show()
-    sys.exit(app.exec_())

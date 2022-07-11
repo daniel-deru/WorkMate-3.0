@@ -291,7 +291,7 @@ class Model:
         }
         
         if len(settings_data) < 1:
-            query = f"INSERT INTO [{settings}] VALUES ('{enc('settings')}', '{enc('0')}', '{enc('Arial')}', '{enc('#000000')}', '{enc('0')}', '{enc('5')}', '{enc('0')}', '{enc('0')}', '{enc(json.dumps(auto_save))}')"
+            query = f"INSERT INTO [{settings}] VALUES ('{enc('settings')}', '{enc('0')}', '{enc('Roboto Condensed')}', '{enc('#000000')}', '{enc('0')}', '{enc('5')}', '{enc('0')}', '{enc('0')}', '{enc(json.dumps(auto_save))}')"
             self.cur.execute(query)
             self.db.commit()
             
@@ -306,8 +306,10 @@ class Model:
         data = cursor.fetchone()
         return data[0] == "ok"
          
-# model = Model()
-# model.update("settings", {"font": "proxon"}, "settings")
+model = Model()
+model.update("settings", {"font": "Roboto Condensed"}, "settings")
 # name = model.get_encrypted_table_name("notes")
 # pyperclip.copy(name)
 # model.read("metadata")
+
+# Coda Proxon

@@ -176,7 +176,7 @@ class Vault_tab(QWidget, Ui_Vault_tab):
             self.btn_login.setText("Logout")
             self.logged_in = True
         elif signal == "logged out":
-            self.btn_login.setText("login")
+            self.btn_login.setText("Login")
             self.logged_in = False
 
     def display_apps(self):

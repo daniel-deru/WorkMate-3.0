@@ -5,7 +5,7 @@ import json
 import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
-from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent, QFontDatabase
 from PyQt5.QtCore import QTimer, Qt
 
 from designs.python.main_widget import Ui_main_container
@@ -34,6 +34,8 @@ from threads.onedrive_thread import upload_onedrive
 class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
+        
+        id = QFontDatabase.addApplicationFont(":/fonts/RobotoCondensed")
         
         self.timer = QTimer(self) 
         self.logged_in = False
