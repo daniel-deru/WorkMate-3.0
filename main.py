@@ -35,7 +35,7 @@ class Main(QWidget, Ui_main_container):
     def __init__(self):
         super(Main, self).__init__()
         
-        id = QFontDatabase.addApplicationFont(":/fonts/RobotoCondensed")
+        QFontDatabase.addApplicationFont(":/fonts/RobotoCondensed")
         
         self.timer = QTimer(self) 
         self.logged_in = False

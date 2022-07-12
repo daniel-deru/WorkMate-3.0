@@ -1,3 +1,4 @@
+from msilib.schema import Error
 import webbrowser
 import os
 import sys
@@ -44,7 +45,11 @@ class Microsoft():
 
         
         # Start the device flow
-        self.flow = self.app.initiate_device_flow(scopes=self._SCOPES)
+        try:
+            self.flow = self.app.initiate_device_flow(scopes=self._SCOPES)
+        except Exception as error:
+            with open(f"{PATH}/error.txt", "a") as error_file:
+                error_file.write(f"\n\n{error}")
         
         
         # Get the code that the user needs to authenticate the app and copy the code

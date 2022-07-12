@@ -66,7 +66,7 @@ class Google:
                 token.write(creds.to_json())
         
         try:
-            service = build('calendar', 'v3', credentials=creds)
+            service = build('calendar', 'v3', credentials=creds, static_discovery=False)
             start_date = date + timedelta(hours=1)
             end_date = start_date + timedelta(hours=4)
             timezone = str(tzlocal.get_localzone())
@@ -119,7 +119,7 @@ class Google:
                 token.write(creds.to_json())
         
         try:
-            service = build("drive", "v3", credentials=creds)
+            service = build("drive", "v3", credentials=creds, static_discovery=False)
                       
             files = []
             page_token = None
@@ -174,7 +174,7 @@ class Google:
                 token.write(creds.to_json())
         
         try:
-            service = build("drive", "v3", credentials=creds)
+            service = build("drive", "v3", credentials=creds, static_discovery=False)
             
             files = []
             page_token = None

@@ -54,7 +54,7 @@ class TodoItem(QFrame):
 
         self.HSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        editIcon = QIcon("./assets/edit.png")
+        editIcon = QIcon(":/other/edit.png")
         self.editButton = QToolButton()
         self.editButton.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.editButton.setObjectName("btn_edit")
@@ -62,7 +62,7 @@ class TodoItem(QFrame):
         self.editButton.setIconSize(QSize(20, 20))
         self.editButton.setCursor(QCursor(Qt.PointingHandCursor))
 
-        icon = QIcon("./assets/delete.png") if self.completed else QIcon("./assets/done.png")
+        icon = QIcon(":/other/delete.png") if self.completed else QIcon(":/other/done.png")
         self.statusButton = QToolButton()
 
         self.statusButton.setObjectName("btn_status")

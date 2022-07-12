@@ -29,6 +29,8 @@ def upload_google(self, show_message=True):
     
     # Close the loading screen after the worker thread is done
     self.google_upload_worker.finished.connect(lambda: self.google_upload_loading.close())
+    self.google_upload_worker.finished.connect(self.upload_google_thread.exit)
+    self.google_upload_worker.finished.connect(self.upload_google_thread.quit)
     
     # Clean up the thread and worker
     self.google_upload_worker.finished.connect(self.google_upload_worker.deleteLater)
@@ -63,6 +65,8 @@ def download_google(self):
     
     # Clean up the processes for better memory management
     self.google_download_worker.finished.connect(self.google_download_worker.deleteLater)
+    self.google_download_worker.finished.connect(self.google_download_thread.exit)
+    self.google_download_worker.finished.connect(self.google_download_thread.quit)
     self.google_download_thread.finished.connect(self.google_download_thread.deleteLater)
     
     self.google_download_thread.start()

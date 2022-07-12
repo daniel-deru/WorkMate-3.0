@@ -100,7 +100,7 @@ def random_words(num_words=12, words=[]):
     return random_words(num_words, words)
 
 def get_checkbox():
-    dark_mode_on = Model().read('settings')[0][1]
+    dark_mode_on = int(Model().read('settings')[0][1])
     checkbox = WhiteEyeCheckBox if dark_mode_on else BlackEyeCheckBox
     return checkbox
     

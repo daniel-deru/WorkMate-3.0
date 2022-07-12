@@ -25,7 +25,7 @@ class GeneralVaultView(Ui_GeneralVaultView, QDialog):
         super(GeneralVaultView, self).__init__()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         settings = Model().read('settings')[0]
-        self.night_mode_on = settings[1]
+        self.night_mode_on = int(settings[1])
         self.font_name = settings[2]
         self.secret = secret
         self.data = json_to_dict(secret[3])

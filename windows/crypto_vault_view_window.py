@@ -64,7 +64,7 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         
     def read_styles(self):
         settings = Model().read("settings")[0]
-        night_mode_on: int = settings[1]
+        night_mode_on: int = int(settings[1])
         
         checkbox = WhiteEyeCheckBox if night_mode_on else BlackEyeCheckBox
         widget_list = [

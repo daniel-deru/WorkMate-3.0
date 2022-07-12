@@ -1,10 +1,11 @@
 import sys
 import os
+import subprocess
 import threading
 import shutil
 import json
 
-from PyQt5.QtWidgets import QWidget, QFileDialog
+from PyQt5.QtWidgets import QWidget, QFileDialog, qApp
 from PyQt5.QtCore import pyqtSignal, Qt, QThread
 from PyQt5.QtGui import QFont
 
@@ -21,7 +22,7 @@ from widgetStyles.ScrollBar import ScrollBar
 
 from utils.message import Message
 from utils.helpers import StyleSheet
-from utils.globals import DB_PATH
+from utils.globals import DB_PATH, PATH
 
 from database.model import Model
 
@@ -216,6 +217,8 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         else:  
             if Model().is_valid(name):
                 shutil.move(name, f"{DB_PATH}test.db")
+                message: Message = Message("Sync successful, You may need to restart the application", "Restart Application")
+                message.exec_()
             else:
                 message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
                 message.exec_()
@@ -234,19 +237,28 @@ class SettingsTab(QWidget, Ui_Settings_tab):
     def manual_remote_save(self, drives):
         self.drive_window.close()
         
-        if drives["google"]:
-            upload_google(self)
-            
-        if drives['onedrive']:
-            upload_onedrive(self)
+        try:
+            if drives["google"]:
+                upload_google(self)
+                
+            if drives['onedrive']:
+                upload_onedrive(self)
+        except Exception as error:
+            print("error")
+            with open(f"{PATH}error.txt", "a") as error_file:
+                error_file.write(f"\n\n{error}")
             
             
     def manual_remote_download(self, drives):
         self.drive_window.close()
-        if drives["google"]:
-            download_google(self)
-        elif drives['onedrive']:
-            download_onedrive(self)
+        try:
+            if drives["google"]:
+                download_google(self)
+            elif drives['onedrive']:
+                download_onedrive(self)
+        except Exception as error:
+            with open(f"{PATH}error.txt", "a") as error_file:
+                error_file.write(f"\n\n{error}")
         
           
 # This is for the calendar integration

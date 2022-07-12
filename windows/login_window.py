@@ -1,5 +1,6 @@
 import os
 import sys
+from tabnanny import check
 
 from PyQt5.QtWidgets import QDialog, QLineEdit, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt
@@ -47,10 +48,13 @@ class Login(QDialog, Ui_Login):
 
     def read_styles(self):
         settings = Model().read('settings')[0]
-        dark_mode_on = settings[1]
+        dark_mode_on = int(settings[1])
         font: str = settings[2]
         checkbox = WhiteEyeCheckBox if dark_mode_on else BlackEyeCheckBox
         
+        print(dark_mode_on == True)
+        print(dark_mode_on)
+        print(type(dark_mode_on))
         styles = [
             PushButton,
             Label,

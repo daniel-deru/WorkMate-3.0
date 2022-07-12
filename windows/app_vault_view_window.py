@@ -60,7 +60,7 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
     
     def read_styles(self):
         settings = Model().read('settings')[0]
-        dark_mode_on = settings[1]
+        dark_mode_on = int(settings[1])
         checkbox = WhiteEyeCheckBox if dark_mode_on else BlackEyeCheckBox
         
         widget_list = [checkbox, Label, PushButton, RadioButton, Dialog, ToolButton]
