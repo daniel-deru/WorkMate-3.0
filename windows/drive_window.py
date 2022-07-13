@@ -3,7 +3,7 @@ import sys
 
 from PyQt5.QtWidgets import QDialog, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -24,6 +24,7 @@ class DriveWindow(Ui_DriveDialog, QDialog):
         super(DriveWindow, self).__init__()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setupUi(self)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.read_styles()
         
         self.btn_save.clicked.connect(self.save)

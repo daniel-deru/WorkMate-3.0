@@ -4,7 +4,7 @@ from json import dumps
 
 from PyQt5.QtWidgets import QDialog, QFileDialog, QLineEdit, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -31,6 +31,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.secrets = list(filter(lambda a: a[1] == "app", Model().read("vault")))
         self.setupUi(self)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         
         maxValue = len(self.secrets) if self.app else len(self.secrets)+1
         

@@ -4,8 +4,8 @@ import os
 import pyperclip
 import math
 
-from PyQt5.QtWidgets import QDialog, QLineEdit, QGridLayout, QHBoxLayout, QWidget, QLabel, QGraphicsBlurEffect, QPushButton
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QDialog, QLineEdit, QGridLayout, QWidget, QGraphicsBlurEffect, QWidget, QMessageBox
+from PyQt5.QtGui import QIcon, QPixmap, QFont
 from PyQt5.QtCore import Qt, pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -24,6 +24,8 @@ from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
 from widgetStyles.Widget import SideWidget
 from widgetStyles.QCheckBox import BlackEyeCheckBox
+
+from utils.message import Message
 
 class Register(QDialog, Ui_Register):
     register_close_signal = pyqtSignal(str)
@@ -66,16 +68,12 @@ class Register(QDialog, Ui_Register):
         email = self.lnedt_email.text()
         password1 = self.lnedt_password.text()
         password2 = self.lnedt_password2.text()
-        # question = self.lnedt_question.text()
-        # answer = self.lnedt_answer.text()
 
         fields = [
             name,
             email,
             password1,
             password2,
-            # question,
-            # answer
         ]
 
         valid_submition = False
@@ -119,12 +117,48 @@ class Register(QDialog, Ui_Register):
         self.lbl_developed_by.setStyleSheet("color: white;")
         self.lbl_passphrase_desc.setStyleSheet("font-weight: 700;")
         
+        font_name = Model().read("settings")[0][2]
+        
+        font_widgets = [
+            self.lbl_company,
+            self.lbl_create_account,
+            self.lbl_developed_by,
+            self.lbl_email,
+            self.lbl_name,
+            self.lbl_passphrase_desc,
+            self.lbl_password,
+            self.lbl_password2,
+            self.lbl_warning,
+            self.lnedt_email,
+            self.lnedt_name,
+            self.lnedt_password,
+            self.lnedt_password2,
+            self.btn_copy,
+            self.btn_register
+        ]
+        
+        widget: QWidget
+        
+        for widget in font_widgets:
+            widget.setFont(QFont(font_name))
+        
+        
 
     def closeEvent(self, event):
-        if not self.registered:
-            self.register_close_signal.emit("window closed")
-        elif self.registered:
-            self.register_close_signal.emit("registered")
+        print("hello")
+        reply = QMessageBox.question(
+            self, 
+            "Are You Sure?", 
+            "Did you copy your passphrase and store it in a safe place?", 
+            QMessageBox.Yes | QMessageBox.No )
+        
+        if reply == QMessageBox.No:
+           event.ignore()
+        else:
+            if not self.registered:
+                self.register_close_signal.emit("window closed")
+            elif self.registered:
+                self.register_close_signal.emit("registered")
             
     def set_random_words(self):
         random: list[str] = random_words()
@@ -134,27 +168,7 @@ class Register(QDialog, Ui_Register):
         count = 1
         for i in range(math.floor(len(random)/4)):
             for j in range(4):
-                button: RegisterWordButton = RegisterWordButton(random[count - 1], count)
-                # button: QPushButton = QPushButton()
-                # button.setStyleSheet("""QPushButton {
-                #                             text-align: left;
-                #                             background-color: white;
-                #                             border: 2px solid #9ecd16;
-                #                             color: black;
-                #                         }
-                #                         QPushButton:hover {
-                #                             background-color: #9ecd16;
-                #                             color: white;
-                #                         }
-                #                         QPushButton:pressed {
-                #                              background-color: white;
-                #                              color: black;
-                #                         }""")
-
-                # button.setCursor(Qt.PointingHandCursor)
-                # button.clicked.connect(lambda: self.copy_word(count))
-                # button.setText(f"{str(count).zfill(2)}. {random[count - 1]}")
-                
+                button: RegisterWordButton = RegisterWordButton(random[count - 1], count)                
                 container.addWidget(button, i, j)
                 count += 1
                 

@@ -2,7 +2,7 @@ import os
 import sys
 
 from PyQt5.QtWidgets import QDialog, QWidget
-from PyQt5.QtGui import QFont, QCursor
+from PyQt5.QtGui import QFont, QCursor, QIcon
 from PyQt5.QtCore import QDate, Qt, pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -29,6 +29,7 @@ class TodoEditWindow(Ui_todo_edit, QDialog):
         super(TodoEditWindow, self).__init__()
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.cmbx_status.setCursor(QCursor(Qt.PointingHandCursor))
         self.read_styles()
         self.todo: object = todo

@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-development_mode = False
+development_mode = True
 
 PATH = os.getenv("APPDATA") + "\\TrustLock" 
 

@@ -36,6 +36,7 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.app = app
         self.setupUi(self)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.set_icons()
         self.hideText()
         self.read_styles()

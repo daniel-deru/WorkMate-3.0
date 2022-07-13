@@ -40,9 +40,9 @@ class Main(QWidget, Ui_main_container):
         self.timer = QTimer(self) 
         self.logged_in = False
         self.count = 0
+        self.setupUi(self)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowTitle("TrustLock")
-        self.setupUi(self)
         self.read_style()
         self.add_tabs()
         self.setTabIcons()

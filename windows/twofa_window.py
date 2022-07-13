@@ -5,7 +5,7 @@ import pyotp
 
 from PyQt5.QtWidgets import QDialog, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -23,6 +23,7 @@ class TwofaDialog(Ui_TwoFADialog, QDialog):
     def __init__(self):
         super(TwofaDialog, self).__init__()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setupUi(self)
         self.read_styles()
         self.create_qrcode()

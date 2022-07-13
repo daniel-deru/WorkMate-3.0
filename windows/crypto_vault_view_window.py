@@ -45,6 +45,7 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         self.night_mode_on: int = self.settings[1]
         self.font_name = self.settings[2]
         self.setupUi(self)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.read_styles()
         self.set_dots()
         self.set_data()

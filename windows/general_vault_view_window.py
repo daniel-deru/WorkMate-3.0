@@ -30,6 +30,7 @@ class GeneralVaultView(Ui_GeneralVaultView, QDialog):
         self.secret = secret
         self.data = json_to_dict(secret[3])
         self.setupUi(self)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.read_styles()
         self.set_data()
         

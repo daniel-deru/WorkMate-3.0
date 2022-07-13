@@ -2,7 +2,7 @@ import sys
 import os
 
 from PyQt5.QtWidgets import QDialog, QLabel, QHBoxLayout, QVBoxLayout, QSpacerItem, QSizePolicy
-from PyQt5.QtGui import QPixmap, QTransform
+from PyQt5.QtGui import QPixmap, QTransform, QIcon
 from PyQt5.QtCore import QVariantAnimation, pyqtSlot, QVariant, QAbstractAnimation, Qt, QSize
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -16,6 +16,7 @@ class Loading(QDialog):
     def __init__(self, message="Loading... Please wait."):
         super(Loading, self).__init__()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setStyleSheet("background-color: black;")
         image = Spinner(alignment=Qt.AlignCenter)
         image.setFixedSize(QSize(400, 200))

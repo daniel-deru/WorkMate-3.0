@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import (
     QWidget
 )
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -44,6 +44,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         self.secret: tuple or None = secret
         
         self.setupUi(self)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.displayWordBoxes()
         self.read_styles()
         if self.secret: self.fill_data()

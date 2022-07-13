@@ -3,7 +3,7 @@ import os
 
 from PyQt5.QtWidgets import QDialog, QWidget
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -26,6 +26,7 @@ class PasswordQuestion(Ui_AnswerQuestionDialog, QDialog):
         super(PasswordQuestion, self).__init__()
         self.setupUi(self)
         self.read_styles()
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
 
         user: list[tuple] = Model().read('user')[0]

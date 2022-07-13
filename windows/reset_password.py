@@ -6,6 +6,7 @@ import winsound
 
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -25,6 +26,7 @@ class ResetPassword(Ui_ResetPassword, QDialog):
     def __init__(self):
         super(ResetPassword, self).__init__()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setupUi(self)
         self.read_styles()
 
