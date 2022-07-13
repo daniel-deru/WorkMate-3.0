@@ -35,15 +35,15 @@
         <file alias="done.png">done.png</file>
         <file alias="edit.png">edit.png</file>
         <file alias="edit.svg">edit.svg</file>
-        <file alias="splash.svg">splash.svg</file>
         <file alias="splash.png">splash.png</file>
-        <file alias="WorkMate.ico">WorkMate.ico</file>
+        <file alias="app_icon">trustlock.ico</file>
+        <file alias="app_logo">app_logo.png</file>
         <file alias="SMT Logo.png">SMT Logo.png</file>
         <file alias="background.jpg">background.jpg</file>
         <file alias="loader.svg">loader.svg</file>
     </qresource>
     <qresource prefix="fonts">
-        <file alias="RobotoCondensed">RobotoCondensed-Bold.ttf</file>
+        <file alias="RobotoCondensed">RobotoCondensed-Regular.ttf</file>
     </qresource>
 
 </RCC>

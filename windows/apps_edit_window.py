@@ -27,7 +27,7 @@ class AppsEdit(QDialog, Ui_AppsEdit):
         self.app = app
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setupUi(self)
-        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.read_styles()
         self.fill_fields()
         self.apps = Model().read("apps")

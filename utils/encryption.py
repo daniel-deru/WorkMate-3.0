@@ -6,7 +6,7 @@ from cryptography.fernet import Fernet
 from hashlib import sha256
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
-from utils.globals import PICKLE_ENC, DB_PATH
+from utils.globals import KEY_FILE_NAME, PICKLE_ENC, DB_PATH
 
 class Encryption:
     def __init__(self):
@@ -22,16 +22,16 @@ class Encryption:
         json_data = json.dumps({"key": encrypted_key.decode()})
         data = encryptor.encrypt(json_data.encode())
         
-        with open(f"{DB_PATH}workmate.pkl", "wb") as file:
+        with open(f"{DB_PATH}{KEY_FILE_NAME}", "wb") as file:
             pickle.dump(data, file)
         
         return key
             
     def get_key(self):
-        if not os.path.exists(f"{DB_PATH}workmate.pkl"): raise FileNotFoundError
+        if not os.path.exists(f"{DB_PATH}{KEY_FILE_NAME}"): raise FileNotFoundError
 
         data = None
-        with open(f"{DB_PATH}workmate.pkl", "rb") as file:
+        with open(f"{DB_PATH}{KEY_FILE_NAME}", "rb") as file:
             data = pickle.load(file)
             
         decryptor = Fernet(PICKLE_ENC.encode())
@@ -44,7 +44,7 @@ class Encryption:
         return decrypted_key
     
     def key_exists(self):
-        return os.path.exists(f"{DB_PATH}workmate.pkl")
+        return os.path.exists(f"{DB_PATH}{KEY_FILE_NAME}")
     
     def encrypt(self, string: str or int):
         encryptor = Fernet(self.key)

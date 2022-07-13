@@ -27,7 +27,7 @@ class ProtectedView(QDialog, Ui_ProtectedView):
         self.setupUi(self)
         self.read_styles()
         self.setMinimumWidth(500)
-        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowFlags(Qt.WindowCloseButtonHint)
 

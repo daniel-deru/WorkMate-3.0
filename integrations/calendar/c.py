@@ -12,7 +12,7 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from googleapiclient.errors import HttpError
 
-from utils.globals import PATH
+from utils.globals import PATH, DB_NAME
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/drive']
@@ -133,7 +133,7 @@ class Google:
             file_id: str or None = None
             file_exists: bool = False
             for file in files:
-                if "name" in file and file['name'] == "workmate.db":
+                if "name" in file and file['name'] == DB_NAME:
                     file_id = file['id']
                     file_exists = True
                     break
@@ -141,8 +141,8 @@ class Google:
             if file_exists:
                 service.files().delete(fileId=file_id).execute()
 
-            file_metadata = {'name': 'workmate.db'}
-            media = MediaFileUpload(f'{PATH}/database/test.db', mimetype='application/octet-stream')
+            file_metadata = {'name': DB_NAME}
+            media = MediaFileUpload(f'{PATH}/database/{DB_NAME}', mimetype='application/octet-stream')
             file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
             # return True
             
@@ -187,7 +187,7 @@ class Google:
                 
             file_id: str or None = None    
             for file in files:
-                if "name" in file and file['name'] == "workmate.db":
+                if "name" in file and file['name'] == DB_NAME:
                     file_id = file['id']
             
             file = service.files().get_media(fileId=file_id)
@@ -201,7 +201,7 @@ class Google:
                 print(f"Download {int(status.progress() * 100)}%")
             
             download.seek(0)
-            name = "test.db"
+            name = DB_NAME
             with open(name, "wb") as f:
                 shutil.copyfileobj(download, f)
             

@@ -32,12 +32,12 @@ class Register(QDialog, Ui_Register):
         self.setupUi(self)
         
         pixmap = QPixmap(":/other/SMT Logo.png")
-        workmate_pixmap = QPixmap(":/other/splash.png")
-        workmate_pixmap = workmate_pixmap.scaledToWidth(200)
+        app_logo_pixmap = QPixmap(":/other/app_logo")
+        app_logo_pixmap = app_logo_pixmap.scaledToWidth(200)
         self.lbl_company.setPixmap(pixmap)
-        self.lbl_workmate_logo.setPixmap(workmate_pixmap)
+        self.lbl_workmate_logo.setPixmap(app_logo_pixmap)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
-        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.lnedt_password.setEchoMode(QLineEdit.Password)
         self.lnedt_password2.setEchoMode(QLineEdit.Password)
         

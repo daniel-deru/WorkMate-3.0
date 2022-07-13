@@ -22,7 +22,7 @@ from widgetStyles.ScrollBar import ScrollBar
 
 from utils.message import Message
 from utils.helpers import StyleSheet
-from utils.globals import DB_PATH, PATH
+from utils.globals import DB_PATH, PATH, DB_NAME
 
 from database.model import Model
 
@@ -181,7 +181,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         
     def save_local(self):
         path = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
-        if path: shutil.copy(f"{DB_PATH}test.db", f"{path}/test.db")
+        if path: shutil.copy(f"{DB_PATH}{DB_NAME}", f"{path}/{DB_NAME}")
         
     def restore_from_remote(self):
         self.drive_window: DriveWindow = DriveWindow()
@@ -189,12 +189,12 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.drive_window.exec_()
         
     def restore_from_local(self):
-        file = QFileDialog.getOpenFileName(self, "Choose a file", DESKTOP, "DB File (test.db)")[0]
+        file = QFileDialog.getOpenFileName(self, "Choose a file", DESKTOP, f"DB File ({DB_NAME})")[0]
         
         if not file: return
         
         if Model().is_valid(file):
-            shutil.copy(file, f"{DB_PATH}test.db")
+            shutil.copy(file, f"{DB_PATH}{DB_NAME}")
             message: Message = Message("Local data sync was successful.", "Sync Successful")
             message.exec_()
         else:
@@ -216,7 +216,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
             message.exec_()
         else:  
             if Model().is_valid(name):
-                shutil.move(name, f"{DB_PATH}test.db")
+                shutil.move(name, f"{DB_PATH}{DB_NAME}")
                 message: Message = Message("Sync successful, You may need to restart the application", "Restart Application")
                 message.exec_()
             else:

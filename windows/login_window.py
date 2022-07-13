@@ -31,7 +31,7 @@ class Login(QDialog, Ui_Login):
         self.login_state = "failure"
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
-        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.read_styles()
         self.setWindowFlags(Qt.WindowCloseButtonHint)
         

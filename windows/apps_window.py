@@ -28,7 +28,7 @@ class Apps_window(QDialog, Ui_App_Window):
         super(Apps_window, self).__init__()
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
-        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowTitle("Add Your App")
         self.read_styles()
         self.apps = Model().read('apps')

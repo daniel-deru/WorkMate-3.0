@@ -30,7 +30,7 @@ class Note_window(QDialog, Ui_Note_Window):
 
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
-        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
+        self.setWindowIcon(QIcon(":/other/app_icon"))
 
         self.custom_text_edit = CustomTextEdit().create()
         self.layout().addWidget(self.custom_text_edit)

@@ -27,7 +27,7 @@ class Timer(Ui_Timer, QDialog):
         self.hslide_timer.setValue(int(time))
 
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
-        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.read_styles()
         self.hslide_timer.valueChanged.connect(self.slider)
         self.btn_save.clicked.connect(self.save)

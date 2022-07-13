@@ -40,8 +40,8 @@ class Main(QWidget, Ui_main_container):
         self.timer = QTimer(self) 
         self.logged_in = False
         self.count = 0
-        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
-        self.setWindowTitle("Smart WorkMate")
+        self.setWindowIcon(QIcon(":/other/app_icon"))
+        self.setWindowTitle("TrustLock")
         self.setupUi(self)
         self.read_style()
         self.add_tabs()
@@ -231,7 +231,6 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     splash_image = QPixmap(":/other/splash.png")
     splash = QSplashScreen(splash_image)
-    splash.setMaximumWidth(500)
     splash.show()
     time.sleep(1)
     splash.close()

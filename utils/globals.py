@@ -5,11 +5,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 development_mode = False
 
-PATH = os.getenv("APPDATA") + "\\Smart WorkMate" 
-# if not development_mode else "./"
+PATH = os.getenv("APPDATA") + "\\TrustLock" 
 
 DB_PATH = PATH + "\\database\\" if not development_mode else f"{os.getcwd()}/database/"
-# if development_mode: DB_PATH = "./database/"
+DB_NAME = "test.db" if development_mode else "trustlock.db"
+KEY_FILE_NAME = "trustlock.pkl" if development_mode else "test.pkl"
 
 ASSET_PATH = "./assets/"
 

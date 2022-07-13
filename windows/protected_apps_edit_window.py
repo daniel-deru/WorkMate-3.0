@@ -27,7 +27,7 @@ class ProtectedApps(QDialog, Ui_ProtectedAppsEdit):
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.app = app
         self.setupUi(self)
-        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.read_styles()
         self.fill_fields()
         self.protected_apps = Model().read('protected_apps')

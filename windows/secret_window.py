@@ -30,7 +30,7 @@ class SecretWindow(QDialog, Ui_AddSecret_window):
         super(SecretWindow, self).__init__()
         self.setupUi(self)
         self.read_styles()
-        self.setWindowIcon(QIcon(":/other/WorkMate.ico"))
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowFlags(Qt.WindowCloseButtonHint)
         self.btn_save.clicked.connect(self.save)

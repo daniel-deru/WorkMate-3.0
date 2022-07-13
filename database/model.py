@@ -2,11 +2,10 @@ import sqlite3
 import os
 import sys
 import json
-import pyperclip
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from utils.globals import DB_PATH
+from utils.globals import DB_PATH, DB_NAME
 from utils.encryption import Encryption
 from database.tables import Tables
 
@@ -14,7 +13,7 @@ encryption = Encryption()
 
 class Model:
     def __init__(self):
-        self.db = sqlite3.connect(f"{DB_PATH}test.db")
+        self.db = sqlite3.connect(f"{DB_PATH}{DB_NAME}")
         self.cur = self.db.cursor()
         self.create_table_names()
         self.create_tables()
