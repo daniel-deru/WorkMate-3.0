@@ -1,15 +1,11 @@
-from ctypes import alignment
 import os
 import sys
-import math
 import json
 
-from cryptography.fernet import Fernet
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QFont
 
-from windows.protected_view_window import ProtectedView
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -17,7 +13,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from designs.python.vault_tab import Ui_Vault_tab
 
 from utils.helpers import StyleSheet, json_to_dict
-from utils.message import Message
 from utils.helpers import clear_window
 
 from widgets.vault_item import VaultItem

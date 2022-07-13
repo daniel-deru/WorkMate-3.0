@@ -1,5 +1,4 @@
 from widgetStyles.styles import default, mode, button, color, dark_blue, light_blue, green
-from utils.globals import ASSET_PATH
 import assets.resources
 
 ComboBox = f"""

@@ -6,13 +6,10 @@ from PyQt5.QtCore import QThread
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from utils.message import Message
-from utils.globals import DB_PATH
 
 from workers.google_drive_worker import GoogleUpload, GoogleDownload
 
 from windows.loading import Loading
-
-from database.model import Model
 
 # Method to create Thread for uploading to Google Drive
 def upload_google(self, show_message=True):

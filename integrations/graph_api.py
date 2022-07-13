@@ -1,4 +1,3 @@
-from msilib.schema import Error
 import webbrowser
 import os
 import sys
@@ -6,7 +5,6 @@ import re
 import pyperclip
 import json
 import time
-from threading import Thread, Timer
 from typing import Match
 from msal import PublicClientApplication
 

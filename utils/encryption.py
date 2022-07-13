@@ -3,7 +3,6 @@ import sys
 import json
 import pickle
 from cryptography.fernet import Fernet
-from hashlib import sha256
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from utils.globals import KEY_FILE_NAME, PICKLE_ENC, DB_PATH

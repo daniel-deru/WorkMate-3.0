@@ -6,13 +6,10 @@ from PyQt5.QtCore import QThread
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from utils.message import Message
-from utils.globals import DB_PATH
 
 from workers.onedrive_worker import OneDriveUpload, OneDriveDownload
 
 from windows.loading import Loading
-
-from database.model import Model
 
 
 def upload_onedrive(self, show_message=True):
