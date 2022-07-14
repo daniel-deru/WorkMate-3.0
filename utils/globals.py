@@ -9,7 +9,7 @@ PATH = os.getenv("APPDATA") + "\\TrustLock"
 
 DB_PATH = PATH + "\\database\\" if not development_mode else f"{os.getcwd()}/database/"
 DB_NAME = "test.db" if development_mode else "trustlock.db"
-KEY_FILE_NAME = "trustlock.pkl" if development_mode else "test.pkl"
+KEY_FILE_NAME = "test.pkl" if development_mode else "trustlock.pkl"
 
 ASSET_PATH = "./assets/"
 

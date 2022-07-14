@@ -47,7 +47,8 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.btn_save.clicked.connect(self.save)
         self.btn_desktop.clicked.connect(self.add_from_desktop)
         
-        self.chk_show_password.stateChanged.connect(self.show_password)
+        self.chk_show_password.stateChanged.connect(lambda show: self.show_password(show, self.lne_password))
+        self.chk_password2.stateChanged.connect(lambda show: self.show_password(show, self.lne_password2))
         
 
     def read_styles(self):
@@ -97,6 +98,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         username: str = self.lne_username.text()
         email: str = self.lne_email.text()
         password: str = self.lne_password.text()
+        confirm_password: str = self.lne_password2
 
         name_list: list[str] = ["name", "index", "path", "username", "email", "password"]
         data_list: list[str] = [ name, index, path, username, email, password ]
@@ -117,6 +119,10 @@ class AppVaultWindow(Ui_AppVault, QDialog):
                 'email': email,
                 'password': password
             })
+            
+            if password != confirm_password:
+                Message("The password and confirm password are not the same.", "Passwords don't match").exec_()
+                return "Stop this method from further execution"
             
             if int(index) <= len(self.secrets):
                 self.update_sequence(str(index))
@@ -168,6 +174,6 @@ class AppVaultWindow(Ui_AppVault, QDialog):
             update_app_data['sequence'] = str(len(self.secrets)+1)
             Model().update("vault", {'data': dumps(update_app_data)}, update_app[0])
             
-    def show_password(self, show):
-        if show: self.lne_password.setEchoMode(QLineEdit.Normal)
-        else: self.lne_password.setEchoMode(QLineEdit.Password)
+    def show_password(self, show, field):
+        if show: field.setEchoMode(QLineEdit.Normal)
+        else: field.setEchoMode(QLineEdit.Password)

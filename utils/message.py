@@ -36,3 +36,7 @@ class Message(QMessageBox):
     
     def create(self):
         return self
+    
+    def prompt(self, buttons=QMessageBox.Yes | QMessageBox.No):
+        self.setStandardButtons(buttons)
+        return self.exec_()

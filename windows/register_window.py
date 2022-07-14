@@ -1,8 +1,8 @@
-from ast import arg
 import sys
 import os
 import pyperclip
 import math
+import winsound
 
 from PyQt5.QtWidgets import QDialog, QLineEdit, QGridLayout, QWidget, QGraphicsBlurEffect, QWidget, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap, QFont
@@ -94,6 +94,11 @@ class Register(QDialog, Ui_Register):
                 "password": password1,
                 "passphrase": self.words
             }
+            
+            # winsound.PlaySound("sound.wav", winsound.SND_FILENAME)
+            reply = Message("Did you copy your passphrase and store it in a safe place?", "Are You Sure?").prompt()
+            
+            if reply == QMessageBox.No: return
 
             Model().save("user", data)
             self.registered = True
@@ -145,20 +150,10 @@ class Register(QDialog, Ui_Register):
         
 
     def closeEvent(self, event):
-        print("hello")
-        reply = QMessageBox.question(
-            self, 
-            "Are You Sure?", 
-            "Did you copy your passphrase and store it in a safe place?", 
-            QMessageBox.Yes | QMessageBox.No )
-        
-        if reply == QMessageBox.No:
-           event.ignore()
-        else:
-            if not self.registered:
-                self.register_close_signal.emit("window closed")
-            elif self.registered:
-                self.register_close_signal.emit("registered")
+        if not self.registered:
+            self.register_close_signal.emit("window closed")
+        elif self.registered:
+            self.register_close_signal.emit("registered")
             
     def set_random_words(self):
         random: list[str] = random_words()

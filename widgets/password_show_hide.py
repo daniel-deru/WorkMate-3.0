@@ -19,20 +19,28 @@ from database.model import Model
 class PasswordWidget(QWidget):
     def __init__(self, input=None):
         super(PasswordWidget, self).__init__()
+        
         self.input = input
+        night_mode = Model().read("settings")[0][1]
+        self.open_icon = ":/input/eye_white_open.svg" if int(night_mode) else ":/input/eye_black_open.svg"
+        self.closed_icon = ":/input/eye_white_closed.svg" if int(night_mode) else ":/input/eye_black_closed.svg"
         self.createWidget()
         self.read_styles()
         self.returnWidget()
 
     def createWidget(self):
         hbox: QHBoxLayout = QHBoxLayout()
+        
+        
 
         self.text_field: QLineEdit = QLineEdit()
         self.text_field.setEchoMode(QLineEdit.Password)
         if(self.input):
             self.text_field.setText(self.input)
         self.show_button: QToolButton = QToolButton()
-        self.show_button.setIcon(QIcon("./assets/eye_white_open.svg"))
+        
+        
+        self.show_button.setIcon(QIcon(self.open_icon))
         self.show_button.setCursor(Qt.PointingHandCursor)
         self.show_button.clicked.connect(self.show_hide_password)
 
@@ -45,10 +53,10 @@ class PasswordWidget(QWidget):
     def show_hide_password(self):
         if self.text_field.echoMode() == QLineEdit.Password:
             self.text_field.setEchoMode(QLineEdit.Normal)
-            self.show_button.setIcon(QIcon("./assets/eye_white_closed.svg"))
+            self.show_button.setIcon(QIcon(self.closed_icon))
         else:
             self.text_field.setEchoMode(QLineEdit.Password)
-            self.show_button.setIcon(QIcon("./assets/eye_white_open.svg"))
+            self.show_button.setIcon(QIcon(self.open_icon))
 
     
     def returnWidget(self):

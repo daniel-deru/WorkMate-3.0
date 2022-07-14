@@ -2,3 +2,5 @@ dist
 build
 env
 *.spec
+database/*.db
+database/*.pkl
