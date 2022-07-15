@@ -30,6 +30,7 @@ from database.model import Model
 from windows.forgot_question import PasswordQuestion
 from windows.drive_window import DriveWindow
 from windows.twofa_window import TwofaDialog
+from windows.browser_import_window import BrowserImportWindow
 
 from threads.google_thread import upload_google, download_google
 from threads.onedrive_thread import upload_onedrive, download_onedrive
@@ -73,13 +74,22 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.btn_save_google_drive.clicked.connect(self.save_to_remote_storage)
         self.btn_save_local.clicked.connect(self.save_local)
         self.btn_restore_local.clicked.connect(self.restore_from_local)
+        self.btn_browser_web_import.clicked.connect(self.import_websites)
         
         
 
         # connect the custom signals to the slots
         self.settings_signal.connect(self.read_styles)
         self.login_signal.connect(self.login)
-
+        
+    
+    def import_websites(self):
+        file = QFileDialog.getOpenFileName(self, "Choose a file", DESKTOP, f"CSV File (*.csv)")[0]
+        if file:
+            browser_window = BrowserImportWindow(file)
+            browser_window.exec_()
+        else:
+            Message("Please choose a valid file", "Invalid File").exec_()
     
     def create_tab(self):
         return self
