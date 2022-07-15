@@ -1,12 +1,13 @@
+from msilib.schema import Icon
 import sys
 import os
 import threading
 import shutil
 import json
 
-from PyQt5.QtWidgets import QWidget, QFileDialog, qApp
-from PyQt5.QtCore import pyqtSignal, Qt, QThread
-from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import QWidget, QFileDialog, qApp, QPushButton
+from PyQt5.QtCore import pyqtSignal, Qt, QThread, QSize
+from PyQt5.QtGui import QFont, QIcon
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -14,7 +15,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from designs.python.settings_tab import Ui_Settings_tab
 
 from widgetStyles.Label import Label
-from widgetStyles.PushButton import PushButton, ButtonFullWidth
+from widgetStyles.PushButton import PushButton, ButtonFullWidth, IconButton
 from widgetStyles.QCheckBox import SettingsCheckBox
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.ScrollBar import ScrollBar
@@ -56,6 +57,8 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         
         auto_save_on = json.loads(settings[8])['auto_save']
         self.chk_auto_save.setChecked(auto_save_on)
+        
+        self.set_btn_icons()
 
 
         # checkbox signals        
@@ -110,7 +113,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.settings_signal.emit("settings")
 
     def read_styles(self):
-        styles = [Label, ButtonFullWidth, SettingsCheckBox, ComboBox, ScrollBar]
+        styles = [Label, SettingsCheckBox, ComboBox, ScrollBar, IconButton]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         
@@ -132,6 +135,23 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         widget: QWidget
         for widget in font_widgets:
             widget.setFont(QFont(font_name))
+            
+    def set_btn_icons(self):
+        self.btn_browser_web_import.setIcon(QIcon(":/button_icons/import"))
+        self.btn_forgot_password.setIcon(QIcon(":/button_icons/reset"))
+        self.btn_login.setIcon(QIcon(":/button_icons/unlock"))
+        self.btn_google_drive_sync.setIcon(QIcon(":/button_icons/cloud_download"))
+        self.btn_save_google_drive.setIcon(QIcon(":/button_icons/cloud_upload"))
+        self.btn_restore_local.setIcon(QIcon(":/button_icons/drive_download"))
+        self.btn_save_local.setIcon(QIcon(":/button_icons/drive_upload"))
+        
+        self.btn_browser_web_import.setIconSize(QSize(20, 20))
+        self.btn_forgot_password.setIconSize(QSize(20, 20))
+        self.btn_login.setIconSize(QSize(20, 20))
+        self.btn_google_drive_sync.setIconSize(QSize(20, 20))
+        self.btn_save_google_drive.setIconSize(QSize(20, 20))
+        self.btn_restore_local.setIconSize(QSize(20, 20))
+        self.btn_save_local.setIconSize(QSize(20, 20))
     
     def login(self, signal):
         if signal == "success":
@@ -161,10 +181,12 @@ class SettingsTab(QWidget, Ui_Settings_tab):
 
     def login(self, signal):
         if signal == "logged in":
-            self.btn_login.setText("Logout")
+            # self.btn_login.setText("Logout")
+            self.btn_login.setIcon(QIcon(":/button_icons/lock"))
             self.logged_in = True
         elif signal == "logged out":
-            self.btn_login.setText("Login")
+            # self.btn_login.setText("Login")
+            self.btn_login.setIcon(QIcon(":/button_icons/unlock"))
             self.logged_in = False
 
     def forgot_password_clicked(self):

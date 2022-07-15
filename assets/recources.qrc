@@ -45,5 +45,16 @@
     <qresource prefix="fonts">
         <file alias="RobotoCondensed">RobotoCondensed-Regular.ttf</file>
     </qresource>
+    <qresource prefix="button_icons">
+        <file alias="import">import.svg</file>
+        <file alias="reset">reset.svg</file>
+        <file alias="cloud_download">cloud_download.svg</file>
+        <file alias="cloud_upload">cloud_upload.svg</file>
+        <file alias="drive_download">drive_download.svg</file>
+        <file alias="drive_upload">drive_upload.svg</file>
+        <file alias="lock">lock.svg</file>
+        <file alias="unlock">unlock.svg</file>
+    </qresource>
+
 
 </RCC>

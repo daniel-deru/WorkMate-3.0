@@ -43,21 +43,25 @@ SettingsCheckBox = f"""
         font-size: 16px;
         border-radius: 5px;
         text-align: left center;
+        width: {width - 10}px;
+        height: {height}px;
+        max-width: {width - 10}px;
+        max-height: {height}px;
     }}
 
     QCheckBox::indicator:checked {{
         image: url(:/input/toggle-on.svg);
-        width: {width}px;
+        width: {width - 10}px;
         height: {height}px;
-        max-width: {width}px;
+        max-width: {width - 10}px;
         max-height: {height}px;
     }}
 
     QCheckBox::indicator{{
         image: url(:/input/toggle-off.svg);
-        width: {width}px;
+        width: {width - 10}px;
         height: {height}px;
-        max-width: {width}px;
+        max-width: {width - 10}px;
         max-height: {height}px;
         subcontrol-position: right center;
     }}

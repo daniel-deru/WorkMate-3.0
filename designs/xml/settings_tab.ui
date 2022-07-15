@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>949</width>
-    <height>618</height>
+    <height>612</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,21 +19,24 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <property name="topMargin">
-        <number>15</number>
+        <number>0</number>
        </property>
        <property name="bottomMargin">
-        <number>15</number>
+        <number>0</number>
        </property>
        <item>
-        <widget class="QPushButton" name="btn_login">
+        <widget class="QLabel" name="lbl_login">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
          </property>
          <property name="text">
           <string>Login</string>
@@ -41,9 +44,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btn_forgot_password">
+        <widget class="QPushButton" name="btn_login">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -52,31 +55,114 @@
           <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
-          <string>Forgot Password</string>
+          <string/>
          </property>
         </widget>
        </item>
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_7">
+      <widget class="QFrame" name="frame_5">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>1</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: #9ecd16;</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="lineWidth">
+        <number>1</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
        <item>
-        <widget class="QLabel" name="lbl_2fa">
+        <widget class="QLabel" name="lbl_forgot_password">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
           <size>
-           <width>400</width>
-           <height>50</height>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Forgot Password</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_forgot_password">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>1</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background:#9ecd16;</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="lineWidth">
+        <number>1</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QLabel" name="lbl_2fa">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>300</width>
+           <width>16777215</width>
            <height>16777215</height>
           </size>
          </property>
@@ -98,24 +184,43 @@
       </layout>
      </item>
      <item>
+      <widget class="QFrame" name="frame_6">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>1</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: #9ecd16;</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="hbox_night_mode">
        <item>
         <widget class="QLabel" name="lbl_night_mode">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
           <size>
-           <width>400</width>
-           <height>50</height>
+           <width>0</width>
+           <height>40</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>300</width>
+           <width>16777215</width>
            <height>16777215</height>
           </size>
          </property>
@@ -137,24 +242,46 @@
       </layout>
      </item>
      <item>
+      <widget class="QFrame" name="frame_7">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>1</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: #9ecd16;</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="lineWidth">
+        <number>1</number>
+       </property>
+      </widget>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
         <widget class="QLabel" name="lbl_calendar">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
           <size>
-           <width>400</width>
-           <height>50</height>
+           <width>0</width>
+           <height>40</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>300</width>
+           <width>16777215</width>
            <height>16777215</height>
           </size>
          </property>
@@ -176,24 +303,43 @@
       </layout>
      </item>
      <item>
+      <widget class="QFrame" name="frame_8">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>1</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: #9ecd16;</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="horizontalLayout_10">
        <item>
         <widget class="QLabel" name="lbl_auto_save">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
           <size>
-           <width>400</width>
-           <height>50</height>
+           <width>0</width>
+           <height>40</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>300</width>
+           <width>16777215</width>
            <height>16777215</height>
           </size>
          </property>
@@ -215,23 +361,97 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <property name="topMargin">
-        <number>15</number>
+      <widget class="QFrame" name="frame_9">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>1</height>
+        </size>
        </property>
-       <property name="bottomMargin">
-        <number>15</number>
+       <property name="styleSheet">
+        <string notr="true">background: #9ecd16;</string>
        </property>
+       <property name="frameShape">
+        <enum>QFrame::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QPushButton" name="btn_save_google_drive">
+        <widget class="QLabel" name="lbl_browser_web_import">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Import Websites From Browser</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_browser_web_import">
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame_3">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>1</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: #9ecd16;</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="lbl_save_remote">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
          </property>
          <property name="text">
           <string>Save To Remote Storage</string>
@@ -239,9 +459,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="btn_google_drive_sync">
+        <widget class="QPushButton" name="btn_save_google_drive">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -250,21 +470,162 @@
           <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
-          <string>Restore From Remote Storage</string>
+          <string/>
          </property>
         </widget>
        </item>
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_8">
+      <widget class="QFrame" name="frame_10">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>1</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: #9ecd16;</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_11">
+       <item>
+        <widget class="QLabel" name="lbl_restore_remote">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Restore From Remote Storage</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_google_drive_sync">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame_2">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>1</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: #9ecd16;</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <property name="lineWidth">
+        <number>1</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_9">
+       <item>
+        <widget class="QLabel" name="lbl_save_local">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Save To Local Storage</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QPushButton" name="btn_save_local">
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
-          <string>Save To Local Storage</string>
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame_11">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>1</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: #9ecd16;</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::HLine</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="lbl_restore_local">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Restore From Local Storage</string>
          </property>
         </widget>
        </item>
@@ -274,7 +635,7 @@
           <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
-          <string>Restore From Local Storage</string>
+          <string/>
          </property>
         </widget>
        </item>

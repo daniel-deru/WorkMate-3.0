@@ -68,10 +68,16 @@ QPushButton:pressed {{
 }}
 """
 
-IconButton = """
-    QPushButton {
-    background-color: #051456;
+IconButton = f"""
+    QPushButton {{
+    background-color: {light_blue};
     border: none;
-    width: 20px;
-}
+    border-radius: 5px;
+    width: 70px;
+}}
+
+QPushButton:pressed {{
+    border: none;
+    background-color: {green};
+}}
 """
