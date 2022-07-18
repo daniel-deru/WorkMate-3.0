@@ -67,6 +67,25 @@ QPushButton:pressed {{
     border: 2px solid {light_blue};
 }}
 """
+VaultButtonLeftAlign = f"""
+QPushButton {{
+    background-color: {light_blue};
+    color: white;
+    border: 2px solid {light_blue};
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 5px 8px;
+    max-width: 300px;
+    min-width: 300px;
+    text-align: left;
+}}
+
+QPushButton:pressed {{
+    background-color: transparent;
+    color: {default};
+    border: 2px solid {light_blue};
+}}
+"""
 
 IconButton = f"""
     QPushButton {{

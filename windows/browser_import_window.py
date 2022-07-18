@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import (
     QStyleOptionViewItem, 
     QHBoxLayout, 
     QWidget)
-from PyQt5.QtGui import QCursor
+from PyQt5.QtGui import QCursor, QIcon
 from PyQt5.QtCore import Qt, QModelIndex, pyqtSignal
 
 
@@ -41,6 +41,8 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
         self.setupUi(self)
         self.get_file_data()
         self.read_styles()
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         
         # Get the current apps to avoid collisions
         self.current_apps = self.get_current_apps()
@@ -67,6 +69,8 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
         
         self.import_data = []
         
+        self.check = {}
+        
         for i in range(len(checkboxes)):
             if checkboxes[i].isChecked():
                 name = self.tbl_accounts.item(i, 1).text()
@@ -74,9 +78,10 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
                 username = self.tbl_accounts.item(i, 3).text()
                 password = self.tbl_accounts.item(i, 4).text()
                 
-                # If the app with this name is already in the database skip this app
-                if name in self.current_apps or name not in self.dup_names: continue
-                self.dup_names.remove(name)           
+                # If the app with this name is already in the database or in the data meant to be imported skip this app
+                if name in self.current_apps or name in self.check: continue
+                # If the loop didn't continue it's a new app, add it to the check dict
+                self.check[name] = name
                 
                 data: object = {
                     'name': name,
@@ -87,7 +92,6 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
                     'password': password
                 }
                 self.import_data.append([name, json.dumps(data)])
-                # Model().save("vault", {'type': "app", 'name': name, 'data': json.dumps(data) })
                 index += 1
                 
         self.import_finished.emit(self.import_data)

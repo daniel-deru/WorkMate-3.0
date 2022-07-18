@@ -135,16 +135,17 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         font_name = Model().read("settings")[0][2]
         
         font_widgets = [
-            self.btn_login,
-            self.btn_forgot_password,
             self.lbl_2fa,
             self.lbl_night_mode,
             self.lbl_calendar,
             self.lbl_auto_save,
-            self.btn_save_google_drive,
-            self.btn_google_drive_sync,
-            self.btn_save_local,
-            self.btn_restore_local
+            self.lbl_login,
+            self.lbl_forgot_password,
+            self.lbl_browser_web_import,
+            self.lbl_save_remote,
+            self.lbl_restore_remote,
+            self.lbl_save_local,
+            self.lbl_restore_local
         ]
         
         widget: QWidget

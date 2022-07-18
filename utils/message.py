@@ -3,7 +3,7 @@ import os
 
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -20,6 +20,7 @@ class Message(QMessageBox):
     def __init__(self, message, title):
         super(Message, self).__init__()
         self.setWindowFlags(Qt.WindowStaysOnTopHint);
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setIcon(QMessageBox.Warning)
         self.setText(message)
         self.setWindowTitle(title)

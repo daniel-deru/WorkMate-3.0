@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from database.model import Model
 
-from widgetStyles.PushButton import VaultButton
+from widgetStyles.PushButton import VaultButton, VaultButtonLeftAlign
 
 from utils.helpers import StyleSheet
 
@@ -23,7 +23,7 @@ class VaultItem(QPushButton):
         self.read_styles()
         self.setCursor(QCursor(Qt.PointingHandCursor))
         
-        if(len(self.text()) > 25): self.setStyleSheet("text-align: left;")
+        if(len(self.text()) > 35): self.setStyleSheet(VaultButtonLeftAlign)
         self.clicked.connect(self.app_clicked)
 
     def app_clicked(self):
