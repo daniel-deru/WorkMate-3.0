@@ -31,7 +31,7 @@ from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.PushButton import PushButton, VaultButton
 from widgetStyles.Label import Label
 from widgetStyles.ScrollArea import ScrollArrea
-from widgetStyles.ScrollBar import VaultScrollBar
+from widgetStyles.ScrollBar import ScrollBar
 
 from database.model import Model
 
@@ -64,7 +64,7 @@ class Vault_tab(QWidget, Ui_Vault_tab):
             CheckBox,
             Label,
             ScrollArrea,
-            VaultScrollBar
+            ScrollBar
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)

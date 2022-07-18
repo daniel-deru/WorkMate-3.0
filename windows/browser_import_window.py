@@ -24,6 +24,8 @@ from designs.python.browser_import_window import Ui_BrowserPasswordImportWindow
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.Dialog import Dialog
 from widgetStyles.PushButton import PushButton
+from widgetStyles.TableWidget import TableWidget
+from widgetStyles.ScrollBar import ScrollBar
 
 from utils.helpers import StyleSheet
 
@@ -39,6 +41,10 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
         self.setupUi(self)
         self.get_file_data()
         self.read_styles()
+        
+        # Get the current apps to avoid collisions
+        self.current_apps = self.get_current_apps()
+        print(self.current_apps)
         
         self.chk_select_all.stateChanged.connect(self.select_all)
         self.btn_import.clicked.connect(self.import_accounts)
@@ -66,6 +72,9 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
                 url = self.tbl_accounts.item(i, 2).text()
                 username = self.tbl_accounts.item(i, 3).text()
                 password = self.tbl_accounts.item(i, 4).text()
+                
+                # If the app with this name is already in the database skip this app
+                if name in self.current_apps: continue
                 
                 data: object = {
                     'name': name,
@@ -126,17 +135,30 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
             container_layout.addWidget(import_checkbox)
             container_layout.setContentsMargins(0, 0, 0, 0)
             container.setLayout(container_layout)
-            # self.set
+
+            # This is to accomodate FireFox which uses a different csv format
+            name = item['name'] if "name" in item else item['httpRealm']
             
             self.tbl_accounts.setCellWidget(index, 0, container)
-            self.tbl_accounts.setItem(index, 1, QTableWidgetItem(str(item['name'])))
+            self.tbl_accounts.setItem(index, 1, QTableWidgetItem(str(name)))
             self.tbl_accounts.setItem(index, 2, QTableWidgetItem(str(item['url'])))
             self.tbl_accounts.setItem(index, 3, QTableWidgetItem(str(item['username'])))
             self.tbl_accounts.setItem(index, 4, QTableWidgetItem(str(item['password'])))
             
     def read_styles(self):
-        stylesheet = StyleSheet([PushButton, Dialog]).create()
+        stylesheet = StyleSheet([PushButton, Dialog, TableWidget, ScrollBar]).create()
         self.setStyleSheet(stylesheet)
+    
+    def get_current_apps(self):
+        vault_items: list[list[int, str, str, str]] = Model().read("vault")
+        current_app_list = list(filter(lambda item: item[1] == "app", vault_items))
+        
+        current_apps: object = {}
+        
+        for app in current_app_list:
+            current_apps[app[2]] = app
+            
+        return current_apps
         
 class AlignDelegate(QStyledItemDelegate):
     def initStyleOption(self, option: QStyleOptionViewItem, index: QModelIndex) -> None:
