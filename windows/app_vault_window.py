@@ -33,6 +33,9 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.setupUi(self)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         
+        # Get the current apps to avoid collisions
+        self.current_apps = self.get_current_apps()
+        
         maxValue = len(self.secrets) if self.app else len(self.secrets)+1
         
         self.spn_index.setMaximum(maxValue)
@@ -109,6 +112,10 @@ class AppVaultWindow(Ui_AppVault, QDialog):
             if(not data_list[i]):
                 Message(f"Please add {name_list[i]}", f"Missing {name_list[i]}").exec_()
                 valid_submit = False
+                
+        if name in self.current_apps:
+            Message(f"An App with this name already exists").exec_()
+            valid_submit = False
 
         if valid_submit:
             data: str = dumps({
@@ -177,3 +184,14 @@ class AppVaultWindow(Ui_AppVault, QDialog):
     def show_password(self, show, field):
         if show: field.setEchoMode(QLineEdit.Normal)
         else: field.setEchoMode(QLineEdit.Password)
+        
+    def get_current_apps(self):
+        vault_items: list[list[int, str, str, str]] = Model().read("vault")
+        current_app_list = list(filter(lambda item: item[1] == "app", vault_items))
+        
+        current_apps: object = {}
+        
+        for app in current_app_list:
+            current_apps[app[2]] = app
+            
+        return current_apps

@@ -33,7 +33,7 @@ from database.model import Model
 
 
 class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
-    import_finished = pyqtSignal(bool)
+    import_finished = pyqtSignal(list)
     
     def __init__(self, file) -> None:
         super(BrowserImportWindow, self).__init__()
@@ -44,7 +44,6 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
         
         # Get the current apps to avoid collisions
         self.current_apps = self.get_current_apps()
-        print(self.current_apps)
         
         self.chk_select_all.stateChanged.connect(self.select_all)
         self.btn_import.clicked.connect(self.import_accounts)
@@ -66,6 +65,8 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
         
         index = len(secrets)
         
+        self.import_data = []
+        
         for i in range(len(checkboxes)):
             if checkboxes[i].isChecked():
                 name = self.tbl_accounts.item(i, 1).text()
@@ -74,7 +75,8 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
                 password = self.tbl_accounts.item(i, 4).text()
                 
                 # If the app with this name is already in the database skip this app
-                if name in self.current_apps: continue
+                if name in self.current_apps or name not in self.dup_names: continue
+                self.dup_names.remove(name)           
                 
                 data: object = {
                     'name': name,
@@ -84,10 +86,11 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
                     'email': username,
                     'password': password
                 }
-                
-                Model().save("vault", {'type': "app", 'name': name, 'data': json.dumps(data) })
+                self.import_data.append([name, json.dumps(data)])
+                # Model().save("vault", {'type': "app", 'name': name, 'data': json.dumps(data) })
                 index += 1
-        self.import_finished.emit(True)
+                
+        self.import_finished.emit(self.import_data)
         self.close()
         
     def select_all(self, checked):
@@ -102,6 +105,8 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
     def get_file_data(self):
         accounts = pd.read_csv(self.file)
         number_of_rows = len(accounts.index)
+        
+        self.dup_names = set()
         
         if number_of_rows < 25:
             self.setFixedHeight(200 + number_of_rows * 30)
@@ -138,6 +143,7 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
 
             # This is to accomodate FireFox which uses a different csv format
             name = item['name'] if "name" in item else item['httpRealm']
+            self.dup_names.add(name)
             
             self.tbl_accounts.setCellWidget(index, 0, container)
             self.tbl_accounts.setItem(index, 1, QTableWidgetItem(str(name)))

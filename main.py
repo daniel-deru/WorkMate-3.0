@@ -47,8 +47,6 @@ class Main(QWidget, Ui_main_container):
         self.add_tabs()
         self.setTabIcons()
         self.update_status(False)
-        
-        # prop: QPropertyAnimation = QPropertyAnimation(self, )
 
         self.tab_widget.currentChanged.connect(self.changed)    
         

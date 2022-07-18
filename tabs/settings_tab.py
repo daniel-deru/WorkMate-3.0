@@ -34,6 +34,7 @@ from windows.browser_import_window import BrowserImportWindow
 
 from threads.google_thread import upload_google, download_google
 from threads.onedrive_thread import upload_onedrive, download_onedrive
+from threads.browser_import_thread import browser_import
 
 from integrations.calendar.c import Google
 
@@ -87,10 +88,13 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         file = QFileDialog.getOpenFileName(self, "Choose a file", DESKTOP, f"CSV File (*.csv)")[0]
         if file:
             browser_window = BrowserImportWindow(file)
-            browser_window.import_finished.connect(lambda success: self.updateWindow() if success else None)
+            browser_window.import_finished.connect(self.import_browser_data)
             browser_window.exec_()
         else:
             Message("Please choose a valid file", "Invalid File").exec_()
+    
+    def import_browser_data(self, data):
+        browser_import(self, data)
     
     def create_tab(self):
         return self
