@@ -14,7 +14,7 @@ from PyQt5.QtWidgets import (
     QHBoxLayout, 
     QWidget)
 from PyQt5.QtGui import QCursor
-from PyQt5.QtCore import Qt, QModelIndex
+from PyQt5.QtCore import Qt, QModelIndex, pyqtSignal
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -31,6 +31,7 @@ from database.model import Model
 
 
 class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
+    import_finished = pyqtSignal(bool)
     
     def __init__(self, file) -> None:
         super(BrowserImportWindow, self).__init__()
@@ -62,11 +63,11 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
         for i in range(len(checkboxes)):
             if checkboxes[i].isChecked():
                 name = self.tbl_accounts.item(i, 1).text()
-                username = self.tbl_accounts.item(i, 2).text()
-                url = self.tbl_accounts.item(i, 3).text()
+                url = self.tbl_accounts.item(i, 2).text()
+                username = self.tbl_accounts.item(i, 3).text()
                 password = self.tbl_accounts.item(i, 4).text()
                 
-                data = {
+                data: object = {
                     'name': name,
                     'sequence': index,
                     'path': url,
@@ -77,6 +78,8 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
                 
                 Model().save("vault", {'type': "app", 'name': name, 'data': json.dumps(data) })
                 index += 1
+        self.import_finished.emit(True)
+        self.close()
         
     def select_all(self, checked):
         checkboxes = self.get_checkboxes()

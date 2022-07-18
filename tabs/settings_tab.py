@@ -87,6 +87,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         file = QFileDialog.getOpenFileName(self, "Choose a file", DESKTOP, f"CSV File (*.csv)")[0]
         if file:
             browser_window = BrowserImportWindow(file)
+            browser_window.import_finished.connect(lambda success: self.updateWindow() if success else None)
             browser_window.exec_()
         else:
             Message("Please choose a valid file", "Invalid File").exec_()
