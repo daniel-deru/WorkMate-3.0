@@ -156,7 +156,7 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
             self.tbl_accounts.setItem(index, 4, QTableWidgetItem(str(item['password'])))
             
     def read_styles(self):
-        stylesheet = StyleSheet([PushButton, Dialog, TableWidget, ScrollBar]).create()
+        stylesheet = StyleSheet([Dialog, TableWidget, ScrollBar, PushButton]).create()
         self.setStyleSheet(stylesheet)
     
     def get_current_apps(self):

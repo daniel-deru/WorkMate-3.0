@@ -102,8 +102,8 @@ class Register(QDialog, Ui_Register):
 
             Model().save("user", data)
             self.registered = True
-            self.close()
             self.register_close_signal.emit("user created")
+            self.close()
 
     def read_styles(self):
         styles = [

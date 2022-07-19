@@ -60,13 +60,6 @@
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QTableWidget" name="tbl_accounts"/>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QPushButton" name="btn_import">
        <property name="cursor">
@@ -78,6 +71,9 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="tbl_accounts"/>
    </item>
   </layout>
  </widget>

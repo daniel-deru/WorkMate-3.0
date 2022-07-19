@@ -22,7 +22,7 @@ from widgetStyles.ScrollBar import ScrollBar
 
 from utils.message import Message
 from utils.helpers import StyleSheet
-from utils.globals import DB_PATH, PATH, DB_NAME
+from utils.globals import DB_PATH, PATH, DB_NAME, DESKTOP
 
 from database.model import Model
 
@@ -39,7 +39,7 @@ from threads.browser_import_thread import browser_import
 from integrations.calendar.c import Google
 
 
-DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
+
 
 
 class SettingsTab(QWidget, Ui_Settings_tab):

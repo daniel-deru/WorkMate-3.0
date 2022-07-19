@@ -15,6 +15,7 @@ PushButton = f"""
     padding: 5px 8px;
     max-width: 200px;
     min-width: 100px;
+    min-height: 20px;
 }}
 
 QPushButton:pressed {{

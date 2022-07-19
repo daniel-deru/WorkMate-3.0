@@ -1,6 +1,5 @@
 import sys
 import time
-import time
 import json
 import assets.resources
 
@@ -27,11 +26,12 @@ from utils.helpers import StyleSheet
 
 from windows.register_window import Register
 from windows.login_window import Login
+from windows.setup_window import InitialSetup
 
 from threads.google_thread import upload_google
 from threads.onedrive_thread import upload_onedrive
 
-class Main(QWidget, Ui_main_container):
+class Main(Ui_main_container, QWidget):
     def __init__(self):
         super(Main, self).__init__()
         
@@ -52,14 +52,17 @@ class Main(QWidget, Ui_main_container):
         
         user = Model().read("user")
         if len(user) != 1:
-            register = Register()
-            register.register_close_signal.connect(self.register_event)
-            register.exec_()
+            self.register = Register()
+            self.register.register_close_signal.connect(self.register_event)
+            self.register.exec_()
 
 
     def register_event(self, event):
         if event == "window closed":
             sys.exit()
+        elif event == "user created":
+            self.register.close()
+            InitialSetup().exec_()
     
             
         

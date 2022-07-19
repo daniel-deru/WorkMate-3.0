@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from integrations.graph_api import Microsoft
-from utils.globals import PATH, DB_NAME
+from utils.globals import PATH, DB_NAME, DB_PATH
 
 class OneDrive(Microsoft):
     
@@ -13,7 +13,7 @@ class OneDrive(Microsoft):
         super(OneDrive, self).__init__()
         self.headers = {"Authorization": f"Bearer {self.access_token}"}
         
-    def upload(self, file=f"{PATH}/database/{DB_NAME}") -> None:
+    def upload(self, file=f"{DB_PATH}{DB_NAME}") -> None:
         # Endpoint to upload the file
         endpoint = self._GRAPH_API_ENDPOINT + f"/me/drive/items/root:/{os.path.basename(file)}:/content"
         
