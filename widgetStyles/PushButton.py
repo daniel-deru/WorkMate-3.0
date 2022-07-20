@@ -25,6 +25,54 @@ QPushButton:pressed {{
 }}
 """
 
+PushButton100Width = f"""
+    QPushButton {{
+    background-color: {light_blue};
+    color: white;
+    border: 2px solid {light_blue};
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 5px 8px;
+    max-width: 100px;
+    min-width: 100px;
+    min-height: 20px;
+}}
+
+
+
+QPushButton:pressed {{
+    background-color: transparent;
+    color: {default};
+    border: 2px solid {light_blue};
+}}
+"""
+
+PushButtonLink = """
+        QPushButton {
+            background: transparent;
+            color: black;
+            border: none;
+            width: 100px;
+            }
+
+        QPushButton:hover {
+            color: blue;
+            text-decoration: underline;
+        }
+"""
+
+ButtonBackIcon = f"""
+    QPushButton#btn_back {{
+    background-color: transparent;
+    text-align: left;
+    max-width: 45px;
+    min-width: 45px;
+    width: 45px;
+    height: 45px;
+    border: none;
+}}
+"""
+
 ButtonFullWidth = f"""
     QPushButton {{
     background-color: {light_blue};

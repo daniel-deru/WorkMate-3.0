@@ -55,6 +55,7 @@
         <file alias="drive_upload">drive_upload.svg</file>
         <file alias="lock">lock.svg</file>
         <file alias="unlock">unlock.svg</file>
+        <file alias="back">back_icon.svg</file>
     </qresource>
 
 

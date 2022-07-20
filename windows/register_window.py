@@ -2,7 +2,6 @@ import sys
 import os
 import pyperclip
 import math
-import winsound
 
 from PyQt5.QtWidgets import QDialog, QLineEdit, QGridLayout, QWidget, QGraphicsBlurEffect, QWidget, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap, QFont
@@ -14,6 +13,8 @@ from designs.python.register_window import Ui_Register
 from utils.message import Message
 from database.model import Model
 from utils.helpers import StyleSheet, random_words
+from windows.passphase_copy_window import PassphraseCopyWindow
+
 import assets.resources
 
 from widgets.register_word import RegisterWordButton
@@ -32,6 +33,8 @@ class Register(QDialog, Ui_Register):
     def __init__(self):
         super(Register, self).__init__()
         self.setupUi(self)
+        
+        self.passphrase_safe = False
         
         pixmap = QPixmap(":/other/SMT Logo.png")
         app_logo_pixmap = QPixmap(":/other/app_logo")
@@ -95,15 +98,25 @@ class Register(QDialog, Ui_Register):
                 "passphrase": self.words
             }
             
-            # winsound.PlaySound("sound.wav", winsound.SND_FILENAME)
-            reply = Message("Did you copy your passphrase and store it in a safe place?", "Are You Sure?").prompt()
+            message = PassphraseCopyWindow()
+            message.yes_signal.connect(self.set_passphrase_safe)
+            message.exec_()
+            # reply = Message(
+            #     "DID YOU SAVE YOUR PASSPHRASE IN A SAFE PLACE?", 
+            #     "Are you sure?", 
+            #     "QLabel{ color: red;font-size: 30px; text-align: center; }").prompt()
             
-            if reply == QMessageBox.No: return
+            if not self.passphrase_safe: return
+            
+            # if reply == QMessageBox.No: return
 
             Model().save("user", data)
             self.registered = True
             self.register_close_signal.emit("user created")
             self.close()
+    
+    def set_passphrase_safe(self, response):
+        self.passphrase_safe = response
 
     def read_styles(self):
         styles = [

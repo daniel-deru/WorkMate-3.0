@@ -18,6 +18,7 @@ class Ui_ResetPassword(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(ResetPassword)
         self.verticalLayout.setObjectName("verticalLayout")
         self.lbl_message = QtWidgets.QLabel(ResetPassword)
+        self.lbl_message.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl_message.setObjectName("lbl_message")
         self.verticalLayout.addWidget(self.lbl_message)
         self.formLayout = QtWidgets.QFormLayout()

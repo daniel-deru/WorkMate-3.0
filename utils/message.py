@@ -17,15 +17,18 @@ from database.model import Model
 
 
 class Message(QMessageBox):
-    def __init__(self, message, title):
+    def __init__(self, message, title, label_style=None):
         super(Message, self).__init__()
         self.setWindowFlags(Qt.WindowStaysOnTopHint);
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setIcon(QMessageBox.Warning)
         self.setText(message)
         self.setWindowTitle(title)
+        
+        # Find the custom style or use the default styles
+        label = label_style if label_style else Label 
         styles = [
-            Label,
+            label,
             Dialog,
             PushButton,
         ]

@@ -2,11 +2,17 @@ import sys
 import os
 import webbrowser
 
-from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QGraphicsOpacityEffect
-from PyQt5.QtCore import pyqtSignal, Qt, QPropertyAnimation, QVariantAnimation, QEventLoop
-from PyQt5.QtGui import QHideEvent, QColor
+from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QSpacerItem, QSizePolicy
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtGui import QCursor, QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
+from widgetStyles.PushButton import PushButtonLink
+
+from utils.helpers import set_font
+
+from database.model import Model
 
 class SetupWidget(QWidget):
     next_signal = pyqtSignal(bool)
@@ -34,7 +40,9 @@ class SetupWidget(QWidget):
         hbox_button_container = QHBoxLayout()
         
         self.yes_button = QPushButton("Yes")
-        self.no_button = QPushButton("No")
+        self.yes_button.setCursor(QCursor(Qt.PointingHandCursor))
+        self.no_button = QPushButton("Skip")
+        self.no_button.setCursor(QCursor(Qt.PointingHandCursor))
         
         hbox_button_container.addWidget(self.yes_button)
         hbox_button_container.addWidget(self.no_button)
@@ -43,21 +51,28 @@ class SetupWidget(QWidget):
         lbl_message.setAlignment(Qt.AlignCenter)
         lbl_message.setStyleSheet("font-size: 20px;font-weight: bold;")
         
-        lbl_step: QLabel = QLabel(self.step)
-        lbl_step.setAlignment(Qt.AlignCenter)
-        lbl_step.setStyleSheet("font-size: 20px;font-weight: bold;height: 10px;")
-        
         self.btn_help = QPushButton("What's This?")
+        self.btn_help.setStyleSheet(PushButtonLink)
+        self.btn_help.setCursor(QCursor(Qt.PointingHandCursor))
         btn_container = QHBoxLayout()
-        btn_container.addWidget(self.help_link)
+        btn_container.addWidget(self.btn_help)
         
-        
-        vbox.addWidget(lbl_step)
         vbox.addWidget(lbl_message)
-        vbox.addWidget(btn_container)
+        vbox.addLayout(btn_container)
+        vbox.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding))
         vbox.addLayout(hbox_button_container)
         
         self.setLayout(vbox)
+        
+        font_list = [
+            self.btn_help,
+            self.no_button,
+            self.yes_button,
+            lbl_message
+        ]
+        set_font(font_list)
+        
+        
         
     def create_widget(self):
         return self

@@ -27,7 +27,7 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.TableWidget import TableWidget
 from widgetStyles.ScrollBar import ScrollBar
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 from database.model import Model
 
@@ -158,6 +158,16 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
     def read_styles(self):
         stylesheet = StyleSheet([Dialog, TableWidget, ScrollBar, PushButton]).create()
         self.setStyleSheet(stylesheet)
+        
+        font_list = [
+            self.label,
+            self.btn_import,
+            self.chk_select_all,
+            self.tbl_accounts,
+            self.tbl_accounts.horizontalHeader(),
+            self.tbl_accounts.verticalHeader()
+        ]
+        set_font(font_list)
     
     def get_current_apps(self):
         vault_items: list[list[int, str, str, str]] = Model().read("vault")

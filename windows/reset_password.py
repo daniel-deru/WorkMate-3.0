@@ -12,7 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from designs.python.reset_password import Ui_ResetPassword
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 from widgetStyles.Dialog import Dialog
 from widgetStyles.Label import Label
@@ -42,6 +42,16 @@ class ResetPassword(Ui_ResetPassword, QDialog):
 
         stylesheet: str = StyleSheet(widgetlist).create()
         self.setStyleSheet(stylesheet)
+        
+        font_list = [
+            self.lbl_confirm_password,
+            self.lbl_password1,
+            self.lbl_message,
+            self.btn_reset,
+            self.lnedit_confirm_password,
+            self.lnedt_password1
+        ]
+        set_font(font_list)
 
     def compare_passwords(self):
         pass1 = self.lnedt_password1.text()

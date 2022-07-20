@@ -7,6 +7,7 @@ import json
 from random import randint
 
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout
+from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -103,4 +104,9 @@ def get_checkbox():
     dark_mode_on = int(Model().read('settings')[0][1])
     checkbox = WhiteEyeCheckBox if dark_mode_on else BlackEyeCheckBox
     return checkbox
+
+def set_font(font_list):
+    font_name = Model().read("settings")[0][2]
+    for item in font_list:
+        item.setFont(QFont(font_name))
     

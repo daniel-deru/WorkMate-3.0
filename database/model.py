@@ -305,8 +305,8 @@ class Model:
         data = cursor.fetchone()
         return data[0] == "ok"
          
-# model = Model()
-# model.update("settings", {"font": "proxon"}, "settings")
+model = Model()
+model.update("settings", {"font": "proxon"}, "settings")
 # name = model.get_encrypted_table_name("notes")
 # pyperclip.copy(name)
 # model.read("metadata")

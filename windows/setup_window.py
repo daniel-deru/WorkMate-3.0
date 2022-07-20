@@ -2,7 +2,6 @@ import sys
 import os
 import json
 from threading import Thread
-from tkinter.ttk import Style
 
 from PyQt5.QtWidgets import (
     QDialog, 
@@ -10,8 +9,8 @@ from PyQt5.QtWidgets import (
     QHBoxLayout, 
     QWidget,
     QFileDialog)
-from PyQt5.QtGui import QCursor, QIcon, QCloseEvent
-from PyQt5.QtCore import Qt, QModelIndex, pyqtSignal
+from PyQt5.QtGui import QCursor, QIcon, QCloseEvent, QFont
+from PyQt5.QtCore import Qt, QModelIndex, pyqtSignal, QSize
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -34,7 +33,7 @@ from widgets.setup_widget import SetupWidget
 
 from integrations.graph_api import Microsoft
 
-from widgetStyles.PushButton import PushButton
+from widgetStyles.PushButton import PushButton, PushButton100Width, ButtonBackIcon
 from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
 
@@ -42,6 +41,7 @@ class InitialSetup(Ui_InitialSetup, QDialog):
     def __init__(self) -> None:
         super(InitialSetup, self).__init__()
         self.setupUi(self)
+        self.setFixedHeight(200)
         
         self.auto_save_google = False
         self.auto_save_onedrive = False
@@ -55,14 +55,15 @@ class InitialSetup(Ui_InitialSetup, QDialog):
             ["Do you want to automatically save database to Google Drive?", "https://smartmetatec.com", self.setup_google_drive],
             ["Do you want to automatically save database to OneDrive?", "https://smartmetatec.com", self.setup_onedrive],
         ]
+        self.lbl_setup.setText(f"Step {self.stack_widget.currentIndex()+2} of {len(self.setup_list)}")
         self.create_stack()
         self.read_styles()
         
-        self.btn_skip.clicked.connect(self.close)
+        self.btn_back.clicked.connect(self.prev_widget)
         
     def read_styles(self):
         widget_list = [
-            PushButton,
+            PushButton100Width,
             Label,
             Dialog
         ]
@@ -71,6 +72,14 @@ class InitialSetup(Ui_InitialSetup, QDialog):
         self.setStyleSheet(stylesheet)
         
         self.lbl_setup.setStyleSheet("font-size: 20px;font-weight: bold;")
+        self.btn_back.setIcon(QIcon(":/button_icons/back"))
+        self.btn_back.setStyleSheet(ButtonBackIcon)
+        self.btn_back.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_back.setIconSize(QSize(40, 40))
+        
+        font_name = Model().read("settings")[0][2]
+        
+        self.lbl_setup.setFont(QFont(font_name))
     
     def create_stack(self):        
         for i in range(len(self.setup_list)):
@@ -86,6 +95,12 @@ class InitialSetup(Ui_InitialSetup, QDialog):
         if current_index >= len(self.setup_list) - 1:
             self.close()
         self.stack_widget.setCurrentIndex(current_index + 1)
+        self.lbl_setup.setText(f"Step {self.stack_widget.currentIndex()+1} of {len(self.setup_list)}")
+    
+    def prev_widget(self):
+        current_index = self.stack_widget.currentIndex()
+        self.stack_widget.setCurrentIndex(current_index - 1)
+        self.lbl_setup.setText(f"Step {self.stack_widget.currentIndex()+1} of {len(self.setup_list)}")
             
               
     def setup_twofa(self):
@@ -110,14 +125,10 @@ class InitialSetup(Ui_InitialSetup, QDialog):
         
     def setup_google_drive(self):
         self.auto_save_google = True
-        # thread = Thread(target=google_thread, daemon=True)
-        # thread.start()
         Google.connect()
 
     def setup_onedrive(self):
         self.auto_save_onedrive = True
-        # thread = Thread(target=microsoft_thread, daemon=True)
-        # thread.start()
         Microsoft()
         
     def closeEvent(self, event: QCloseEvent) -> None:
