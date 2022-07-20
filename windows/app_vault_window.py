@@ -18,7 +18,7 @@ from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Label import Label
 from widgetStyles.SpinBox import SpinBox
 
-from utils.helpers import StyleSheet, json_to_dict, get_checkbox
+from utils.helpers import StyleSheet, json_to_dict, get_checkbox, set_font
 from utils.message import Message
 
 from database.model import Model
@@ -68,8 +68,6 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         stylesheet: str = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
         
-        font_name = Model().read("settings")[0][2]
-        
         font_widget = [
             self.lbl_email,
             self.lbl_index,
@@ -84,13 +82,12 @@ class AppVaultWindow(Ui_AppVault, QDialog):
             self.lne_path,
             self.lne_username,
             self.btn_desktop,
-            self.btn_save
+            self.btn_save,
+            self.lbl_password2,
+            self.lne_password2
         ]
         
-        widget: QWidget
-        
-        for widget in font_widget:
-            widget.setFont(QFont(font_name))
+        set_font(font_widget)
 
     def save(self):
         
@@ -101,7 +98,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         username: str = self.lne_username.text()
         email: str = self.lne_email.text()
         password: str = self.lne_password.text()
-        confirm_password: str = self.lne_password2
+        confirm_password: str = self.lne_password2.text()
 
         name_list: list[str] = ["name", "index", "path", "username", "email", "password"]
         data_list: list[str] = [ name, index, path, username, email, password ]
@@ -153,6 +150,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         
         self.lne_name.setText(data['name'])
         self.lne_password.setText(data['password'])
+        self.lne_password2.setText(data['password'])
         self.lne_email.setText(data['email'])
         self.lne_username.setText(data['username'])
         self.lne_path.setText(data['path'])

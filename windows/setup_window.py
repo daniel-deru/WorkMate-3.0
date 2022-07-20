@@ -42,6 +42,8 @@ class InitialSetup(Ui_InitialSetup, QDialog):
         super(InitialSetup, self).__init__()
         self.setupUi(self)
         self.setFixedHeight(200)
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         
         self.auto_save_google = False
         self.auto_save_onedrive = False

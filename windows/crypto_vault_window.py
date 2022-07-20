@@ -29,7 +29,7 @@ from widgetStyles.LineEdit import LineEdit
 from widgetStyles.ToolButton import ToolButton
 from widgetStyles.QCheckBox import WhiteEyeCheckBox, BlackEyeCheckBox
 
-from utils.helpers import StyleSheet, clear_window
+from utils.helpers import StyleSheet, clear_window, set_font
 from utils.message import Message
 
 from widgets.password_show_hide import PasswordWidget
@@ -74,8 +74,6 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
 
         self.setStyleSheet(stylesheet)
         
-        font_name = settings[2]
-        
         font_widgets = [
             self.lbl_description,
             self.lbl_name,
@@ -91,13 +89,11 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
             self.lne_private,
             self.lne_public,
             self.lbl_words,
-            self.btn_save  
+            self.btn_save,
+            self.lne_password1
         ]
         
-        widget: QWidget
-        
-        for widget in font_widgets:
-            widget.setFont(QFont(font_name))
+        set_font(font_widgets)
 
     def displayWordBoxes(self):        
         words: int = self.get_num_words()
