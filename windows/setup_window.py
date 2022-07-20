@@ -2,6 +2,7 @@ import sys
 import os
 import json
 from threading import Thread
+from tkinter.ttk import Style
 
 from PyQt5.QtWidgets import (
     QDialog, 
@@ -25,12 +26,17 @@ from windows.browser_import_window import BrowserImportWindow
 from threads.browser_import_thread import browser_import
 
 from utils.globals import DESKTOP
+from utils.helpers import StyleSheet
 
 from integrations.calendar.c import Google
 
 from widgets.setup_widget import SetupWidget
 
 from integrations.graph_api import Microsoft
+
+from widgetStyles.PushButton import PushButton
+from widgetStyles.Label import Label
+from widgetStyles.Dialog import Dialog
 
 class InitialSetup(Ui_InitialSetup, QDialog):
     def __init__(self) -> None:
@@ -42,28 +48,41 @@ class InitialSetup(Ui_InitialSetup, QDialog):
         
         # This list will be passed to the StackedWidget Item to show the message and run the respective function
         self.setup_list = [
-            ["Do you want to use 2 factor authentication?", self.setup_twofa],
-            ["Do you want to turn on dark mode?", self.setup_night_mode],
-            ["Do you want to import passwords from browser?", self.setup_import_browser],
-            ["Do you want to sync with Google Calendar?", self.setup_calendar],
-            ["Do you want to automatically save database to Google Drive?", self.setup_google_drive],
-            ["Do you want to automatically save database to OneDrive?", self.setup_onedrive],
+            ["Do you want to use two factor authentication?", "https://smartmetatec.com", self.setup_twofa],
+            ["Do you want to turn on dark mode?", None, self.setup_night_mode],
+            ["Do you want to import passwords from browser?", "https://smartmetatec.com", self.setup_import_browser],
+            ["Do you want to sync with Google Calendar?", "https://smartmetatec.com", self.setup_calendar],
+            ["Do you want to automatically save database to Google Drive?", "https://smartmetatec.com", self.setup_google_drive],
+            ["Do you want to automatically save database to OneDrive?", "https://smartmetatec.com", self.setup_onedrive],
         ]
         self.create_stack()
+        self.read_styles()
         
         self.btn_skip.clicked.connect(self.close)
-
+        
+    def read_styles(self):
+        widget_list = [
+            PushButton,
+            Label,
+            Dialog
+        ]
+        
+        stylesheet = StyleSheet(widget_list).create()
+        self.setStyleSheet(stylesheet)
+        
+        self.lbl_setup.setStyleSheet("font-size: 20px;font-weight: bold;")
     
     def create_stack(self):        
-        for setup in self.setup_list:
-            widget_instance = SetupWidget(setup)
+        for i in range(len(self.setup_list)):
+            step_string = f"Step {i+1} of {len(self.setup_list)}"
+            widget_instance = SetupWidget([*self.setup_list[i], step_string])
             widget_instance.next_signal.connect(self.next_widget)
             widget = widget_instance.create_widget()
             self.stack_widget.addWidget(widget)
             
     def next_widget(self):
         current_index = self.stack_widget.currentIndex()
-        print(f"current index: {current_index}, length of items: {len(self.setup_list)-1}, current index <= len list: {current_index <= len(self.setup_list)}")
+        
         if current_index >= len(self.setup_list) - 1:
             self.close()
         self.stack_widget.setCurrentIndex(current_index + 1)

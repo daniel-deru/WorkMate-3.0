@@ -24,9 +24,12 @@ class Ui_InitialSetup(object):
         self.stack_widget = QtWidgets.QStackedWidget(InitialSetup)
         self.stack_widget.setObjectName("stack_widget")
         self.verticalLayout.addWidget(self.stack_widget)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
         self.btn_skip = QtWidgets.QPushButton(InitialSetup)
         self.btn_skip.setObjectName("btn_skip")
-        self.verticalLayout.addWidget(self.btn_skip)
+        self.horizontalLayout.addWidget(self.btn_skip)
+        self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.retranslateUi(InitialSetup)
         self.stack_widget.setCurrentIndex(-1)
