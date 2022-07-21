@@ -42,7 +42,7 @@ class Google:
             with open(f'{PATH}/integrations/google_token.json', 'w') as token:
                 token.write(creds.to_json())
     
-    def save(date):
+    def save(date, message):
         """Shows basic usage of the Google Calendar API.
             Prints the start and name of the next 10 events on the user's calendar.
     """
@@ -72,7 +72,7 @@ class Google:
             timezone = str(tzlocal.get_localzone())
             
             event = {
-                'summary': 'test',
+                'summary': message,
                 'start': {
                     'dateTime': start_date.strftime("%Y-%m-%dT%H:%M:%S"),
                     'timeZone': timezone,

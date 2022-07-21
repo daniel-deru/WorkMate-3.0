@@ -31,6 +31,7 @@ from windows.forgot_question import PasswordQuestion
 from windows.drive_window import DriveWindow
 from windows.twofa_window import TwofaDialog
 from windows.browser_import_window import BrowserImportWindow
+from windows.generate_password import GeneratePasswordWindow
 
 from threads.google_thread import upload_google, download_google
 from threads.onedrive_thread import upload_onedrive, download_onedrive
@@ -42,7 +43,7 @@ from integrations.calendar.c import Google
 
 
 
-class SettingsTab(QWidget, Ui_Settings_tab):
+class SettingsTab(Ui_Settings_tab, QWidget):
     settings_signal = pyqtSignal(str)
     # This signal will communicate with the main window to get and set the login status
     login_signal = pyqtSignal(str)
@@ -76,12 +77,17 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.btn_save_local.clicked.connect(self.save_local)
         self.btn_restore_local.clicked.connect(self.restore_from_local)
         self.btn_browser_web_import.clicked.connect(self.import_websites)
+        self.btn_generate_password.clicked.connect(self.generate_password)
         
         
 
         # connect the custom signals to the slots
         self.settings_signal.connect(self.read_styles)
         self.login_signal.connect(self.login)
+        
+    def generate_password(self):
+        generate_password = GeneratePasswordWindow()
+        generate_password.exec_()
         
     
     def import_websites(self):
@@ -160,6 +166,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.btn_save_google_drive.setIcon(QIcon(":/button_icons/cloud_upload"))
         self.btn_restore_local.setIcon(QIcon(":/button_icons/drive_download"))
         self.btn_save_local.setIcon(QIcon(":/button_icons/drive_upload"))
+        self.btn_generate_password.setIcon(QIcon(":/button_icons/password"))
         
         self.btn_browser_web_import.setIconSize(QSize(20, 20))
         self.btn_forgot_password.setIconSize(QSize(20, 20))
@@ -168,6 +175,7 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.btn_save_google_drive.setIconSize(QSize(20, 20))
         self.btn_restore_local.setIconSize(QSize(20, 20))
         self.btn_save_local.setIconSize(QSize(20, 20))
+        self.btn_generate_password.setIconSize(QSize(20, 20))
     
     def login(self, signal):
         if signal == "success":
@@ -264,7 +272,11 @@ class SettingsTab(QWidget, Ui_Settings_tab):
         self.loading.close()
     
     # Slot to handle the drive_dict signal from the DriveWindow  
-    def save_drives(self, drives: object):
+    def save_drives(self, drives: object or None) -> None:
+        if not drives:
+            self.chk_auto_save.setChecked(False)
+            self.chk_auto_save.setCheckState(Qt.Unchecked)
+            return
         drives["auto_save"] = True
         
         json_string = json.dumps(drives)

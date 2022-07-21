@@ -50,7 +50,7 @@ class InitialSetup(Ui_InitialSetup, QDialog):
         
         # This list will be passed to the StackedWidget Item to show the message and run the respective function
         self.setup_list = [
-            ["Do you want to use two factor authentication?", "https://smartmetatec.com", self.setup_twofa],
+            ["Do you want to use Two Factor Authentication?", "https://smartmetatec.com", self.setup_twofa],
             ["Do you want to turn on dark mode?", None, self.setup_night_mode],
             ["Do you want to import passwords from browser?", "https://smartmetatec.com", self.setup_import_browser],
             ["Do you want to sync with Google Calendar?", "https://smartmetatec.com", self.setup_calendar],

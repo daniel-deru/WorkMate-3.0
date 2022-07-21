@@ -2,10 +2,11 @@ import os
 import sys
 import qrcode
 import pyotp
+import pyperclip
 
 from PyQt5.QtWidgets import QDialog, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtGui import QFont, QIcon, QCursor
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -16,6 +17,7 @@ from utils.qrcode import QRCodeTemplate
 
 from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
+from widgetStyles.PushButton import PushButton100Width
 
 from database.model import Model
 
@@ -27,9 +29,13 @@ class TwofaDialog(Ui_TwoFADialog, QDialog):
         self.setupUi(self)
         self.read_styles()
         self.create_qrcode()
+        
+        self.btn_copy.setCursor(QCursor(Qt.PointingHandCursor))
+        
+        self.btn_copy.clicked.connect(lambda: pyperclip.copy(self.lbl_setupkey.text()))
 
     def read_styles(self):
-        widget_list = [Label, Dialog]
+        widget_list = [Label, Dialog, PushButton100Width]
 
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)

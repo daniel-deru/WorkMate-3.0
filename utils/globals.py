@@ -1,4 +1,6 @@
+from lib2to3.pgen2.token import NUMBER
 import os
+from sre_parse import SPECIAL_CHARS
 import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -18,6 +20,16 @@ ASSET_PATH = "./assets/"
 
 PICKLE_ENC = 'SqQ1-jsiAXjOmRWQqLWoMyzTWgW_Kxy8rc5aGKLG91k='
 # ASSET_PATH = PATH + "\\assets"
+
+class CHAR_GROUPS:
+    NUMBERS = [*range(48,58)]
+    UPPERCASE = [*range(65, 91)]
+    LOWERCASE = [*range(97, 123)]
+    MATH = [37, 42, 43, 45, 47, 61, 94]
+    PUNCTUATION = [33, 34, 39, 44, 46, 58, 59, 63, 96]
+    SPECIAL = [35, 36, 64, 95, 124, 126]
+    BRACKETS = [40, 41, 60, 62, 91, 93, 123, 125]
+
 
 WORDS = [
     'blind', 'medium', 'aware', 'crosswalk', 'craft', 'draw', 'disappoint', 'understanding', 'concept', 'disagree',

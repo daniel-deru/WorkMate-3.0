@@ -71,7 +71,7 @@ class Todo_tab(QWidget, Ui_todo_tab):
             calendar_integration = Model().read('settings')[0][6]
             # Check to see if the calendar integration should be used
             if(calendar_integration):
-                th = Thread(target=google_thread, daemon=True, args=(date,))
+                th = Thread(target=google_thread, daemon=True, args=(date, name))
                 th.start()
 
         if not name:
@@ -113,8 +113,8 @@ class Todo_tab(QWidget, Ui_todo_tab):
 
 
 # @concurrent.process(timeout=30)
-def google_thread(date):
-    Google.save(date)
+def google_thread(date, message):
+    Google.save(date, message)
 
 
         

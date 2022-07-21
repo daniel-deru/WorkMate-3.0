@@ -3,7 +3,7 @@ import sys
 
 from PyQt5.QtWidgets import QDialog, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtGui import QFont, QIcon, QCloseEvent
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -29,6 +29,8 @@ class DriveWindow(Ui_DriveDialog, QDialog):
         
         self.btn_save.clicked.connect(self.save)
         
+        self.data_saved = False
+        
     def read_styles(self):
         widget_list = [PushButton, CheckBox, Dialog]
         
@@ -52,7 +54,11 @@ class DriveWindow(Ui_DriveDialog, QDialog):
             'google': self.chk_google.isChecked(),
             'onedrive': self.chk_onedrive.isChecked()
         }
-        
+        self.data_saved = True
         self.drive_dict.emit(drives)
         self.close()
+        
+    def closeEvent(self, event: QCloseEvent) -> None:
+        if not self.data_saved: self.drive_dict.emit(None)
+        return super().closeEvent(event)
         
