@@ -14,6 +14,8 @@ from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.Dialog import Dialog
 
 from utils.helpers import StyleSheet
+from utils.globals import PATH
+from utils.message import Message
 
 from database.model import Model
 
@@ -29,7 +31,17 @@ class DriveWindow(Ui_DriveDialog, QDialog):
         
         self.btn_save.clicked.connect(self.save)
         
+        self.chk_google.stateChanged.connect(self.check_google)
+        
         self.data_saved = False
+        
+    def check_google(self, state):
+        token_file = f"{PATH}/integrations/google_token.json"
+        if not os.path.exists(token_file) and self.chk_google.checkState() == Qt.Checked:
+            Message("Please Allow Trust Lock to integrate with your google account by clicking on The 'Sign in with Google' button", "Not Allowed").exec_()
+            self.chk_google.setChecked(False)
+            self.chk_google.setCheckState(Qt.Unchecked)
+            
         
     def read_styles(self):
         widget_list = [PushButton, CheckBox, Dialog]

@@ -57,6 +57,8 @@
         <file alias="unlock">unlock.svg</file>
         <file alias="back">back_icon.svg</file>
         <file alias="password">password_icon.svg</file>
+        <file alias="google">google_btn.png</file>
+
     </qresource>
 
 

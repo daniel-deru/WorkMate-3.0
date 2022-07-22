@@ -7,7 +7,7 @@ import json
 
 from PyQt5.QtWidgets import QWidget, QFileDialog, qApp, QPushButton
 from PyQt5.QtCore import pyqtSignal, Qt, QThread, QSize
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtGui import QFont, QIcon, QPixmap
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -51,6 +51,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         super(SettingsTab, self).__init__()
         self.setupUi(self)
         self.read_styles()
+
         self.logged_in = False
         settings = Model().read('settings')[0]
         # Set the default value of the settings
@@ -79,7 +80,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.btn_browser_web_import.clicked.connect(self.import_websites)
         self.btn_generate_password.clicked.connect(self.generate_password)
         
-        
+        self.btn_google.clicked.connect(self.google_sign_in)        
 
         # connect the custom signals to the slots
         self.settings_signal.connect(self.read_styles)
@@ -159,6 +160,12 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             widget.setFont(QFont(font_name))
             
     def set_btn_icons(self):
+        # Set the correct size for the google sign in button
+        pixmap: QPixmap = QPixmap(":/button_icons/google")
+        icon: QIcon = QIcon(pixmap)
+        self.btn_google.setIcon(icon)
+        self.btn_google.setIconSize(pixmap.rect().size())
+        
         self.btn_browser_web_import.setIcon(QIcon(":/button_icons/import"))
         self.btn_forgot_password.setIcon(QIcon(":/button_icons/reset"))
         self.btn_login.setIcon(QIcon(":/button_icons/unlock"))
@@ -186,15 +193,23 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             self.logged_in = True
         elif signal == "logged out":
             self.logged_in = False
+        
+    def google_sign_in(self):
+        token_file = f"{PATH}/integrations/google_token.json"
+        if not os.path.exists(token_file):
+            threading.Thread(target=google_thread, daemon=True).start()
+        else:
+            Message("You are already integrated with Google Calendar", "No Action Needed").exec_()
 
     def calendar_toggle(self):
-        toggle = self.chkbox_calendar
-        if toggle.isChecked():
-            th = threading.Thread(target=google_thread, daemon=True)
-            th.start()
-            Model().update("settings", {"calendar": "1"}, "settings")
-        elif not toggle.isChecked():
-            Model().update("settings", {"calendar": "0"}, "settings")
+        token_file = f"{PATH}/integrations/google_token.json"
+        if not os.path.exists(token_file) and self.chkbox_calendar.checkState() == Qt.Checked:
+            Message("Please Allow Trust Lock to integrate with your google account by clicking on The 'Sign in with Google' button", "Not Allowed").exec_()
+            self.chkbox_calendar.setChecked(False)
+            self.chkbox_calendar.setCheckState(Qt.Unchecked)
+        else:
+            checked = "1" if self.chkbox_calendar.isChecked() else "0"
+            Model().update("settings", {"calendar": checked}, "settings")
 
     def login_clicked(self):
         if self.logged_in:
