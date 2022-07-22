@@ -2,6 +2,7 @@ import math
 import sys
 import os
 import re
+from typing import Pattern
 from functools import reduce
 import json
 from random import randint
@@ -109,4 +110,8 @@ def set_font(font_list):
     font_name = Model().read("settings")[0][2]
     for item in font_list:
         item.setFont(QFont(font_name))
+        
+def char_in_string(string: str, regex: Pattern) -> bool:
+    result = re.findall(regex, string)
+    return len(result) > 0
     

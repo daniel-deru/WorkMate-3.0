@@ -4,9 +4,13 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from widgetStyles.styles import color, mode, default
+from database.model import Model
+
 import assets.resources
-SIZE = 30
-RATIO = 3
+
+dark_mode_on = int(Model().read('settings')[0][1])
+SIZE = 18
+RATIO = 2
 width = SIZE * RATIO
 height = SIZE * 1
 
@@ -114,3 +118,57 @@ BlackEyeCheckBox = f"""
         max-height: {height * (2/3)}px;
     }}
 """
+eye = "black" if not dark_mode_on else "white"
+id = ""
+
+EyeCheckBox = f"""
+    QCheckBox{id} {{
+        color: {default};
+        font-size: 16px;
+        border-radius: 5px;
+    }}
+
+    QCheckBox::indicator:checked {{
+        image: url(:/input/eye_{eye}_open.svg);
+        width: {width * (1/3)}px;
+        height: {height * (2/3)}px;
+        max-width: {width * (1/3)}px;
+        max-height: {height * (2/3)}px;
+    }}
+
+    QCheckBox::indicator{{
+        image: url(:/input/eye_{eye}_closed.svg);
+        width: {width * (1/3)}px;
+        height: {height * (2/3)}px;
+        max-width: {width * (1/3)}px;
+        max-height: {height * (2/3)}px;
+    }}
+"""
+def custom_id(id):
+    EyeCheckBox = f"""
+        QCheckBox{id} {{
+            color: {default};
+            font-size: 16px;
+            border-radius: 5px;
+        }}
+
+        QCheckBox{id}::indicator:checked {{
+            image: url(:/input/eye_{eye}_open.svg);
+            width: {width * (1/3)}px;
+            height: {height * (2/3)}px;
+            max-width: {width * (1/3)}px;
+            max-height: {height * (2/3)}px;
+        }}
+
+        QCheckBox{id}::indicator{{
+            image: url(:/input/eye_{eye}_closed.svg);
+            width: {width * (1/3)}px;
+            height: {height * (2/3)}px;
+            max-width: {width * (1/3)}px;
+            max-height: {height * (2/3)}px;
+        }}
+    """
+    return EyeCheckBox
+
+custom_eye = custom_id
+
