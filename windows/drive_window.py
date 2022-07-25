@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from designs.python.drive_window import Ui_DriveDialog
 
 from widgetStyles.PushButton import PushButton
-from widgetStyles.QCheckBox import CheckBox
+from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.Dialog import Dialog
 
 from utils.helpers import StyleSheet
@@ -44,7 +44,7 @@ class DriveWindow(Ui_DriveDialog, QDialog):
             
         
     def read_styles(self):
-        widget_list = [PushButton, CheckBox, Dialog]
+        widget_list = [PushButton, CheckBoxSquare, Dialog]
         
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)

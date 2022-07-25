@@ -15,7 +15,7 @@ from windows.notes_window import Note_window
 from widgets.note_item import NoteItem
 from utils.helpers import clear_window
 from widgetStyles.PushButton import PushButton
-from widgetStyles.QCheckBox import CheckBox
+from widgetStyles.QCheckBox import CheckBoxSquare
 from utils.helpers import StyleSheet
 
 
@@ -36,7 +36,7 @@ class Notes_tab(QWidget, Ui_notes_tab):
         return self
 
     def read_styles(self):
-        styles = [CheckBox, PushButton]
+        styles = [CheckBoxSquare, PushButton]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         font = Model().read('settings')[0][2]

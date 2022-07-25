@@ -3,6 +3,7 @@ import os
 import re
 import math
 from typing import Match, Pattern
+from datetime import date, datetime, timedelta
 from json import dumps, loads
 from PyQt5.QtWidgets import (
     QDialog, 
@@ -28,6 +29,8 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.ToolButton import ToolButton
 from widgetStyles.QCheckBox import WhiteEyeCheckBox, BlackEyeCheckBox
+from widgetStyles.Calendar import Calendar
+from widgetStyles.DateEdit import DateEditForm
 
 from utils.helpers import StyleSheet, clear_window, set_font
 from utils.message import Message
@@ -44,6 +47,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         self.secret: tuple or None = secret
         
         self.setupUi(self)
+        self.dte_password_exp.setDate(date.today() + timedelta(days=90))
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.displayWordBoxes()
         self.read_styles()
@@ -67,7 +71,9 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
             Label,
             PushButton,
             LineEdit,
-            ToolButton
+            ToolButton,
+            Calendar,
+            DateEditForm
         ]
         self.setMinimumHeight(850)
         stylesheet = StyleSheet(widget_list).create()
@@ -152,6 +158,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         
         public_key: str = self.lne_public.text()
         private_key: str = self.lne_private.text()
+        password_exp = self.dte_password_exp.date().toPyDate()
 
         valid_submit: bool = True
 
@@ -193,7 +200,8 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
                 'num_words': num_words,
                 'words': " ".join(words),
                 'description': description,
-                'password': password1
+                'password': password1,
+                "password_exp": password_exp
             }
             
             
@@ -227,6 +235,15 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         self.lne_password1.setText(data['password'])
         self.lne_password2.setText(data['password'])
         self.lne_name.setText(data['name'])
+        
+        # Get the datetime object from string
+        password_exp_datetime: datetime = datetime.strptime(data['password_exp'], "%Y-%m-%d")
+        
+        # Get the date object from datetime object
+        password_exp_date: date = date(password_exp_datetime.year, password_exp_datetime.month, password_exp_datetime.day)
+        
+        # Set the date
+        self.dte_password_exp.setDate(password_exp_date)
         
         if 'private_key' in data:
             self.lne_private.setText(data['private_key'])

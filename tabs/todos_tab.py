@@ -25,7 +25,7 @@ from utils.helpers import clear_window
 
 
 
-class Todo_tab(QWidget, Ui_todo_tab):
+class Todo_tab(Ui_todo_tab, QWidget):
     todo_signal = pyqtSignal(str)
     def __init__(self):
         super(Todo_tab, self).__init__()

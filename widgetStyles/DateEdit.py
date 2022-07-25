@@ -20,7 +20,25 @@ DateEdit = f"""
         padding: 5px;
         border-radius: 5px;
         width: 40px;
+        image: url(:/other/calendar.svg);
+    }}
+"""
 
+DateEditForm = f"""
+    QDateEdit {{
+        border: 2px solid {light_blue};
+        color: {default};
+        font-size: 16px;
+        border-radius: 5px;
+        height: 30px;
+    }}
+    QDateEdit::drop-down {{
+        background-color: {mode};
+        border: none;
+        color: {default};
+        padding: 5px;
+        border-radius: 5px;
+        width: 40px;
         image: url(:/other/calendar.svg);
     }}
 """

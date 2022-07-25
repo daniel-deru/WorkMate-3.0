@@ -15,7 +15,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from designs.python.settings_tab import Ui_Settings_tab
 
 from widgetStyles.Label import Label
-from widgetStyles.PushButton import PushButton, ButtonFullWidth, IconButton
+from widgetStyles.PushButton import IconButton
 from widgetStyles.QCheckBox import SettingsCheckBox
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.ScrollBar import ScrollBar

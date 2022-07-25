@@ -1,6 +1,7 @@
 import sys
 import os
 from json import dumps
+from datetime import date, datetime, timedelta
 
 from PyQt5.QtWidgets import QDialog, QFileDialog, QLineEdit, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt
@@ -17,6 +18,8 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Label import Label
 from widgetStyles.SpinBox import SpinBox
+from widgetStyles.DateEdit import DateEditForm
+from widgetStyles.Calendar import Calendar
 
 from utils.helpers import StyleSheet, json_to_dict, get_checkbox, set_font
 from utils.message import Message
@@ -32,6 +35,8 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.secrets = list(filter(lambda a: a[1] == "app", Model().read("vault")))
         self.setupUi(self)
         self.setWindowIcon(QIcon(":/other/app_icon"))
+        
+        self.dte_password_exp.setDate(date.today() + timedelta(days=90))
         
         # Get the current apps to avoid collisions
         self.current_apps = self.get_current_apps()
@@ -62,7 +67,9 @@ class AppVaultWindow(Ui_AppVault, QDialog):
             PushButton,
             LineEdit,
             SpinBox,
-            checkbox
+            checkbox,
+            Calendar,
+            DateEditForm
         ]
 
         stylesheet: str = StyleSheet(widget_list).create()
@@ -99,6 +106,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         email: str = self.lne_email.text()
         password: str = self.lne_password.text()
         confirm_password: str = self.lne_password2.text()
+        password_exp = self.dte_password_exp.date().toPyDate()
 
         name_list: list[str] = ["name", "index", "path", "username", "email", "password"]
         data_list: list[str] = [ name, index, path, username, email, password ]
@@ -121,7 +129,8 @@ class AppVaultWindow(Ui_AppVault, QDialog):
                 'path': path,
                 'username': username,
                 'email': email,
-                'password': password
+                'password': password,
+                'password_exp': password_exp
             })
             
             if password != confirm_password:
@@ -155,6 +164,15 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.lne_username.setText(data['username'])
         self.lne_path.setText(data['path'])
         self.spn_index.setValue(int(data['sequence']))
+        
+        # Get the datetime object from string
+        password_exp_datetime: datetime = datetime.strptime(data['password_exp'], "%Y-%m-%d")
+        
+        # Get the date object from datetime object
+        password_exp_date: date = date(password_exp_datetime.year, password_exp_datetime.month, password_exp_datetime.day)
+        
+        # Set the date
+        self.dte_password_exp.setDate(password_exp_date)
         
     def add_from_desktop(self):
         file = QFileDialog.getOpenFileName(self, "Open a file", DESKTOP, "All Files (*.*)")[0]

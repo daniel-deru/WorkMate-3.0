@@ -9,10 +9,16 @@ from database.model import Model
 import assets.resources
 
 dark_mode_on = int(Model().read('settings')[0][1])
-SIZE = 18
+SIZE = 25
 RATIO = 2
 width = SIZE * RATIO
 height = SIZE * 1
+
+SQUARE_SIZE = 30
+SQUARE_RATIO = 3
+
+square_width= SQUARE_SIZE * SQUARE_RATIO
+square_height = SQUARE_SIZE
 
 toggle = "toggle-off.svg"
 
@@ -40,33 +46,58 @@ CheckBox = f"""
     }}
 
 """
-#                       
+
+CheckBoxSquare = f"""
+    QCheckBox {{
+        color: {default};
+        font-size: 16px;
+        border-radius: 5px;
+    }}
+
+    QCheckBox::indicator:checked {{
+        image: url(:/input/toggle_square_on);
+        width: {square_width}px;
+        height: {square_height}px;
+        max-width: {square_width}px;
+        max-height: {square_height}px;
+    }}
+
+    QCheckBox::indicator{{
+        image: url(:/input/toggle_square_off);
+        width: {square_width}px;
+        height: {square_height}px;
+        max-width: {square_width}px;
+        max-height: {square_height}px;
+    }}
+
+
+"""             
 SettingsCheckBox = f"""
     QCheckBox {{
         color: {default};
         font-size: 16px;
         border-radius: 5px;
         text-align: left center;
-        width: {width - 10}px;
-        height: {height}px;
-        max-width: {width - 10}px;
-        max-height: {height}px;
+        width: {square_width - 10}px;
+        height: {square_height}px;
+        max-width: {square_width - 10}px;
+        max-height: {square_height}px;
     }}
 
     QCheckBox::indicator:checked {{
-        image: url(:/input/toggle-on.svg);
-        width: {width - 10}px;
-        height: {height}px;
-        max-width: {width - 10}px;
-        max-height: {height}px;
+        image: url(:/input/toggle_square_on);
+        width: {square_width - 10}px;
+        height: {square_height}px;
+        max-width: {square_width - 10}px;
+        max-height: {square_height}px;
     }}
 
     QCheckBox::indicator{{
-        image: url(:/input/toggle-off.svg);
-        width: {width - 10}px;
-        height: {height}px;
-        max-width: {width - 10}px;
-        max-height: {height}px;
+        image: url(:/input/toggle_square_off);
+        width: {square_width - 10}px;
+        height: {square_height}px;
+        max-width: {square_width - 10}px;
+        max-height: {square_height}px;
         subcontrol-position: right center;
     }}
 """
@@ -80,18 +111,18 @@ WhiteEyeCheckBox = f"""
 
     QCheckBox::indicator:checked {{
         image: url(:/input/eye_white_open.svg);
-        width: {width * (1/3)}px;
-        height: {height * (2/3)}px;
-        max-width: {width * (1/3)}px;
-        max-height: {height * (2/3)}px;
+        width: {square_width * (1/3)}px;
+        height: {square_height * (2/3)}px;
+        max-width: {square_width * (1/3)}px;
+        max-height: {square_height * (2/3)}px;
     }}
 
     QCheckBox::indicator{{
         image: url(:/input/eye_white_closed.svg);
-        width: {width * (1/3)}px;
-        height: {height * (2/3)}px;
-        max-width: {width * (1/3)}px;
-        max-height: {height * (2/3)}px;
+        width: {square_width * (1/3)}px;
+        height: {square_height * (2/3)}px;
+        max-width: {square_width * (1/3)}px;
+        max-height: {square_height * (2/3)}px;
     }}
 """
 
@@ -104,18 +135,18 @@ BlackEyeCheckBox = f"""
 
     QCheckBox::indicator:checked {{
         image: url(:/input/eye_black_open.svg);
-        width: {width * (1/3)}px;
-        height: {height * (2/3)}px;
-        max-width: {width * (1/3)}px;
-        max-height: {height * (2/3)}px;
+        width: {square_width * (1/3)}px;
+        height: {square_height * (2/3)}px;
+        max-width: {square_width * (1/3)}px;
+        max-height: {square_height * (2/3)}px;
     }}
 
     QCheckBox::indicator{{
         image: url(:/input/eye_black_closed.svg);
-        width: {width * (1/3)}px;
-        height: {height * (2/3)}px;
-        max-width: {width * (1/3)}px;
-        max-height: {height * (2/3)}px;
+        width: {square_width * (1/3)}px;
+        height: {square_height * (2/3)}px;
+        max-width: {square_width * (1/3)}px;
+        max-height: {square_height * (2/3)}px;
     }}
 """
 eye = "black" if not dark_mode_on else "white"
@@ -130,18 +161,18 @@ EyeCheckBox = f"""
 
     QCheckBox::indicator:checked {{
         image: url(:/input/eye_{eye}_open.svg);
-        width: {width * (1/3)}px;
-        height: {height * (2/3)}px;
-        max-width: {width * (1/3)}px;
-        max-height: {height * (2/3)}px;
+        width: {square_width * (1/3)}px;
+        height: {square_height * (2/3)}px;
+        max-width: {square_width * (1/3)}px;
+        max-height: {square_height * (2/3)}px;
     }}
 
     QCheckBox::indicator{{
         image: url(:/input/eye_{eye}_closed.svg);
-        width: {width * (1/3)}px;
-        height: {height * (2/3)}px;
-        max-width: {width * (1/3)}px;
-        max-height: {height * (2/3)}px;
+        width: {square_width * (1/3)}px;
+        height: {square_height * (2/3)}px;
+        max-width: {square_width * (1/3)}px;
+        max-height: {square_height * (2/3)}px;
     }}
 """
 def custom_id(id):
@@ -154,18 +185,18 @@ def custom_id(id):
 
         QCheckBox{id}::indicator:checked {{
             image: url(:/input/eye_{eye}_open.svg);
-            width: {width * (1/3)}px;
-            height: {height * (2/3)}px;
-            max-width: {width * (1/3)}px;
-            max-height: {height * (2/3)}px;
+            width: {square_width * (1/3)}px;
+            height: {square_height * (2/3)}px;
+            max-width: {square_width * (1/3)}px;
+            max-height: {square_height * (2/3)}px;
         }}
 
         QCheckBox{id}::indicator{{
             image: url(:/input/eye_{eye}_closed.svg);
-            width: {width * (1/3)}px;
-            height: {height * (2/3)}px;
-            max-width: {width * (1/3)}px;
-            max-height: {height * (2/3)}px;
+            width: {square_width * (1/3)}px;
+            height: {square_height * (2/3)}px;
+            max-width: {square_width * (1/3)}px;
+            max-height: {square_height * (2/3)}px;
         }}
     """
     return EyeCheckBox

@@ -17,7 +17,7 @@ from database.model import Model
 import assets.resources
 from widgetStyles.PushButton import PushButton
 from widgetStyles.LineEdit import LineEdit
-from widgetStyles.QCheckBox import CheckBox
+from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.TextEdit import TextEdit
 from widgetStyles.Dialog import Dialog
 from utils.helpers import StyleSheet
@@ -84,7 +84,7 @@ class Note_window(QDialog, Ui_Note_Window):
         styles = [
             PushButton,
             LineEdit,
-            CheckBox,
+            CheckBoxSquare,
             TextEdit,
             Dialog,
         ]

@@ -8,6 +8,9 @@ orange = "#FF4400"
 light_blue = "#005BC6"
 dark_blue = "#051456"
 
+light_grey = "#EFEFEF"
+dark_grey = "#222222"
+
 class ProgressBar:
     red = "#b10000"
     orange = "#D26500"

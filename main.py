@@ -1,10 +1,12 @@
+from datetime import date, datetime
 import sys
 import time
 import json
+from turtle import update
 import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
-from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent, QFontDatabase
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent, QFontDatabase, QShowEvent
 from PyQt5.QtCore import QTimer, Qt
 
 from designs.python.main_widget import Ui_main_container
@@ -27,6 +29,7 @@ from utils.helpers import StyleSheet
 from windows.register_window import Register
 from windows.login_window import Login
 from windows.setup_window import InitialSetup
+from windows.update_password import UpdatePassword
 
 from threads.google_thread import upload_google
 from threads.onedrive_thread import upload_onedrive
@@ -51,11 +54,28 @@ class Main(Ui_main_container, QWidget):
         self.tab_widget.currentChanged.connect(self.changed)    
         
         user = Model().read("user")
+
         if len(user) != 1:
             self.register = Register()
             self.register.register_close_signal.connect(self.register_event)
             self.register.exec_()
-
+        else:
+            password_exp_string: str = user[0][6]
+            
+            # Get the datetime object from the string
+            exp_date = datetime.strptime(password_exp_string, "%Y-%m-%d")
+            
+            # Convert to date objext
+            password_exp_date = date(exp_date.year, exp_date.month, exp_date.day)
+            
+            # Get the current date
+            current_date = date.today()
+            
+            if password_exp_date < current_date:
+                update_password_window = UpdatePassword()
+                # update_password_window.close_signal.connect(lambda res: update_password_window.close() if res else None)
+                update_password_window.close_signal.connect(lambda: print("the signal fired")) 
+                update_password_window.exec_()
 
     def register_event(self, event):
         if event == "window closed":
@@ -63,9 +83,7 @@ class Main(Ui_main_container, QWidget):
         elif event == "user created":
             self.register.close()
             InitialSetup().exec_()
-    
-            
-        
+     
        
     def read_style(self):
         styles = [TabWidget, Widget, TabBar]

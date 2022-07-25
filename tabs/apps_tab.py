@@ -17,7 +17,7 @@ from windows.apps_edit_window import AppsEdit
 
 from widgets.app_item import AppItem
 from widgetStyles.PushButton import PushButton
-from widgetStyles.QCheckBox import CheckBox
+from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.Line import Line
 from widgetStyles.Label import Label
 
@@ -52,7 +52,7 @@ class Apps_tab(QWidget, Ui_apps_tab):
         return self
 
     def read_styles(self):
-        styles = [CheckBox, PushButton, Line, Label]
+        styles = [CheckBoxSquare, PushButton, Line, Label]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         widgetList = [

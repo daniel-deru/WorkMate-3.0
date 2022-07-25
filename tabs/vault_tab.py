@@ -27,7 +27,7 @@ from windows.app_vault_view_window import AppVaultView
 from windows.crypto_vault_view_window import CryptoVaultViewWindow
 from windows.general_vault_view_window import GeneralVaultView
 
-from widgetStyles.QCheckBox import CheckBox
+from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.PushButton import PushButton, VaultButton
 from widgetStyles.Label import Label
 from widgetStyles.ScrollArea import ScrollArrea
@@ -61,7 +61,7 @@ class Vault_tab(QWidget, Ui_Vault_tab):
         font = Model().read('settings')[0][2]
         styles = [
             PushButton,
-            CheckBox,
+            CheckBoxSquare,
             Label,
             ScrollArrea,
             ScrollBar

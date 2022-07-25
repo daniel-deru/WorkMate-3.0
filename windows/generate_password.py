@@ -23,6 +23,7 @@ from widgetStyles.QCheckBox import CheckBox, custom_eye
 from widgetStyles.HSlider import HSlider
 from widgetStyles.ProgressBar import ProgressBar, custom_color_bar
 from widgetStyles.styles import ProgressBar as ProgressBarStyle
+from widgetStyles.Frame import PassGenFrame
 
 class GeneratePasswordWindow(Ui_GeneratePasswordWindow, QDialog):
     def __init__(self) -> None:
@@ -72,7 +73,8 @@ class GeneratePasswordWindow(Ui_GeneratePasswordWindow, QDialog):
             custom_eye("#chk_show"),
             CheckBox,
             HSlider,
-            ProgressBar
+            ProgressBar,
+            PassGenFrame("#frame_checkbox_container")
         ]
         
         stylesheet = StyleSheet(widget_list).create()

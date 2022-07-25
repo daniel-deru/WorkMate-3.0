@@ -2,8 +2,9 @@ import sys
 import os
 import pyperclip
 import math
+from datetime import date, timedelta
 
-from PyQt5.QtWidgets import QDialog, QLineEdit, QGridLayout, QWidget, QGraphicsBlurEffect, QWidget, QMessageBox
+from PyQt5.QtWidgets import QDialog, QLineEdit, QGridLayout, QWidget, QGraphicsBlurEffect, QWidget
 from PyQt5.QtGui import QIcon, QPixmap, QFont
 from PyQt5.QtCore import Qt, pyqtSignal
 
@@ -25,16 +26,19 @@ from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
 from widgetStyles.Widget import SideWidget
 from widgetStyles.QCheckBox import BlackEyeCheckBox
+from widgetStyles.Calendar import Calendar
+from widgetStyles.DateEdit import DateEditForm
 
 from utils.message import Message
 
-class Register(QDialog, Ui_Register):
+class Register(Ui_Register, QDialog):
     register_close_signal = pyqtSignal(str)
     def __init__(self):
         super(Register, self).__init__()
         self.setupUi(self)
         
         self.passphrase_safe = False
+        self.dte_password_exp.setDate(date.today() + timedelta(days=90))
         
         pixmap = QPixmap(":/other/SMT Logo.png")
         app_logo_pixmap = QPixmap(":/other/app_logo")
@@ -71,6 +75,7 @@ class Register(QDialog, Ui_Register):
         email = self.lnedt_email.text()
         password1 = self.lnedt_password.text()
         password2 = self.lnedt_password2.text()
+        password_exp = self.dte_password_exp.date().toPyDate()
 
         fields = [
             name,
@@ -95,7 +100,8 @@ class Register(QDialog, Ui_Register):
                 "name": name,
                 "email": email,
                 "password": password1,
-                "passphrase": self.words
+                "passphrase": self.words,
+                "password_exp": password_exp
             }
             
             message = PassphraseCopyWindow()
@@ -125,7 +131,9 @@ class Register(QDialog, Ui_Register):
             LineEdit,
             Dialog,
             SideWidget,
-            BlackEyeCheckBox
+            BlackEyeCheckBox,
+            DateEditForm,
+            Calendar
         ]
 
         stylesheet = StyleSheet(styles).create()

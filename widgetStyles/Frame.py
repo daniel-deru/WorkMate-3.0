@@ -5,6 +5,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from widgetStyles.styles import color, mode, default, light_blue
 
+from widgetStyles.styles import dark_grey, light_grey
+from database.model import Model
+
+dark_mode = int(Model().read("settings")[0][1])
+
+frame_background = dark_grey if dark_mode else light_grey
+
 Frame = f"""
     QFrame {{
         font-size: 16px;
@@ -42,3 +49,15 @@ TodoFrameComplete = f"""
         padding: 0px;
     }}
 """
+
+
+def create_frame(id):
+    PassGenFrame = f"""
+        QFrame{id}{{
+            border-radius: 10px;
+            background: {frame_background};
+        }}
+    """
+    return PassGenFrame
+
+PassGenFrame = create_frame

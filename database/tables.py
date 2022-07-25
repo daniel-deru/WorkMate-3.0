@@ -45,7 +45,8 @@ class Tables:
             "email": "TEXT NOT NULL",
             "password": "TEXT NOT NULL",
             "passphrase": "TEXT NOT NULL",
-            "twofa_key": "TEXT"
+            "twofa_key": "TEXT",
+            "password_exp": "TEXT"
         }
         
         vault = {
