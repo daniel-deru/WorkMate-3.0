@@ -39,6 +39,8 @@ class Main(Ui_main_container, QWidget):
     def __init__(self):
         super(Main, self).__init__()
         
+        self.expired_passwords: list = []
+        
         QFontDatabase.addApplicationFont(":/fonts/RobotoCondensed")
         
         self.timer = QTimer(self) 
@@ -61,7 +63,37 @@ class Main(Ui_main_container, QWidget):
             self.register.register_close_signal.connect(self.register_event)
             self.register.exec_()
         else:
-            pass
+            self.get_user_password_expiration()
+            self.get_vault_password_expiration()
+            
+            # Check if there are any expired passwords
+            if len(self.expired_passwords) > 0:
+                update_password(self)
+        
+        
+    def get_vault_password_expiration(self):
+        # Get all the vault entries
+        all_vault_entries = Model().read("vault")
+        
+        # Get only the app and crypto entries
+        app_crypto_entries = list(filter(lambda entry: entry[1] != 'general', all_vault_entries))
+        
+        for entry in app_crypto_entries:
+            vault_data = json.loads(entry[3])
+            exp_date_string = vault_data['password_exp']
+            
+            # Get the datetime object from the date string
+            exp_datetime = datetime.strptime(exp_date_string, "%Y-%m-%d")
+            
+            # Get the date object from the datetime object
+            exp_date = date(exp_datetime.year, exp_datetime.month, exp_datetime.day)
+            
+            # Get the current date
+            current_date = date.today()
+            
+            # Put the expired passwords in the expired passwords list
+            if exp_date < current_date:
+                self.expired_passwords.append(["vault", entry])
            
     
     def get_user_password_expiration(self):
@@ -77,15 +109,14 @@ class Main(Ui_main_container, QWidget):
         current_date = date.today()
         
         if password_exp_date < current_date:
-            email = self.user[0][2]
-            password = self.user[0][3]
-            update_password(self)
-            # update_password_window = UpdatePassword(email, password)
-            # update_password_window.exec_()
-            
+            self.expired_passwords.append(["user", self.user[0]])
+    
+    # Get the response from asking if the user wants to update passwords 
     @pyqtSlot(bool)  
     def update_password_response(self, response):
-        print(response)
+        if response == True:
+            update_password_window = UpdatePassword(self.expired_passwords)
+            update_password_window.exec_()
 
     def register_event(self, event):
         if event == "window closed":

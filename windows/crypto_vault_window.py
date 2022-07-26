@@ -159,6 +159,8 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         public_key: str = self.lne_public.text()
         private_key: str = self.lne_private.text()
         password_exp = self.dte_password_exp.date().toPyDate()
+        
+        password_exp_string = datetime.strftime(password_exp, "%Y-%m-%d")
 
         valid_submit: bool = True
 
@@ -201,7 +203,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
                 'words': " ".join(words),
                 'description': description,
                 'password': password1,
-                "password_exp": password_exp
+                "password_exp": password_exp_string
             }
             
             

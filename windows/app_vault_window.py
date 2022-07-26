@@ -107,6 +107,8 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         password: str = self.lne_password.text()
         confirm_password: str = self.lne_password2.text()
         password_exp = self.dte_password_exp.date().toPyDate()
+        
+        password_exp_string = datetime.strftime(password_exp, "%Y-%m-%d")
 
         name_list: list[str] = ["name", "index", "path", "username", "email", "password"]
         data_list: list[str] = [ name, index, path, username, email, password ]
@@ -118,8 +120,8 @@ class AppVaultWindow(Ui_AppVault, QDialog):
                 Message(f"Please add {name_list[i]}", f"Missing {name_list[i]}").exec_()
                 valid_submit = False
                 
-        if name in self.current_apps:
-            Message(f"An App with this name already exists").exec_()
+        if not self.app:
+            Message(f"An App with this name already exists", "App already exists").exec_()
             valid_submit = False
 
         if valid_submit:
@@ -130,7 +132,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
                 'username': username,
                 'email': email,
                 'password': password,
-                'password_exp': password_exp
+                'password_exp': password_exp_string
             })
             
             if password != confirm_password:

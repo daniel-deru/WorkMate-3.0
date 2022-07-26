@@ -52,9 +52,6 @@ class Login(QDialog, Ui_Login):
         font: str = settings[2]
         checkbox = WhiteEyeCheckBox if dark_mode_on else BlackEyeCheckBox
         
-        print(dark_mode_on == True)
-        print(dark_mode_on)
-        print(type(dark_mode_on))
         styles = [
             PushButton,
             Label,

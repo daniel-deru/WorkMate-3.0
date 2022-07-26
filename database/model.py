@@ -211,7 +211,7 @@ class Model:
             self.db.close()
         
         
-        print(encrypted_column_names)
+        # print(encrypted_column_names)
         
     
     def drop_table(self, table):

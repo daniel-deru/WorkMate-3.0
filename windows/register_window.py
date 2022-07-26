@@ -213,6 +213,7 @@ class Register(Ui_Register, QDialog):
         word_widget.setGraphicsEffect(blur)
     
     def copy_word(self, some):
-        print(some)
+        # print(some)
+        pass
 
 

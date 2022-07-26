@@ -31,7 +31,6 @@ class AutoType(QObject):
             current_left = time.time()
             
             diff_time = current_left - self.previous_left
-            print(diff_time)
             self.previous_left = current_left
             if diff_time < 0.3:
                 time.sleep(1)

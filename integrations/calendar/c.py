@@ -198,7 +198,6 @@ class Google:
             
             while not done:
                 status, done = downloader.next_chunk()
-                print(f"Download {int(status.progress() * 100)}%")
             
             download.seek(0)
             name = DB_NAME

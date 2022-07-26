@@ -61,3 +61,4 @@ def create_frame(id):
     return PassGenFrame
 
 PassGenFrame = create_frame
+FrameContainer = create_frame
