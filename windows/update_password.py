@@ -13,3 +13,8 @@ class UpdatePassword(Ui_UpdatePassword, QDialog):
     def __init__(self, email, password, account="Trust Lock", type="user") -> None:
         super(UpdatePassword, self).__init__()
         self.setupUi(self)
+        
+        self.lbl_account_display.setText(account)
+        self.lbl_email_display.setText(email)
+        
+    

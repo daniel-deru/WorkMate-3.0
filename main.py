@@ -7,7 +7,7 @@ import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent, QFontDatabase, QShowEvent
-from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtCore import QTimer, Qt, pyqtSlot
 
 from designs.python.main_widget import Ui_main_container
 from tabs.apps_tab import Apps_tab
@@ -33,6 +33,7 @@ from windows.update_password import UpdatePassword
 
 from threads.google_thread import upload_google
 from threads.onedrive_thread import upload_onedrive
+from threads.update_password_thread import update_password
 
 class Main(Ui_main_container, QWidget):
     def __init__(self):
@@ -53,29 +54,38 @@ class Main(Ui_main_container, QWidget):
 
         self.tab_widget.currentChanged.connect(self.changed)    
         
-        user = Model().read("user")
+        self.user = Model().read("user")
 
-        if len(user) != 1:
+        if len(self.user) != 1:
             self.register = Register()
             self.register.register_close_signal.connect(self.register_event)
             self.register.exec_()
         else:
-            password_exp_string: str = user[0][6]
+            pass
+           
+    
+    def get_user_password_expiration(self):
+        password_exp_string: str = self.user[0][6]
+        
+        # Get the datetime object from the string
+        exp_date = datetime.strptime(password_exp_string, "%Y-%m-%d")
+        
+        # Convert to date objext
+        password_exp_date = date(exp_date.year, exp_date.month, exp_date.day)
+        
+        # Get the current date
+        current_date = date.today()
+        
+        if password_exp_date < current_date:
+            email = self.user[0][2]
+            password = self.user[0][3]
+            update_password(self)
+            # update_password_window = UpdatePassword(email, password)
+            # update_password_window.exec_()
             
-            # Get the datetime object from the string
-            exp_date = datetime.strptime(password_exp_string, "%Y-%m-%d")
-            
-            # Convert to date objext
-            password_exp_date = date(exp_date.year, exp_date.month, exp_date.day)
-            
-            # Get the current date
-            current_date = date.today()
-            
-            if password_exp_date < current_date:
-                update_password_window = UpdatePassword()
-                # update_password_window.close_signal.connect(lambda res: update_password_window.close() if res else None)
-                update_password_window.close_signal.connect(lambda: print("the signal fired")) 
-                update_password_window.exec_()
+    @pyqtSlot(bool)  
+    def update_password_response(self, response):
+        print(response)
 
     def register_event(self, event):
         if event == "window closed":
