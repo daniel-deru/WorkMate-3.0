@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_ResetPassword(object):
     def setupUi(self, ResetPassword):
         ResetPassword.setObjectName("ResetPassword")
-        ResetPassword.resize(400, 182)
+        ResetPassword.resize(400, 184)
         self.verticalLayout = QtWidgets.QVBoxLayout(ResetPassword)
         self.verticalLayout.setObjectName("verticalLayout")
         self.lbl_message = QtWidgets.QLabel(ResetPassword)
@@ -55,6 +55,7 @@ class Ui_ResetPassword(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.btn_reset = QtWidgets.QPushButton(ResetPassword)
+        self.btn_reset.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_reset.setObjectName("btn_reset")
         self.horizontalLayout.addWidget(self.btn_reset)
         self.verticalLayout.addLayout(self.horizontalLayout)

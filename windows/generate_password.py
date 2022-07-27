@@ -5,9 +5,9 @@ import os
 import math
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from PyQt5.QtWidgets import QDialog, QSlider, QLineEdit
+from PyQt5.QtWidgets import QDialog, QSlider, QLineEdit, QWidget
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QCursor, QKeyEvent, QMouseEvent
+from PyQt5.QtGui import QFont, QIcon
 
 from designs.python.generate_password import Ui_GeneratePasswordWindow
 
@@ -25,22 +25,26 @@ from widgetStyles.ProgressBar import ProgressBar, custom_color_bar
 from widgetStyles.styles import ProgressBar as ProgressBarStyle
 from widgetStyles.Frame import PassGenFrame
 
+from database.model import Model
+
 class GeneratePasswordWindow(Ui_GeneratePasswordWindow, QDialog):
     def __init__(self) -> None:
         super(GeneratePasswordWindow, self).__init__()
         self.setupUi(self)
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.read_styles()
         self.password_length: int = 12
         self.lbl_display_length.setText(str(self.password_length))
         
         self.characters = {
-            'uppercase': [False, CHAR_GROUPS.UPPERCASE],
-            'lowercase': [False, CHAR_GROUPS.LOWERCASE],
-            'numbers': [False, CHAR_GROUPS.NUMBERS],
-            'math': [False, CHAR_GROUPS.MATH],
-            'punctuation': [False, CHAR_GROUPS.PUNCTUATION],
-            'special': [False, CHAR_GROUPS.SPECIAL],
-            'brackets': [False, CHAR_GROUPS.BRACKETS]
+            'uppercase': [True, CHAR_GROUPS.UPPERCASE],
+            'lowercase': [True, CHAR_GROUPS.LOWERCASE],
+            'numbers': [True, CHAR_GROUPS.NUMBERS],
+            'math': [True, CHAR_GROUPS.MATH],
+            'punctuation': [True, CHAR_GROUPS.PUNCTUATION],
+            'special': [True, CHAR_GROUPS.SPECIAL],
+            'brackets': [True, CHAR_GROUPS.BRACKETS]
         }
         
         self.slide_length.valueChanged.connect(self.set_length)
@@ -56,7 +60,7 @@ class GeneratePasswordWindow(Ui_GeneratePasswordWindow, QDialog):
         f: QLineEdit = self.lne_password
         p: QLineEdit = QLineEdit.Password
         n: QLineEdit = QLineEdit.Normal
-        self.chk_show.stateChanged.connect(lambda s: f.setEchoMode(p) if s else f.setEchoMode(n))
+        self.chk_show.stateChanged.connect(lambda s: f.setEchoMode(p) if not s else f.setEchoMode(n))
         
         self.btn_copy.clicked.connect(lambda: pyperclip.copy(self.lne_password.text()))
         
@@ -79,6 +83,24 @@ class GeneratePasswordWindow(Ui_GeneratePasswordWindow, QDialog):
         
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
+        
+        font_name = Model().read("settings")[0][2]
+        font = QFont(font_name)
+        
+        font_list = [
+            self.lbl_password,      self.lne_password,
+            self.chk_uppercase,     self.chk_lowercase,
+            self.chk_numbers,       self.chk_math,
+            self.chk_punctuation,   self.chk_special,
+            self.chk_brackets,      self.lbl_length,
+            self.lbl_display_length,self.lbl_exclude,
+            self.lne_exclude,       self.btn_copy,
+            self.btn_generate,      self.bar_strength
+        ]
+        
+        for widget in font_list:
+            widget: QWidget
+            widget.setFont(font)
         
     def generate_password(self):
         character_list = []

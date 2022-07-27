@@ -93,7 +93,8 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
             self.lbl_words, self.lne_description, self.lne_name,
             self.cmb_num_words, self.lne_password2, self.lne_private,
             self.lne_public, self.lbl_words, self.btn_save,
-            self.lne_password1, self.lbl_generate_password
+            self.lne_password1, self.lbl_generate_password,
+            self.lbl_password_exp, self.dte_password_exp
         ]
         
         set_font(font_widgets)

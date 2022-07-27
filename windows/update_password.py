@@ -4,9 +4,9 @@ import os
 from datetime import date, datetime, timedelta
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from PyQt5.QtWidgets import QDialog, QMessageBox, QLineEdit
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, QSize
-from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QDialog, QMessageBox, QLineEdit, QWidget
+from PyQt5.QtCore import pyqtSignal, pyqtSlot, QSize, Qt
+from PyQt5.QtGui import QIcon, QFont
 
 from designs.python.update_password import Ui_UpdatePassword
 
@@ -31,6 +31,8 @@ class UpdatePassword(Ui_UpdatePassword, QDialog):
         super(UpdatePassword, self).__init__()
         self.setupUi(self)
         self.read_styles()
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.data = data
         self.queue = [self.data.pop(-1)]
         self.dte_password_exp.setDate(date.today() + timedelta(days=90))
@@ -95,6 +97,28 @@ class UpdatePassword(Ui_UpdatePassword, QDialog):
         
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
+        
+        font_name = Model().read("settings")[0][2]
+        font = QFont(font_name)
+        
+        font_list = [
+            self.lbl_desc,
+            self.lbl_account,
+            self.lbl_account_display,
+            self.lbl_generate_password,
+            self.lbl_password1,
+            self.lbl_password2,
+            self.lne_password1,
+            self.lne_password2,
+            self.lbl_password_exp,
+            self.dte_password_exp,
+            self.btn_same,
+            self.btn_save
+        ]
+        
+        for widget in font_list:
+            widget: QWidget
+            widget.setFont(font)
         
         self.tbtn_password_generator.setIcon(QIcon(":/button_icons/password"))
         self.tbtn_password_generator.setIconSize(QSize(30, 20))

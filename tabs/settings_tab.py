@@ -152,7 +152,9 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             self.lbl_save_remote,
             self.lbl_restore_remote,
             self.lbl_save_local,
-            self.lbl_restore_local
+            self.lbl_restore_local,
+            self.lbl_google_integration,
+            self.lbl_generate_password
         ]
         
         widget: QWidget

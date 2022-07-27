@@ -87,15 +87,17 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.tbtn_password_generator.setIconSize(QSize(30, 20))
         
         font_widget = [
-            self.lbl_email,     self.lbl_index,
-            self.lbl_name,      self.lbl_password,
-            self.lbl_path,      self.lbl_username,
-            self.lne_email,     self.spn_index,
-            self.lne_name,      self.lne_password,
-            self.lne_path,      self.lne_username,
-            self.btn_desktop,   self.btn_save,
-            self.lbl_password2, self.lne_password2,
+            self.lbl_email,         self.lbl_index,
+            self.lbl_name,          self.lbl_password,
+            self.lbl_path,          self.lbl_username,
+            self.lne_email,         self.spn_index,
+            self.lne_name,          self.lne_password,
+            self.lne_path,          self.lne_username,
+            self.btn_desktop,       self.btn_save,
+            self.lbl_password2,     self.lne_password2,
             self.lbl_password_generator,
+            self.lbl_password_expiration,
+            self.dte_password_exp,
         ]
         
         set_font(font_widget)

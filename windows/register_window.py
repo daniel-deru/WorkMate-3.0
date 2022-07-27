@@ -115,14 +115,8 @@ class Register(Ui_Register, QDialog):
             message = PassphraseCopyWindow()
             message.yes_signal.connect(self.set_passphrase_safe)
             message.exec_()
-            # reply = Message(
-            #     "DID YOU SAVE YOUR PASSPHRASE IN A SAFE PLACE?", 
-            #     "Are you sure?", 
-            #     "QLabel{ color: red;font-size: 30px; text-align: center; }").prompt()
             
             if not self.passphrase_safe: return
-            
-            # if reply == QMessageBox.No: return
 
             Model().save("user", data)
             self.registered = True
@@ -158,22 +152,15 @@ class Register(Ui_Register, QDialog):
         self.tbtn_generate_password.setIconSize(QSize(30, 20))
         
         font_widgets = [
-            self.lbl_company,
-            self.lbl_create_account,
-            self.lbl_developed_by,
-            self.lbl_email,
-            self.lbl_name,
-            self.lbl_passphrase_desc,
-            self.lbl_password,
-            self.lbl_password2,
-            self.lbl_warning,
-            self.lnedt_email,
-            self.lnedt_name,
-            self.lnedt_password,
-            self.lnedt_password2,
-            self.btn_copy,
-            self.btn_register,
-            self.lbl_generate_password
+            self.lbl_company,           self.lbl_create_account,
+            self.lbl_developed_by,      self.lbl_email,
+            self.lbl_name,              self.lbl_passphrase_desc,
+            self.lbl_password,          self.lbl_password2,
+            self.lbl_warning,           self.lnedt_email,
+            self.lnedt_name,            self.lnedt_password,
+            self.lnedt_password2,       self.btn_copy,
+            self.btn_register,          self.lbl_generate_password,
+            self.lbl_password_exp,      self.dte_password_exp
         ]
         
         widget: QWidget
