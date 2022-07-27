@@ -182,7 +182,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.btn_save_google_drive.setIconSize(QSize(20, 20))
         self.btn_restore_local.setIconSize(QSize(20, 20))
         self.btn_save_local.setIconSize(QSize(20, 20))
-        self.btn_generate_password.setIconSize(QSize(20, 20))
+        self.btn_generate_password.setIconSize(QSize(30, 20))
     
     def login(self, signal):
         if signal == "success":

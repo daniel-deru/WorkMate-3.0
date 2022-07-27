@@ -4,7 +4,7 @@ from json import dumps
 from datetime import date, datetime, timedelta
 
 from PyQt5.QtWidgets import QDialog, QFileDialog, QLineEdit, QWidget
-from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtCore import pyqtSignal, Qt, pyqtSlot, QSize
 from PyQt5.QtGui import QFont, QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -14,7 +14,7 @@ DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 from designs.python.app_vault_window import Ui_AppVault
 
 from widgetStyles.Dialog import Dialog
-from widgetStyles.PushButton import PushButton
+from widgetStyles.PushButton import PushButton, IconToolButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Label import Label
 from widgetStyles.SpinBox import SpinBox
@@ -25,6 +25,8 @@ from utils.helpers import StyleSheet, json_to_dict, get_checkbox, set_font
 from utils.message import Message
 
 from database.model import Model
+
+from windows.generate_password import GeneratePasswordWindow
 
 class AppVaultWindow(Ui_AppVault, QDialog):
     app_update_signal = pyqtSignal(bool)
@@ -54,9 +56,14 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.read_styles()
         self.btn_save.clicked.connect(self.save)
         self.btn_desktop.clicked.connect(self.add_from_desktop)
+        self.tbtn_password_generator.clicked.connect(self.generate_password)
         
         self.chk_show_password.stateChanged.connect(lambda show: self.show_password(show, self.lne_password))
         self.chk_password2.stateChanged.connect(lambda show: self.show_password(show, self.lne_password2))
+    
+    @pyqtSlot()
+    def generate_password(self):
+        GeneratePasswordWindow().exec_()
         
 
     def read_styles(self):
@@ -69,29 +76,26 @@ class AppVaultWindow(Ui_AppVault, QDialog):
             SpinBox,
             checkbox,
             Calendar,
-            DateEditForm
+            DateEditForm,
+            IconToolButton()
         ]
 
         stylesheet: str = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
         
+        self.tbtn_password_generator.setIcon(QIcon(":/button_icons/password"))
+        self.tbtn_password_generator.setIconSize(QSize(30, 20))
+        
         font_widget = [
-            self.lbl_email,
-            self.lbl_index,
-            self.lbl_name,
-            self.lbl_password,
-            self.lbl_path,
-            self.lbl_username,
-            self.lne_email,
-            self.spn_index,
-            self.lne_name,
-            self.lne_password,
-            self.lne_path,
-            self.lne_username,
-            self.btn_desktop,
-            self.btn_save,
-            self.lbl_password2,
-            self.lne_password2
+            self.lbl_email,     self.lbl_index,
+            self.lbl_name,      self.lbl_password,
+            self.lbl_path,      self.lbl_username,
+            self.lne_email,     self.spn_index,
+            self.lne_name,      self.lne_password,
+            self.lne_path,      self.lne_username,
+            self.btn_desktop,   self.btn_save,
+            self.lbl_password2, self.lne_password2,
+            self.lbl_password_generator,
         ]
         
         set_font(font_widget)
@@ -120,7 +124,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
                 Message(f"Please add {name_list[i]}", f"Missing {name_list[i]}").exec_()
                 valid_submit = False
                 
-        if not self.app:
+        if not self.app and name in self.current_apps:
             Message(f"An App with this name already exists", "App already exists").exec_()
             valid_submit = False
 

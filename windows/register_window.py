@@ -6,7 +6,7 @@ from datetime import date, timedelta
 
 from PyQt5.QtWidgets import QDialog, QLineEdit, QGridLayout, QWidget, QGraphicsBlurEffect, QWidget
 from PyQt5.QtGui import QIcon, QPixmap, QFont
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSignal, QSize, pyqtSlot
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -20,7 +20,7 @@ import assets.resources
 
 from widgets.register_word import RegisterWordButton
 
-from widgetStyles.PushButton import PushButton
+from widgetStyles.PushButton import PushButton, IconToolButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
@@ -30,6 +30,8 @@ from widgetStyles.Calendar import Calendar
 from widgetStyles.DateEdit import DateEditForm
 
 from utils.message import Message
+
+from windows.generate_password import GeneratePasswordWindow
 
 class Register(Ui_Register, QDialog):
     register_close_signal = pyqtSignal(str)
@@ -55,6 +57,8 @@ class Register(Ui_Register, QDialog):
         
         self.btn_register.clicked.connect(self.register_clicked)
         self.btn_copy.clicked.connect(lambda: pyperclip.copy(words))
+        self.tbtn_generate_password.clicked.connect(self.generate_password)
+        
         self.chk_password.stateChanged.connect(lambda: self.show_hide_password(self.lnedt_password, self.chk_password))
         self.chk_password2.stateChanged.connect(lambda: self.show_hide_password(self.lnedt_password2, self.chk_password2))
         
@@ -68,6 +72,10 @@ class Register(Ui_Register, QDialog):
         
         self.set_blur()
         
+    
+    @pyqtSlot()
+    def generate_password(self):
+        GeneratePasswordWindow().exec_()
         
 
     def register_clicked(self):
@@ -133,7 +141,8 @@ class Register(Ui_Register, QDialog):
             SideWidget,
             BlackEyeCheckBox,
             DateEditForm,
-            Calendar
+            Calendar,
+            IconToolButton()
         ]
 
         stylesheet = StyleSheet(styles).create()
@@ -144,6 +153,9 @@ class Register(Ui_Register, QDialog):
         self.lbl_passphrase_desc.setStyleSheet("font-weight: 700;")
         
         font_name = Model().read("settings")[0][2]
+        
+        self.tbtn_generate_password.setIcon(QIcon(":/button_icons/password"))
+        self.tbtn_generate_password.setIconSize(QSize(30, 20))
         
         font_widgets = [
             self.lbl_company,
@@ -160,7 +172,8 @@ class Register(Ui_Register, QDialog):
             self.lnedt_password,
             self.lnedt_password2,
             self.btn_copy,
-            self.btn_register
+            self.btn_register,
+            self.lbl_generate_password
         ]
         
         widget: QWidget

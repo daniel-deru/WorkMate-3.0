@@ -1,6 +1,7 @@
 import sys
 import os
 import math
+from turtle import dot
 import pyperclip
 
 from PyQt5.QtWidgets import (
@@ -42,7 +43,7 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.data = json_to_dict(self.secret[3])
         self.settings = Model().read("settings")[0]
-        self.night_mode_on: int = self.settings[1]
+        self.night_mode_on: int = int(self.settings[1])
         self.font_name = self.settings[2]
         self.setupUi(self)
         self.setWindowIcon(QIcon(":/other/app_icon"))
@@ -55,13 +56,14 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         self.tbtn_username.clicked.connect(lambda: self.copy("name"))
         self.tbtn_password.clicked.connect(lambda: self.copy("password"))
         self.tbtn_public.clicked.connect(lambda: self.copy("public_key"))
+        self.tbtn_private.clicked.connect(lambda: self.private_login(self.tbtn_private))
+        self.tbtn_password_exp.clicked.connect(lambda: self.copy("password_exp"))
         
         self.chk_username.stateChanged.connect(lambda: self.view("name", self.lbl_username, self.chk_username))
         self.chk_password.stateChanged.connect(lambda: self.view("password", self.lbl_password, self.chk_password))
         self.chk_public.stateChanged.connect(lambda: self.view("public_key", self.lbl_public, self.chk_public))
-        
-        self.tbtn_private.clicked.connect(lambda: self.private_login(self.tbtn_private))
-        self.chk_private.stateChanged.connect(lambda: self.private_login(self.chk_private))
+        self.chk_password_exp.stateChanged.connect(lambda: self.view("password_exp", self.lbl_password_exp, self.chk_password_exp))
+        self.chk_private.stateChanged.connect(lambda: self.private_login(self.chk_private))        
         
     def read_styles(self):
         settings = Model().read("settings")[0]
@@ -93,6 +95,8 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
             self.lbl_private_view,
             self.lbl_public_view,
             self.lbl_username_view,
+            self.lbl_password_exp,
+            self.lbl_password_exp_view
         ]
 
         widget: QWidget
@@ -121,20 +125,36 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         self.lbl_password.setText(dots)
         self.lbl_private.setText(dots)
         self.lbl_public.setText(dots)
+        self.lbl_password_exp.setText(dots)
 
     def set_icons(self):
                 
-        icon_path: str = "./assets/copy_white.svg" if self.night_mode_on else "./assets/copy_black.svg"
+        icon_path: str = ":/input/copy_white" if self.night_mode_on else ":/input/copy_black"
         icon: QIcon = QIcon(icon_path)
         
-        self.tbtn_password.setIcon(icon)
-        self.tbtn_password.setIconSize(QSize(20, 20))
-        self.tbtn_private.setIcon(icon)
-        self.tbtn_private.setIconSize(QSize(20, 20))
-        self.tbtn_username.setIcon(icon)
-        self.tbtn_username.setIconSize(QSize(20, 20))
-        self.tbtn_public.setIcon(icon)
-        self.tbtn_public.setIconSize(QSize(20, 20))
+        button_list = [
+            self.tbtn_password,
+            self.tbtn_private,
+            self.tbtn_username,
+            self.tbtn_public,
+            self.tbtn_password_exp
+        ]
+        
+        for button in button_list:
+            button: QToolButton
+            button.setIcon(icon)
+            button.setIconSize(QSize(20, 20))
+        
+        # self.tbtn_password.setIcon(icon)
+        # self.tbtn_password.setIconSize(QSize(20, 20))
+        # self.tbtn_private.setIcon(icon)
+        # self.tbtn_private.setIconSize(QSize(20, 20))
+        # self.tbtn_username.setIcon(icon)
+        # self.tbtn_username.setIconSize(QSize(20, 20))
+        # self.tbtn_public.setIcon(icon)
+        # self.tbtn_public.setIconSize(QSize(20, 20))
+        # self.tbtn_password_exp.setIcon(icon)
+        # self.tbtn_password_exp.setIconSize(QSize(20, 20))
         
     def create_word_boxes(self, count: int, word: str) -> QFrame:
         hbox = QHBoxLayout()

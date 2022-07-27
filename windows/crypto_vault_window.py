@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import (
     QComboBox, 
     QWidget
 )
-from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtCore import pyqtSignal, Qt, QSize, pyqtSlot
 from PyQt5.QtGui import QFont, QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -25,7 +25,7 @@ from designs.python.crypto_vault_window import Ui_CryptoVault
 from widgetStyles.Dialog import Dialog
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.Label import Label
-from widgetStyles.PushButton import PushButton
+from widgetStyles.PushButton import PushButton, IconToolButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.ToolButton import ToolButton
 from widgetStyles.QCheckBox import WhiteEyeCheckBox, BlackEyeCheckBox
@@ -38,6 +38,8 @@ from utils.message import Message
 from widgets.password_show_hide import PasswordWidget
 
 from database.model import Model
+
+from windows.generate_password import GeneratePasswordWindow
 
 class CryptoVaultWindow(Ui_CryptoVault, QDialog):
     crypto_update_signal = pyqtSignal(bool)
@@ -58,45 +60,40 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         self.chk_password1.stateChanged.connect(lambda: self.show_hide_password(self.chk_password1, self.lne_password1))
         self.chk_password2.stateChanged.connect(lambda: self.show_hide_password(self.chk_password2, self.lne_password2))
         self.chk_private_key.stateChanged.connect(lambda: self.show_hide_password(self.chk_private_key, self.lne_private))
+        
         self.btn_save.clicked.connect(self.save)
-
+        self.tbtn_generate_password.clicked.connect(self.generate_password)
+        
+    @pyqtSlot()
+    def generate_password(self):
+        GeneratePasswordWindow().exec_()
+        
     def read_styles(self):
         settings = Model().read("settings")[0]
         night_mode_on = int(settings[1])
         checkbox = WhiteEyeCheckBox if night_mode_on else BlackEyeCheckBox
         widget_list = [
-            checkbox,
-            Dialog,
-            ComboBox,
-            Label,
-            PushButton,
-            LineEdit,
-            ToolButton,
-            Calendar,
-            DateEditForm
+            checkbox, Dialog, ComboBox,
+            Label, PushButton, LineEdit,
+            ToolButton, Calendar, DateEditForm,
+            IconToolButton("#tbtn_generate_password")
         ]
         self.setMinimumHeight(850)
         stylesheet = StyleSheet(widget_list).create()
+        
+        # Set the generate password icon
+        self.tbtn_generate_password.setIcon(QIcon(":/button_icons/password"))
+        self.tbtn_generate_password.setIconSize(QSize(30, 20))
 
         self.setStyleSheet(stylesheet)
         
         font_widgets = [
-            self.lbl_description,
-            self.lbl_name,
-            self.lbl_password,
-            self.lbl_password2,
-            self.lbl_private,
-            self.lbl_public,
-            self.lbl_words,
-            self.lne_description,
-            self.lne_name,
-            self.cmb_num_words,
-            self.lne_password2,
-            self.lne_private,
-            self.lne_public,
-            self.lbl_words,
-            self.btn_save,
-            self.lne_password1
+            self.lbl_description, self.lbl_name, self.lbl_password,
+            self.lbl_password2, self.lbl_private, self.lbl_public,
+            self.lbl_words, self.lne_description, self.lne_name,
+            self.cmb_num_words, self.lne_password2, self.lne_private,
+            self.lne_public, self.lbl_words, self.btn_save,
+            self.lne_password1, self.lbl_generate_password
         ]
         
         set_font(font_widgets)

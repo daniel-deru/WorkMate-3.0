@@ -48,12 +48,14 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         self.chk_username.stateChanged.connect(lambda: self.show_hidden("username", self.chk_username, 2))
         self.chk_email.stateChanged.connect(lambda: self.show_hidden("email", self.chk_email, 4))
         self.chk_password.stateChanged.connect(lambda: self.show_hidden("password", self.chk_password, 6))
-        self.chk_path.stateChanged.connect(lambda: self.show_hidden("path", self.chk_path, 8))
+        self.chk_password_exp.stateChanged.connect(lambda: self.show_hidden("password_exp", self.chk_password_exp, 8))
+        self.chk_path.stateChanged.connect(lambda: self.show_hidden("path", self.chk_path, 10))
         
         self.tbtn_name.clicked.connect(lambda: self.copy_data("name"))
         self.tbtn_username.clicked.connect(lambda: self.copy_data("username"))
         self.tbtn_email.clicked.connect(lambda: self.copy_data("email"))
         self.tbtn_password.clicked.connect(lambda: self.copy_data("password"))
+        self.tbtn_password_exp.clicked.connect(lambda: self.copy_data("password_exp"))
         self.tbtn_path.clicked.connect(lambda: self.copy_data("path"))
         
         self.btn_open.clicked.connect(self.open_app)
@@ -82,7 +84,9 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
             self.lbl_password_view,
             self.lbl_path_view,
             self.lbl_username_view,
-            self.btn_open            
+            self.btn_open,
+            self.lbl_password_exp,
+            self.lbl_password_exp_view          
         ]
         
         widget: QWidget
@@ -110,12 +114,12 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         
     def set_icons(self):
         dark_mode_on = Model().read('settings')[0][1]
-        if dark_mode_on:
+        if int(dark_mode_on):
             # Set the white copy icon
-            icon = QIcon("./assets/copy_white.svg")
+            icon = QIcon(":/input/copy_white")
         else:
             # Set the black copy icon
-            icon = QIcon("./assets/copy_black.svg")
+            icon = QIcon(":/input/copy_black")
         for i in range(0, self.layout().count() - 2, 2):
             tool_button: QToolButton = self.layout().itemAt(i).layout().itemAt(3).widget()
             tool_button.setIcon(icon)

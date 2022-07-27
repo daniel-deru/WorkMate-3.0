@@ -14,6 +14,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_GeneratePasswordWindow(object):
     def setupUi(self, GeneratePasswordWindow):
         GeneratePasswordWindow.setObjectName("GeneratePasswordWindow")
+        GeneratePasswordWindow.setWindowModality(QtCore.Qt.WindowModal)
+        GeneratePasswordWindow.setEnabled(True)
         GeneratePasswordWindow.resize(472, 437)
         GeneratePasswordWindow.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         GeneratePasswordWindow.setToolTip("")

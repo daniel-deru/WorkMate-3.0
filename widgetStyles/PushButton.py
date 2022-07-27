@@ -149,3 +149,38 @@ QPushButton:pressed {{
     background-color: {green};
 }}
 """
+
+IconToolButton = f"""
+    QToolButton {{
+    background-color: {light_blue};
+    border: none;
+    border-radius: 5px;
+    width: 70px;
+    height: 30px;
+}}
+
+QPushButton:pressed {{
+    border: none;
+    background-color: {green};
+}}
+"""
+
+def _create_custom_tool_button(id=""):
+    IconToolButton = f"""
+        QToolButton{id} {{
+        background-color: {light_blue};
+        border: none;
+        border-radius: 5px;
+        width: 70px;
+        height: 30px;
+    }}
+
+    QPushButton:pressed {{
+        border: none;
+        background-color: {green};
+    }}
+    """
+    
+    return IconToolButton
+
+IconToolButton = _create_custom_tool_button

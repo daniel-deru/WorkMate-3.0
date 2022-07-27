@@ -29,6 +29,8 @@
         <file alias="eye_black_open.svg">eye_black_open.svg</file>
         <file alias="eye_white_closed.svg">eye_white_closed.svg</file>
         <file alias="eye_white_open.svg">eye_white_open.svg</file>
+        <file alias="copy_white">copy_white.svg</file>
+        <file alias="copy_black">copy_black.svg</file>
     </qresource>
     <qresource prefix="other">
         <file alias="calendar.svg">calendar.svg</file>

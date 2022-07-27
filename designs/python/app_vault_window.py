@@ -14,9 +14,22 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_AppVault(object):
     def setupUi(self, AppVault):
         AppVault.setObjectName("AppVault")
-        AppVault.resize(453, 638)
+        AppVault.resize(453, 484)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(AppVault)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_6.addItem(spacerItem)
+        self.lbl_password_generator = QtWidgets.QLabel(AppVault)
+        self.lbl_password_generator.setObjectName("lbl_password_generator")
+        self.horizontalLayout_6.addWidget(self.lbl_password_generator)
+        self.tbtn_password_generator = QtWidgets.QToolButton(AppVault)
+        self.tbtn_password_generator.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.tbtn_password_generator.setText("")
+        self.tbtn_password_generator.setObjectName("tbtn_password_generator")
+        self.horizontalLayout_6.addWidget(self.tbtn_password_generator)
+        self.verticalLayout_3.addLayout(self.horizontalLayout_6)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.lbl_name = QtWidgets.QLabel(AppVault)
@@ -131,6 +144,7 @@ class Ui_AppVault(object):
     def retranslateUi(self, AppVault):
         _translate = QtCore.QCoreApplication.translate
         AppVault.setWindowTitle(_translate("AppVault", "Add App"))
+        self.lbl_password_generator.setText(_translate("AppVault", "Password Generator"))
         self.lbl_name.setText(_translate("AppVault", "Name"))
         self.lbl_index.setText(_translate("AppVault", "Index"))
         self.lbl_username.setText(_translate("AppVault", "Username"))

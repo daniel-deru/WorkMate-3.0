@@ -92,7 +92,7 @@ class Main(Ui_main_container, QWidget):
             current_date = date.today()
             
             # Put the expired passwords in the expired passwords list
-            if exp_date < current_date:
+            if exp_date <= current_date:
                 self.expired_passwords.append(["vault", entry])
            
     
@@ -108,7 +108,7 @@ class Main(Ui_main_container, QWidget):
         # Get the current date
         current_date = date.today()
         
-        if password_exp_date < current_date:
+        if password_exp_date <= current_date:
             self.expired_passwords.append(["user", self.user[0]])
     
     # Get the response from asking if the user wants to update passwords 
@@ -116,6 +116,7 @@ class Main(Ui_main_container, QWidget):
     def update_password_response(self, response):
         if response == True:
             update_password_window = UpdatePassword(self.expired_passwords)
+            update_password_window.finished.connect(self.updateWindow)
             update_password_window.exec_()
 
     def register_event(self, event):
@@ -228,9 +229,6 @@ class Main(Ui_main_container, QWidget):
             self.timer.stop()
     
     def update_status(self, logged_in):
-        # Check if the user wants authentication to be on
-        # vault_on = Model().read("settings")[0][4]
-        # vault_on = Model().read("settings")[0][4]
         # If auth is on and the user is logged in
         if logged_in:
             self.logged_in = True
@@ -243,9 +241,6 @@ class Main(Ui_main_container, QWidget):
             self.count = 0
             self.logged_in = False
             self.send_signals("logged out")
-        # The auth is off the user is always logged in
-        # elif not vault_on:
-        #     self.send_signals("logged in")
 
     def send_signals(self, signal):
         self.apps_tab.login_signal.emit(signal)
