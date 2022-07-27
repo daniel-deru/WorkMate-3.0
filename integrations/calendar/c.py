@@ -36,7 +36,7 @@ class Google:
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
                     f'{PATH}/integrations/client_secret_dev.json', SCOPES)
-                creds = flow.run_local_server(port=0)
+                creds = flow.run_local_server()
                 
             # Save the credentials for the next run
             with open(f'{PATH}/integrations/google_token.json', 'w') as token:

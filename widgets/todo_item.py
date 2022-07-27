@@ -14,7 +14,7 @@ from widgetStyles.Label import LabelMono
 from widgetStyles.ToolButton import ToolButton
 from utils.helpers import StyleSheet
 
-from windows.todo_edit_window import TodoEditWindow
+from windows.todo_window import TodoWindow
 
 
 
@@ -109,7 +109,8 @@ class TodoItem(QFrame):
             'status': self.completed,
             'id': self.todo_id
         }
-        todoEditWindow = TodoEditWindow(todo_data)
+        # TODO: Update the signals from this window to work properly
+        todoEditWindow = TodoWindow(todo_data)
         todoEditWindow.todo_edit_signal.connect(self.update)
         todoEditWindow.exec_()
 

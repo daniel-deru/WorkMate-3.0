@@ -11,16 +11,23 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from database.model import Model
 from designs.python.todo_widget import Ui_todo_tab
+
 from widgets.todo_item import TodoItem
+
 from utils.helpers import StyleSheet
 from utils.message import Message
+from utils.helpers import clear_window
+
 from integrations.calendar.c import Google
+
 from widgetStyles.PushButton import PushButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Label import Label
 from widgetStyles.DateEdit import DateEdit
 from widgetStyles.Calendar import Calendar
-from utils.helpers import clear_window
+
+from windows.todo_window import TodoWindow
+
 
 
 
@@ -33,10 +40,7 @@ class Todo_tab(Ui_todo_tab, QWidget):
         self.read_style()
         self.display_todos()
 
-        self.dte_date_select.setDate(date.today())
-
         self.btn_add_todo.clicked.connect(self.add_todo)
-        self.dte_date_select.dateChanged.connect(self.get_date)
 
         self.todo_signal.connect(self.update)
     
@@ -54,36 +58,36 @@ class Todo_tab(Ui_todo_tab, QWidget):
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         font = Model().read('settings')[0][2]
-        self.lne_add_todo.setFont(QFont(font))
         self.btn_add_todo.setFont(QFont(font))
-        self.lbl_date_display.setFont(QFont(font))
-        self.dte_date_select.setFont(QFont(font))
 
     def add_todo(self):
-        name = self.lne_add_todo.text()
-        deadline = self.lbl_date_display.text() if self.lbl_date_display.text() != "Not Set" else None
+        todo_window = TodoWindow()
+        todo_window.todo_edit_signal.connect(self.update)
+        todo_window.exec_()
+        # name = self.lne_add_todo.text()
+        # deadline = self.lbl_date_display.text() if self.lbl_date_display.text() != "Not Set" else None
 
-        if(self.lbl_date_display.text()):
-            deadline = self.dte_date_select.date().toPyDate()
-            time = datetime.now()
-            date = datetime(deadline.year, deadline.month, deadline.day, time.hour, time.minute, time.second)
-            # Get the calendar integration setting
-            calendar_integration = Model().read('settings')[0][6]
-            # Check to see if the calendar integration should be used
-            if(calendar_integration):
-                th = Thread(target=google_thread, daemon=True, args=(date, name))
-                th.start()
+        # if(self.lbl_date_display.text()):
+        #     deadline = self.dte_date_select.date().toPyDate()
+        #     time = datetime.now()
+        #     date = datetime(deadline.year, deadline.month, deadline.day, time.hour, time.minute, time.second)
+        #     # Get the calendar integration setting
+        #     calendar_integration = Model().read('settings')[0][6]
+        #     # Check to see if the calendar integration should be used
+        #     if(calendar_integration):
+        #         th = Thread(target=google_thread, daemon=True, args=(date, name))
+        #         th.start()
 
-        if not name:
-            Message("Please enter a name for the todo.", "To-do").exec_()
-        else:
-            todo = {
-                'name':name,
-                'deadline': deadline
-            }
-            Model().save("todos", todo)
-            self.update()
-        self.lne_add_todo.clear()
+        # if not name:
+        #     Message("Please enter a name for the todo.", "To-do").exec_()
+        # else:
+        #     todo = {
+        #         'name':name,
+        #         'deadline': deadline
+        #     }
+        #     Model().save("todos", todo)
+        #     self.update()
+        # self.lne_add_todo.clear()
 
 
     def display_todos(self):
@@ -101,10 +105,6 @@ class Todo_tab(Ui_todo_tab, QWidget):
             self.todo_item = TodoItem(todos[i]).create_widget()
             self.todo_item.todo_item_signal.connect(self.update)
             self.vbox_todo_container.addWidget(self.todo_item)
-
-    def get_date(self):
-        deadline = self.dte_date_select.date().toPyDate()
-        self.lbl_date_display.setText(str(deadline))
     
     def update(self):
         clear_window(self.vbox_todo_container)

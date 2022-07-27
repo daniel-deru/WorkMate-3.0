@@ -24,7 +24,8 @@ class Tables:
             "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
             "name": "TEXT NOT NULL",
             "complete": f"TEXT DEFAULT '{enc('0')}' NOT NULL",
-            "deadline": "TEXT"
+            "deadline": "TEXT",
+            "description": "TEXT"
         }
         
         settings = {

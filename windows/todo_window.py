@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import date, datetime, timedelta
 
 from PyQt5.QtWidgets import QDialog, QWidget
 from PyQt5.QtGui import QFont, QCursor, QIcon
@@ -12,29 +13,29 @@ from designs.python.todo_edit_window import Ui_todo_edit
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
 from widgetStyles.Calendar import Calendar
-from widgetStyles.DateEdit import DateEdit
+from widgetStyles.DateEdit import DateEditForm
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Dialog import Dialog
-from widgetStyles.DateEdit import DateEdit
 from widgetStyles.Widget import Widget
+from widgetStyles.TextEdit import TextEdit
 
 
 from database.model import Model
 from utils.helpers import StyleSheet
 
-class TodoEditWindow(Ui_todo_edit, QDialog):
+class TodoWindow(Ui_todo_edit, QDialog):
     todo_edit_signal = pyqtSignal(str)
     def __init__(self, todo=None):
-        super(TodoEditWindow, self).__init__()
+        super(TodoWindow, self).__init__()
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.cmbx_status.setCursor(QCursor(Qt.PointingHandCursor))
         self.read_styles()
-        self.todo: object = todo
+        self.todo: object or None = todo
         
-        self.set_data()
+        if self.todo: self.set_data()
 
         self.dtedt_date.dateChanged.connect(self.get_date)
         self.cmbx_status.currentIndexChanged.connect(self.get_status)
@@ -42,14 +43,14 @@ class TodoEditWindow(Ui_todo_edit, QDialog):
 
     def read_styles(self):
         widget_list = [
-            Widget,
             Dialog,
             PushButton,
             LineEdit,
             Label,
             ComboBox,
-            DateEdit,
+            DateEditForm,
             Calendar,
+            TextEdit
         ]
 
         stylesheet: str = StyleSheet(widget_list).create()
@@ -76,6 +77,7 @@ class TodoEditWindow(Ui_todo_edit, QDialog):
 
     
     def set_data(self):
+        self.btn_save.setText("Update")
         if self.todo:
             self.lnedt_name.setText(self.todo['name'])
 
@@ -88,10 +90,27 @@ class TodoEditWindow(Ui_todo_edit, QDialog):
                 self.cmbx_status.setCurrentIndex(0)
 
     def save_clicked(self):
-        if(self.todo['name'] != self.lnedt_name.text()):
-            self.todo['name'] = self.lnedt_name.text()
+        name: str = self.lnedt_name.text()
+        description: str = self.txe_description.toPlainText()
+        deadline: date = self.dtedt_date.date().toPyDate()
+        
+        deadline_text: str = datetime.strftime(deadline, "%Y-%m-%d")
+        
+        status_text = self.cmbx_status.currentText()
+        status = "1" if status_text == "Complete" else "0"
+        
+            
+        data = {
+            'name': name, 
+            'complete': status, 
+            'deadline': deadline_text,
+            'description': description
+        }
 
-        Model().update('todos', {'name': self.todo['name'], 'complete': self.todo['status'], 'deadline': self.todo['date']}, self.todo['id'])
+        if self.todo:
+            Model().update('todos', data, self.todo['id'])
+        else:
+            Model().save("todos", data)
         self.todo_edit_signal.emit("updated todo")
         self.close()
         
