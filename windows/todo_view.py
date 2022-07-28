@@ -17,6 +17,8 @@ from widgetStyles.PushButton import PushButton100Width
 
 from utils.helpers import StyleSheet
 
+from database.model import Model
+
 
 class TodoView(Ui_TodoViewWindow, QDialog):
     delete_signal = pyqtSignal(int)
@@ -48,6 +50,23 @@ class TodoView(Ui_TodoViewWindow, QDialog):
         widget_list = [Label, Dialog, PushButton100Width]
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
+        
+        font_name = Model().read("settings")[0][2]
+
+        font_list = [
+            self.btn_complete,
+            self.btn_delete,
+            self.lbl_deadline,
+            self.lbl_deadline_display,
+            self.lbl_description,
+            self.lbl_description_display,
+            self.lbl_name,
+            self.lbl_name_display,
+            self.lbl_status,
+            self.lbl_status_display
+        ]
+        for item in font_list:
+            item.setFont(QFont(font_name))
         
     def fill_data(self):
         self.lbl_name_display.setText(self.todo[1])

@@ -97,9 +97,6 @@ class TodoItem(QFrame):
         elif not self.completed and not date.today() > date_deadline:
             color = StatusColor.incomplete
             
-            
-        # Background = TodoFrameDelete if self.completed else TodoFrameComplete
-        print(color)
         styles = [
             LabelMono,
             TodoFrame(color),

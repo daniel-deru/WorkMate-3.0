@@ -65,7 +65,9 @@ class TodoWindow(Ui_todo_edit, QDialog):
             self.btn_save,
             self.cmbx_status,
             self.dtedt_date,
-            self.lnedt_name
+            self.lnedt_name,
+            self.lbl_description,
+            self.txe_description
         ]
         
         widget: QWidget
