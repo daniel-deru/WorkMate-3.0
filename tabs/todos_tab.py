@@ -2,6 +2,7 @@ import sys
 import os
 from datetime import date, datetime
 from threading import Thread
+import math
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal
@@ -64,50 +65,36 @@ class Todo_tab(Ui_todo_tab, QWidget):
         todo_window = TodoWindow()
         todo_window.todo_edit_signal.connect(self.update)
         todo_window.exec_()
-        # name = self.lne_add_todo.text()
-        # deadline = self.lbl_date_display.text() if self.lbl_date_display.text() != "Not Set" else None
-
-        # if(self.lbl_date_display.text()):
-        #     deadline = self.dte_date_select.date().toPyDate()
-        #     time = datetime.now()
-        #     date = datetime(deadline.year, deadline.month, deadline.day, time.hour, time.minute, time.second)
-        #     # Get the calendar integration setting
-        #     calendar_integration = Model().read('settings')[0][6]
-        #     # Check to see if the calendar integration should be used
-        #     if(calendar_integration):
-        #         th = Thread(target=google_thread, daemon=True, args=(date, name))
-        #         th.start()
-
-        # if not name:
-        #     Message("Please enter a name for the todo.", "To-do").exec_()
-        # else:
-        #     todo = {
-        #         'name':name,
-        #         'deadline': deadline
-        #     }
-        #     Model().save("todos", todo)
-        #     self.update()
-        # self.lne_add_todo.clear()
 
 
     def display_todos(self):
 
         todos = Model().read("todos")
-        completed_todos = list(filter(lambda todo: int(todo[2]) == 1, todos))
-        incomplete_todos = list(filter(lambda todo: int(todo[2]) == 0, todos))
-
-        completed_todos.sort(key=lambda date: datetime.strptime(date[3], "%Y-%m-%d"))
-        incomplete_todos.sort(key=lambda date: datetime.strptime(date[3], "%Y-%m-%d"))
-        
-        todos = incomplete_todos + completed_todos
 
         for i in range(len(todos)):
             self.todo_item = TodoItem(todos[i]).create_widget()
             self.todo_item.todo_item_signal.connect(self.update)
-            self.vbox_todo_container.addWidget(self.todo_item)
+            # self.vbox_todo_container.addWidget(self.todo_item)
+            
+        COLUMNS = 2
+        grid_items = []
+        for i in range(math.ceil(len(todos)/COLUMNS)):
+            subarr = []
+            for j in range(COLUMNS):
+                if todos:
+                    subarr.append(todos.pop(0))
+            grid_items.append(subarr)
+            
+        for i in range(len(grid_items)):
+            row = i
+            for j in range(len(grid_items[i])):
+                col = j
+                self.todo_item = TodoItem(grid_items[i][j]).create_widget()
+                self.todo_item.todo_item_signal.connect(self.update)
+                self.todo_container.addWidget(self.todo_item, row, col)
     
     def update(self):
-        clear_window(self.vbox_todo_container)
+        clear_window(self.todo_container)
         self.display_todos()
         self.read_style()
 

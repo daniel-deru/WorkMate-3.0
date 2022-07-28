@@ -35,10 +35,11 @@ class TodoWindow(Ui_todo_edit, QDialog):
         self.read_styles()
         self.todo: object or None = todo
         
+        self.dtedt_date.setDate(date.today())
         if self.todo: self.set_data()
 
-        self.dtedt_date.dateChanged.connect(self.get_date)
-        self.cmbx_status.currentIndexChanged.connect(self.get_status)
+        # self.dtedt_date.dateChanged.connect(self.get_date)
+        # self.cmbx_status.currentIndexChanged.connect(self.get_status)
         self.btn_save.clicked.connect(self.save_clicked)
 
     def read_styles(self):
@@ -79,15 +80,15 @@ class TodoWindow(Ui_todo_edit, QDialog):
     def set_data(self):
         self.btn_save.setText("Update")
         if self.todo:
-            self.lnedt_name.setText(self.todo['name'])
-
-            date: list[str] = self.todo['date'].split("-")
-            self.dtedt_date.setDate(QDate(int(date[0]), int(date[1]), int(date[2])))
-
-            if(self.todo['status']):
-                self.cmbx_status.setCurrentIndex(1)
-            else:
-                self.cmbx_status.setCurrentIndex(0)
+            self.lnedt_name.setText(self.todo[1])
+            self.txe_description.setPlainText(self.todo[4])
+            
+            deadline_datetime = datetime.strptime(self.todo[3], "%Y-%m-%d")
+            deadline = date(deadline_datetime.year, deadline_datetime.month, deadline_datetime.day)
+            self.dtedt_date.setDate(deadline)
+            
+            self.cmbx_status.setCurrentIndex(int(self.todo[2]))
+            
 
     def save_clicked(self):
         name: str = self.lnedt_name.text()
@@ -108,7 +109,7 @@ class TodoWindow(Ui_todo_edit, QDialog):
         }
 
         if self.todo:
-            Model().update('todos', data, self.todo['id'])
+            Model().update('todos', data, self.todo[0])
         else:
             Model().save("todos", data)
         self.todo_edit_signal.emit("updated todo")

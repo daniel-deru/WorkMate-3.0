@@ -173,13 +173,13 @@ class GeneratePasswordWindow(Ui_GeneratePasswordWindow, QDialog):
         if strength < 40:
             password_strength = "Horrible"
             color = ProgressBarStyle.red
-        if strength > 40 and strength <= 65:
+        if strength > 40 and strength <= 80:
             password_strength = "Weak"
             color = ProgressBarStyle.orange
-        if strength > 65 and strength < 100:
+        if strength > 80 and strength < 120:
             password_strength = "Good"
             color = ProgressBarStyle.yellow
-        if strength > 100:
+        if strength > 120:
             password_strength = "Strong"
             color = ProgressBarStyle.green
         

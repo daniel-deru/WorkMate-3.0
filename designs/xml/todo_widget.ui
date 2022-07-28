@@ -50,7 +50,7 @@
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="vbox_todo_container"/>
+    <layout class="QGridLayout" name="todo_container"/>
    </item>
    <item>
     <spacer name="verticalSpacer">

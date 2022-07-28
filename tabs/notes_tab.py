@@ -21,7 +21,7 @@ from utils.helpers import StyleSheet
 
 
 
-class Notes_tab(QWidget, Ui_notes_tab):
+class Notes_tab(Ui_notes_tab, QWidget):
     note_signal = pyqtSignal(str)
     def __init__(self):
         super(Notes_tab, self).__init__()
@@ -58,6 +58,7 @@ class Notes_tab(QWidget, Ui_notes_tab):
                 if notes:
                     subarr.append(notes.pop(0))
             grid_items.append(subarr)
+            
         for i in range(len(grid_items)):
             row = i
             for j in range(len(grid_items[i])):

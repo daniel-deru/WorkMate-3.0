@@ -32,9 +32,9 @@ class Ui_todo_tab(object):
         self.btn_add_todo.setObjectName("btn_add_todo")
         self.horizontalLayout.addWidget(self.btn_add_todo)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
-        self.vbox_todo_container = QtWidgets.QVBoxLayout()
-        self.vbox_todo_container.setObjectName("vbox_todo_container")
-        self.verticalLayout_2.addLayout(self.vbox_todo_container)
+        self.todo_container = QtWidgets.QGridLayout()
+        self.todo_container.setObjectName("todo_container")
+        self.verticalLayout_2.addLayout(self.todo_container)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem)
 

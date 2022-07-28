@@ -15,8 +15,9 @@ from widgetStyles.ToolButton import ToolButton
 from utils.helpers import StyleSheet
 
 from windows.todo_window import TodoWindow
+from windows.todo_view import TodoView
 
-
+from database.model import Model
 
 class TodoItem(QFrame):
     todo_item_signal = pyqtSignal(str)
@@ -26,11 +27,12 @@ class TodoItem(QFrame):
         self.todo = todo[1]
         self.completed = int(todo[2])
         self.date = todo[3]
+        self.todo_item = todo
         self.setupUI()
         self.read_styles()
 
         self.editButton.clicked.connect(self.editButtonClick)
-        self.statusButton.clicked.connect(self.state_change_button_clicked)
+        self.statusButton.clicked.connect(self.view_todo)
 
     
     def create_widget(self):
@@ -62,7 +64,8 @@ class TodoItem(QFrame):
         self.editButton.setIconSize(QSize(20, 20))
         self.editButton.setCursor(QCursor(Qt.PointingHandCursor))
 
-        icon = QIcon(":/other/delete.png") if self.completed else QIcon(":/other/done.png")
+        # icon = QIcon(":/other/delete.png") if self.completed else QIcon(":/other/done.png")
+        icon = QIcon(":/input/eye_white_open.svg")
         self.statusButton = QToolButton()
 
         self.statusButton.setObjectName("btn_status")
@@ -94,23 +97,23 @@ class TodoItem(QFrame):
         self.name.setFont(QFont(font))
         self.lbl_date.setFont(QFont(font))
     
-    def state_change_button_clicked(self):
-        if self.completed:
-            Model().delete("todos", self.todo_id)
-        else:
-            Model().update("todos", {'complete': "1"}, self.todo_id)
-        self.todo_item_signal.emit(self.todo)
+    def view_todo(self):
+        view_todo_window = TodoView(self.todo_item)
+        view_todo_window.delete_signal.connect(self.delete_todo)
+        view_todo_window.complete_signal.connect(self.complete_todo)
+        view_todo_window.exec_()
+    
+    def delete_todo(self, id):
+        Model().delete("todos", id)
+        self.update()
+    
+    def complete_todo(self, id):
+        Model().update("todos", {"complete": "1"}, id)
+        self.update()
 
     # Fire an event when the edit button is clicked
-    def editButtonClick(self):
-        todo_data = {
-            'name': self.todo,
-            'date': self.date,
-            'status': self.completed,
-            'id': self.todo_id
-        }
-        # TODO: Update the signals from this window to work properly
-        todoEditWindow = TodoWindow(todo_data)
+    def editButtonClick(self):        
+        todoEditWindow = TodoWindow(self.todo_item)
         todoEditWindow.todo_edit_signal.connect(self.update)
         todoEditWindow.exec_()
 

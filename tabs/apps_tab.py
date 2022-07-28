@@ -24,7 +24,7 @@ from widgetStyles.Label import Label
 from utils.helpers import StyleSheet
 from utils.helpers import clear_window
 
-class Apps_tab(QWidget, Ui_apps_tab):
+class Apps_tab(Ui_apps_tab, QWidget):
     app_signal = pyqtSignal(str)
     table_signal = pyqtSignal(str)
     # This signal is to communicate with the main window where the login will take place
@@ -84,6 +84,7 @@ class Apps_tab(QWidget, Ui_apps_tab):
                 if sorted_apps:
                     subarr.append(sorted_apps.pop(0))
             grid_items.append(subarr)
+            
         for i in range(len(grid_items)):
             row = i
             for j in range(len(grid_items[i])):
