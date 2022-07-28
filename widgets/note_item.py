@@ -13,6 +13,7 @@ from database.model import Model
 from widgetStyles.Frame import Frame
 from widgetStyles.Label import Label
 from widgetStyles.PushButton import IconButton
+from widgetStyles.styles import green
 from utils.helpers import StyleSheet
 
 
@@ -50,7 +51,7 @@ class NoteItem(QFrame):
         self.btn_edit.setObjectName("btn_edit")
         self.btn_edit.setIcon(QIcon(":/other/edit.png"))
         self.btn_edit.setIconSize(QSize(20, 20))
-        self.btn_edit.setStyleSheet("background-color: #FF4400;")
+        self.btn_edit.setStyleSheet(f"background-color: {green};")
         self.btn_edit.setCursor(QCursor(Qt.PointingHandCursor))
         self.hbox.addWidget(self.btn_edit)
 
@@ -58,7 +59,7 @@ class NoteItem(QFrame):
         self.btn_delete.setObjectName("btn_delete")
         self.btn_delete.setIcon(QIcon(":/other/delete.png"))
         self.btn_delete.setIconSize(QSize(20, 20))
-        self.btn_delete.setStyleSheet("background-color: #FF4400;")
+        self.btn_delete.setStyleSheet(f"background-color: {green};")
         self.btn_delete.setCursor(QCursor(Qt.PointingHandCursor))
         self.hbox.addWidget(self.btn_delete)
 

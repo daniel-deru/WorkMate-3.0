@@ -50,6 +50,21 @@ TodoFrameComplete = f"""
     }}
 """
 
+def create_todo_frame(status):
+    TodoFrameComplete = f"""
+        QFrame {{
+            font-size: 16px;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: {status};
+            color: #ffffff;
+            max-height: 100px;
+            height: 100px;
+            padding: 0px;
+        }}
+    """
+    return TodoFrameComplete
+
 
 def create_frame(id):
     PassGenFrame = f"""
@@ -62,3 +77,4 @@ def create_frame(id):
 
 PassGenFrame = create_frame
 FrameContainer = create_frame
+TodoFrame = create_todo_frame

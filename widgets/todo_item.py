@@ -1,3 +1,4 @@
+from datetime import date, datetime
 import sys
 import os
 
@@ -9,9 +10,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from database.model import Model
 
-from widgetStyles.Frame import TodoFrameComplete, TodoFrameDelete
+from widgetStyles.Frame import TodoFrameComplete, TodoFrameDelete, TodoFrame
 from widgetStyles.Label import LabelMono
 from widgetStyles.ToolButton import ToolButton
+from widgetStyles.styles import StatusColor
+
 from utils.helpers import StyleSheet
 
 from windows.todo_window import TodoWindow
@@ -85,10 +88,21 @@ class TodoItem(QFrame):
 
 
     def read_styles(self):
-        Background = TodoFrameDelete if self.completed else TodoFrameComplete
+        datetime_deadline = datetime.strptime(self.date, "%Y-%m-%d")
+        date_deadline = date(datetime_deadline.year, datetime_deadline.month, datetime_deadline.day)
+        
+        color = StatusColor.complete
+        if not self.completed and date.today() > date_deadline:
+            color = StatusColor.overdue
+        elif not self.completed and not date.today() > date_deadline:
+            color = StatusColor.incomplete
+            
+            
+        # Background = TodoFrameDelete if self.completed else TodoFrameComplete
+        print(color)
         styles = [
             LabelMono,
-            Background,
+            TodoFrame(color),
             ToolButton
         ]
         stylesheet = StyleSheet(styles).create()

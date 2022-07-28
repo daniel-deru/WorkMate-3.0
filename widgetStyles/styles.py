@@ -11,6 +11,11 @@ dark_blue = "#051456"
 light_grey = "#EFEFEF"
 dark_grey = "#222222"
 
+class StatusColor:
+    complete = "#00A62E"
+    overdue = "#A60000"
+    incomplete = "#005BC6"
+
 class ProgressBar:
     red = "#b10000"
     orange = "#D26500"

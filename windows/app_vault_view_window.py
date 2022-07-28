@@ -41,17 +41,17 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         self.hideText()
         self.read_styles()
         
+        self.lbl_name_view.setText(self.app[2])
+        
         self.data = json_to_dict(self.app[3])
         
         # The widgets in the vertical layout are [0,2,4,6,8] because of the hlines
-        self.chk_name.stateChanged.connect(lambda: self.show_hidden("name", self.chk_name, 0))
-        self.chk_username.stateChanged.connect(lambda: self.show_hidden("username", self.chk_username, 2))
-        self.chk_email.stateChanged.connect(lambda: self.show_hidden("email", self.chk_email, 4))
-        self.chk_password.stateChanged.connect(lambda: self.show_hidden("password", self.chk_password, 6))
-        self.chk_password_exp.stateChanged.connect(lambda: self.show_hidden("password_exp", self.chk_password_exp, 8))
-        self.chk_path.stateChanged.connect(lambda: self.show_hidden("path", self.chk_path, 10))
+        self.chk_username.stateChanged.connect(lambda: self.show_hidden("username", self.chk_username, 1))
+        self.chk_email.stateChanged.connect(lambda: self.show_hidden("email", self.chk_email, 3))
+        self.chk_password.stateChanged.connect(lambda: self.show_hidden("password", self.chk_password, 5))
+        self.chk_password_exp.stateChanged.connect(lambda: self.show_hidden("password_exp", self.chk_password_exp, 7))
+        self.chk_path.stateChanged.connect(lambda: self.show_hidden("path", self.chk_path, 9))
         
-        self.tbtn_name.clicked.connect(lambda: self.copy_data("name"))
         self.tbtn_username.clicked.connect(lambda: self.copy_data("username"))
         self.tbtn_email.clicked.connect(lambda: self.copy_data("email"))
         self.tbtn_password.clicked.connect(lambda: self.copy_data("password"))
@@ -75,7 +75,6 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         
         font_widgets = [
             self.lbl_email,
-            self.lbl_name,
             self.lbl_password,
             self.lbl_path,
             self.lbl_username,
@@ -98,7 +97,8 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
     def hideText(self):
         dots = u"\u2022"*10
         
-        for i in range(0, self.layout().count() - 2, 2):
+        for i in range(1, self.layout().count() - 2, 2):
+            print(i)
             self.layout().itemAt(i).layout().itemAt(1).widget().setText(dots)
         
     def show_hidden(self, field_name: str, checkbox: QCheckBox, label_index: int):
@@ -120,7 +120,8 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         else:
             # Set the black copy icon
             icon = QIcon(":/input/copy_black")
-        for i in range(0, self.layout().count() - 2, 2):
+        for i in range(1, self.layout().count() - 2, 2):
+            print(i)
             tool_button: QToolButton = self.layout().itemAt(i).layout().itemAt(3).widget()
             tool_button.setIcon(icon)
             tool_button.setIconSize(QSize(25, 25))
