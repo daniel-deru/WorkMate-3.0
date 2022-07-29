@@ -4,7 +4,7 @@ import time
 import json
 import assets.resources
 
-from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
+from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen, QTabWidget
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent, QFontDatabase, QShowEvent
 from PyQt5.QtCore import QTimer, Qt, pyqtSlot
 
@@ -155,7 +155,7 @@ class Main(Ui_main_container, QWidget):
     def add_tabs(self):
         app = QApplication.primaryScreen()
         screen = app.size()
-        self.setMinimumSize(int(screen.width() * 0.7), int(screen.height() * 0.7))
+        self.setMinimumSize(int(screen.width() * 0.6), int(screen.height() * 0.6))
         # self.tab_widget.setTabPosition(QTabWidget.West)
         self.apps_tab = Apps_tab().create_tab()
         self.apps_tab.table_signal.connect(self.updateTable)

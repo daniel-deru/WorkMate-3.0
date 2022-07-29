@@ -32,6 +32,7 @@ from windows.drive_window import DriveWindow
 from windows.twofa_window import TwofaDialog
 from windows.browser_import_window import BrowserImportWindow
 from windows.generate_password import GeneratePasswordWindow
+from windows.setup_window import InitialSetup
 
 from threads.google_thread import upload_google, download_google
 from threads.onedrive_thread import upload_onedrive, download_onedrive
@@ -79,12 +80,16 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.btn_restore_local.clicked.connect(self.restore_from_local)
         self.btn_browser_web_import.clicked.connect(self.import_websites)
         self.btn_generate_password.clicked.connect(self.generate_password)
+        self.btn_setup.clicked.connect(self.setup_wizard)
         
         self.btn_google.clicked.connect(self.google_sign_in)        
 
         # connect the custom signals to the slots
         self.settings_signal.connect(self.read_styles)
         self.login_signal.connect(self.login)
+        
+    def setup_wizard(self):
+        InitialSetup().exec_()
         
     def generate_password(self):
         generate_password = GeneratePasswordWindow()
@@ -154,7 +159,8 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             self.lbl_save_local,
             self.lbl_restore_local,
             self.lbl_google_integration,
-            self.lbl_generate_password
+            self.lbl_generate_password,
+            self.lbl_setup
         ]
         
         widget: QWidget
@@ -176,6 +182,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.btn_restore_local.setIcon(QIcon(":/button_icons/drive_download"))
         self.btn_save_local.setIcon(QIcon(":/button_icons/drive_upload"))
         self.btn_generate_password.setIcon(QIcon(":/button_icons/password"))
+        self.btn_setup.setIcon(QIcon(":/button_icons/setup"))
         
         self.btn_browser_web_import.setIconSize(QSize(20, 20))
         self.btn_forgot_password.setIconSize(QSize(20, 20))
@@ -185,6 +192,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.btn_restore_local.setIconSize(QSize(20, 20))
         self.btn_save_local.setIconSize(QSize(20, 20))
         self.btn_generate_password.setIconSize(QSize(30, 20))
+        self.btn_setup.setIconSize(QSize(20, 20))
     
     def login(self, signal):
         if signal == "success":

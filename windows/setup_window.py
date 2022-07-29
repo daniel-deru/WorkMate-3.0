@@ -52,7 +52,7 @@ class InitialSetup(Ui_InitialSetup, QDialog):
         self.setup_list = [
             ["Do you want to use Two Factor Authentication?", "https://smartmetatec.com", self.setup_twofa],
             ["Do you want to turn on dark mode?", None, self.setup_night_mode],
-            ["Did you export your passwords from your browser and want to import your passwords?", "https://smartmetatec.com", self.setup_import_browser],
+            ["Did you export your passwords from your browser and do you want to import your passwords?", "https://smartmetatec.com", self.setup_import_browser],
             ["Do you want to sync with Google Calendar?", "https://smartmetatec.com", self.setup_calendar],
             ["Do you want to automatically save database to Google Drive?", "https://smartmetatec.com", self.setup_google_drive],
             ["Do you want to automatically save database to Microsoft OneDrive?", "https://smartmetatec.com", self.setup_onedrive],
