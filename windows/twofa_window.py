@@ -33,6 +33,7 @@ class TwofaDialog(Ui_TwoFADialog, QDialog):
         self.btn_copy.setCursor(QCursor(Qt.PointingHandCursor))
         
         self.btn_copy.clicked.connect(lambda: pyperclip.copy(self.lbl_setupkey.text()))
+        self.btn_exit.clicked.connect(self.close)
 
     def read_styles(self):
         widget_list = [Label, Dialog, PushButton100Width]

@@ -379,7 +379,7 @@ class Ui_Settings_tab(object):
         self.lbl_night_mode.setText(_translate("Settings_tab", "Night Mode"))
         self.lbl_calendar.setText(_translate("Settings_tab", "Integrate With Google Calendar"))
         self.lbl_auto_save.setText(_translate("Settings_tab", "Automatically Save To Remote Storage"))
-        self.lbl_browser_web_import.setText(_translate("Settings_tab", "Import Websites From Browser"))
+        self.lbl_browser_web_import.setText(_translate("Settings_tab", "Import Passwords From Browser"))
         self.lbl_save_remote.setText(_translate("Settings_tab", "Save To Remote Storage"))
         self.lbl_restore_remote.setText(_translate("Settings_tab", "Restore From Remote Storage"))
         self.lbl_save_local.setText(_translate("Settings_tab", "Save To Local Storage"))

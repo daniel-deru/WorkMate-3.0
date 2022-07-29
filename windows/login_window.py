@@ -1,6 +1,5 @@
 import os
 import sys
-from tabnanny import check
 
 from PyQt5.QtWidgets import QDialog, QLineEdit, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt
@@ -9,7 +8,7 @@ from PyQt5.QtGui import QIcon, QCloseEvent, QFont
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from designs.python.login_window import Ui_Login
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, LoginEvent
 from database.model import Model
 from utils.message import Message
 import assets.resources
@@ -23,7 +22,7 @@ from widgetStyles.QCheckBox import BlackEyeCheckBox, WhiteEyeCheckBox
 from windows.twofa_verify_window import TwofaVerifyWindow
 
 
-class Login(QDialog, Ui_Login):
+class Login(Ui_Login, QDialog):
     login_status = pyqtSignal(str)
     def __init__(self):
         super(Login, self).__init__()
@@ -96,7 +95,7 @@ class Login(QDialog, Ui_Login):
             self.login_state = "failure"
     
     def verify_otp(self, verified):
-        if(verified):
+        if(verified == LoginEvent.success):
             self.login_status.emit("success")
             self.login_state = "success"
             self.close()

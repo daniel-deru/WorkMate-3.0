@@ -470,7 +470,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Import Websites From Browser</string>
+          <string>Import Passwords From Browser</string>
          </property>
         </widget>
        </item>

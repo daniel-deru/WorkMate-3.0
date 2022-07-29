@@ -145,7 +145,8 @@ class AppVaultWindow(Ui_AppVault, QDialog):
                 Message("The password and confirm password are not the same.", "Passwords don't match").exec_()
                 return "Stop this method from further execution"
             
-            if int(index) <= len(self.secrets):
+            if int(index) < len(self.secrets):
+                # print(f"current index: {index}")
                 self.update_sequence(str(index))
 
             if self.app:

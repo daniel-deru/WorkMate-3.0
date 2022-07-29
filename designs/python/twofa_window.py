@@ -39,6 +39,10 @@ class Ui_TwoFADialog(object):
         self.btn_copy = QtWidgets.QPushButton(TwoFADialog)
         self.btn_copy.setObjectName("btn_copy")
         self.horizontalLayout.addWidget(self.btn_copy)
+        self.btn_exit = QtWidgets.QPushButton(TwoFADialog)
+        self.btn_exit.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.btn_exit.setObjectName("btn_exit")
+        self.horizontalLayout.addWidget(self.btn_exit)
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.retranslateUi(TwoFADialog)
@@ -51,3 +55,4 @@ class Ui_TwoFADialog(object):
         self.lbl_qrcode.setText(_translate("TwoFADialog", "QR Code"))
         self.lbl_setupkey.setText(_translate("TwoFADialog", "Setup Key"))
         self.btn_copy.setText(_translate("TwoFADialog", "Copy"))
+        self.btn_exit.setText(_translate("TwoFADialog", "Exit"))

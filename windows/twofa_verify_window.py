@@ -6,7 +6,7 @@ from pynput.keyboard import Key, Controller
 
 from PyQt5.QtWidgets import QDialog, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QFont, QIcon, QPixmap
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QCloseEvent
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -14,7 +14,7 @@ from designs.python.twofa_verify_window import Ui_TwofaDialog
 
 from database.model import Model
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, LoginEvent
 from utils.message import Message
 
 from widgetStyles.Label import Label
@@ -23,13 +23,15 @@ from widgetStyles.PushButton import ButtonFullWidth
 from widgetStyles.Dialog import Dialog
 
 class TwofaVerifyWindow(Ui_TwofaDialog, QDialog):
-    opt_verify_signal = pyqtSignal(bool)
+    opt_verify_signal = pyqtSignal(LoginEvent.event_type)
     def __init__(self):
         super(TwofaVerifyWindow, self).__init__()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setupUi(self)
         self.read_styles()
+        
+        self.success = False
         
         # Set the google logo
         pixmap: QPixmap = QPixmap(":/other/google_auth_logo")
@@ -82,7 +84,8 @@ class TwofaVerifyWindow(Ui_TwofaDialog, QDialog):
         
         # Verify the code
         if(totp.verify(self.code)):
-            self.opt_verify_signal.emit(True)
+            self.success = True
+            self.opt_verify_signal.emit(LoginEvent.success)
             self.close()
         else:
             for field in self.text_field_list:
@@ -92,12 +95,18 @@ class TwofaVerifyWindow(Ui_TwofaDialog, QDialog):
             
             # Reset the window
             self.lne_code_1.setFocus()
-            self.opt_verify_signal.emit(False)
+            self.opt_verify_signal.emit(LoginEvent.failed)
         
         self.code = ""
             
     def change_lines(self, value):
         self.code += value
         Controller().press(Key.tab)
+        
+    def closeEvent(self, event: QCloseEvent) -> None:
+        if not self.success:
+            self.opt_verify_signal.emit(LoginEvent.closed)
+        return super().closeEvent(event)
+
         
 

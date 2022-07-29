@@ -2,7 +2,6 @@ from datetime import date, datetime
 import sys
 import time
 import json
-from turtle import update
 import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen
@@ -24,12 +23,13 @@ from widgetStyles.TabBar import TabBar
 from widgetStyles.TabWidget import TabWidget
 from widgetStyles.Widget import Widget
 
-from utils.helpers import StyleSheet
+from utils.helpers import LoginEvent, StyleSheet
 
 from windows.register_window import Register
 from windows.login_window import Login
 from windows.setup_window import InitialSetup
 from windows.update_password import UpdatePassword
+from windows.twofa_verify_window import TwofaVerifyWindow
 
 from threads.google_thread import upload_google
 from threads.onedrive_thread import upload_onedrive
@@ -40,6 +40,7 @@ class Main(Ui_main_container, QWidget):
         super(Main, self).__init__()
         
         self.expired_passwords: list = []
+        self.twofa_passed = True
         
         QFontDatabase.addApplicationFont(":/fonts/RobotoCondensed")
         
@@ -69,7 +70,6 @@ class Main(Ui_main_container, QWidget):
             # Check if there are any expired passwords
             if len(self.expired_passwords) > 0:
                 update_password(self)
-        
         
     def get_vault_password_expiration(self):
         # Get all the vault entries
@@ -159,7 +159,6 @@ class Main(Ui_main_container, QWidget):
         # self.tab_widget.setTabPosition(QTabWidget.West)
         self.apps_tab = Apps_tab().create_tab()
         self.apps_tab.table_signal.connect(self.updateTable)
-        self.apps_tab.login_signal.connect(self.check_login)
         self.tab_widget.addTab(self.apps_tab, "Apps")
 
         self.vault_tab = Vault_tab().create_tab()

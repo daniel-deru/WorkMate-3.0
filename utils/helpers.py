@@ -114,4 +114,9 @@ def set_font(font_list):
 def char_in_string(string: str, regex: Pattern) -> bool:
     result = re.findall(regex, string)
     return len(result) > 0
-    
+
+class LoginEvent:
+    success = 14380754
+    failed = 24985763
+    closed = 35834975
+    event_type = int    
