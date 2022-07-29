@@ -3,6 +3,7 @@ import sys
 import os
 import json
 import pandas as pd
+from datetime import date, timedelta, datetime
 
 from PyQt5.QtWidgets import (
     QDialog, 
@@ -83,13 +84,17 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
                 # If the loop didn't continue it's a new app, add it to the check dict
                 self.check[name] = name
                 
+                password_exp_date = date.today() + timedelta(days=90)
+                password_exp_string = datetime.strftime(password_exp_date, "%Y-%m-%d")
+                
                 data: object = {
                     'name': name,
                     'sequence': index,
                     'path': url,
                     'username': username,
                     'email': username,
-                    'password': password
+                    'password': password,
+                    'password_exp': password_exp_string
                 }
                 self.import_data.append([name, json.dumps(data)])
                 index += 1

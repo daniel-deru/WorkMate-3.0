@@ -124,7 +124,9 @@ class Main(Ui_main_container, QWidget):
             sys.exit()
         elif event == "user created":
             self.register.close()
-            InitialSetup().exec_()
+            setup_wizard = InitialSetup()
+            setup_wizard.setup_finished.connect(self.updateWindow)
+            setup_wizard.exec_()
      
        
     def read_style(self):
@@ -143,6 +145,7 @@ class Main(Ui_main_container, QWidget):
         self.notes_tab.note_signal.emit("update")
         self.todo_tab.todo_signal.emit("update")
         self.vault_tab.vault_signal.emit("update")
+        self.settings_tab.settings_update_signal.emit("update")
         self.read_style()
     
     # This is to update the vault window after a new app has been added

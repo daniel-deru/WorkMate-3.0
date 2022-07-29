@@ -3,6 +3,7 @@ import os.path
 import tzlocal
 import io
 import shutil
+import random
 
 
 from google.auth.transport.requests import Request
@@ -36,7 +37,10 @@ class Google:
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
                     f'{PATH}/integrations/client_secret_dev.json', SCOPES)
-                creds = flow.run_local_server()
+                try:
+                    creds = flow.run_local_server()
+                except Exception:
+                    return
                 
             # Save the credentials for the next run
             with open(f'{PATH}/integrations/google_token.json', 'w') as token:

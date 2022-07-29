@@ -38,6 +38,7 @@ from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
 
 class InitialSetup(Ui_InitialSetup, QDialog):
+    setup_finished = pyqtSignal(bool)
     def __init__(self) -> None:
         super(InitialSetup, self).__init__()
         self.setupUi(self)
@@ -133,7 +134,9 @@ class InitialSetup(Ui_InitialSetup, QDialog):
         self.auto_save_onedrive = True
         Microsoft()
         
+        
     def closeEvent(self, event: QCloseEvent) -> None:
+        self.setup_finished.emit(True)
         auto_save = {
             "auto_save": False,
             "google": False,

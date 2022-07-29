@@ -48,6 +48,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
     settings_signal = pyqtSignal(str)
     # This signal will communicate with the main window to get and set the login status
     login_signal = pyqtSignal(str)
+    settings_update_signal = pyqtSignal(str)
     def __init__(self):
         super(SettingsTab, self).__init__()
         self.setupUi(self)
@@ -86,10 +87,13 @@ class SettingsTab(Ui_Settings_tab, QWidget):
 
         # connect the custom signals to the slots
         self.settings_signal.connect(self.read_styles)
+        self.settings_update_signal.connect(self.read_styles)
         self.login_signal.connect(self.login)
         
     def setup_wizard(self):
-        InitialSetup().exec_()
+        setup_wizard = InitialSetup()
+        setup_wizard.setup_finished.connect(self.updateWindow)
+        setup_wizard.exec_()
         
     def generate_password(self):
         generate_password = GeneratePasswordWindow()
