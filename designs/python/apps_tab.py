@@ -33,6 +33,13 @@ class Ui_apps_tab(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.hbox_open_apps_buttons = QtWidgets.QHBoxLayout()
         self.hbox_open_apps_buttons.setObjectName("hbox_open_apps_buttons")
+        self.cmb_group = QtWidgets.QComboBox(apps_tab)
+        self.cmb_group.setObjectName("cmb_group")
+        self.hbox_open_apps_buttons.addWidget(self.cmb_group)
+        self.btn_groups = QtWidgets.QPushButton(apps_tab)
+        self.btn_groups.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.btn_groups.setObjectName("btn_groups")
+        self.hbox_open_apps_buttons.addWidget(self.btn_groups)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.hbox_open_apps_buttons.addItem(spacerItem)
         self.chk_delete_apps = QtWidgets.QCheckBox(apps_tab)
@@ -97,6 +104,7 @@ class Ui_apps_tab(object):
     def retranslateUi(self, apps_tab):
         _translate = QtCore.QCoreApplication.translate
         apps_tab.setWindowTitle(_translate("apps_tab", "Form"))
+        self.btn_groups.setText(_translate("apps_tab", "Manage Groups"))
         self.chk_delete_apps.setText(_translate("apps_tab", "Delete"))
         self.chk_edit_apps.setText(_translate("apps_tab", "Edit"))
         self.btn_add_app.setText(_translate("apps_tab", "Add App"))
