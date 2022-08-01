@@ -11,13 +11,15 @@ class Tables:
             "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
             "name": "TEXT NOT NULL",
             "path": "TEXT NOT NULL",
-            "sequence": "INTEGER NOT NULL"
+            "sequence": "INTEGER NOT NULL",
+            "group": "TEXT"
         }
         
         notes = {
             "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
             "name": "TEXT NOT NULL",
-            "body": "TEXT"
+            "body": "TEXT",
+            "group": "TEXT"
         }
         
         todos = {
@@ -25,7 +27,8 @@ class Tables:
             "name": "TEXT NOT NULL",
             "complete": f"TEXT DEFAULT '{enc('0')}' NOT NULL",
             "deadline": "TEXT",
-            "description": "TEXT"
+            "description": "TEXT",
+            "group": "TEXT"
         }
         
         settings = {
@@ -54,11 +57,18 @@ class Tables:
             "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
             "type": "TEXT NOT NULL",
             "name": "TEXT NOT NULL",
-            "data": "TEXT NOT NULL"
+            "data": "TEXT NOT NULL",
+            "group": "TEXT"
         }
         
         metadata = {
             "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
             "name": "TEXT NOT NULL",
             "data": "TEXT NOT NULL"
+        }
+        
+        groups = {
+            "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
+            "name": "TEXT NOT NULL",
+            "description": "TEXT NOT NULL"
         }
