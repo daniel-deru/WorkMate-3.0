@@ -12,14 +12,14 @@ class Tables:
             "name": "TEXT NOT NULL",
             "path": "TEXT NOT NULL",
             "sequence": "INTEGER NOT NULL",
-            "group": "TEXT"
+            "group_id": "INTEGER",
         }
         
         notes = {
             "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
             "name": "TEXT NOT NULL",
             "body": "TEXT",
-            "group": "TEXT"
+            "group_id": "INTEGER",
         }
         
         todos = {
@@ -28,7 +28,7 @@ class Tables:
             "complete": f"TEXT DEFAULT '{enc('0')}' NOT NULL",
             "deadline": "TEXT",
             "description": "TEXT",
-            "group": "TEXT"
+            "group_id": "INTEGER",
         }
         
         settings = {
@@ -58,7 +58,7 @@ class Tables:
             "type": "TEXT NOT NULL",
             "name": "TEXT NOT NULL",
             "data": "TEXT NOT NULL",
-            "group": "TEXT"
+            "group_id": "INTEGER",
         }
         
         metadata = {

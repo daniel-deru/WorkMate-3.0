@@ -22,15 +22,16 @@ class Model:
 
     def create_tables(self):      
         
-        self.create_table("apps", Tables.apps)
-        self.create_table("notes", Tables.notes)
-        self.create_table("todos", Tables.todos)
-        self.create_table("settings", Tables.settings)
+        self.create_table("groups", Tables.groups)
         self.create_table("user", Tables.users)
-        self.create_table("vault", Tables.vault)
+        self.create_table("settings", Tables.settings)
         self.create_table("metadata", Tables.metadata)
+        self.create_table("apps", Tables.apps, "group_id", "groups(id)")
+        self.create_table("notes", Tables.notes, "group_id", "groups(id)")
+        self.create_table("todos", Tables.todos, "group_id", "groups(id)")
+        self.create_table("vault", Tables.vault, "group_id", "groups(id)")
         
-    def create_table(self, tablename: str, fields: object):
+    def create_table(self, tablename: str, fields: object, foreign_field: str = None, foreign_table_field: str = None):
         encrypted_table_name = encryption.encrypt(tablename)
         
         new_table = self.insert_table_name(encrypted_table_name)
@@ -40,6 +41,11 @@ class Model:
         
         table_definition = ""
         
+        # Create a string to contain the foreign key definition
+        foreign_definition = ""
+        if foreign_field and foreign_table_field:
+            foreign_definition = f"FOREIGN KEY ({foreign_field}) REFERENCES {foreign_table_field}"
+        
         for i in range(len(names)):
             encrypted_name = encryption.encrypt(names[i])
             table_definition += f"[{encrypted_name}] {definitions[i]}"
@@ -48,6 +54,8 @@ class Model:
         table_query = f"""
             CREATE TABLE IF NOT EXISTS [{encrypted_table_name}](
                 {table_definition}
+                {foreign_definition}
+                
             )
         """
         if new_table: self.cur.execute(table_query)
@@ -290,7 +298,30 @@ class Model:
         }
         
         if len(settings_data) < 1:
-            query = f"INSERT INTO [{settings}] VALUES ('{enc('settings')}', '{enc('0')}', '{enc('Roboto Condensed')}', '{enc('#000000')}', '{enc('0')}', '{enc('5')}', '{enc('0')}', '{enc('0')}', '{enc(json.dumps(auto_save))}')"
+            query = f"""INSERT INTO [{settings}] VALUES (
+                '{enc('settings')}', 
+                '{enc('0')}', '{enc('Roboto Condensed')}', 
+                '{enc('#000000')}', 
+                '{enc('0')}', 
+                '{enc('5')}', 
+                '{enc('0')}', 
+                '{enc('0')}', 
+                '{enc(json.dumps(auto_save))}'
+                )"""
+            self.cur.execute(query)
+            self.db.commit()
+            
+        groups = self.get_encrypted_table_name("groups")
+        groups_get_query = f"SELECT * FROM [{groups}]"
+        self.cur.execute(groups_get_query)
+        groups_data = self.cur.fetchall()
+        
+        if len(groups_data) < 1:
+            query = f"""INSERT INTO [{groups}] VALUES (
+                '0', 
+                '{enc('Ungrouped')}', 
+                '{enc('anything that is not in a group')}'
+                )"""
             self.cur.execute(query)
             self.db.commit()
             

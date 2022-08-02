@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>596</width>
-    <height>215</height>
+    <height>262</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,6 +39,20 @@
      </item>
      <item>
       <widget class="QSpinBox" name="spnbox_index"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <item>
+      <widget class="QLabel" name="lbl_group">
+       <property name="text">
+        <string>Group</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cmb_group"/>
      </item>
     </layout>
    </item>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>593</width>
-    <height>407</height>
+    <height>424</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -83,6 +83,20 @@
         <bool>true</bool>
        </property>
       </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="lbl_group">
+       <property name="text">
+        <string>Group</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cmb_group"/>
      </item>
     </layout>
    </item>

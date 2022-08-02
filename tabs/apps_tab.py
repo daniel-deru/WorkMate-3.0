@@ -93,25 +93,6 @@ class Apps_tab(Ui_apps_tab, QWidget):
                 app_button.app_clicked_signal.connect(self.get_app)
                 self.gbox_apps.addWidget(app_button, row, col)
 
-    # def create_protected_apps(self):
-    #     apps = Model().read('protected_apps')
-    #     COLUMNS = 4
-    #     sorted_apps = sorted(apps, key=lambda item: item[COLUMNS])
-    #     grid_items = []
-    #     for i in range(math.ceil(len(sorted_apps)/COLUMNS)):
-    #         subarr = []
-    #         for j in range(COLUMNS):
-    #             if sorted_apps:
-    #                 subarr.append(sorted_apps.pop(0))
-    #         grid_items.append(subarr)
-    #     for i in range(len(grid_items)):
-    #         row = i
-    #         for j in range(len(grid_items[i])):
-    #             col = j
-    #             app_button = AppItem(grid_items[i][j]).create()
-    #             app_button.app_clicked_signal.connect(self.get_app)
-    #             self.gbox_pro_apps.addWidget(app_button, row, col)
-
     def edit_checked(self):
         delete_apps = self.chk_delete_apps
         edit_apps = self.chk_edit_apps

@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_AddSecret_window(object):
     def setupUi(self, AddSecret_window):
         AddSecret_window.setObjectName("AddSecret_window")
-        AddSecret_window.resize(625, 234)
+        AddSecret_window.resize(625, 281)
         self.verticalLayout = QtWidgets.QVBoxLayout(AddSecret_window)
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
@@ -26,6 +26,15 @@ class Ui_AddSecret_window(object):
         self.lnedt_name.setObjectName("lnedt_name")
         self.horizontalLayout_2.addWidget(self.lnedt_name)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.lbl_group = QtWidgets.QLabel(AddSecret_window)
+        self.lbl_group.setObjectName("lbl_group")
+        self.verticalLayout_2.addWidget(self.lbl_group)
+        self.cmb_group = QtWidgets.QComboBox(AddSecret_window)
+        self.cmb_group.setObjectName("cmb_group")
+        self.verticalLayout_2.addWidget(self.cmb_group)
+        self.verticalLayout.addLayout(self.verticalLayout_2)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.lbl_headers = QtWidgets.QLabel(AddSecret_window)
@@ -104,6 +113,7 @@ class Ui_AddSecret_window(object):
         _translate = QtCore.QCoreApplication.translate
         AddSecret_window.setWindowTitle(_translate("AddSecret_window", "Add Secret"))
         self.lbl_name.setText(_translate("AddSecret_window", "Display Name"))
+        self.lbl_group.setText(_translate("AddSecret_window", "Group"))
         self.lbl_headers.setText(_translate("AddSecret_window", "Add Headers"))
         self.lbl_data.setText(_translate("AddSecret_window", "Add Data"))
         self.btn_cancel.setText(_translate("AddSecret_window", "Cancel"))
