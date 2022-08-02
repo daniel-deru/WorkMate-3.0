@@ -73,6 +73,9 @@
     </layout>
    </item>
    <item>
+    <widget class="QComboBox" name="cmb_groups"/>
+   </item>
+   <item>
     <widget class="QLineEdit" name="lnedt_title"/>
    </item>
   </layout>

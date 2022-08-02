@@ -23,12 +23,14 @@ from widgetStyles.Dialog import Dialog
 from utils.helpers import StyleSheet
 
 
-class Note_window(QDialog, Ui_Note_Window):
+class Note_window(Ui_Note_Window, QDialog):
     note_window_signal = pyqtSignal(str)
     def __init__(self, edit_note=None):
         super(Note_window, self).__init__()
+        self.note = edit_note
 
         self.setupUi(self)
+        self.set_groups()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
 
@@ -39,7 +41,6 @@ class Note_window(QDialog, Ui_Note_Window):
 
         self.chkbx_edit.stateChanged.connect(self.set_delete_active)
 
-        self.note = edit_note
         if self.note:
             self.lnedt_title.setText(self.note[1])
             self.custom_text_edit.setPlainText(self.note[2])
@@ -47,6 +48,15 @@ class Note_window(QDialog, Ui_Note_Window):
             self.text = self.note[2]
         self.btn_save.clicked.connect(self.save_clicked)
         self.btn_copy_note.clicked.connect(self.copy_text)
+        
+    def set_groups(self):
+        groups = Model().read('groups')
+        
+        for i in range(len(groups)):
+            print(groups[i][0])
+            self.cmb_groups.addItem(groups[i][1], groups[i][0])
+            if self.note and int(self.note[3]) == groups[i][0]:
+                self.cmb_groups.setCurrentIndex(i)
     
     def set_delete_active(self):
             delete_checked = self.chkbx_edit.isChecked()
@@ -59,6 +69,7 @@ class Note_window(QDialog, Ui_Note_Window):
     def save_clicked(self):
         name = self.lnedt_title.text()
         body = self.custom_text_edit.toPlainText()
+        group = self.cmb_groups.currentData()
         
         if not self.lnedt_title.text():
             message = Message("Please enter a title for your note.", "Note")
@@ -66,7 +77,8 @@ class Note_window(QDialog, Ui_Note_Window):
         else:
             make_note = {
                     'name': name,
-                    'body': body
+                    'body': body,
+                    'group_id': group
                 }
             if not self.note:
                 Model().save("notes", make_note)

@@ -28,19 +28,26 @@ class TodoWindow(Ui_todo_edit, QDialog):
     todo_edit_signal = pyqtSignal(str)
     def __init__(self, todo=None):
         super(TodoWindow, self).__init__()
+        self.todo: object or None = todo
         self.setupUi(self)
+        self.set_groups()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.cmbx_status.setCursor(QCursor(Qt.PointingHandCursor))
         self.read_styles()
-        self.todo: object or None = todo
         
         self.dtedt_date.setDate(date.today())
         if self.todo: self.set_data()
 
-        # self.dtedt_date.dateChanged.connect(self.get_date)
-        # self.cmbx_status.currentIndexChanged.connect(self.get_status)
         self.btn_save.clicked.connect(self.save_clicked)
+        
+    def set_groups(self):
+        groups = Model().read("groups")
+        
+        for i in range(len(groups)):
+            self.cmb_group.addItem(groups[i][1], groups[i][0])
+            if self.todo and int(self.todo[5]) == groups[i][0]:
+                self.cmb_group.setCurrentIndex(i)
 
     def read_styles(self):
         widget_list = [
@@ -96,6 +103,7 @@ class TodoWindow(Ui_todo_edit, QDialog):
         name: str = self.lnedt_name.text()
         description: str = self.txe_description.toPlainText()
         deadline: date = self.dtedt_date.date().toPyDate()
+        group = self.cmb_group.currentData()
         
         deadline_text: str = datetime.strftime(deadline, "%Y-%m-%d")
         
@@ -107,7 +115,8 @@ class TodoWindow(Ui_todo_edit, QDialog):
             'name': name, 
             'complete': status, 
             'deadline': deadline_text,
-            'description': description
+            'description': description,
+            'group_id': group
         }
 
         if self.todo:

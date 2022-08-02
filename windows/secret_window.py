@@ -23,21 +23,30 @@ from utils.helpers import StyleSheet, json_to_dict
 from utils.message import Message
 
 
-class SecretWindow(QDialog, Ui_AddSecret_window):
+class SecretWindow(Ui_AddSecret_window, QDialog):
     secret_signal = pyqtSignal(str)
     def __init__(self, secret=None):
         
         super(SecretWindow, self).__init__()
+        self.secret = secret if secret else None
         self.setupUi(self)
+        self.set_groups()
         self.read_styles()
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
-        self.setWindowFlags(Qt.WindowCloseButtonHint)
+        # self.setWindowFlags(Qt.WindowCloseButtonHint)
         self.btn_save.clicked.connect(self.save)
         self.btn_cancel.clicked.connect(lambda: self.close())
-        self.secret = secret if secret else None
         if secret:
             self.display_secret()
+            
+    def set_groups(self):
+        groups = Model().read("groups")
+        
+        for i in range(len(groups)):
+            self.cmb_group.addItem(groups[i][1], groups[i][0])
+            if self.secret and int(self.secret[4]) == groups[i][0]:
+                self.cmb_group.setCurrentIndex(i)
 
     
     def display_secret(self):
@@ -85,16 +94,25 @@ class SecretWindow(QDialog, Ui_AddSecret_window):
 
 
     def save(self, data) -> None:
+        group = self.cmb_group.currentData()
         data = self.get_data()
         if(len(data['data'].keys()) <= 0):
             Message("Please Enter data into the vault.", "No Data").exec_()
             return
+        
+        payload = {
+            'type': 'general', 
+            'name': data['name'], 
+            'data': json.dumps(data["data"]),
+            'group_id': group
+        }
         # The secret does not exist in the database (save the secret)
         if not self.secret:
-            Model().save('vault', {'type': 'general', 'name': data['name'], 'data': json.dumps(data["data"])})
+            Model().save('vault', payload)
         # The secret does exist (update the secret)
         elif self.secret:
-            Model().update("vault", {'type': 'general', 'name': data['name'], 'data': json.dumps(data["data"])}, self.secret[0])
+            Model().update("vault", payload, self.secret[0])
+            
         self.secret_signal.emit("saved")
         self.close()
     

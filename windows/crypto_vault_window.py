@@ -46,11 +46,12 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
     def __init__(self, secret=None):
         super(CryptoVaultWindow, self).__init__()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.secret: tuple or None = secret
         
         self.setupUi(self)
+        self.set_groups()
         self.dte_password_exp.setDate(date.today() + timedelta(days=90))
-        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.displayWordBoxes()
         self.read_styles()
         if self.secret: self.fill_data()
@@ -63,6 +64,14 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         
         self.btn_save.clicked.connect(self.save)
         self.tbtn_generate_password.clicked.connect(self.generate_password)
+        
+    def set_groups(self):
+        groups = Model().read("groups")
+        
+        for i in range(len(groups)):
+            self.cmb_group.addItem(groups[i][1], groups[i][0])
+            if self.secret and int(self.secret[4]) == groups[i][0]:
+                self.cmb_group.setCurrentIndex(i)
         
     @pyqtSlot()
     def generate_password(self):
@@ -158,6 +167,8 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         private_key: str = self.lne_private.text()
         password_exp = self.dte_password_exp.date().toPyDate()
         
+        group = self.cmb_group.currentData()
+        
         password_exp_string = datetime.strftime(password_exp, "%Y-%m-%d")
 
         valid_submit: bool = True
@@ -211,11 +222,18 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
                 data['public_key'] = public_key
                 
             data: str = dumps(data)
+            
+            payload = {
+                'type': 'crypto', 
+                'name': description, 
+                'data':data,
+                'group_id': group
+            }
 
             if self.secret:
-                Model().update("vault", {'type': 'crypto', 'name': description, 'data':data}, self.secret[0])
+                Model().update("vault", payload, self.secret[0])
             else:
-                Model().save("vault", {'type': 'crypto', 'name': description, 'data': data})
+                Model().save("vault", payload)
 
             self.crypto_update_signal.emit(True)
             self.close()

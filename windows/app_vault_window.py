@@ -34,9 +34,10 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         super(Ui_AppVault, self).__init__()
         self.app = app
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.secrets = list(filter(lambda a: a[1] == "app", Model().read("vault")))
         self.setupUi(self)
-        self.setWindowIcon(QIcon(":/other/app_icon"))
+        self.set_groups()
         
         self.dte_password_exp.setDate(date.today() + timedelta(days=90))
         
@@ -60,6 +61,14 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         
         self.chk_show_password.stateChanged.connect(lambda show: self.show_password(show, self.lne_password))
         self.chk_password2.stateChanged.connect(lambda show: self.show_password(show, self.lne_password2))
+    
+    def set_groups(self):
+        groups = Model().read("groups")
+        
+        for i in range(len(groups)):
+            self.cmb_group.addItem(groups[i][1], groups[i][0])
+            if self.app and int(self.app[4]) == groups[i][0]:
+                self.cmb_group.setCurrentIndex(i)
     
     @pyqtSlot()
     def generate_password(self):
@@ -114,6 +123,8 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         confirm_password: str = self.lne_password2.text()
         password_exp = self.dte_password_exp.date().toPyDate()
         
+        group = self.cmb_group.currentData()
+        
         password_exp_string = datetime.strftime(password_exp, "%Y-%m-%d")
 
         name_list: list[str] = ["name", "index", "path", "username", "email", "password"]
@@ -138,7 +149,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
                 'username': username,
                 'email': email,
                 'password': password,
-                'password_exp': password_exp_string
+                'password_exp': password_exp_string,
             })
             
             if password != confirm_password:
@@ -148,11 +159,18 @@ class AppVaultWindow(Ui_AppVault, QDialog):
             if int(index) < len(self.secrets):
                 # print(f"current index: {index}")
                 self.update_sequence(str(index))
+                
+            payload = {
+                'type': 'app', 
+                'name': name, 
+                'data': data,
+                'group_id': group                
+            }
 
             if self.app:
-                Model().update("vault", {'type': 'app', 'name': name, 'data': data}, self.app[0])
+                Model().update("vault", payload, self.app[0])
             else:
-                Model().save("vault", {'type': "app", 'name': name, 'data': data })
+                Model().save("vault", payload)
                 
                 
                 

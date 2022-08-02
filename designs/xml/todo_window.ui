@@ -87,6 +87,20 @@
     </layout>
    </item>
    <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="lbl_group">
+       <property name="text">
+        <string>Group</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cmb_group"/>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QVBoxLayout" name="verticalLayout_5">
      <item>
       <widget class="QLabel" name="lbl_status">
