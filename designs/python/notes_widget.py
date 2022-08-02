@@ -51,5 +51,5 @@ class Ui_notes_tab(object):
     def retranslateUi(self, notes_tab):
         _translate = QtCore.QCoreApplication.translate
         notes_tab.setWindowTitle(_translate("notes_tab", "Form"))
-        self.btn_groups.setText(_translate("notes_tab", "Manage Products"))
+        self.btn_groups.setText(_translate("notes_tab", "Manage Groups"))
         self.btn_note.setText(_translate("notes_tab", "Add Notes"))

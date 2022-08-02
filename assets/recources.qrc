@@ -63,6 +63,7 @@
         <file alias="password">password_icon.svg</file>
         <file alias="google">google_btn.png</file>
         <file alias="setup">setup_icon.png</file>
+        <file alias="group">group_icon.svg</file>
 
     </qresource>
 
