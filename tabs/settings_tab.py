@@ -33,6 +33,7 @@ from windows.twofa_window import TwofaDialog
 from windows.browser_import_window import BrowserImportWindow
 from windows.generate_password import GeneratePasswordWindow
 from windows.setup_window import InitialSetup
+from windows.groups_window import GroupsWindow
 
 from threads.google_thread import upload_google, download_google
 from threads.onedrive_thread import upload_onedrive, download_onedrive
@@ -82,6 +83,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.btn_browser_web_import.clicked.connect(self.import_websites)
         self.btn_generate_password.clicked.connect(self.generate_password)
         self.btn_setup.clicked.connect(self.setup_wizard)
+        self.btn_groups.clicked.connect(self.manage_groups)
         
         self.btn_google.clicked.connect(self.google_sign_in)        
 
@@ -89,6 +91,9 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.settings_signal.connect(self.read_styles)
         self.settings_update_signal.connect(self.read_styles)
         self.login_signal.connect(self.login)
+        
+    def manage_groups(self):
+        GroupsWindow().exec_()
         
     def setup_wizard(self):
         setup_wizard = InitialSetup()
@@ -192,28 +197,11 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             [self.btn_setup, ":/button_icons/setup"],
             [self.btn_groups, ":/button_icons/group"],
         ]
-        # self.btn_browser_web_import.setIcon(QIcon(":/button_icons/import"))
-        # self.btn_forgot_password.setIcon(QIcon(":/button_icons/reset"))
-        # self.btn_login.setIcon(QIcon(":/button_icons/unlock"))
-        # self.btn_google_drive_sync.setIcon(QIcon(":/button_icons/cloud_download"))
-        # self.btn_save_google_drive.setIcon(QIcon(":/button_icons/cloud_upload"))
-        # self.btn_restore_local.setIcon(QIcon(":/button_icons/drive_download"))
-        # self.btn_save_local.setIcon(QIcon(":/button_icons/drive_upload"))
-        # self.btn_setup.setIcon(QIcon(":/button_icons/setup"))
         
         for button, icon in button_icon_list:
             button: QPushButton
             button.setIcon(QIcon(icon))
             button.setIconSize(QSize(20, 20))
-        
-        # self.btn_browser_web_import.setIconSize(QSize(20, 20))
-        # self.btn_forgot_password.setIconSize(QSize(20, 20))
-        # self.btn_login.setIconSize(QSize(20, 20))
-        # self.btn_google_drive_sync.setIconSize(QSize(20, 20))
-        # self.btn_save_google_drive.setIconSize(QSize(20, 20))
-        # self.btn_restore_local.setIconSize(QSize(20, 20))
-        # self.btn_save_local.setIconSize(QSize(20, 20))
-        # self.btn_setup.setIconSize(QSize(20, 20))
     
     def login(self, signal):
         if signal == "success":

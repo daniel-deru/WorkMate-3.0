@@ -23,13 +23,9 @@ class Ui_notes_tab(object):
         self.hbox_notes = QtWidgets.QHBoxLayout()
         self.hbox_notes.setSpacing(6)
         self.hbox_notes.setObjectName("hbox_notes")
-        self.cmb_groups = QtWidgets.QComboBox(notes_tab)
-        self.cmb_groups.setObjectName("cmb_groups")
-        self.hbox_notes.addWidget(self.cmb_groups)
-        self.btn_groups = QtWidgets.QPushButton(notes_tab)
-        self.btn_groups.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_groups.setObjectName("btn_groups")
-        self.hbox_notes.addWidget(self.btn_groups)
+        self.hbox_filter_widget = QtWidgets.QHBoxLayout()
+        self.hbox_filter_widget.setObjectName("hbox_filter_widget")
+        self.hbox_notes.addLayout(self.hbox_filter_widget)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.hbox_notes.addItem(spacerItem)
         self.btn_note = QtWidgets.QPushButton(notes_tab)
@@ -51,5 +47,4 @@ class Ui_notes_tab(object):
     def retranslateUi(self, notes_tab):
         _translate = QtCore.QCoreApplication.translate
         notes_tab.setWindowTitle(_translate("notes_tab", "Form"))
-        self.btn_groups.setText(_translate("notes_tab", "Manage Groups"))
         self.btn_note.setText(_translate("notes_tab", "Add Notes"))

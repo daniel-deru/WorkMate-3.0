@@ -20,13 +20,9 @@ class Ui_todo_tab(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.cmb_groups = QtWidgets.QComboBox(todo_tab)
-        self.cmb_groups.setObjectName("cmb_groups")
-        self.horizontalLayout.addWidget(self.cmb_groups)
-        self.btn_groups = QtWidgets.QPushButton(todo_tab)
-        self.btn_groups.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_groups.setObjectName("btn_groups")
-        self.horizontalLayout.addWidget(self.btn_groups)
+        self.hbox_filter_widget = QtWidgets.QHBoxLayout()
+        self.hbox_filter_widget.setObjectName("hbox_filter_widget")
+        self.horizontalLayout.addLayout(self.hbox_filter_widget)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.btn_add_todo = QtWidgets.QPushButton(todo_tab)
@@ -53,5 +49,4 @@ class Ui_todo_tab(object):
     def retranslateUi(self, todo_tab):
         _translate = QtCore.QCoreApplication.translate
         todo_tab.setWindowTitle(_translate("todo_tab", "Form"))
-        self.btn_groups.setText(_translate("todo_tab", "Manage Groups"))
         self.btn_add_todo.setText(_translate("todo_tab", "Add To-do"))

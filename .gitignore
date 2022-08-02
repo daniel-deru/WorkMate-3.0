@@ -4,4 +4,15 @@ env
 *.spec
 database/*.db
 database/*.pkl
-*/__pycache__/*
+assets/__pycache__/*
+database/__pycache__/*
+designs/__pycache__/*
+designs/python/__pycache__/*
+integrations/__pycache__/*
+integrations/calendar/__pycache__/*
+threads/__pycache__/*
+utils/__pycache__/*
+widgets/__pycache__/*
+widgetStyles/__pycache__/*
+windows/__pycache__/*
+workers/__pycache__/*
