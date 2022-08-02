@@ -26,12 +26,12 @@ class Model:
         self.create_table("user", Tables.users)
         self.create_table("settings", Tables.settings)
         self.create_table("metadata", Tables.metadata)
-        self.create_table("apps", Tables.apps, "group_id", "groups(id)")
-        self.create_table("notes", Tables.notes, "group_id", "groups(id)")
-        self.create_table("todos", Tables.todos, "group_id", "groups(id)")
-        self.create_table("vault", Tables.vault, "group_id", "groups(id)")
+        self.create_table("apps", Tables.apps, "group_id", "groups", "id")
+        self.create_table("notes", Tables.notes, "group_id", "groups", "id")
+        self.create_table("todos", Tables.todos, "group_id", "groups", "id")
+        self.create_table("vault", Tables.vault, "group_id", "groups", "id")
         
-    def create_table(self, tablename: str, fields: object, foreign_field: str = None, foreign_table_field: str = None):
+    def create_table(self, tablename: str, fields: object, foreign_field: str = None, foreign_tablename: str = None, foreign_table_field: str = None):
         encrypted_table_name = encryption.encrypt(tablename)
         
         new_table = self.insert_table_name(encrypted_table_name)
@@ -40,16 +40,33 @@ class Model:
         definitions = list(fields.values())
         
         table_definition = ""
-        
-        # Create a string to contain the foreign key definition
-        foreign_definition = ""
-        if foreign_field and foreign_table_field:
-            foreign_definition = f"FOREIGN KEY ({foreign_field}) REFERENCES {foreign_table_field}"
+        encrypted_foreign_key = ""
         
         for i in range(len(names)):
             encrypted_name = encryption.encrypt(names[i])
+            if names[i] == foreign_field:
+                encrypted_foreign_key = encrypted_name
             table_definition += f"[{encrypted_name}] {definitions[i]}"
-            if i < len(names) - 1: table_definition += ",\n\t\t"
+            if i < len(names) - 1 and not foreign_field: table_definition += ",\n\t\t"
+            elif foreign_field: table_definition += ",\n\t\t"
+            
+        # Create a string to contain the foreign key definition
+        foreign_definition = ""
+        
+        # Make sure you have all the data for the foreign key before continuing
+        if foreign_field and foreign_table_field and foreign_tablename and encrypted_foreign_key:
+            
+            # Get the encrypted table name for the foreign table
+            encrypted_foreign_tablename = self.get_encrypted_table_name(foreign_tablename)
+            
+            # Get the encrypted table field names for the table
+            encrypted_foreign_table_fields = self.get_encrypted_table_cols(foreign_tablename)
+            
+            # Get the encrypted table field name for the table
+            encrypted_foreign_table_field = encrypted_foreign_table_fields[foreign_table_field]
+            
+            # Construct the foreign key definition
+            foreign_definition = f"FOREIGN KEY ([{encrypted_foreign_key}]) REFERENCES [{encrypted_foreign_tablename}]([{encrypted_foreign_table_field}])"
 
         table_query = f"""
             CREATE TABLE IF NOT EXISTS [{encrypted_table_name}](
@@ -58,6 +75,7 @@ class Model:
                 
             )
         """
+
         if new_table: self.cur.execute(table_query)
 
     def save(self, table, data):

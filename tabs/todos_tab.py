@@ -14,6 +14,7 @@ from database.model import Model
 from designs.python.todo_widget import Ui_todo_tab
 
 from widgets.todo_item import TodoItem
+from widgets.filter_group_widget import FilterGroupWidget
 
 from utils.helpers import StyleSheet
 from utils.message import Message
@@ -38,6 +39,7 @@ class Todo_tab(Ui_todo_tab, QWidget):
     def __init__(self):
         super(Todo_tab, self).__init__()
         self.setupUi(self)
+        self.hbox_filter_widget.addWidget(FilterGroupWidget())
         self.read_style()
         self.display_todos()
 

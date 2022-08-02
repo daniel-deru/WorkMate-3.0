@@ -22,11 +22,12 @@ from widgetStyles.QCheckBox import SettingsCheckBox
 
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
-class Apps_window(QDialog, Ui_App_Window):
+class Apps_window(Ui_App_Window, QDialog):
     app_window_signal = pyqtSignal(str)
     def __init__(self, app=None):
         super(Apps_window, self).__init__()
         self.setupUi(self)
+        self.show_groups()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowTitle("Add Your App")
@@ -39,17 +40,25 @@ class Apps_window(QDialog, Ui_App_Window):
         self.btn_save.clicked.connect(self.save_clicked)
         self.btn_desktop.clicked.connect(self.add_from_desktop)
         self.btn_discard.clicked.connect(lambda: self.close())
+        
+    def show_groups(self):
+        groups = Model().read("groups")
+        for group in groups:
+            self.cmb_group.addItem(group[1], group[0])
+        
 
     def save_clicked(self):
         
         name = self.lnedt_name.text()
         index = self.spn_index.value()
         path = self.lnedt_path.text()
+        group = self.cmb_group.currentData()
 
         data = {
                     'name': name,
                     'path': path,
                     'sequence': index,
+                    'group_id': group
                 }
 
         if not name:

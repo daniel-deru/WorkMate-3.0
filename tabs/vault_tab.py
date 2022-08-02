@@ -16,6 +16,7 @@ from utils.helpers import StyleSheet, json_to_dict
 from utils.helpers import clear_window
 
 from widgets.vault_item import VaultItem
+from widgets.filter_group_widget import FilterGroupWidget
 
 from windows.secret_window import SecretWindow
 from windows.crypto_vault_window import CryptoVaultWindow
@@ -35,12 +36,13 @@ from widgetStyles.ScrollBar import ScrollBar
 
 from database.model import Model
 
-class Vault_tab(QWidget, Ui_Vault_tab):
+class Vault_tab(Ui_Vault_tab, QWidget):
     vault_signal = pyqtSignal(str)
     login_signal = pyqtSignal(str)
     def __init__(self):
         super(Vault_tab, self).__init__()
         self.setupUi(self)
+        self.hbox_filter_widget.addWidget(FilterGroupWidget())
         self.read_styles()
         self.create_secrets()
 

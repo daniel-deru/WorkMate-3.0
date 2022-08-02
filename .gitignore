@@ -6,6 +6,7 @@ database/*.db
 database/*.pkl
 assets/__pycache__/*
 database/__pycache__/*
+tabs/__pycache__/*
 designs/__pycache__/*
 designs/python/__pycache__/*
 integrations/__pycache__/*

@@ -20,16 +20,17 @@ from designs.python.apps_edit_window import Ui_AppsEdit
 
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
-class AppsEdit(QDialog, Ui_AppsEdit):
+class AppsEdit(Ui_AppsEdit, QDialog):
     app_edit_window_signal = pyqtSignal(str)
     def __init__(self, app):
         super(AppsEdit, self).__init__()
         self.app = app
-        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setupUi(self)
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.read_styles()
         self.fill_fields()
+        
         self.apps = Model().read("apps")
 
         self.spnbox_index.setValue(len(self.apps))
@@ -39,6 +40,7 @@ class AppsEdit(QDialog, Ui_AppsEdit):
         self.btn_discard.clicked.connect(lambda: self.close())
         self.btn_desktop.clicked.connect(self.add_from_desktop)
         self.btn_save.clicked.connect(self.save_clicked)
+
     
     def read_styles(self):
         styles = [
@@ -72,13 +74,19 @@ class AppsEdit(QDialog, Ui_AppsEdit):
             widget.setFont(QFont(font_name))
     
     def fill_fields(self):
-        name = self.lnedt_name
-        path = self.lnedt_path
-        sequence = self.spnbox_index
+        
+        groups = Model().read("groups")
+        current_group = 0
+            
+        for i in range(len(groups)):
+            if int(self.app[4]) == groups[i][0]:
+                current_group = i
+            self.cmb_group.addItem(groups[i][1], groups[i][0])
 
-        name.setText(self.app[1])
-        path.setText(self.app[2])
-        sequence.setValue(int(self.app[3]))
+        self.cmb_group.setCurrentIndex(current_group) 
+        self.lnedt_name.setText(self.app[1])
+        self.lnedt_path.setText(self.app[2])
+        self.spnbox_index.setValue(int(self.app[3]))
 
 
     def add_from_desktop(self):
@@ -91,13 +99,14 @@ class AppsEdit(QDialog, Ui_AppsEdit):
         name = self.lnedt_name.text()
         path = self.lnedt_path.text()
         sequence = self.spnbox_index.value()
-
+        group = self.cmb_group.currentData()
         
 
         data = {
                     'name': name,
                     'path': path,
                     'sequence': sequence,
+                    'group_id': group
                 }
             
 

@@ -16,6 +16,8 @@ from windows.apps_window import Apps_window
 from windows.apps_edit_window import AppsEdit
 
 from widgets.app_item import AppItem
+from widgets.filter_group_widget import FilterGroupWidget
+
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.Line import Line
@@ -33,6 +35,7 @@ class Apps_tab(Ui_apps_tab, QWidget):
     def __init__(self):
         super(Apps_tab, self).__init__()
         self.setupUi(self)
+        self.hbox_filter_widget.addWidget(FilterGroupWidget())
         self.read_styles()
 
         self.create_apps()
@@ -109,18 +112,18 @@ class Apps_tab(Ui_apps_tab, QWidget):
             delete_apps.setChecked(True)
             edit_apps.setChecked(False)
     
-    def view_checked(self):
-        view_toggle = self.chkbox_pro_apps_view
-        edit_toggle = self.chkbox_pro_apps_edit
-        delete_toggle = self.chkbox_pro_apps_delete
+    # def view_checked(self):
+    #     view_toggle = self.chkbox_pro_apps_view
+    #     edit_toggle = self.chkbox_pro_apps_edit
+    #     delete_toggle = self.chkbox_pro_apps_delete
 
 
-        if view_toggle.isChecked() and edit_toggle.isChecked():
-            view_toggle.setChecked(True)
-            edit_toggle.setChecked(False)
-        elif view_toggle.isChecked() and delete_toggle.isChecked():
-            view_toggle.setChecked(True)
-            delete_toggle.setChecked(False)
+    #     if view_toggle.isChecked() and edit_toggle.isChecked():
+    #         view_toggle.setChecked(True)
+    #         edit_toggle.setChecked(False)
+    #     elif view_toggle.isChecked() and delete_toggle.isChecked():
+    #         view_toggle.setChecked(True)
+    #         delete_toggle.setChecked(False)
 
             
     
@@ -128,14 +131,14 @@ class Apps_tab(Ui_apps_tab, QWidget):
     def get_app(self, app):
         delete = self.chk_delete_apps
         edit = self.chk_edit_apps
-        is_protected_app = True if len(app) > 4 else False
+        # is_protected_app = True if len(app) > 4 else False
 
-        if delete.isChecked() and not is_protected_app:
+        if delete.isChecked():
             Model().delete('apps', app[0])
             self.update()
             delete.setChecked(False)
             
-        elif edit.isChecked() and not is_protected_app:
+        elif edit.isChecked():
             app_window = AppsEdit(app)
             app_window.app_edit_window_signal.connect(self.update)
             app_window.exec_()

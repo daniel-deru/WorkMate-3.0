@@ -12,7 +12,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from database.model import Model
 from designs.python.notes_widget import Ui_notes_tab
 from windows.notes_window import Note_window
+
 from widgets.note_item import NoteItem
+from widgets.filter_group_widget import FilterGroupWidget
+
 from utils.helpers import clear_window
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBoxSquare
@@ -26,6 +29,7 @@ class Notes_tab(Ui_notes_tab, QWidget):
     def __init__(self):
         super(Notes_tab, self).__init__()
         self.setupUi(self)
+        self.hbox_filter_widget.addWidget(FilterGroupWidget())
         self.read_styles()
         self.display_note()
 
