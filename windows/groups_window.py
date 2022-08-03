@@ -1,5 +1,6 @@
 import sys
 import os
+from tokenize import group
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from PyQt5.QtWidgets import QDialog, QFileDialog, QLineEdit, QWidget
@@ -20,6 +21,7 @@ class GroupsWindow(Ui_GroupsWindow, QDialog):
         super(GroupsWindow, self).__init__()
         self.setupUi(self)
         self.set_groups()
+        self.get_group_data()
         
         self.btn_add_group.clicked.connect(self.add_group)
         
@@ -30,8 +32,37 @@ class GroupsWindow(Ui_GroupsWindow, QDialog):
         
     def set_groups(self):
         groups = Model().read("groups")
-        print(groups)
-        
+        group_data = self.get_group_data()
         for group in groups:
-            group_widget = GroupWidget(group)
+            group_widget = GroupWidget(group, group_data[str(group[0])])
             self.vbox_group_container.addWidget(group_widget)
+            
+    def get_group_data(self):
+        group_dict = {}
+        apps = Model().read("apps") # 4 index of group_id
+        vault = Model().read("vault") # 4 index of group_id
+        notes = Model().read("notes") # 3 index of group_id
+        todos = Model().read("todos") # 5 index of group_id
+        
+        self.create_feature_groups(apps, 4, group_dict, "apps")
+        self.create_feature_groups(vault, 4, group_dict, "vault")
+        self.create_feature_groups(notes, 3, group_dict, "notes")
+        self.create_feature_groups(todos, 5, group_dict, "todos")
+        
+        return group_dict
+        
+        
+    def create_feature_groups(self, table_data, group_id_index, group_dict, feature):
+
+        for entry in table_data:
+            group_id = entry[group_id_index]
+            if group_id in group_dict:
+                if feature in group_dict[group_id]:
+                    group_dict[group_id][feature].append(entry[1])
+                else:
+                    group_dict[group_id][feature] = [entry[1]]
+            else:
+                group_dict[group_id] = {feature: [entry[1]]}
+        
+        
+        

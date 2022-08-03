@@ -3,6 +3,8 @@ import os
 import sys
 import json
 
+from rsa import decrypt
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from utils.globals import DB_PATH, DB_NAME
@@ -141,7 +143,7 @@ class Model:
         self.db.close()
 
         return decrypted_data
-
+    
     def delete(self, table, id):
         encrypted_table = self.get_encrypted_table_name(table)
         
@@ -355,6 +357,4 @@ class Model:
         return data[0] == "ok"
          
 model = Model()
-model.update("settings", {"font": "Roboto Condensed"}, "settings")
-
-# Coda Proxon
+# model.update("settings", {"font": "Roboto Condensed"}, "settings")

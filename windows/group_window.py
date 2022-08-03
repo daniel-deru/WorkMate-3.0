@@ -15,15 +15,23 @@ from database.model import Model
 
 class GroupWindow(Ui_GroupWindow, QDialog):
     group_add_signal = pyqtSignal(bool)
-    def __init__(self) -> None:
+    def __init__(self, group=None) -> None:
         super(GroupWindow, self).__init__()
         self.setupUi(self)
+        self.group = group
+        
+        if self.group: self.fill_data()
         
         self.btn_discard.clicked.connect(self.close)
-        self.btn_save.clicked.connect(self.add_group)
+        self.btn_save.clicked.connect(self.save)
+        
+    def fill_data(self):
+        self.lne_name.setText(self.group[1])
+        self.lne_description.setText(self.group[2])
+        self.btn_save.setText("Update")
     
     @pyqtSlot()
-    def add_group(self):
+    def save(self):
         name = self.lne_name.text()
         description = self.lne_description.toPlainText()
         
@@ -34,8 +42,11 @@ class GroupWindow(Ui_GroupWindow, QDialog):
             "name": name,
             "description": description
         }
-            
-        Model().save("groups", group)
+        
+        if not self.group:
+            Model().save("groups", group)
+        else:
+            Model().update("groups", group, self.group[0])
         self.group_add_signal.emit(True)
         self.close()
             
