@@ -35,17 +35,21 @@ class Apps_tab(Ui_apps_tab, QWidget):
     def __init__(self):
         super(Apps_tab, self).__init__()
         self.setupUi(self)
-        self.hbox_filter_widget.addWidget(FilterGroupWidget())
+        
+        self.filter_widget = FilterGroupWidget()
+        self.filter_widget.group_changed_signal.connect(lambda group: self.create_apps(group))
+        self.hbox_filter_widget.addWidget(self.filter_widget)
+        
+        initial_group = self.filter_widget.get_current_group()
+        self.create_apps(initial_group)
+        
         self.read_styles()
 
-        self.create_apps()
         # self.create_protected_apps()
 
         self.btn_add_app.clicked.connect(self.add_app)
         self.chk_edit_apps.stateChanged.connect(self.edit_checked)
         self.chk_delete_apps.stateChanged.connect(self.delete_checked)
-
-        self.logged_in = False
         
         # Signal slots for external signals
         self.app_signal.connect(self.update)
@@ -69,17 +73,18 @@ class Apps_tab(Ui_apps_tab, QWidget):
         for i in range(len(widgetList)):
             widgetList[i].setFont(QFont(font))
 
-        # self.line.setStyleSheet("border: 2px solid green;")
-
     def add_app(self):
         app_window = Apps_window()
         app_window.app_window_signal.connect(self.update)
         app_window.exec_()
     
-    def create_apps(self):
+    def create_apps(self, group):
+        clear_window(self.gbox_apps)
         apps = Model().read('apps')
+        
+        current_group = list(filter(lambda app: app[4] == str(group), apps))
         COLUMNS = 4
-        sorted_apps = sorted(apps, key=lambda item: item[2])
+        sorted_apps = sorted(current_group, key=lambda item: item[2])
         grid_items = []
         for i in range(math.ceil(len(sorted_apps)/COLUMNS)):
             subarr = []
@@ -111,20 +116,6 @@ class Apps_tab(Ui_apps_tab, QWidget):
         if edit_apps.isChecked() and delete_apps.isChecked():
             delete_apps.setChecked(True)
             edit_apps.setChecked(False)
-    
-    # def view_checked(self):
-    #     view_toggle = self.chkbox_pro_apps_view
-    #     edit_toggle = self.chkbox_pro_apps_edit
-    #     delete_toggle = self.chkbox_pro_apps_delete
-
-
-    #     if view_toggle.isChecked() and edit_toggle.isChecked():
-    #         view_toggle.setChecked(True)
-    #         edit_toggle.setChecked(False)
-    #     elif view_toggle.isChecked() and delete_toggle.isChecked():
-    #         view_toggle.setChecked(True)
-    #         delete_toggle.setChecked(False)
-
             
     
     # Handles the editing and deleting of the apps
@@ -152,7 +143,8 @@ class Apps_tab(Ui_apps_tab, QWidget):
 
     def update(self):
         clear_window(self.gbox_apps)
-        self.create_apps()
+        initial_group = self.filter_widget.get_current_group()
+        self.create_apps(initial_group)
         self.read_styles()
 
     def login_clicked(self):
@@ -160,12 +152,3 @@ class Apps_tab(Ui_apps_tab, QWidget):
             self.login_signal.emit("logout requested")
         elif not self.logged_in:
             self.login_signal.emit("login requested")
-
-
-    def login(self, signal):
-        if signal == "logged in":
-            self.btn_pro_apps_login.setText("Logout")
-            self.logged_in = True
-        elif signal == "logged out":
-            self.btn_pro_apps_login.setText("Login")
-            self.logged_in = False

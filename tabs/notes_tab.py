@@ -29,9 +29,15 @@ class Notes_tab(Ui_notes_tab, QWidget):
     def __init__(self):
         super(Notes_tab, self).__init__()
         self.setupUi(self)
-        self.hbox_filter_widget.addWidget(FilterGroupWidget())
+        
+        self.filter_widget = FilterGroupWidget()
+        self.filter_widget.group_changed_signal.connect(lambda group: self.display_note(group))
+        
+        self.hbox_filter_widget.addWidget(self.filter_widget)
         self.read_styles()
-        self.display_note()
+        
+        initial_group = self.filter_widget.get_current_group()
+        self.display_note(initial_group)
 
         self.btn_note.clicked.connect(self.add_note)
         self.note_signal.connect(self.update_window)
@@ -52,15 +58,17 @@ class Notes_tab(Ui_notes_tab, QWidget):
         note_window.note_window_signal.connect(self.update_window)
         note_window.exec_()
 
-    def display_note(self):
+    def display_note(self, group):
         clear_window(self.gbox_note_container)
         notes = Model().read("notes")
+        
+        current_group = list(filter(lambda note: note[3] == str(group), notes))
         grid_items = []
-        for i in range(math.ceil(len(notes)/2)):
+        for i in range(math.ceil(len(current_group)/2)):
             subarr = []
             for j in range(2):
-                if notes:
-                    subarr.append(notes.pop(0))
+                if current_group:
+                    subarr.append(current_group.pop(0))
             grid_items.append(subarr)
             
         for i in range(len(grid_items)):
@@ -73,7 +81,8 @@ class Notes_tab(Ui_notes_tab, QWidget):
     
     def update_window(self):
         self.read_styles()
-        self.display_note()
+        initial_group = self.filter_widget.get_current_group()
+        self.display_note(initial_group)
         # self.note.note_item_signal.emit("signal")
         
 
