@@ -1,6 +1,8 @@
 import sys
 import os
 from tokenize import group
+
+from colorama import Style
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from PyQt5.QtWidgets import QDialog, QFileDialog, QLineEdit, QWidget
@@ -16,14 +18,27 @@ from windows.group_window import GroupWindow
 
 from widgets.group_widget import GroupWidget
 
+from utils.helpers import StyleSheet
+
+from widgetStyles.Label import Label
+from widgetStyles.PushButton import PushButton
+from widgetStyles.Dialog import Dialog
+
 class GroupsWindow(Ui_GroupsWindow, QDialog):
     def __init__(self) -> None:
         super(GroupsWindow, self).__init__()
         self.setupUi(self)
         self.set_groups()
         self.get_group_data()
+        self.read_styles()
         
         self.btn_add_group.clicked.connect(self.add_group)
+        
+    def read_styles(self):
+        widget_list = [Dialog, PushButton, Label]
+        
+        stylesheet = StyleSheet(widget_list).create()
+        self.setStyleSheet(stylesheet)
         
     def add_group(self):
         manage_group_window = GroupWindow()

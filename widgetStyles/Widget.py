@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from widgetStyles.styles import color, mode, default
+from widgetStyles.styles import color, mode, default, light_blue, light_grey
 
 Widget = f"""
     QWidget {{
@@ -54,3 +54,17 @@ SideWidget = f"""
     }}
 
 """
+
+def CustomItemWidget(id):
+    ItemWidget = f"""
+        QWidget{id} {{
+            border-radius: 10px;
+            background-color: transparent;
+            border: 2px solid {light_blue};
+            padding: 10px;
+        }}
+
+    """
+    return ItemWidget
+
+ItemWidget = CustomItemWidget

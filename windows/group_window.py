@@ -1,5 +1,7 @@
 import sys
 import os
+
+from widgetStyles.TextEdit import TextEdit
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from PyQt5.QtWidgets import QDialog
@@ -13,17 +15,31 @@ from utils.message import Message
 
 from database.model import Model
 
+from utils.helpers import StyleSheet
+
+from widgetStyles.Label import Label
+from widgetStyles.PushButton import PushButton
+from widgetStyles.Dialog import Dialog
+from widgetStyles.LineEdit import LineEdit
+
 class GroupWindow(Ui_GroupWindow, QDialog):
     group_add_signal = pyqtSignal(bool)
     def __init__(self, group=None) -> None:
         super(GroupWindow, self).__init__()
         self.setupUi(self)
+        self.read_styles()
         self.group = group
         
         if self.group: self.fill_data()
         
         self.btn_discard.clicked.connect(self.close)
         self.btn_save.clicked.connect(self.save)
+        
+    def read_styles(self):
+        widget_list = [Dialog, PushButton, Label, LineEdit, TextEdit]
+        
+        stylesheet = StyleSheet(widget_list).create()
+        self.setStyleSheet(stylesheet)
         
     def fill_data(self):
         self.lne_name.setText(self.group[1])

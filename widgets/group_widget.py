@@ -2,9 +2,9 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from PyQt5.QtWidgets import QHBoxLayout, QLabel, QPushButton, QFrame, QSpacerItem, QSizePolicy, QWidget, QToolButton
-from PyQt5.QtCore import pyqtSignal, QSize, Qt, pyqtSlot
-from PyQt5.QtGui import QIcon, QFont, QCursor
+from PyQt5.QtWidgets import QHBoxLayout, QLabel, QSpacerItem, QSizePolicy, QWidget, QToolButton, QFrame
+from PyQt5.QtCore import pyqtSlot, QSize, Qt
+from PyQt5.QtGui import QIcon, QCursor
 
 from database.model import Model
 
@@ -12,9 +12,14 @@ from windows.group_view_window import GroupViewWindow
 from windows.group_window import GroupWindow
 
 from utils.message import Message
+from utils.helpers import StyleSheet
+
+from widgetStyles.Widget import ItemWidget
+from widgetStyles.Label import Label
+from widgetStyles.ToolButton import ToolButton
 
 
-class GroupWidget(QWidget):
+class GroupWidget(QFrame):
     def __init__(self, group, group_data) -> None:
         super(GroupWidget, self).__init__()
         self.group = group
@@ -25,9 +30,19 @@ class GroupWidget(QWidget):
             self.total += len(self.group_data[feature])
         
         self.setupUi()
+        self.read_styles()
         
         self.btn_view.clicked.connect(self.view_group)
         self.btn_edit.clicked.connect(self.edit_group)
+        
+    def read_styles(self):
+        widget_list = [
+            ItemWidget("#group_widget"),
+            Label,
+            ToolButton
+        ]
+        stylesheet = StyleSheet(widget_list).create()
+        self.setStyleSheet(stylesheet)
         
     @pyqtSlot()
     def edit_group(self):
@@ -44,6 +59,8 @@ class GroupWidget(QWidget):
         view_group.exec_()
         
     def setupUi(self):
+        self.setObjectName("group_widget")
+        self.setMaximumHeight(75)
         dark_mode_on = int(Model().read('settings')[0][1])
         
         self.hbox = QHBoxLayout()
@@ -57,11 +74,15 @@ class GroupWidget(QWidget):
         
         color = "white" if dark_mode_on else "black"
         self.btn_view = QToolButton()
+        self.btn_view.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_view.setIcon(QIcon(f":/input/eye_{color}_open.svg"))
+        self.btn_view.setIconSize(QSize(20, 20))
         
         edit_icon = "edit.svg" if dark_mode_on else "edit_black"
         self.btn_edit = QToolButton()
         self.btn_edit.setIcon(QIcon(f":/other/{edit_icon}"))
+        self.btn_edit.setIconSize(QSize(20, 20))
+        self.btn_edit.setCursor(QCursor(Qt.PointingHandCursor))
         
         
         self.hbox.addWidget(self.lbl_group)

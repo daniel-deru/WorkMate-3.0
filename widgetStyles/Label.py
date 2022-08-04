@@ -21,3 +21,25 @@ QLabel{{
     }}
 """
 
+LabelWhite = f"""
+    QLabel {{
+        color: white;
+        font-size: 16px;
+        border: none;
+    }}
+
+"""
+
+def CustomLabelLarge(id):
+    Label = f"""
+    QLabel{id}{{
+        color: {default};
+        font-size: 24px;
+        border: none;
+        font-weight: bold;
+    }}
+    """ 
+    return Label
+
+LabelLarge = CustomLabelLarge
+
