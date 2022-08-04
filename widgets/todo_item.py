@@ -80,9 +80,8 @@ class TodoItem(QFrame):
 
         self.hbox.addWidget(self.name)
         self.hbox.addWidget(self.lbl_date)
-        # self.hbox.addSpacerItem(self.HSpacer)
-        self.hbox.addWidget(self.editButton)
         self.hbox.addWidget(self.statusButton)
+        self.hbox.addWidget(self.editButton)
 
         self.setLayout(self.hbox)
 

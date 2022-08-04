@@ -31,7 +31,7 @@ QWidget#TodoItem {{
         color: {color};
         max-height: 50px;
         height: 50px;
-        border: 2px solid {color};
+        border: 1px solid {color};
     }}
 """
 
@@ -44,7 +44,7 @@ TodoItemWidgetDelete = f"""
         color: {color};
         max-height: 50px;
         height: 50px;
-        border: 2px solid {color};
+        border: 1px solid {color};
     }}
 """
 
@@ -60,7 +60,7 @@ def CustomItemWidget(id):
         QWidget{id} {{
             border-radius: 10px;
             background-color: transparent;
-            border: 2px solid {light_blue};
+            border: 1px solid {light_blue};
             padding: 10px;
         }}
 

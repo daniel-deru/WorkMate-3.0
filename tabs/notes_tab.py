@@ -20,7 +20,8 @@ from utils.helpers import clear_window
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.ComboBox import ComboBox
-from utils.helpers import StyleSheet
+from widgetStyles.Label import Label
+from utils.helpers import StyleSheet, set_font
 
 
 
@@ -47,11 +48,16 @@ class Notes_tab(Ui_notes_tab, QWidget):
         return self
 
     def read_styles(self):
-        styles = [CheckBoxSquare, PushButton, ComboBox]
+        styles = [CheckBoxSquare, PushButton, ComboBox, Label]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
-        font = Model().read('settings')[0][2]
-        self.btn_note.setFont(QFont(font))
+        
+        font_list = [
+            self.btn_note,
+            self.lbl_notes
+        ]
+        
+        set_font(font_list)
 
 
     def add_note(self):

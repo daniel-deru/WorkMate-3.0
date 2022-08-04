@@ -44,7 +44,7 @@
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="text">
-        <string>Edit Secret</string>
+        <string>Edit</string>
        </property>
       </widget>
      </item>
@@ -54,7 +54,7 @@
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="text">
-        <string>Delete Secret</string>
+        <string>Delete</string>
        </property>
        <property name="tristate">
         <bool>false</bool>
@@ -84,7 +84,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="lbl_secret">
      <property name="text">
       <string>Secrets</string>
      </property>

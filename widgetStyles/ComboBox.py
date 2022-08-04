@@ -4,15 +4,17 @@ import assets.resources
 ComboBox = f"""
     QComboBox {{
         color: {default};
-        border: 2px solid {light_blue};
+        border: 1px solid {light_blue};
         background-color: {mode};
         border-radius: 5px;
         font-size: 16px;
+        min-height: 25px;
     }}
 
     QComboBox::drop-down {{
         width: 40px;
         background-color: {mode};
+        border-radius: 5px;
  
     }}
 
@@ -23,11 +25,12 @@ ComboBox = f"""
         color: {default};
         outline: none;
         padding: 0px;
-        border: 2px solid {light_blue};
+        border: 1px solid {light_blue};
     }}
     
     QComboBox QAbstractItemView::item {{
         min-height: 35px;
+        font-size: 16px;
     }}
     
     QComboBox QAbstractItemView::item:selected {{
@@ -43,7 +46,8 @@ ComboBox = f"""
     QComboBox::down-arrow{{
         width: 15px;
         height: 15px;
-        background-color: {mode};
+        background-color: transparent;
         image: url(:/arrows/down-arrow.svg);
+        border-radius: 5px;
     }} 
 """

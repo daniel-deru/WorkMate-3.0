@@ -2,7 +2,7 @@ import os
 import sys
 from datetime import date, datetime, timedelta
 
-from PyQt5.QtWidgets import QDialog, QWidget
+from PyQt5.QtWidgets import QDialog, QWidget, QListView
 from PyQt5.QtGui import QFont, QCursor, QIcon
 from PyQt5.QtCore import QDate, Qt, pyqtSignal
 
@@ -22,7 +22,7 @@ from widgetStyles.TextEdit import TextEdit
 
 
 from database.model import Model
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 class TodoWindow(Ui_todo_edit, QDialog):
     todo_edit_signal = pyqtSignal(str)
@@ -33,7 +33,8 @@ class TodoWindow(Ui_todo_edit, QDialog):
         self.set_groups()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
-        self.cmbx_status.setCursor(QCursor(Qt.PointingHandCursor))
+        self.cmb_group.setView(QListView())
+        self.cmb_group.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
         self.read_styles()
         
         self.dtedt_date.setDate(date.today())
@@ -74,13 +75,13 @@ class TodoWindow(Ui_todo_edit, QDialog):
             self.dtedt_date,
             self.lnedt_name,
             self.lbl_description,
-            self.txe_description
+            self.txe_description,
+            self.lbl_group,
+            self.cmb_group,
+            self.cmb_group.view()
         ]
         
-        widget: QWidget
-        
-        for widget in font_widgets:
-            widget.setFont(QFont(font_name))
+        set_font(font_widgets)
             
         self.dtedt_date.setFont(QFont(font_name, 5))
         

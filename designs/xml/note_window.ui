@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>641</width>
-    <height>494</height>
+    <height>412</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -73,10 +73,43 @@
     </layout>
    </item>
    <item>
-    <widget class="QComboBox" name="cmb_groups"/>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="lbl_group">
+       <property name="text">
+        <string>Group</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cmb_groups"/>
+     </item>
+    </layout>
    </item>
    <item>
-    <widget class="QLineEdit" name="lnedt_title"/>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QLabel" name="lbl_name">
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lnedt_title"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="vbox_body">
+     <item>
+      <widget class="QLabel" name="lbl_body">
+       <property name="text">
+        <string>Body</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

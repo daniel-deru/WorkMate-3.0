@@ -12,7 +12,7 @@ from windows.group_view_window import GroupViewWindow
 from windows.group_window import GroupWindow
 
 from utils.message import Message
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 from widgetStyles.Widget import ItemWidget
 from widgetStyles.Label import Label
@@ -33,7 +33,8 @@ class GroupWidget(QFrame):
         self.read_styles()
         
         self.btn_view.clicked.connect(self.view_group)
-        self.btn_edit.clicked.connect(self.edit_group)
+        if  not self.group[1] == "Ungrouped":
+            self.btn_edit.clicked.connect(self.edit_group)
         
     def read_styles(self):
         widget_list = [
@@ -43,6 +44,12 @@ class GroupWidget(QFrame):
         ]
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
+        
+        font_list = [
+            self.lbl_count,
+            self.lbl_group,
+        ]
+        set_font(font_list)
         
     @pyqtSlot()
     def edit_group(self):
@@ -80,9 +87,10 @@ class GroupWidget(QFrame):
         
         edit_icon = "edit.svg" if dark_mode_on else "edit_black"
         self.btn_edit = QToolButton()
-        self.btn_edit.setIcon(QIcon(f":/other/{edit_icon}"))
         self.btn_edit.setIconSize(QSize(20, 20))
-        self.btn_edit.setCursor(QCursor(Qt.PointingHandCursor))
+        if  not self.group[1] == "Ungrouped":
+            self.btn_edit.setIcon(QIcon(f":/other/{edit_icon}"))
+            self.btn_edit.setCursor(QCursor(Qt.PointingHandCursor))
         
         
         self.hbox.addWidget(self.lbl_group)

@@ -3,7 +3,7 @@ import os
 from json import dumps
 from datetime import date, datetime, timedelta
 
-from PyQt5.QtWidgets import QDialog, QFileDialog, QLineEdit, QWidget
+from PyQt5.QtWidgets import QDialog, QFileDialog, QLineEdit, QListView
 from PyQt5.QtCore import pyqtSignal, Qt, pyqtSlot, QSize
 from PyQt5.QtGui import QFont, QIcon
 
@@ -20,6 +20,7 @@ from widgetStyles.Label import Label
 from widgetStyles.SpinBox import SpinBox
 from widgetStyles.DateEdit import DateEditForm
 from widgetStyles.Calendar import Calendar
+from widgetStyles.ComboBox import ComboBox
 
 from utils.helpers import StyleSheet, json_to_dict, get_checkbox, set_font
 from utils.message import Message
@@ -33,10 +34,12 @@ class AppVaultWindow(Ui_AppVault, QDialog):
     def __init__(self, app=None):
         super(Ui_AppVault, self).__init__()
         self.app = app
+        self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
+        self.cmb_group.setView(QListView())
+        self.cmb_group.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
         self.secrets = list(filter(lambda a: a[1] == "app", Model().read("vault")))
-        self.setupUi(self)
         self.set_groups()
         
         self.dte_password_exp.setDate(date.today() + timedelta(days=90))
@@ -86,7 +89,8 @@ class AppVaultWindow(Ui_AppVault, QDialog):
             checkbox,
             Calendar,
             DateEditForm,
-            IconToolButton()
+            IconToolButton(),
+            ComboBox
         ]
 
         stylesheet: str = StyleSheet(widget_list).create()
@@ -107,6 +111,8 @@ class AppVaultWindow(Ui_AppVault, QDialog):
             self.lbl_password_generator,
             self.lbl_password_expiration,
             self.dte_password_exp,
+            self.lbl_group,         self.cmb_group,
+            self.cmb_group.view()
         ]
         
         set_font(font_widget)

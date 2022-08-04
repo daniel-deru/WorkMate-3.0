@@ -9,7 +9,7 @@ import assets.resources
 
 Calendar = f"""
 QCalendarWidget {{
-    border: 2px solid {light_blue};
+    border: 1px solid {light_blue};
 }}
 QCalendarWidget QToolButton {{
   	height: 40px;
@@ -24,14 +24,14 @@ QCalendarWidget QToolButton {{
   QCalendarWidget QWidget#qt_calendar_prevmonth {{
       qproperty-icon: url(:/arrows/left-arrow.svg);
       background-color: {mode};
-      border-left: 2px solid {light_blue};
-      border-top: 2px solid {light_blue}
+      border-left: 1px solid {light_blue};
+      border-top: 1px solid {light_blue}
   }}
   QCalendarWidget QWidget#qt_calendar_nextmonth {{
       qproperty-icon: url(:/arrows/right-arrow.svg);
       background-color: {mode};
-      border-right: 2px solid {light_blue};
-      border-top: 2px solid {light_blue}
+      border-right: 1px solid {light_blue};
+      border-top: 1px solid {light_blue}
   }}
 
 
@@ -92,8 +92,8 @@ QCalendarWidget QToolButton {{
         outline: none;
         padding: 10px;
         border-bottom: 2px solid {light_blue};
-        border-left: 2px solid {light_blue};
-        border-right: 2px solid {light_blue};
+        border-left: 1px solid {light_blue};
+        border-right: 1px solid {light_blue};
 
     }}
    

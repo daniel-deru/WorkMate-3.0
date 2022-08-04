@@ -1,12 +1,9 @@
 import sys
 import os
-from datetime import date, datetime
-from threading import Thread
 import math
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -16,8 +13,7 @@ from designs.python.todo_widget import Ui_todo_tab
 from widgets.todo_item import TodoItem
 from widgets.filter_group_widget import FilterGroupWidget
 
-from utils.helpers import StyleSheet
-from utils.message import Message
+from utils.helpers import StyleSheet, set_font
 from utils.helpers import clear_window
 
 from integrations.calendar.c import Google
@@ -30,10 +26,6 @@ from widgetStyles.Calendar import Calendar
 from widgetStyles.ComboBox import ComboBox
 
 from windows.todo_window import TodoWindow
-
-
-
-
 
 class Todo_tab(Ui_todo_tab, QWidget):
     todo_signal = pyqtSignal(str)
@@ -66,8 +58,12 @@ class Todo_tab(Ui_todo_tab, QWidget):
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
-        font = Model().read('settings')[0][2]
-        self.btn_add_todo.setFont(QFont(font))
+        
+        font_list = [
+            self.btn_add_todo,
+            self.lbl_todos
+        ]
+        set_font(font_list)
 
     def add_todo(self):
         todo_window = TodoWindow()
@@ -83,7 +79,6 @@ class Todo_tab(Ui_todo_tab, QWidget):
         for i in range(len(current_group)):
             self.todo_item = TodoItem(current_group[i]).create_widget()
             self.todo_item.todo_item_signal.connect(self.update)
-            # self.vbox_todo_container.addWidget(self.todo_item)
             
         COLUMNS = 2
         grid_items = []

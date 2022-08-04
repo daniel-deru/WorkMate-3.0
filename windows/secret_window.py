@@ -2,7 +2,7 @@ import os
 import sys
 import json
 
-from PyQt5.QtWidgets import QDialog, QWidget
+from PyQt5.QtWidgets import QDialog, QWidget, QListView
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QFont
 from cryptography.fernet import Fernet
@@ -18,8 +18,9 @@ from widgetStyles.SpinBox import SpinBox
 from widgetStyles.Label import Label
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Dialog import Dialog
+from widgetStyles.ComboBox import ComboBox
 
-from utils.helpers import StyleSheet, json_to_dict
+from utils.helpers import StyleSheet, json_to_dict, set_font
 from utils.message import Message
 
 
@@ -31,10 +32,11 @@ class SecretWindow(Ui_AddSecret_window, QDialog):
         self.secret = secret if secret else None
         self.setupUi(self)
         self.set_groups()
-        self.read_styles()
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
-        # self.setWindowFlags(Qt.WindowCloseButtonHint)
+        self.cmb_group.setView(QListView())
+        self.cmb_group.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
+        self.read_styles()
         self.btn_save.clicked.connect(self.save)
         self.btn_cancel.clicked.connect(lambda: self.close())
         if secret:
@@ -137,13 +139,12 @@ class SecretWindow(Ui_AddSecret_window, QDialog):
             SpinBox,
             Label,
             LineEdit,
-            Dialog
+            Dialog,
+            ComboBox
         ]
 
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
-        
-        font_name = Model().read("settings")[0][2]
         
         font_widgets = [
             self.lbl_name,
@@ -162,9 +163,9 @@ class SecretWindow(Ui_AddSecret_window, QDialog):
             self.lnedt_header3,
             self.lnedt_header4,
             self.lnedt_header5,
+            self.lbl_group,
+            self.cmb_group,
+            self.cmb_group.view()
         ]
 
-        widget: QWidget
-        
-        for widget in font_widgets:
-            widget.setFont(QFont(font_name))
+        set_font(font_widgets)

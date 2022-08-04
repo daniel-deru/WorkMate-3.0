@@ -50,6 +50,7 @@ class Main(Ui_main_container, QWidget):
         self.setupUi(self)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowTitle("TrustLock")
+
         self.read_style()
         self.add_tabs()
         self.setTabIcons()

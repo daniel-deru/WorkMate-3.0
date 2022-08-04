@@ -1,19 +1,20 @@
 import os
 import sys
 
-from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget
+from PyQt5.QtWidgets import QDialog, QFileDialog, QListView
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QFont
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 from utils.message import Message
 from widgetStyles.PushButton import PushButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.SpinBox import SpinBox
 from widgetStyles.Dialog import Dialog
 from widgetStyles.Label import Label
+from widgetStyles.ComboBox import ComboBox
 from database.model import Model
 
 from designs.python.apps_edit_window import Ui_AppsEdit
@@ -28,6 +29,8 @@ class AppsEdit(Ui_AppsEdit, QDialog):
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
+        self.cmb_group.setView(QListView())
+        self.cmb_group.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
         self.read_styles()
         self.fill_fields()
         
@@ -48,13 +51,12 @@ class AppsEdit(Ui_AppsEdit, QDialog):
             LineEdit,
             SpinBox,
             Dialog,
-            Label
+            Label,
+            ComboBox
         ]
 
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
-        
-        font_name = Model().read("settings")[0][2]
         
         font_widgets = [
             self.lbl_index,
@@ -65,13 +67,13 @@ class AppsEdit(Ui_AppsEdit, QDialog):
             self.spnbox_index,
             self.btn_desktop,
             self.btn_discard,
-            self.btn_save
+            self.btn_save,
+            self.lbl_group,
+            self.cmb_group,
+            self.cmb_group.view()
         ]
-
-        widget: QWidget
-                
-        for widget in font_widgets:
-            widget.setFont(QFont(font_name))
+        
+        set_font(font_widgets)
     
     def fill_fields(self):
         

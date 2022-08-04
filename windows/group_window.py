@@ -15,7 +15,7 @@ from utils.message import Message
 
 from database.model import Model
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 from widgetStyles.Label import Label
 from widgetStyles.PushButton import PushButton
@@ -28,6 +28,8 @@ class GroupWindow(Ui_GroupWindow, QDialog):
         super(GroupWindow, self).__init__()
         self.setupUi(self)
         self.read_styles()
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.group = group
         
         if self.group: self.fill_data()
@@ -40,6 +42,16 @@ class GroupWindow(Ui_GroupWindow, QDialog):
         
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
+        
+        font_list = [
+            self.lbl_description,
+            self.lbl_name,
+            self.lne_description,
+            self.lne_name,
+            self.btn_discard,
+            self.btn_save
+        ]
+        set_font(font_list)
         
     def fill_data(self):
         self.lne_name.setText(self.group[1])

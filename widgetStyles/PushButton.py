@@ -9,19 +9,20 @@ PushButton = f"""
     QPushButton {{
     background-color: {light_blue};
     color: white;
-    border: 2px solid {light_blue};
+    border: 1px solid {light_blue};
     border-radius: 5px;
     font-size: 16px;
     padding: 5px 8px;
     max-width: 200px;
     min-width: 100px;
     min-height: 20px;
+    max-height: 20px;
 }}
 
 QPushButton:pressed {{
     background-color: transparent;
     color: {default};
-    border: 2px solid {light_blue};
+    border: 1px solid {light_blue};
 }}
 """
 
@@ -29,7 +30,7 @@ PushButton100Width = f"""
     QPushButton {{
     background-color: {light_blue};
     color: white;
-    border: 2px solid {light_blue};
+    border: 1px solid {light_blue};
     border-radius: 5px;
     font-size: 16px;
     padding: 5px 8px;
@@ -43,7 +44,7 @@ PushButton100Width = f"""
 QPushButton:pressed {{
     background-color: transparent;
     color: {default};
-    border: 2px solid {light_blue};
+    border: 1px solid {light_blue};
 }}
 """
 
@@ -77,7 +78,7 @@ ButtonFullWidth = f"""
     QPushButton {{
     background-color: {light_blue};
     color: white;
-    border: 2px solid {light_blue};
+    border: 1px solid {light_blue};
     border-radius: 5px;
     font-size: 16px;
     padding: 5px 8px;
@@ -88,7 +89,7 @@ ButtonFullWidth = f"""
 QPushButton:pressed {{
     background-color: transparent;
     color: {default};
-    border: 2px solid {light_blue};
+    border: 1px solid {light_blue};
 }}
 """
 
@@ -102,7 +103,7 @@ VaultButton = f"""
 QPushButton {{
     background-color: {light_blue};
     color: white;
-    border: 2px solid {light_blue};
+    border: 1px solid {light_blue};
     border-radius: 5px;
     font-size: 16px;
     padding: 5px 8px;
@@ -113,14 +114,14 @@ QPushButton {{
 QPushButton:pressed {{
     background-color: transparent;
     color: {default};
-    border: 2px solid {light_blue};
+    border: 1px solid {light_blue};
 }}
 """
 VaultButtonLeftAlign = f"""
 QPushButton {{
     background-color: {light_blue};
     color: white;
-    border: 2px solid {light_blue};
+    border: 1px solid {light_blue};
     border-radius: 5px;
     font-size: 16px;
     padding: 5px 8px;
@@ -132,7 +133,7 @@ QPushButton {{
 QPushButton:pressed {{
     background-color: transparent;
     color: {default};
-    border: 2px solid {light_blue};
+    border: 1px solid {light_blue};
 }}
 """
 

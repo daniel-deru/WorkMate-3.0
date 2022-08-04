@@ -1,7 +1,7 @@
 import sys
 import os
 
-from PyQt5.QtWidgets import QHBoxLayout, QLabel, QPushButton, QFrame, QSpacerItem, QSizePolicy
+from PyQt5.QtWidgets import QHBoxLayout, QLabel, QPushButton, QFrame, QSpacerItem, QSizePolicy, QToolButton
 from PyQt5.QtCore import pyqtSignal, QSize, Qt
 from PyQt5.QtGui import QIcon, QFont, QCursor
 
@@ -13,6 +13,7 @@ from database.model import Model
 from widgetStyles.Frame import Frame
 from widgetStyles.Label import Label
 from widgetStyles.PushButton import IconButton
+from widgetStyles.ToolButton import ToolButton
 from widgetStyles.styles import green
 from utils.helpers import StyleSheet
 
@@ -37,7 +38,6 @@ class NoteItem(QFrame):
         self.setObjectName("note_item")
         self.hbox = QHBoxLayout()
         self.hbox.setObjectName("hbox_note_item")
-        # self.setMaximumWidth(200)
 
         self.name = QLabel(self.note_name)
         self.name.setObjectName("lbl_name")
@@ -47,19 +47,17 @@ class NoteItem(QFrame):
         self.HSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
         self.hbox.addSpacerItem(self.HSpacer)
 
-        self.btn_edit = QPushButton()
+        self.btn_edit = QToolButton()
         self.btn_edit.setObjectName("btn_edit")
         self.btn_edit.setIcon(QIcon(":/other/edit.png"))
         self.btn_edit.setIconSize(QSize(20, 20))
-        self.btn_edit.setStyleSheet(f"background-color: {green};")
         self.btn_edit.setCursor(QCursor(Qt.PointingHandCursor))
         self.hbox.addWidget(self.btn_edit)
 
-        self.btn_delete = QPushButton()
+        self.btn_delete = QToolButton()
         self.btn_delete.setObjectName("btn_delete")
         self.btn_delete.setIcon(QIcon(":/other/delete.png"))
         self.btn_delete.setIconSize(QSize(20, 20))
-        self.btn_delete.setStyleSheet(f"background-color: {green};")
         self.btn_delete.setCursor(QCursor(Qt.PointingHandCursor))
         self.hbox.addWidget(self.btn_delete)
 
@@ -82,7 +80,7 @@ class NoteItem(QFrame):
         styles = [
             Frame,
             Label,
-            IconButton
+            ToolButton
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)

@@ -2,7 +2,7 @@ import os
 import sys
 import pyperclip
 
-from PyQt5.QtWidgets import QDialog, QTextEdit
+from PyQt5.QtWidgets import QDialog, QTextEdit, QListView
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QFont, QIcon, QTextCursor
 
@@ -20,7 +20,9 @@ from widgetStyles.LineEdit import LineEdit
 from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.TextEdit import TextEdit
 from widgetStyles.Dialog import Dialog
-from utils.helpers import StyleSheet
+from widgetStyles.ComboBox import ComboBox
+from widgetStyles.Label import Label
+from utils.helpers import StyleSheet, set_font
 
 
 class Note_window(Ui_Note_Window, QDialog):
@@ -33,9 +35,11 @@ class Note_window(Ui_Note_Window, QDialog):
         self.set_groups()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
+        self.cmb_groups.setView(QListView())
+        self.cmb_groups.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
 
         self.custom_text_edit = CustomTextEdit().create()
-        self.layout().addWidget(self.custom_text_edit)
+        self.vbox_body.addWidget(self.custom_text_edit)
 
         self.read_styles()
 
@@ -99,15 +103,25 @@ class Note_window(Ui_Note_Window, QDialog):
             CheckBoxSquare,
             TextEdit,
             Dialog,
+            ComboBox,
+            Label
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
-        font = Model().read('settings')[0][2]
-        self.chkbx_edit.setFont(QFont(font))
-        self.btn_save.setFont(QFont(font))
-        self.custom_text_edit.setFont(QFont(font))
-        self.btn_copy_note.setFont(QFont(font))
-        self.lnedt_title.setFont(QFont(font))
+        
+        font_list = [
+            self.chkbx_edit,
+            self.btn_save,
+            self.custom_text_edit,
+            self.btn_copy_note,
+            self.lnedt_title,
+            self.cmb_groups,
+            self.cmb_groups.view(),
+            self.lbl_group,
+            self.lbl_name,
+            self.lbl_body
+        ]
+        set_font(font_list)
 
 
 

@@ -75,6 +75,35 @@
     </layout>
    </item>
    <item>
+    <widget class="QLabel" name="lbl_notes">
+     <property name="text">
+      <string>Notes</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>1</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: #9ecd16;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::HLine</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gbox_note_container"/>
    </item>
    <item>

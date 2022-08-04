@@ -4,12 +4,14 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QComboBox, QListView
-from PyQt5.QtGui import QCursor
+from PyQt5.QtGui import QCursor, QFont
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, Qt
 
 from database.model import Model
 
 from windows.groups_window import GroupsWindow
+
+from utils.helpers import set_font
 
 class FilterGroupWidget(QWidget):
     group_changed_signal = pyqtSignal(int)
@@ -44,6 +46,13 @@ class FilterGroupWidget(QWidget):
         hbox.addWidget(self.btn_manage_groups)
         
         self.setLayout(hbox)
+        
+        font_list = [
+            self.cmb_groups, 
+            self.btn_manage_groups,
+            self.cmb_groups.view()
+        ]
+        set_font(font_list)
         
     def show_groups(self):
         groups = Model().read("groups")

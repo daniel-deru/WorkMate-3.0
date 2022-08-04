@@ -21,7 +21,7 @@ from widgetStyles.ComboBox import ComboBox
 from widgetStyles.ScrollBar import ScrollBar
 
 from utils.message import Message
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 from utils.globals import DB_PATH, PATH, DB_NAME, DESKTOP
 
 from database.model import Model
@@ -153,8 +153,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         
-        font_name = Model().read("settings")[0][2]
-        
         font_widgets = [
             self.lbl_2fa,
             self.lbl_night_mode,
@@ -169,12 +167,11 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             self.lbl_restore_local,
             self.lbl_google_integration,
             self.lbl_generate_password,
-            self.lbl_setup
+            self.lbl_setup,
+            self.lbl_groups
         ]
         
-        widget: QWidget
-        for widget in font_widgets:
-            widget.setFont(QFont(font_name))
+        set_font(font_widgets)
             
     def set_btn_icons(self):
         # Set the correct size for the google sign in button

@@ -2,7 +2,7 @@ import sys
 import os
 import re
 import math
-from typing import Match, Pattern
+from typing import Pattern
 from datetime import date, datetime, timedelta
 from json import dumps, loads
 from PyQt5.QtWidgets import (
@@ -13,7 +13,8 @@ from PyQt5.QtWidgets import (
     QWidget, 
     QGridLayout, 
     QComboBox, 
-    QWidget
+    QWidget,
+    QListView
 )
 from PyQt5.QtCore import pyqtSignal, Qt, QSize, pyqtSlot
 from PyQt5.QtGui import QFont, QIcon
@@ -47,9 +48,13 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         super(CryptoVaultWindow, self).__init__()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
+        self.setupUi(self)
+        self.cmb_group.setView(QListView())
+        self.cmb_group.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
+        self.cmb_num_words.setView(QListView())
+        self.cmb_num_words.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
         self.secret: tuple or None = secret
         
-        self.setupUi(self)
         self.set_groups()
         self.dte_password_exp.setDate(date.today() + timedelta(days=90))
         self.displayWordBoxes()
@@ -103,7 +108,9 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
             self.cmb_num_words, self.lne_password2, self.lne_private,
             self.lne_public, self.lbl_words, self.btn_save,
             self.lne_password1, self.lbl_generate_password,
-            self.lbl_password_exp, self.dte_password_exp
+            self.lbl_password_exp, self.dte_password_exp,
+            self.lbl_group, self.cmb_group, self.cmb_group.view(),
+            self.cmb_num_words.view()
         ]
         
         set_font(font_widgets)

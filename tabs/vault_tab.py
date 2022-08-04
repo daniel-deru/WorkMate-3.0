@@ -83,7 +83,8 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             self.chk_delete,
             self.chk_edit,
             self.btn_add,
-            self.btn_login
+            self.btn_login,
+            self.lbl_secret
         ]
 
         for widget in widget_list:
@@ -120,7 +121,6 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         secrets = Model().read('vault')
         
         current_group = list(filter(lambda todo: todo[4] == str(group), secrets))
-        print(current_group)
             
         COLUMNS = 4
         grid_items = []
@@ -136,13 +136,14 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             for j in range(len(grid_items[i])):
                 col = j
                 self.secret_item = VaultItem(grid_items[i][j]).create()
-                self.secret_item.vault_clicked_signal.connect(self.update)
+                self.secret_item.vault_clicked_signal.connect(self.get_secret)
                 self.gbox_secrets.addWidget(self.secret_item, row, col)
         
     # Main event handler for when a button is clicked
     def get_secret(self, secret):
         edit = self.chk_edit
         delete = self.chk_delete
+        print("The get secret was clicked")
         
         if delete.isChecked():
             # Delete the secret that was clicked

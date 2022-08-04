@@ -11,6 +11,6 @@ TextEdit = f"""
         color: {default};
         border-radius: 5px;
         font-size: 16px;
-        border: 2px solid {light_blue};
+        border: 1px solid {light_blue};
     }}
 """

@@ -114,6 +114,7 @@ class Ui_GroupWindow(object):
         self.horizontalLayout_5.setContentsMargins(-1, 15, -1, -1)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.btn_delete = QtWidgets.QPushButton(GroupWindow)
+        self.btn_delete.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_delete.setObjectName("btn_delete")
         self.horizontalLayout_5.addWidget(self.btn_delete)
         self.verticalLayout.addLayout(self.horizontalLayout_5)

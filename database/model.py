@@ -358,3 +358,4 @@ class Model:
          
 model = Model()
 # model.update("settings", {"font": "Roboto Condensed"}, "settings")
+model.update("settings", {"font": "Proxon"}, "settings")

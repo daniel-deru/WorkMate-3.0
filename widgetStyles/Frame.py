@@ -20,7 +20,7 @@ Frame = f"""
         padding: 0px;
         background-color: {mode};
         color: {default};
-        border: 2px solid {light_blue};
+        border: 1px solid {light_blue};
     }}
 """
 

@@ -1,6 +1,6 @@
 import sys
 import os
-from PyQt5.QtWidgets import QDialog, QFileDialog
+from PyQt5.QtWidgets import QDialog, QFileDialog, QListView
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QFont, QIcon
 
@@ -9,7 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from designs.python.app_window import Ui_App_Window
 from database.model import Model
 from utils.message import Message
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 import assets.resources
 
@@ -19,6 +19,7 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
 from widgetStyles.SpinBox import SpinBox
 from widgetStyles.QCheckBox import SettingsCheckBox
+from widgetStyles.ComboBox import ComboBox
 
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
@@ -95,23 +96,34 @@ class Apps_window(Ui_App_Window, QDialog):
         path.setText(file)
 
     def read_styles(self):
+        self.cmb_group.setView(QListView())
+        self.cmb_group.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
+        
         styles = [
             Dialog,
             LineEdit,
             PushButton,
             Label,
             SpinBox,
-            SettingsCheckBox
+            SettingsCheckBox,
+            ComboBox
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
-        font = Model().read('settings')[0][2]
-        self.btn_save.setFont(QFont(font))
-        self.btn_desktop.setFont(QFont(font))
-        self.btn_discard.setFont(QFont(font))
-        self.lbl_name.setFont(QFont(font))
-        self.lbl_index.setFont(QFont(font))
-        self.lbl_path.setFont(QFont(font))
-        self.lnedt_name.setFont(QFont(font))
-        self.lnedt_path.setFont(QFont(font))
-        self.spn_index.setFont(QFont(font))
+        
+        font_list = [
+            self.btn_save,
+            self.btn_desktop,
+            self.btn_discard,
+            self.lbl_name,
+            self.lbl_index,
+            self.lbl_path,
+            self.lnedt_name,
+            self.lnedt_path,
+            self.spn_index,
+            self.lbl_group,
+            self.cmb_group,
+            self.cmb_group.view()
+        ]
+        
+        set_font(font_list)

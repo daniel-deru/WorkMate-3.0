@@ -9,7 +9,7 @@ LCDNumber = f"""
 
     QLCDNumber{{
     background-color: {mode};
-    border: 2px solid {color};
+    border: 1px solid {color};
     border-width: 2px;
     border-radius: 10px;
     color: {color};

@@ -18,7 +18,7 @@ from windows.group_window import GroupWindow
 
 from widgets.group_widget import GroupWidget
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 from widgetStyles.Label import Label
 from widgetStyles.PushButton import PushButton
@@ -28,6 +28,8 @@ class GroupsWindow(Ui_GroupsWindow, QDialog):
     def __init__(self) -> None:
         super(GroupsWindow, self).__init__()
         self.setupUi(self)
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowIcon(QIcon(":/other/app_icon"))
         self.set_groups()
         self.get_group_data()
         self.read_styles()
@@ -39,6 +41,12 @@ class GroupsWindow(Ui_GroupsWindow, QDialog):
         
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
+        
+        font_list = [
+            self.lbl_groups,
+            self.btn_add_group
+        ]
+        set_font(font_list)
         
     def add_group(self):
         manage_group_window = GroupWindow()
