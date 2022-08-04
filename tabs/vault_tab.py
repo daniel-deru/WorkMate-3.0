@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import math
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import Qt, pyqtSignal
@@ -33,6 +34,7 @@ from widgetStyles.PushButton import PushButton, VaultButton
 from widgetStyles.Label import Label
 from widgetStyles.ScrollArea import ScrollArrea
 from widgetStyles.ScrollBar import ScrollBar
+from widgetStyles.ComboBox import ComboBox
 
 from database.model import Model
 
@@ -42,9 +44,14 @@ class Vault_tab(Ui_Vault_tab, QWidget):
     def __init__(self):
         super(Vault_tab, self).__init__()
         self.setupUi(self)
-        self.hbox_filter_widget.addWidget(FilterGroupWidget())
+        
+        self.filter_widget = FilterGroupWidget()
+        self.filter_widget.group_changed_signal.connect(lambda group: self.create_secrets(group))
+        self.hbox_filter_widget.addWidget(self.filter_widget)
         self.read_styles()
-        self.create_secrets()
+        
+        initial_group = self.filter_widget.get_current_group()
+        self.create_secrets(initial_group)
 
         self.btn_add.clicked.connect(self.add_clicked)
         self.chk_delete.clicked.connect(self.deleteCheckHandler)
@@ -66,7 +73,8 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             CheckBoxSquare,
             Label,
             ScrollArrea,
-            ScrollBar
+            ScrollBar,
+            ComboBox
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
@@ -75,10 +83,7 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             self.chk_delete,
             self.chk_edit,
             self.btn_add,
-            self.btn_login,
-            self.lbl_app_vault,
-            self.lbl_crypto_vault,
-            self.lbl_general_vault
+            self.btn_login
         ]
 
         for widget in widget_list:
@@ -110,36 +115,29 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             new_crypto_secret.crypto_update_signal.connect(self.update)
             new_crypto_secret.exec_()
     
-    def create_secrets(self):
+    def create_secrets(self, group):
+        clear_window(self.gbox_secrets)
         secrets = Model().read('vault')
-
-        crypto_container = self.vbox_crypto_vault
-        app_container = self.vbox_app_vault
-        general_container = self.vbox_general_vault
         
-        app_list: list[tuple] = []
-
-        for secret in secrets:
-
-            vault_item = VaultItem(secret).create()
-            vault_item.vault_clicked_signal.connect(self.get_secret)
-            align = Qt.AlignCenter
-            if(secret[1] == "crypto"):
-                crypto_container.addWidget(vault_item, alignment=align)
-            elif secret[1] == "app":
-                app_list.append(secret)
-                # app_container.addWidget(vault_item, alignment=align)
-            elif secret[1] == "general":
-                general_container.addWidget(vault_item, alignment=align)
-        
-        # Sort the apps first before adding them
-        app_list.sort(key=lambda sec: int(json_to_dict(sec[3])['sequence']))
-        
-        # Add the apps separately because they need to be sorted first
-        for app in app_list:
-            vault_item = VaultItem(app).create()
-            vault_item.vault_clicked_signal.connect(self.get_secret)
-            app_container.addWidget(vault_item, alignment=align)
+        current_group = list(filter(lambda todo: todo[4] == str(group), secrets))
+        print(current_group)
+            
+        COLUMNS = 4
+        grid_items = []
+        for i in range(math.ceil(len(current_group)/COLUMNS)):
+            subarr = []
+            for j in range(COLUMNS):
+                if current_group:
+                    subarr.append(current_group.pop(0))
+            grid_items.append(subarr)
+            
+        for i in range(len(grid_items)):
+            row = i
+            for j in range(len(grid_items[i])):
+                col = j
+                self.secret_item = VaultItem(grid_items[i][j]).create()
+                self.secret_item.vault_clicked_signal.connect(self.update)
+                self.gbox_secrets.addWidget(self.secret_item, row, col)
         
     # Main event handler for when a button is clicked
     def get_secret(self, secret):
@@ -158,10 +156,9 @@ class Vault_tab(Ui_Vault_tab, QWidget):
     
     # Clear the window from the data add the data back and read the styles
     def update(self):
-        clear_window(self.vbox_app_vault)
-        clear_window(self.vbox_crypto_vault)
-        clear_window(self.vbox_general_vault)
-        self.create_secrets()
+        clear_window(self.gbox_secrets)
+        initial_group = self.filter_widget.get_current_group()
+        self.create_secrets(initial_group)
         self.read_styles()
 
     # Slot for when the login button is clicked
@@ -235,5 +232,3 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         elif secret[1] == "general":
             general_vault = GeneralVaultView(secret)
             general_vault.exec_()
-            
-    

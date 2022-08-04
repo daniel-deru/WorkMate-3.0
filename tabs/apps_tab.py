@@ -22,6 +22,7 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.Line import Line
 from widgetStyles.Label import Label
+from widgetStyles.ComboBox import ComboBox
 
 from utils.helpers import StyleSheet
 from utils.helpers import clear_window
@@ -59,7 +60,7 @@ class Apps_tab(Ui_apps_tab, QWidget):
         return self
 
     def read_styles(self):
-        styles = [CheckBoxSquare, PushButton, Line, Label]
+        styles = [CheckBoxSquare, PushButton, Line, Label, ComboBox]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         widgetList = [
@@ -122,7 +123,6 @@ class Apps_tab(Ui_apps_tab, QWidget):
     def get_app(self, app):
         delete = self.chk_delete_apps
         edit = self.chk_edit_apps
-        # is_protected_app = True if len(app) > 4 else False
 
         if delete.isChecked():
             Model().delete('apps', app[0])
@@ -140,15 +140,8 @@ class Apps_tab(Ui_apps_tab, QWidget):
             except OSError:
                 pass
 
-
     def update(self):
         clear_window(self.gbox_apps)
         initial_group = self.filter_widget.get_current_group()
         self.create_apps(initial_group)
         self.read_styles()
-
-    def login_clicked(self):
-        if self.logged_in:
-            self.login_signal.emit("logout requested")
-        elif not self.logged_in:
-            self.login_signal.emit("login requested")

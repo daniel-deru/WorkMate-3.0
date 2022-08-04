@@ -32,16 +32,16 @@ QLine {
     <number>6</number>
    </property>
    <property name="leftMargin">
-    <number>9</number>
+    <number>10</number>
    </property>
    <property name="topMargin">
-    <number>9</number>
+    <number>10</number>
    </property>
    <property name="rightMargin">
-    <number>9</number>
+    <number>10</number>
    </property>
    <property name="bottomMargin">
-    <number>9</number>
+    <number>10</number>
    </property>
    <item>
     <layout class="QHBoxLayout" name="hbox_open_apps_buttons">
@@ -132,29 +132,52 @@ QLine {
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frame">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>1</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background: #9ecd16;</string>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::HLine</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
+        <widget class="Line" name="lne_open_apps">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="vbox_open_apps_checkboxes">
+         <item>
+          <layout class="QHBoxLayout" name="hbox_apps">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item>
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </item>
        <item>
         <layout class="QGridLayout" name="gbox_apps"/>

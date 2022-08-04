@@ -3,8 +3,9 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QComboBox
-from PyQt5.QtCore import pyqtSlot, pyqtSignal
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QComboBox, QListView
+from PyQt5.QtGui import QCursor
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, Qt
 
 from database.model import Model
 
@@ -33,7 +34,11 @@ class FilterGroupWidget(QWidget):
         hbox = QHBoxLayout()
         
         self.cmb_groups = QComboBox()
+        self.cmb_groups.setView(QListView())
+        self.cmb_groups.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
+        
         self.btn_manage_groups = QPushButton("Manage Groups")
+        self.btn_manage_groups.setCursor(QCursor(Qt.PointingHandCursor))
         
         hbox.addWidget(self.cmb_groups)
         hbox.addWidget(self.btn_manage_groups)

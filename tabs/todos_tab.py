@@ -27,6 +27,7 @@ from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Label import Label
 from widgetStyles.DateEdit import DateEdit
 from widgetStyles.Calendar import Calendar
+from widgetStyles.ComboBox import ComboBox
 
 from windows.todo_window import TodoWindow
 
@@ -39,9 +40,13 @@ class Todo_tab(Ui_todo_tab, QWidget):
     def __init__(self):
         super(Todo_tab, self).__init__()
         self.setupUi(self)
-        self.hbox_filter_widget.addWidget(FilterGroupWidget())
+        self.filter_widget = FilterGroupWidget()
+        self.filter_widget.group_changed_signal.connect(lambda group: self.display_todos(group))
+        self.hbox_filter_widget.addWidget(self.filter_widget)
         self.read_style()
-        self.display_todos()
+        
+        initial_group = self.filter_widget.get_current_group()
+        self.display_todos(initial_group)
 
         self.btn_add_todo.clicked.connect(self.add_todo)
 
@@ -57,6 +62,7 @@ class Todo_tab(Ui_todo_tab, QWidget):
             Label,
             DateEdit,
             Calendar,
+            ComboBox
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
@@ -69,22 +75,23 @@ class Todo_tab(Ui_todo_tab, QWidget):
         todo_window.exec_()
 
 
-    def display_todos(self):
-
+    def display_todos(self, group):
+        clear_window(self.todo_container)
         todos = Model().read("todos")
-
-        for i in range(len(todos)):
-            self.todo_item = TodoItem(todos[i]).create_widget()
+        
+        current_group = list(filter(lambda todo: todo[5] == str(group), todos))
+        for i in range(len(current_group)):
+            self.todo_item = TodoItem(current_group[i]).create_widget()
             self.todo_item.todo_item_signal.connect(self.update)
             # self.vbox_todo_container.addWidget(self.todo_item)
             
         COLUMNS = 2
         grid_items = []
-        for i in range(math.ceil(len(todos)/COLUMNS)):
+        for i in range(math.ceil(len(current_group)/COLUMNS)):
             subarr = []
             for j in range(COLUMNS):
-                if todos:
-                    subarr.append(todos.pop(0))
+                if current_group:
+                    subarr.append(current_group.pop(0))
             grid_items.append(subarr)
             
         for i in range(len(grid_items)):
@@ -97,7 +104,8 @@ class Todo_tab(Ui_todo_tab, QWidget):
     
     def update(self):
         clear_window(self.todo_container)
-        self.display_todos()
+        initial_group = self.filter_widget.get_current_group()
+        self.display_todos(initial_group)
         self.read_style()
 
 

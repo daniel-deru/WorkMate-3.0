@@ -19,6 +19,7 @@ from widgets.filter_group_widget import FilterGroupWidget
 from utils.helpers import clear_window
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBoxSquare
+from widgetStyles.ComboBox import ComboBox
 from utils.helpers import StyleSheet
 
 
@@ -46,7 +47,7 @@ class Notes_tab(Ui_notes_tab, QWidget):
         return self
 
     def read_styles(self):
-        styles = [CheckBoxSquare, PushButton]
+        styles = [CheckBoxSquare, PushButton, ComboBox]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         font = Model().read('settings')[0][2]
