@@ -121,7 +121,8 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         secrets = Model().read('vault')
         
         current_group = list(filter(lambda todo: todo[4] == str(group), secrets))
-            
+        
+        # Create the nested list for the grid layout
         COLUMNS = 4
         grid_items = []
         for i in range(math.ceil(len(current_group)/COLUMNS)):
@@ -130,7 +131,8 @@ class Vault_tab(Ui_Vault_tab, QWidget):
                 if current_group:
                     subarr.append(current_group.pop(0))
             grid_items.append(subarr)
-            
+        
+        # Loop over the nested list and add items to the grid layout
         for i in range(len(grid_items)):
             row = i
             for j in range(len(grid_items[i])):

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>453</width>
-    <height>531</height>
+    <height>484</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -59,20 +59,6 @@
      </item>
      <item>
       <widget class="QLineEdit" name="lne_name"/>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="QLabel" name="lbl_index">
-       <property name="text">
-        <string>Index</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSpinBox" name="spn_index"/>
      </item>
     </layout>
    </item>

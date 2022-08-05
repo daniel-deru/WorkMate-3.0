@@ -54,8 +54,8 @@ class GroupWindow(Ui_GroupWindow, QDialog):
         set_font(font_list)
         
     def fill_data(self):
-        self.lne_name.setText(self.group[1])
-        self.lne_description.setText(self.group[2])
+        self.lne_name.setText(self.group['name'])
+        self.lne_description.setText(self.group['description'])
         self.btn_save.setText("Update")
     
     @pyqtSlot()
@@ -71,10 +71,12 @@ class GroupWindow(Ui_GroupWindow, QDialog):
             "description": description
         }
         
+        print(group)
+        
         if not self.group:
             Model().save("groups", group)
         else:
-            Model().update("groups", group, self.group[0])
+            Model().update("groups", group, self.group['id'])
         self.group_add_signal.emit(True)
         self.close()
             

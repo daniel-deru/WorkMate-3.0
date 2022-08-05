@@ -85,13 +85,12 @@ class Apps_tab(Ui_apps_tab, QWidget):
         
         current_group = list(filter(lambda app: app[4] == str(group), apps))
         COLUMNS = 4
-        sorted_apps = sorted(current_group, key=lambda item: item[2])
         grid_items = []
-        for i in range(math.ceil(len(sorted_apps)/COLUMNS)):
+        for i in range(math.ceil(len(current_group)/COLUMNS)):
             subarr = []
             for j in range(COLUMNS):
-                if sorted_apps:
-                    subarr.append(sorted_apps.pop(0))
+                if current_group:
+                    subarr.append(current_group.pop(0))
             grid_items.append(subarr)
             
         for i in range(len(grid_items)):

@@ -1,8 +1,6 @@
 import sys
 import os
-from tokenize import group
 
-from colorama import Style
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from PyQt5.QtWidgets import QDialog, QFileDialog, QLineEdit, QWidget
@@ -18,20 +16,23 @@ from windows.group_window import GroupWindow
 
 from widgets.group_widget import GroupWidget
 
-from utils.helpers import StyleSheet, set_font
+from utils.helpers import StyleSheet, set_font, clear_window
 
 from widgetStyles.Label import Label
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Dialog import Dialog
 
 class GroupsWindow(Ui_GroupsWindow, QDialog):
+    groups_updated_signal = pyqtSignal(bool)
+    
     def __init__(self) -> None:
         super(GroupsWindow, self).__init__()
+        self.groups = Model().read("groups")
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
+        
         self.set_groups()
-        self.get_group_data()
         self.read_styles()
         
         self.btn_add_group.clicked.connect(self.add_group)
@@ -50,42 +51,81 @@ class GroupsWindow(Ui_GroupsWindow, QDialog):
         
     def add_group(self):
         manage_group_window = GroupWindow()
-        manage_group_window.group_add_signal.connect(self.set_groups)
+        manage_group_window.group_add_signal.connect(self.update_window)
         manage_group_window.exec_()
         
     def set_groups(self):
-        groups = Model().read("groups")
+        # Empty the container if their are any remaining widgets
+        clear_window(self.vbox_group_container)
+        # Get the initial group data   
         group_data = self.get_group_data()
-        for group in groups:
-            group_widget = GroupWidget(group, group_data[str(group[0])])
+        # Create the GroupWidget and add it to the UI
+        for group_id in group_data:
+            
+            group_widget = GroupWidget(group_data[group_id])
+            group_widget.group_delete_signal.connect(self.update_window)
+            group_widget.group_update_signal.connect(self.update_window)
             self.vbox_group_container.addWidget(group_widget)
             
+    @pyqtSlot()
+    def update_window(self):
+        size = self.sizeHint()
+        self.resize(size)
+        self.set_groups()
+        self.groups_updated_signal.emit(True)
+            
+    @pyqtSlot(int)
+    def delete_group(self, id) -> None:
+        # Delete the group
+        Model().delete("groups", id)
+        # Update the UI
+        self.set_groups()
+            
     def get_group_data(self):
+        # Create the initial group dict with all the current groups
+        groups = Model().read('groups')
         group_dict = {}
+        
+        for group in groups:
+            group_dict[str(group[0])] = {
+                'id': group[0],
+                'name': group[1], 
+                'description': group[2], 
+                'data': {}
+            }
+        
+        # Get all the features
         apps = Model().read("apps") # 4 index of group_id
         vault = Model().read("vault") # 4 index of group_id
         notes = Model().read("notes") # 3 index of group_id
         todos = Model().read("todos") # 5 index of group_id
         
-        self.create_feature_groups(apps, 4, group_dict, "apps")
-        self.create_feature_groups(vault, 4, group_dict, "vault")
-        self.create_feature_groups(notes, 3, group_dict, "notes")
-        self.create_feature_groups(todos, 5, group_dict, "todos")
+        features = {
+            'apps': [apps, 4],
+            'vault': [vault, 4],
+            'notes': [notes, 3],
+            'todos': [todos, 5]
+        }
         
+        # Add the features to the group dict
+        self.create_feature_groups('apps', features['apps'], group_dict)
+        self.create_feature_groups('vault', features['vault'], group_dict)
+        self.create_feature_groups('notes', features['notes'], group_dict)
+        self.create_feature_groups('todos', features['todos'], group_dict)
+  
         return group_dict
         
         
-    def create_feature_groups(self, table_data, group_id_index, group_dict, feature):
-
-        for entry in table_data:
-            group_id = entry[group_id_index]
-            if group_id in group_dict:
-                if feature in group_dict[group_id]:
-                    group_dict[group_id][feature].append(entry[1])
-                else:
-                    group_dict[group_id][feature] = [entry[1]]
-            else:
-                group_dict[group_id] = {feature: [entry[1]]}
+    def create_feature_groups(self, name, data, group_dict):
+        feature_items, group_id_index = data
+        for group_id in group_dict:
+            group_dict[group_id]['data'][name] = 0
         
+        for feature in feature_items:
+            group_id = feature[group_id_index]
+            if group_id not in group_dict:
+                break
+            if name in group_dict[group_id]['data']:
+                group_dict[group_id]['data'][name] += 1       
         
         

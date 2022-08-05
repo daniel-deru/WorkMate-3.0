@@ -15,10 +15,12 @@ from utils.helpers import set_font
 
 class FilterGroupWidget(QWidget):
     group_changed_signal = pyqtSignal(int)
+    
     def __init__(self) -> None:
         super(FilterGroupWidget, self).__init__()
         self.setupUi()
         self.show_groups()
+        
         self.btn_manage_groups.clicked.connect(self.manage_groups)
         
         self.cmb_groups.currentIndexChanged.connect(self.filter)
@@ -30,6 +32,7 @@ class FilterGroupWidget(QWidget):
     @pyqtSlot()  
     def manage_groups(self):
         manage_groups_window = GroupsWindow()
+        manage_groups_window.groups_updated_signal.connect(self.show_groups)
         manage_groups_window.exec_()
         
     def setupUi(self):
@@ -55,6 +58,7 @@ class FilterGroupWidget(QWidget):
         set_font(font_list)
         
     def show_groups(self):
+        self.cmb_groups.clear()
         groups = Model().read("groups")
         for group in groups:
             self.cmb_groups.addItem(group[1], group[0])

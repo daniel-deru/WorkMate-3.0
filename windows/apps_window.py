@@ -34,9 +34,6 @@ class Apps_window(Ui_App_Window, QDialog):
         self.setWindowTitle("Add Your App")
         self.read_styles()
         self.apps = Model().read('apps')
-        self.spn_index.setValue(len(self.apps) + 1)
-        self.spn_index.setMaximum(len(self.apps) + 1)
-        self.spn_index.setMinimum(1)
 
         self.btn_save.clicked.connect(self.save_clicked)
         self.btn_desktop.clicked.connect(self.add_from_desktop)
@@ -51,14 +48,13 @@ class Apps_window(Ui_App_Window, QDialog):
     def save_clicked(self):
         
         name = self.lnedt_name.text()
-        index = self.spn_index.value()
         path = self.lnedt_path.text()
         group = self.cmb_group.currentData()
 
         data = {
                     'name': name,
                     'path': path,
-                    'sequence': index,
+                    'sequence': '0',
                     'group_id': group
                 }
 
@@ -80,12 +76,6 @@ class Apps_window(Ui_App_Window, QDialog):
                 Message("This path is already being used", "Path already exists").exec_()
                 is_unique = False
         if is_unique:
-            for app in self.apps:
-
-                if data['sequence'] <= len(self.apps):
-
-                    if app[3] >= data['sequence']:
-                        Model().update('apps', {'sequence': app[3] + 1}, app[0])
             Model().save('apps', data)
             self.app_window_signal.emit("saved")
         self.close()
@@ -116,11 +106,9 @@ class Apps_window(Ui_App_Window, QDialog):
             self.btn_desktop,
             self.btn_discard,
             self.lbl_name,
-            self.lbl_index,
             self.lbl_path,
             self.lnedt_name,
             self.lnedt_path,
-            self.spn_index,
             self.lbl_group,
             self.cmb_group,
             self.cmb_group.view()

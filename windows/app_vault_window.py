@@ -45,13 +45,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.dte_password_exp.setDate(date.today() + timedelta(days=90))
         
         # Get the current apps to avoid collisions
-        self.current_apps = self.get_current_apps()
-        
-        maxValue = len(self.secrets) if self.app else len(self.secrets)+1
-        
-        self.spn_index.setMaximum(maxValue)
-        self.spn_index.setValue(maxValue)
-        self.spn_index.setMinimum(1)
+        self.current_apps = self.get_current_apps()        
         self.lne_password.setEchoMode(QLineEdit.Password)
         
 
@@ -100,10 +94,9 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.tbtn_password_generator.setIconSize(QSize(30, 20))
         
         font_widget = [
-            self.lbl_email,         self.lbl_index,
-            self.lbl_name,          self.lbl_password,
-            self.lbl_path,          self.lbl_username,
-            self.lne_email,         self.spn_index,
+            self.lbl_email,         self.lbl_name,          
+            self.lbl_password,      self.lbl_path,          
+            self.lbl_username,      self.lne_email,
             self.lne_name,          self.lne_password,
             self.lne_path,          self.lne_username,
             self.btn_desktop,       self.btn_save,
@@ -120,7 +113,6 @@ class AppVaultWindow(Ui_AppVault, QDialog):
     def save(self):
         
         name: str = self.lne_name.text()
-        index: str = self.spn_index.text()
         path: str = self.lne_path.text()
 
         username: str = self.lne_username.text()
@@ -134,7 +126,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         password_exp_string = datetime.strftime(password_exp, "%Y-%m-%d")
 
         name_list: list[str] = ["name", "index", "path", "username", "email", "password"]
-        data_list: list[str] = [ name, index, path, username, email, password ]
+        data_list: list[str] = [ name, "1", path, username, email, password ]
 
         valid_submit: bool = True
 
@@ -150,7 +142,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         if valid_submit:
             data: str = dumps({
                 'name': name,
-                'sequence': index,
+                'sequence': "0",
                 'path': path,
                 'username': username,
                 'email': email,
@@ -161,10 +153,6 @@ class AppVaultWindow(Ui_AppVault, QDialog):
             if password != confirm_password:
                 Message("The password and confirm password are not the same.", "Passwords don't match").exec_()
                 return "Stop this method from further execution"
-            
-            if int(index) < len(self.secrets):
-                # print(f"current index: {index}")
-                self.update_sequence(str(index))
                 
             payload = {
                 'type': 'app', 
@@ -196,7 +184,6 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.lne_email.setText(data['email'])
         self.lne_username.setText(data['username'])
         self.lne_path.setText(data['path'])
-        self.spn_index.setValue(int(data['sequence']))
         
         # Get the datetime object from string
         password_exp_datetime: datetime = datetime.strptime(data['password_exp'], "%Y-%m-%d")

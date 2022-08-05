@@ -4,7 +4,7 @@ from tkinter import font
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from PyQt5.QtWidgets import QDialog
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSlot, pyqtSignal
 from PyQt5.QtGui import QIcon
 
 from designs.python.group_view_window import Ui_GroupWindow
@@ -16,16 +16,31 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.Dialog import Dialog
 
 from utils.helpers import set_font
+
+from database.model import Model
+
 class GroupViewWindow(Ui_GroupWindow, QDialog):
-    def __init__(self, group, group_data) -> None:
+    delete_group_signal = pyqtSignal(int)
+    def __init__(self, group) -> None:
         super(GroupViewWindow, self).__init__()
         self.group = group
-        self.group_data = group_data
         self.setupUi(self)
         self.read_styles()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.display_data()
+        
+        self.btn_delete.clicked.connect(self.delete)
+        
+        if self.group['name'] == "Ungrouped":
+            self.btn_delete.hide()
+        
+    @pyqtSlot()
+    def delete(self):
+        # Send signal back to group widget with the id of the group to delete
+        Model().delete("groups", self.group['id'])
+        self.delete_group_signal.emit(self.group['id'])
+        self.close()
         
     def read_styles(self):
         widget_list = [
@@ -54,8 +69,8 @@ class GroupViewWindow(Ui_GroupWindow, QDialog):
         set_font(font_list)
         
     def display_data(self):
-        self.lbl_group_name.setText(self.group[1])
-        self.lbl_description.setText(self.group[2])
+        self.lbl_group_name.setText(self.group['name'])
+        self.lbl_description.setText(self.group['description'])
         
         display_widget = {
             'apps': self.lbl_apps_display,
@@ -64,9 +79,9 @@ class GroupViewWindow(Ui_GroupWindow, QDialog):
             'todos': self.lbl_todos_display
         }
         
-        for feature in self.group_data:
-            count = len(self.group_data[feature])
-            display_widget[feature].setText(str(count))
+        for key, value in display_widget.items():
+            total = self.group['data'][key]
+            value.setText(str(total))
         
     
         
