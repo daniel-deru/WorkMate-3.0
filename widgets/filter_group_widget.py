@@ -1,10 +1,11 @@
 import sys
 import os
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
+import time
+
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QComboBox, QListView
-from PyQt5.QtGui import QCursor, QFont
+from PyQt5.QtGui import QCursor, QFont, QMouseEvent
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, Qt
 
 from database.model import Model
@@ -27,18 +28,24 @@ class FilterGroupWidget(QWidget):
         
     @pyqtSlot()
     def filter(self):
-        self.group_changed_signal.emit(self.cmb_groups.currentData())
+        groups = Model().read("groups")
+        current_text = self.cmb_groups.currentText()
+        for group in groups:
+            if group[1] != current_text:
+                continue
+            else:
+                self.group_changed_signal.emit(group[0])
+                break
     
     @pyqtSlot()  
     def manage_groups(self):
         manage_groups_window = GroupsWindow()
-        manage_groups_window.groups_updated_signal.connect(self.show_groups)
         manage_groups_window.exec_()
         
     def setupUi(self):
         hbox = QHBoxLayout()
         
-        self.cmb_groups = QComboBox()
+        self.cmb_groups = ComboBox()
         self.cmb_groups.setView(QListView())
         self.cmb_groups.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
         
@@ -64,6 +71,33 @@ class FilterGroupWidget(QWidget):
             self.cmb_groups.addItem(group[1], group[0])
             
     def get_current_group(self):
-        return self.cmb_groups.currentData()
+        groups = Model().read("groups")
+        for group in groups:
+            if group[1] != self.cmb_groups.currentText():
+                continue
+            else:
+                return group[0]
+    
+
+# Custom Combobox implementation to update the class everytime the user opens the combobox
+class ComboBox(QComboBox):
+    current_index: int
+    def showPopup(self) -> None:
+        # Store the current index since it will be removed by "self.clear()"
+        self.current_index = self.currentIndex()
+        # Clear the old data
+        self.clear()
+        # Get the new groups from the database
+        groups = Model().read("groups")
+        # Add the groups to the combobox
+        group_list = []
+        for group in groups:
+            group_list.append(group[1])
+
+        self.addItems(group_list)
+        # Set the original index back
+        self.setCurrentIndex(self.current_index)
+        # Call the parent method
+        super(ComboBox, self).showPopup()
             
     

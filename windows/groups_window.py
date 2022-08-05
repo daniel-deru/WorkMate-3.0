@@ -23,7 +23,6 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.Dialog import Dialog
 
 class GroupsWindow(Ui_GroupsWindow, QDialog):
-    groups_updated_signal = pyqtSignal(bool)
     
     def __init__(self) -> None:
         super(GroupsWindow, self).__init__()
@@ -69,10 +68,7 @@ class GroupsWindow(Ui_GroupsWindow, QDialog):
             
     @pyqtSlot()
     def update_window(self):
-        size = self.sizeHint()
-        self.resize(size)
         self.set_groups()
-        self.groups_updated_signal.emit(True)
             
     @pyqtSlot(int)
     def delete_group(self, id) -> None:

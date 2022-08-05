@@ -18,5 +18,5 @@ class BrowserImport(QObject):
     def save(self):
         for entry in self.data:
             name, account, group_id = entry
-            # Model().save("vault", {'type': "app", 'name': name, 'data': account })
-        # self.finished.emit(True)
+            Model().save("vault", {'type': "app", 'name': name, 'data': account, 'group_id': group_id })
+        self.finished.emit(True)

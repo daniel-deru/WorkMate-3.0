@@ -123,7 +123,7 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         current_group = list(filter(lambda todo: todo[4] == str(group), secrets))
         
         # Create the nested list for the grid layout
-        COLUMNS = 4
+        COLUMNS = 3
         grid_items = []
         for i in range(math.ceil(len(current_group)/COLUMNS)):
             subarr = []

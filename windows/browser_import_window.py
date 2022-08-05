@@ -114,6 +114,7 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
         return checkbox_list
     
     def import_accounts(self):
+        # Get a list of the indexes in the table that need to be imported
         item_indexes = self.get_checkboxes()
         self.import_data = []
         self.check = {}
@@ -127,7 +128,6 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
             group: QComboBox = self.tbl_accounts.cellWidget(index, 1)
             group_name = group.currentText()
             group_id = self.group_dict[group_name]
-            print(group_id)
             
             # If the app with this name is already in the database or in the data meant to be imported skip this app
             if name in self.current_apps or name in self.check: continue
@@ -149,16 +149,20 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
             self.import_data.append([name, json.dumps(data), group_id])
                 
         self.import_finished.emit(self.import_data)
-        # self.close()
+        self.close()
         
     def select_all(self, checked):
-        checkboxes = self.get_checkboxes()
+        number_of_items = self.tbl_accounts.rowCount()
         
-        for checkbox in checkboxes:
-            if checked:
-                checkbox.setChecked(True)
-            else:
-                checkbox.setChecked(False)
+        for i in range(number_of_items):
+            checkbox: QCheckBox = self.tbl_accounts.cellWidget(i, 0)
+            checkbox.setChecked(checked)
+        
+        # for checkbox in checkboxes:
+        #     if checked:
+        #         checkbox.setChecked(True)
+        #     else:
+        #         checkbox.setChecked(False)
         
     def get_file_data(self):
         accounts = pd.read_csv(self.file)
