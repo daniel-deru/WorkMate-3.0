@@ -1,11 +1,11 @@
 import os
 import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from PyQt5.QtWidgets import QDialog, QFileDialog, QListView
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QIcon, QFont
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from utils.helpers import StyleSheet, set_font
 from utils.message import Message
@@ -100,14 +100,13 @@ class AppsEdit(Ui_AppsEdit, QDialog):
     def save_clicked(self):
         name = self.lnedt_name.text()
         path = self.lnedt_path.text()
-        sequence = self.spnbox_index.value()
         group = self.cmb_group.currentData()
         
 
         data = {
                     'name': name,
                     'path': path,
-                    'sequence': sequence,
+                    'sequence': '0',
                     'group_id': group
                 }
             
@@ -121,21 +120,21 @@ class AppsEdit(Ui_AppsEdit, QDialog):
         else:
             
             if self.app is not None:
-                if self.app[3] != sequence:
-                    old = int(self.app[3]) - 1
-                    new = sequence - 1
-                    move_up = True if old > new else False
-                    global array
-                    if move_up:
-                        array = self.apps[new:old]
-                    elif not move_up:
-                        array = self.apps[old+1:new+1]
-                    for app in array:
-                        app = list(app)
-                        if move_up:
-                            Model().update('apps', {'sequence': app[3] + 1}, app[0])
-                        elif not move_up:
-                            Model().update('apps', {'sequence': app[3] - 1}, app[0])
+                # if self.app[3] != sequence:
+                #     old = int(self.app[3]) - 1
+                #     new = sequence - 1
+                #     move_up = True if old > new else False
+                #     global array
+                #     if move_up:
+                #         array = self.apps[new:old]
+                #     elif not move_up:
+                #         array = self.apps[old+1:new+1]
+                #     for app in array:
+                #         app = list(app)
+                #         if move_up:
+                #             Model().update('apps', {'sequence': app[3] + 1}, app[0])
+                #         elif not move_up:
+                #             Model().update('apps', {'sequence': app[3] - 1}, app[0])
                 Model().update('apps', data, self.app[0])
                 self.app_edit_window_signal.emit("updated")
             self.close()

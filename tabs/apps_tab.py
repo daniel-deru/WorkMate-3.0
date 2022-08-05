@@ -14,6 +14,7 @@ from database.model import Model
 
 from windows.apps_window import Apps_window
 from windows.apps_edit_window import AppsEdit
+from windows.delete import DeleteWindow
 
 from widgets.app_item import AppItem
 from widgets.filter_group_widget import FilterGroupWidget
@@ -50,11 +51,17 @@ class Apps_tab(Ui_apps_tab, QWidget):
 
         self.btn_add_app.clicked.connect(self.add_app)
         self.chk_edit_apps.stateChanged.connect(self.edit_checked)
-        self.chk_delete_apps.stateChanged.connect(self.delete_checked)
+        # self.chk_delete_apps.stateChanged.connect(self.delete_checked)
+        
+        self.btn_delete.clicked.connect(self.delete)
         
         # Signal slots for external signals
         self.app_signal.connect(self.update)
         # Login signal will run everytime the login signal is updated
+        
+    def delete(self):
+        delete_window = DeleteWindow('apps')
+        delete_window.exec_()
     
     def create_tab(self):
         return self
@@ -66,8 +73,9 @@ class Apps_tab(Ui_apps_tab, QWidget):
         widgetList = [
             self.btn_add_app,
             self.chk_edit_apps,
-            self.chk_delete_apps,
+            # self.chk_delete_apps,
             self.lbl_open_apps,
+            self.btn_delete
         ]
         font = Model().read('settings')[0][2]
 
@@ -102,33 +110,33 @@ class Apps_tab(Ui_apps_tab, QWidget):
                 self.gbox_apps.addWidget(app_button, row, col)
 
     def edit_checked(self):
-        delete_apps = self.chk_delete_apps
+        # delete_apps = self.chk_delete_apps
         edit_apps = self.chk_edit_apps
 
-        if delete_apps.isChecked() and edit_apps.isChecked():
-            edit_apps.setChecked(True)
-            delete_apps.setChecked(False)
+        # if delete_apps.isChecked() and edit_apps.isChecked():
+        #     edit_apps.setChecked(True)
+        #     delete_apps.setChecked(False)
           
     def delete_checked(self):
-        delete_apps = self.chk_delete_apps
+        # delete_apps = self.chk_delete_apps
         edit_apps = self.chk_edit_apps
 
-        if edit_apps.isChecked() and delete_apps.isChecked():
-            delete_apps.setChecked(True)
-            edit_apps.setChecked(False)
+        # if edit_apps.isChecked() and delete_apps.isChecked():
+        #     delete_apps.setChecked(True)
+        #     edit_apps.setChecked(False)
             
     
     # Handles the editing and deleting of the apps
     def get_app(self, app):
-        delete = self.chk_delete_apps
+        # delete = self.chk_delete_apps
         edit = self.chk_edit_apps
 
-        if delete.isChecked():
-            Model().delete('apps', app[0])
-            self.update()
-            delete.setChecked(False)
+        # if delete.isChecked():
+        #     Model().delete('apps', app[0])
+        #     self.update()
+        #     delete.setChecked(False)
             
-        elif edit.isChecked():
+        if edit.isChecked():
             app_window = AppsEdit(app)
             app_window.app_edit_window_signal.connect(self.update)
             app_window.exec_()

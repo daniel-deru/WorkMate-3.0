@@ -23,13 +23,12 @@ from widgetStyles.TabBar import TabBar
 from widgetStyles.TabWidget import TabWidget
 from widgetStyles.Widget import Widget
 
-from utils.helpers import LoginEvent, StyleSheet
+from utils.helpers import StyleSheet
 
 from windows.register_window import Register
 from windows.login_window import Login
 from windows.setup_window import InitialSetup
 from windows.update_password import UpdatePassword
-from windows.twofa_verify_window import TwofaVerifyWindow
 
 from threads.google_thread import upload_google
 from threads.onedrive_thread import upload_onedrive
