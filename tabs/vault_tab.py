@@ -72,8 +72,8 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             PushButton,
             CheckBoxSquare,
             Label,
-            ScrollArrea,
-            ScrollBar,
+            # ScrollArrea,
+            # ScrollBar,
             ComboBox
         ]
         stylesheet = StyleSheet(styles).create()

@@ -3,9 +3,9 @@ import sys
 from turtle import clear
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from PyQt5.QtWidgets import QDialog, QFileDialog, QListView, QCheckBox
+from PyQt5.QtWidgets import QDialog, QListView, QCheckBox, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt, pyqtSlot
-from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtGui import QIcon, QFont, QCursor
 
 from database.model import Model
 
@@ -14,9 +14,10 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label, LabelLarge
 from widgetStyles.QCheckBox import CheckBox
 from widgetStyles.Dialog import Dialog
+from widgetStyles.ScrollArea import ScrollArrea
+from widgetStyles.ScrollBar import ScrollBar
 
 from utils.helpers import StyleSheet, set_font, clear_window
-
 
 from designs.python.delete_window import Ui_DeleteWindow
 
@@ -27,8 +28,9 @@ group_id_index = {
     'todos': 5
 }
 
-
 class DeleteWindow(Ui_DeleteWindow, QDialog):
+    delete_signal = pyqtSignal(bool)
+    
     def __init__(self, function) -> None:
         super(DeleteWindow, self).__init__()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
@@ -37,15 +39,41 @@ class DeleteWindow(Ui_DeleteWindow, QDialog):
         self.cmb_groups.setView(QListView())
         self.cmb_groups.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
         self.set_style()
+        
+        self.font_name = Model().read('settings')[0][2]
+        # Create empty class variable for the current items
+        self.current_items = None
 
         self.function = function
         self.function_items = Model().read(function)
         self.groups = Model().read("groups")
         
+        # Set the current items
         self.set_data()
         
         self.cmb_groups.currentIndexChanged.connect(self.set_items)
         self.chk_select_all.stateChanged.connect(self.select_all)
+        
+        self.btn_discard.clicked.connect(self.close)
+        self.btn_delete.clicked.connect(self.delete_items)
+        
+    @pyqtSlot()
+    def delete_items(self):
+        item_container = self.vbox_items
+        
+        # get the checkbox, see if it is checked and delete the item if it is checked
+        for i in range(item_container.count()):
+            checkbox: QCheckBox = item_container.itemAt(i).widget()
+            if checkbox.isChecked():
+                name = checkbox.text()
+                id = self.current_items[name]
+                Model().delete(self.function, id)
+        
+        # Send update signal to update the window
+        self.delete_signal.emit(True)
+        self.close()
+                
+            
         
     def set_data(self):
         # Set the groups
@@ -64,18 +92,25 @@ class DeleteWindow(Ui_DeleteWindow, QDialog):
         # Get the items for the current group
         current_items_full = list(filter(lambda item: item[group_id_index[self.function]] == str(current_group), self.function_items))
         
-        # Get the name and it from the current items
-        current_items_part = list(map(lambda item: [item[0], item[1]], current_items_full))
-        return current_items_part
+        item_dict = {}
+        # Get the name and id from the current items
+        for item in current_items_full:
+            item_dict[item[1]] = item[0]
+        
+        return item_dict
     
     def set_items(self):
         clear_window(self.vbox_items)
         current_items = self.get_current_group_items()
         
-        for item in current_items:
-            id, name = item
+        for name in current_items:
             checkbox = QCheckBox(name)
+            checkbox.setFont(QFont(self.font_name))
+            checkbox.setCursor(QCursor(Qt.PointingHandCursor))
             self.vbox_items.addWidget(checkbox)
+        
+        # Set the current items as a class variable
+        self.current_items = current_items
     
     # @pyqtSlot(int)
     def select_all(self, checked):
@@ -92,7 +127,9 @@ class DeleteWindow(Ui_DeleteWindow, QDialog):
             PushButton,
             CheckBox,
             ComboBox,
-            LabelLarge("#lbl_function")
+            LabelLarge("#lbl_function"),
+            ScrollArrea,
+            ScrollBar
         ]
         
         stylesheet = StyleSheet(style_list).create()

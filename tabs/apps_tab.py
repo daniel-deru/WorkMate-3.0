@@ -61,6 +61,7 @@ class Apps_tab(Ui_apps_tab, QWidget):
         
     def delete(self):
         delete_window = DeleteWindow('apps')
+        delete_window.delete_signal.connect(self.update)
         delete_window.exec_()
     
     def create_tab(self):
