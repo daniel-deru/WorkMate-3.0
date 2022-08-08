@@ -57,7 +57,6 @@ class Note_window(Ui_Note_Window, QDialog):
         groups = Model().read('groups')
         
         for i in range(len(groups)):
-            print(groups[i][0])
             self.cmb_groups.addItem(groups[i][1], groups[i][0])
             if self.note and int(self.note[3]) == groups[i][0]:
                 self.cmb_groups.setCurrentIndex(i)

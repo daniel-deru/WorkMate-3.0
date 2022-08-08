@@ -67,7 +67,9 @@
         <file alias="group">group_icon.svg</file>
         <file alias="general">general_icon.svg</file>
         <file alias="crypto">crypto_icon.svg</file>
-         <file alias="app">white_apps.svg</file>
+        <file alias="app">white_apps.svg</file>
+        <file alias="file_white">file_white.svg</file>
+        <file alias="file_black">file_black.svg</file>
 
     </qresource>
 

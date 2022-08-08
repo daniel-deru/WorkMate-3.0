@@ -98,7 +98,6 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         dots = u"\u2022"*10
         
         for i in range(1, self.layout().count() - 2, 2):
-            print(i)
             self.layout().itemAt(i).layout().itemAt(1).widget().setText(dots)
         
     def show_hidden(self, field_name: str, checkbox: QCheckBox, label_index: int):
@@ -121,7 +120,6 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
             # Set the black copy icon
             icon = QIcon(":/input/copy_black")
         for i in range(1, self.layout().count() - 2, 2):
-            print(i)
             tool_button: QToolButton = self.layout().itemAt(i).layout().itemAt(3).widget()
             tool_button.setIcon(icon)
             tool_button.setIconSize(QSize(25, 25))

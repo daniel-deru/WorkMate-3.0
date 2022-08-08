@@ -10,7 +10,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from designs.python.vault_type_window import Ui_VaultTypeDialog
 
 from widgetStyles.Dialog import Dialog
-from widgetStyles.PushButton import ButtonFullWidth
+from widgetStyles.PushButton import ButtonFullWidth, VaultButton
+from widgetStyles.styles import VAULT_BUTTON_COLORS
 
 from utils.helpers import StyleSheet
 
@@ -43,6 +44,9 @@ class VaultType(Ui_VaultTypeDialog, QDialog):
             self.btn_crypto,
             self.btn_general
         ]
+        self.btn_app.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['app']};border: 1px solid {VAULT_BUTTON_COLORS['app']};")
+        self.btn_crypto.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['crypto']};border: 1px solid {VAULT_BUTTON_COLORS['crypto']};")
+        self.btn_general.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['general']};border: 1px solid {VAULT_BUTTON_COLORS['general']};")        
         
         widget: QWidget
         

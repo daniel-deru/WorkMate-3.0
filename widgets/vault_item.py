@@ -23,7 +23,6 @@ class VaultItem(QPushButton):
         self.setupUI()
         self.read_styles()
         self.setCursor(QCursor(Qt.PointingHandCursor))
-        print(self.secret)
         
         # if(len(self.text()) > 35): self.setStyleSheet(VaultButtonLeftAlign)
         self.clicked.connect(self.app_clicked)

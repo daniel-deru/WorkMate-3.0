@@ -71,8 +71,6 @@ class GroupWindow(Ui_GroupWindow, QDialog):
             "description": description
         }
         
-        print(group)
-        
         if not self.group:
             Model().save("groups", group)
         else:
