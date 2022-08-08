@@ -19,9 +19,11 @@ from tabs.todos_tab import Todo_tab
 from tabs.settings_tab import SettingsTab
 from tabs.vault_tab import Vault_tab
 
-from widgetStyles.TabBar import TabBar
+from widgetStyles.TabBar import TabBar as TabBarStyle
 from widgetStyles.TabWidget import TabWidget
 from widgetStyles.Widget import Widget
+
+from widgets.tabbar import TabBar, ProxyStyle
 
 from utils.helpers import StyleSheet
 
@@ -49,8 +51,10 @@ class Main(Ui_main_container, QWidget):
         self.setupUi(self)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowTitle("TrustLock")
-
         self.read_style()
+        
+        self.tab_widget.setTabBar(TabBar(self.tab_widget))
+
         self.add_tabs()
         self.setTabIcons()
         self.update_status(False)
@@ -130,7 +134,11 @@ class Main(Ui_main_container, QWidget):
      
        
     def read_style(self):
-        styles = [TabWidget, Widget, TabBar]
+        styles = [
+            TabWidget, 
+            Widget, 
+            TabBarStyle
+            ]
         stylesheet = StyleSheet(styles).create()
         self.tab_widget.setStyleSheet(stylesheet)
         font = Model().read('settings')[0][2]
@@ -286,6 +294,7 @@ class Main(Ui_main_container, QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.setStyle(ProxyStyle())
     splash_image = QPixmap(":/other/splash.png")
     splash = QSplashScreen(splash_image)
     splash.show()
