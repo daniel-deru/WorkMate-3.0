@@ -1,4 +1,3 @@
-from email.charset import QP
 import os
 import sys
 import pyotp

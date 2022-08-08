@@ -3,12 +3,15 @@ import sys
 import pyperclip
 import keyboard
 import time
+from datetime import datetime
 from threading import Thread
 from pynput.mouse import Listener, Button
+import pyotp
+from threading import Thread
 
 from PyQt5.QtWidgets import QDialog, QCheckBox, QToolButton, QWidget
 from PyQt5.QtGui import QIcon, QFont
-from PyQt5.QtCore import QSize, QThread, Qt
+from PyQt5.QtCore import QSize, QThread, Qt, pyqtSlot
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -26,6 +29,8 @@ from widgetStyles.ToolButton import ToolButton
 from database.model import Model
 
 from workers.auto_type_worker import AutoType
+
+from threads.totp_counter import totp_counter
 
 
 class AppVaultView(Ui_AppVaultViewDialog, QDialog):
@@ -45,12 +50,14 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         
         self.data = json_to_dict(self.app[3])
         
+        totp_counter(self, self.data['twofa_code'])
+        
         # The widgets in the vertical layout are [0,2,4,6,8] because of the hlines
         self.chk_username.stateChanged.connect(lambda: self.show_hidden("username", self.chk_username, 1))
         self.chk_email.stateChanged.connect(lambda: self.show_hidden("email", self.chk_email, 3))
         self.chk_password.stateChanged.connect(lambda: self.show_hidden("password", self.chk_password, 5))
         self.chk_password_exp.stateChanged.connect(lambda: self.show_hidden("password_exp", self.chk_password_exp, 7))
-        self.chk_twofa.stateChanged.connect(lambda: self.show_hidden("twofa_code", self.chk_twofa, 9))
+        # self.chk_twofa.stateChanged.connect(lambda: self.show_hidden("twofa_code", self.chk_twofa, 9))
         self.chk_path.stateChanged.connect(lambda: self.show_hidden("path", self.chk_path, 11))
         
         self.tbtn_username.clicked.connect(lambda: self.copy_data("username"))
@@ -61,6 +68,25 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         self.tbtn_path.clicked.connect(lambda: self.copy_data("path"))
         
         self.btn_open.clicked.connect(self.open_app)
+        
+        self.chk_twofa.stateChanged.connect(self.get_twofa_code)
+        self.tbtn_twofa.clicked.connect(self.copy_twofa_code)
+        
+    @pyqtSlot()
+    def copy_twofa_code(self):
+        totp = pyotp.TOTP(self.data['twofa_code'])
+        current = totp.now()
+        pyperclip.copy(current)
+        
+    @pyqtSlot(int)
+    def get_twofa_code(self, event):
+        dots = u"\u2022"*10
+        if event:
+            totp = pyotp.TOTP(self.data['twofa_code'])
+            current = totp.now()
+            self.lbl_twofa.setText(current)
+        else:
+            self.lbl_twofa.setText(dots)
         
     
     def read_styles(self):
@@ -89,7 +115,8 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
             self.lbl_password_exp,
             self.lbl_password_exp_view,
             self.lbl_twofa,
-            self.lbl_twofa_view        
+            self.lbl_twofa_view,
+            self.lbl_counter    
         ]
         
         widget: QWidget
@@ -117,16 +144,23 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         
     def set_icons(self):
         dark_mode_on = Model().read('settings')[0][1]
+        buttons = [
+            self.tbtn_email,
+            self.tbtn_password,
+            self.tbtn_password_exp,
+            self.tbtn_path,
+            self.tbtn_twofa,
+            self.tbtn_username
+        ]
         if int(dark_mode_on):
             # Set the white copy icon
             icon = QIcon(":/input/copy_white")
         else:
             # Set the black copy icon
-            icon = QIcon(":/input/copy_black")
-        for i in range(1, self.layout().count() - 2, 2):
-            tool_button: QToolButton = self.layout().itemAt(i).layout().itemAt(3).widget()
-            tool_button.setIcon(icon)
-            tool_button.setIconSize(QSize(25, 25))
+            icon = QIcon(":/input/copy_black")        
+        for button in buttons:
+            button.setIcon(icon)
+            button.setIconSize(QSize(25, 25))
         
     def open_app(self):
         os.startfile(self.data['path'])

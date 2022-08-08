@@ -423,7 +423,17 @@ font-weight: bold;</string>
       </spacer>
      </item>
      <item>
+      <widget class="QLabel" name="lbl_counter">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QToolButton" name="tbtn_twofa">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -431,6 +441,9 @@ font-weight: bold;</string>
      </item>
      <item>
       <widget class="QCheckBox" name="chk_twofa">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
         <string/>
        </property>
