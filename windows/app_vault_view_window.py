@@ -50,12 +50,14 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         self.chk_email.stateChanged.connect(lambda: self.show_hidden("email", self.chk_email, 3))
         self.chk_password.stateChanged.connect(lambda: self.show_hidden("password", self.chk_password, 5))
         self.chk_password_exp.stateChanged.connect(lambda: self.show_hidden("password_exp", self.chk_password_exp, 7))
-        self.chk_path.stateChanged.connect(lambda: self.show_hidden("path", self.chk_path, 9))
+        self.chk_twofa.stateChanged.connect(lambda: self.show_hidden("twofa_code", self.chk_twofa, 9))
+        self.chk_path.stateChanged.connect(lambda: self.show_hidden("path", self.chk_path, 11))
         
         self.tbtn_username.clicked.connect(lambda: self.copy_data("username"))
         self.tbtn_email.clicked.connect(lambda: self.copy_data("email"))
         self.tbtn_password.clicked.connect(lambda: self.copy_data("password"))
         self.tbtn_password_exp.clicked.connect(lambda: self.copy_data("password_exp"))
+        self.tbtn_twofa.clicked.connect(lambda: self.copy_data("twofa_code"))
         self.tbtn_path.clicked.connect(lambda: self.copy_data("path"))
         
         self.btn_open.clicked.connect(self.open_app)
@@ -85,7 +87,9 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
             self.lbl_username_view,
             self.btn_open,
             self.lbl_password_exp,
-            self.lbl_password_exp_view          
+            self.lbl_password_exp_view,
+            self.lbl_twofa,
+            self.lbl_twofa_view        
         ]
         
         widget: QWidget

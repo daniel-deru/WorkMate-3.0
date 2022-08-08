@@ -1,5 +1,7 @@
 import sys
 import os
+import cv2
+import re
 from json import dumps
 from datetime import date, datetime, timedelta
 
@@ -53,11 +55,27 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         
         self.read_styles()
         self.btn_save.clicked.connect(self.save)
-        self.btn_desktop.clicked.connect(self.add_from_desktop)
+        self.tbtn_desktop.clicked.connect(self.add_from_desktop)
         self.tbtn_password_generator.clicked.connect(self.generate_password)
+        self.tbtn_qrcode.clicked.connect(self.read_qrcode)
         
         self.chk_show_password.stateChanged.connect(lambda show: self.show_password(show, self.lne_password))
         self.chk_password2.stateChanged.connect(lambda show: self.show_password(show, self.lne_password2))
+        
+    @pyqtSlot()
+    def read_qrcode(self):
+        file = QFileDialog.getOpenFileName(self, "Open a file", DESKTOP, "All Files (*.*)")[0]
+        image = cv2.imread(file)
+        detector = cv2.QRCodeDetector()
+        code = detector.detectAndDecode(image)[0]
+
+        if not code:
+            Message("The QR code is invalid please select a valid image of a QR code", "Invalid QR Code").exec_()
+            return
+        
+        regex = r"(?<=secret=)[0-9A-Z]+"
+        result = re.search(regex, code)
+        self.lne_twofa_code.setText(result.group())
     
     def set_groups(self):
         groups = Model().read("groups")
@@ -99,16 +117,20 @@ class AppVaultWindow(Ui_AppVault, QDialog):
             self.lbl_username,      self.lne_email,
             self.lne_name,          self.lne_password,
             self.lne_path,          self.lne_username,
-            self.btn_desktop,       self.btn_save,
+            self.tbtn_desktop,       self.btn_save,
             self.lbl_password2,     self.lne_password2,
             self.lbl_password_generator,
             self.lbl_password_expiration,
             self.dte_password_exp,
             self.lbl_group,         self.cmb_group,
-            self.cmb_group.view()
+            self.cmb_group.view(),  self.lbl_twofa_code,
+            self.lne_twofa_code
         ]
         
         set_font(font_widget)
+        
+        self.tbtn_desktop.setIcon(QIcon(":/button_icons/file_white"))
+        self.tbtn_qrcode.setIcon(QIcon(":/button_icons/qrcode"))
 
     def save(self):
         
@@ -121,6 +143,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         confirm_password: str = self.lne_password2.text()
         password_exp = self.dte_password_exp.date().toPyDate()
         
+        twofa_key = self.lne_twofa_code.text()
         group = self.cmb_group.currentData()
         
         password_exp_string = datetime.strftime(password_exp, "%Y-%m-%d")
@@ -148,6 +171,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
                 'email': email,
                 'password': password,
                 'password_exp': password_exp_string,
+                'twofa_code': twofa_key
             })
             
             if password != confirm_password:
@@ -184,6 +208,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.lne_email.setText(data['email'])
         self.lne_username.setText(data['username'])
         self.lne_path.setText(data['path'])
+        self.lne_twofa_code.setText(data['twofa_code'])
         
         # Get the datetime object from string
         password_exp_datetime: datetime = datetime.strptime(data['password_exp'], "%Y-%m-%d")
