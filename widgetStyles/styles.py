@@ -21,5 +21,11 @@ class ProgressBar:
     orange = "#D26500"
     yellow = "#d3df00"
     green = "#75c600"
+    
+VAULT_BUTTON_COLORS = {
+    'app': light_blue,
+    'crypto': green,
+    'general': StatusColor.overdue
+}
 
 placeholders = ["~color~", "~mode~", "~default~", "~button~"]

@@ -29,6 +29,8 @@ class CHAR_GROUPS:
     PUNCTUATION = [33, 34, 39, 44, 46, 58, 59, 63, 96]
     SPECIAL = [35, 36, 64, 95, 124, 126]
     BRACKETS = [40, 41, 60, 62, 91, 93, 123, 125]
+    
+
 
 
 WORDS = [

@@ -65,6 +65,9 @@
         <file alias="google">google_btn.png</file>
         <file alias="setup">setup_icon.png</file>
         <file alias="group">group_icon.svg</file>
+        <file alias="general">general_icon.svg</file>
+        <file alias="crypto">crypto_icon.svg</file>
+         <file alias="app">white_apps.svg</file>
 
     </qresource>
 
