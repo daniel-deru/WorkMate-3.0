@@ -91,11 +91,12 @@ class DeleteWindow(Ui_DeleteWindow, QDialog):
         
         # Get the items for the current group
         current_items_full = list(filter(lambda item: item[group_id_index[self.function]] == str(current_group), self.function_items))
-        
         item_dict = {}
+        # Get the index of the name field based on the table
+        name_index = 1 if self.function != 'vault' else 2
         # Get the name and id from the current items
         for item in current_items_full:
-            item_dict[item[1]] = item[0]
+            item_dict[item[name_index]] = item[0]
         
         return item_dict
     

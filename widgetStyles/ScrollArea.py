@@ -2,11 +2,17 @@ from widgetStyles.styles import default, mode, button, color, dark_blue, light_b
 import assets.resources
 
 ScrollArrea = f"""
-    QScrollArrea {{
-        background-color: transparent;
+    QScrollArea {{
+        background-color: {mode};
         margin: 0px;
         padding: 0px;
-        border: none;
+        border-radius: 5px;
+        border: 1px solid {light_blue};
+    }}
+    
+    QScrollArea QWidget {{
+        background-color: {mode};
+        border-radius: 5px;
     }}
 
 """

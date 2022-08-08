@@ -22,18 +22,15 @@ from widgets.filter_group_widget import FilterGroupWidget
 from windows.secret_window import SecretWindow
 from windows.crypto_vault_window import CryptoVaultWindow
 from windows.app_vault_window import AppVaultWindow
-
 from windows.vault_type_window import VaultType
-
 from windows.app_vault_view_window import AppVaultView
 from windows.crypto_vault_view_window import CryptoVaultViewWindow
 from windows.general_vault_view_window import GeneralVaultView
+from windows.delete import DeleteWindow
 
 from widgetStyles.QCheckBox import CheckBoxSquare
-from widgetStyles.PushButton import PushButton, VaultButton
+from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
-from widgetStyles.ScrollArea import ScrollArrea
-from widgetStyles.ScrollBar import ScrollBar
 from widgetStyles.ComboBox import ComboBox
 
 from database.model import Model
@@ -54,9 +51,8 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         self.create_secrets(initial_group)
 
         self.btn_add.clicked.connect(self.add_clicked)
-        self.chk_delete.clicked.connect(self.deleteCheckHandler)
-        self.chk_edit.clicked.connect(self.editCheckHandler)
         self.btn_login.clicked.connect(self.login_clicked)
+        self.btn_delete.clicked.connect(self.delete_secret)
        
         self.vault_signal.connect(self.update)
         self.login_signal.connect(self.login)
@@ -72,29 +68,21 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             PushButton,
             CheckBoxSquare,
             Label,
-            # ScrollArrea,
-            # ScrollBar,
             ComboBox
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
 
         widget_list = [
-            self.chk_delete,
             self.chk_edit,
             self.btn_add,
             self.btn_login,
-            self.lbl_secret
+            self.lbl_secret,
+            self.btn_delete
         ]
 
         for widget in widget_list:
             widget.setFont(QFont(font))
-
-    def deleteCheckHandler(self):
-        self.chk_edit.setChecked(False)
-            
-    def editCheckHandler(self):
-        self.chk_delete.setChecked(False)
 
     def add_clicked(self):
         vault_type = VaultType()
@@ -144,13 +132,8 @@ class Vault_tab(Ui_Vault_tab, QWidget):
     # Main event handler for when a button is clicked
     def get_secret(self, secret):
         edit = self.chk_edit
-        delete = self.chk_delete
-        print("The get secret was clicked")
-        
-        if delete.isChecked():
-            # Delete the secret that was clicked
-            self.delete_secret(secret)
-        elif edit.isChecked():
+
+        if edit.isChecked():
             # Edit the secret that was clicked
             self.edit_secret(secret)
         else:
@@ -179,28 +162,24 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         elif signal == "logged out":
             self.btn_login.setText("Login")
             self.logged_in = False
-
-    def display_apps(self):
-        apps = Model().read('appvault')
     
     def app_vault_click(self, secret):
         edit = self.chk_edit
-        delete = self.chk_delete
-        if not (edit.isChecked() or delete.isChecked()):
+        if not edit.isChecked():
             data = json.loads(secret[3])
             try:
                 os.startfile(data['path'])
             except OSError:
                 pass
 
-    def delete_secret(self, secret):
+    def delete_secret(self):
         if not self.logged_in:
             self.login_clicked()
             return
         else:
-            Model().delete("vault", secret[0])
-            self.chk_delete.setChecked(False)
-            self.update()
+            delete_window = DeleteWindow('vault')
+            delete_window.delete_signal.connect(self.update)
+            delete_window.exec_()
     
     def edit_secret(self, secret):
         if not self.logged_in:

@@ -160,13 +160,13 @@ class Main(Ui_main_container, QWidget):
         screen = app.size()
         self.setMinimumSize(int(screen.width() * 0.6), int(screen.height() * 0.6))
         # self.tab_widget.setTabPosition(QTabWidget.West)
-        self.apps_tab = Apps_tab().create_tab()
-        self.apps_tab.table_signal.connect(self.updateTable)
-        self.tab_widget.addTab(self.apps_tab, "Apps")
-
         self.vault_tab = Vault_tab().create_tab()
         self.vault_tab.login_signal.connect(self.check_login)
         self.tab_widget.addTab(self.vault_tab, "Vault")
+        
+        self.apps_tab = Apps_tab().create_tab()
+        self.apps_tab.table_signal.connect(self.updateTable)
+        self.tab_widget.addTab(self.apps_tab, "Apps")
 
         self.notes_tab = Notes_tab().create_tab()
         self.tab_widget.addTab(self.notes_tab, "Notes")
@@ -188,8 +188,8 @@ class Main(Ui_main_container, QWidget):
         # Get the night mode setting from the database
         nightModeOn = int(Model().read("settings")[0][1])
         icons = [
-                "_apps.svg",
                 "_vault.svg",
+                "_apps.svg",
                 "_notes.svg",
                 "_task.svg",
                 "_settings.svg"
