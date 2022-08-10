@@ -93,16 +93,8 @@ class Ui_Settings_tab(object):
         self.lbl_google_integration.setObjectName("lbl_google_integration")
         self.horizontalLayout_13.addWidget(self.lbl_google_integration)
         self.btn_google = QtWidgets.QToolButton(Settings_tab)
-        self.btn_google.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.btn_google.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_google.setStyleSheet("QToolButton#btn_google {\n"
-"    background-color: transparent;\n"
-"    padding: 0px;\n"
-"}")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("./xml\\../../../../assets/google_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_google.setIcon(icon)
-        self.btn_google.setIconSize(QtCore.QSize(104, 25))
+        self.btn_google.setStyleSheet("background-color: transparent;\n"
+"padding: 0px;")
         self.btn_google.setObjectName("btn_google")
         self.horizontalLayout_13.addWidget(self.btn_google)
         self.verticalLayout.addLayout(self.horizontalLayout_13)

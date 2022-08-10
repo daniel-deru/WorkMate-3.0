@@ -53,7 +53,8 @@ class Main(Ui_main_container, QWidget):
         self.setWindowTitle("TrustLock")
         self.read_style()
         self.tab_widget.setDocumentMode(True)
-        self.tab_widget.setTabBar(TabBar(self.tab_widget))
+        self.custom_tabbar = TabBar(self.tab_widget)
+        self.tab_widget.setTabBar(self.custom_tabbar)
 
         self.add_tabs()
         self.setTabIcons()
@@ -135,6 +136,7 @@ class Main(Ui_main_container, QWidget):
        
     def read_style(self):
         styles = [
+            Widget,
             MainWidget, 
             TabWidget, 
         ]
@@ -153,6 +155,7 @@ class Main(Ui_main_container, QWidget):
         self.todo_tab.todo_signal.emit("update")
         self.vault_tab.vault_signal.emit("update")
         self.settings_tab.settings_update_signal.emit("update")
+        self.custom_tabbar.update_bar.emit(True)
         self.read_style()
     
     # This is to update the vault window after a new app has been added

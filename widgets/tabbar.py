@@ -5,7 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from PyQt5.QtWidgets import QTabBar, QStylePainter, QStyleOptionTab, QStyle, QProxyStyle, QApplication, QWidget, QTabWidget
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import QRect, QPoint
+from PyQt5.QtCore import QRect, QPoint, pyqtSignal
 
 from utils.helpers import set_font, StyleSheet
 
@@ -14,10 +14,15 @@ from widgetStyles.TabWidget import TabWidget
 
 
 class TabBar(QTabBar):
+    update_bar = pyqtSignal(bool)
     def __init__(self, parent: typing.Optional[QWidget] = ...) -> None:
         super().__init__(parent)
         self.setAutoFillBackground(True)
         set_font([self])
+        self.read_style()
+        self.update_bar.connect(self.read_style)
+        
+    def read_style(self):
         stylesheet = StyleSheet([TabBarStyle]).create()
         self.setStyleSheet(stylesheet)
         

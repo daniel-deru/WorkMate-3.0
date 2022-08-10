@@ -19,6 +19,7 @@ from widgetStyles.PushButton import IconButton
 from widgetStyles.QCheckBox import SettingsCheckBox
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.ScrollBar import ScrollBar
+from widgetStyles.ToolButton import ToolButton
 
 from utils.message import Message
 from utils.helpers import StyleSheet, set_font
@@ -155,6 +156,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             ComboBox, 
             ScrollBar, 
             IconButton,
+            ToolButton
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
@@ -184,7 +186,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         pixmap: QPixmap = QPixmap(":/button_icons/google")
         icon: QIcon = QIcon(pixmap)
         self.btn_google.setIcon(icon)
-        print(self.btn_google.styleSheet())
         self.btn_google.setIconSize(pixmap.rect().size())
         
         self.btn_generate_password.setIcon(QIcon(":/button_icons/password"))
