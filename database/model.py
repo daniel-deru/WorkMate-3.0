@@ -238,9 +238,6 @@ class Model:
             self.db.commit()
             self.db.close()
         
-        
-        # print(encrypted_column_names)
-        
     
     def drop_table(self, table):
         self.cur.execute(f"DROP TABLE {table}")

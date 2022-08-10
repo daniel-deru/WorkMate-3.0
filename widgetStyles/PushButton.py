@@ -143,6 +143,7 @@ IconButton = f"""
     border: none;
     border-radius: 5px;
     width: 70px;
+    min-height: 30px;
 }}
 
 QPushButton:pressed {{

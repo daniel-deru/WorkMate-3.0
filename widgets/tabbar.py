@@ -1,9 +1,26 @@
+import os
+import sys
+import typing
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
 from PyQt5.QtWidgets import QTabBar, QStylePainter, QStyleOptionTab, QStyle, QProxyStyle, QApplication, QWidget, QTabWidget
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QRect, QPoint
 
+from utils.helpers import set_font, StyleSheet
+
+from widgetStyles.TabBar import TabBar as TabBarStyle
+from widgetStyles.TabWidget import TabWidget
+
 
 class TabBar(QTabBar):
+    def __init__(self, parent: typing.Optional[QWidget] = ...) -> None:
+        super().__init__(parent)
+        self.setAutoFillBackground(True)
+        set_font([self])
+        stylesheet = StyleSheet([TabBarStyle]).create()
+        self.setStyleSheet(stylesheet)
+        
     def tabSizeHint(self, index):
         s = QTabBar.tabSizeHint(self, index)
         s.transpose()

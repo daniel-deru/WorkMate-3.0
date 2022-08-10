@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from widgetStyles.styles import color, mode, default
+from widgetStyles.styles import color, mode, default, green
 
 TabWidget = f"""
     QTabWidget {{
@@ -16,6 +16,6 @@ TabWidget = f"""
     }}
 
     QTabWidget::tab-bar {{
-        background-color: {color};
+        background-color: {green};
     }}
 """

@@ -21,7 +21,7 @@ from tabs.vault_tab import Vault_tab
 
 from widgetStyles.TabBar import TabBar as TabBarStyle
 from widgetStyles.TabWidget import TabWidget
-from widgetStyles.Widget import Widget
+from widgetStyles.Widget import Widget, MainWidget
 
 from widgets.tabbar import TabBar, ProxyStyle
 
@@ -52,7 +52,7 @@ class Main(Ui_main_container, QWidget):
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowTitle("TrustLock")
         self.read_style()
-        
+        self.tab_widget.setDocumentMode(True)
         self.tab_widget.setTabBar(TabBar(self.tab_widget))
 
         self.add_tabs()
@@ -135,12 +135,11 @@ class Main(Ui_main_container, QWidget):
        
     def read_style(self):
         styles = [
+            MainWidget, 
             TabWidget, 
-            Widget, 
-            TabBarStyle
-            ]
+        ]
         stylesheet = StyleSheet(styles).create()
-        self.tab_widget.setStyleSheet(stylesheet)
+        self.setStyleSheet(stylesheet)
         font = Model().read('settings')[0][2]
 
         self.tab_widget.setFont(QFont(font))
@@ -167,7 +166,7 @@ class Main(Ui_main_container, QWidget):
         app = QApplication.primaryScreen()
         screen = app.size()
         self.setMinimumSize(int(screen.width() * 0.6), int(screen.height() * 0.6))
-        # self.tab_widget.setTabPosition(QTabWidget.West)
+        self.tab_widget.setTabPosition(QTabWidget.West)
         self.vault_tab = Vault_tab().create_tab()
         self.vault_tab.login_signal.connect(self.check_login)
         self.tab_widget.addTab(self.vault_tab, "Vault")

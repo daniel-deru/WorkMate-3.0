@@ -32,12 +32,13 @@ TabBar = f"""
         border: none;
         qproperty-drawBase: 0;
     }}
-   QTabBar::tab {{
+    QTabBar::tab {{
         height: 120px;
         padding: 10px;
         border: none;
         background-color: {green};
         color: black;
+        font-size: 16px;
     }}
 
         QTabBar::tab:selected {{

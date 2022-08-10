@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from widgetStyles.styles import color, mode, default, light_blue, light_grey
+from widgetStyles.styles import color, mode, default, light_blue, light_grey, green
 
 Widget = f"""
     QWidget {{
@@ -16,9 +16,8 @@ Widget = f"""
 MainWidget = f"""
     QWidget#main_container {{
         font-size: 16px;
-        font-size: 16px;
         padding: 5px 8px;
-        background-color: {color};
+        background-color: {green};
     }}
 """
 

@@ -95,7 +95,10 @@ class Ui_Settings_tab(object):
         self.btn_google = QtWidgets.QToolButton(Settings_tab)
         self.btn_google.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.btn_google.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_google.setStyleSheet("background: transparent;padding: 0px;")
+        self.btn_google.setStyleSheet("QToolButton#btn_google {\n"
+"    background-color: transparent;\n"
+"    padding: 0px;\n"
+"}")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("./xml\\../../../../assets/google_btn.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_google.setIcon(icon)
@@ -432,7 +435,7 @@ class Ui_Settings_tab(object):
         Settings_tab.setWindowTitle(_translate("Settings_tab", "Form"))
         self.lbl_login.setText(_translate("Settings_tab", "Login"))
         self.lbl_forgot_password.setText(_translate("Settings_tab", "Forgot Password"))
-        self.lbl_google_integration.setText(_translate("Settings_tab", "Allow Trust Lock to integrate with your Google account"))
+        self.lbl_google_integration.setText(_translate("Settings_tab", "Integrate your Google account"))
         self.btn_google.setText(_translate("Settings_tab", "Google Button"))
         self.lbl_2fa.setText(_translate("Settings_tab", "Two Factor Authentication"))
         self.lbl_night_mode.setText(_translate("Settings_tab", "Night Mode"))

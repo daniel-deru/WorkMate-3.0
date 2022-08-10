@@ -149,7 +149,13 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.settings_signal.emit("settings")
 
     def read_styles(self):
-        styles = [Label, SettingsCheckBox, ComboBox, ScrollBar, IconButton]
+        styles = [
+            Label, 
+            SettingsCheckBox, 
+            ComboBox, 
+            ScrollBar, 
+            IconButton,
+        ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         
@@ -178,6 +184,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         pixmap: QPixmap = QPixmap(":/button_icons/google")
         icon: QIcon = QIcon(pixmap)
         self.btn_google.setIcon(icon)
+        print(self.btn_google.styleSheet())
         self.btn_google.setIconSize(pixmap.rect().size())
         
         self.btn_generate_password.setIcon(QIcon(":/button_icons/password"))
