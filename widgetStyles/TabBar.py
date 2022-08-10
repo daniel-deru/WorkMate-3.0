@@ -33,7 +33,7 @@ TabBar = f"""
         qproperty-drawBase: 0;
     }}
     QTabBar::tab {{
-        height: 120px;
+        height: 100px;
         padding: 10px;
         border: none;
         background-color: {green};
