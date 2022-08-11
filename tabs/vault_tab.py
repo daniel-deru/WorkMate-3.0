@@ -32,6 +32,7 @@ from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
 from widgetStyles.ComboBox import ComboBox
+from widgetStyles.ScrollBar import NewScrollBar
 
 from database.model import Model
 
@@ -68,7 +69,8 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             PushButton,
             CheckBoxSquare,
             Label,
-            ComboBox
+            ComboBox,
+            NewScrollBar
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)

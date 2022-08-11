@@ -19,7 +19,6 @@ from tabs.todos_tab import Todo_tab
 from tabs.settings_tab import SettingsTab
 from tabs.vault_tab import Vault_tab
 
-from widgetStyles.TabBar import TabBar as TabBarStyle
 from widgetStyles.TabWidget import TabWidget
 from widgetStyles.Widget import Widget, MainWidget
 

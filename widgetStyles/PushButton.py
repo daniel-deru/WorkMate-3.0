@@ -107,8 +107,8 @@ QPushButton {{
     border-radius: 5px;
     font-size: 16px;
     padding: 5px 8px;
-    max-width: 300px;
-    min-width: 300px;
+    max-width: 150px;
+    min-width: 150px;
 }}
 
 QPushButton:pressed {{
@@ -125,8 +125,8 @@ QPushButton {{
     border-radius: 5px;
     font-size: 16px;
     padding: 5px 8px;
-    max-width: 300px;
-    min-width: 300px;
+    max-width: 150px;
+    min-width: 150px;
     text-align: left;
 }}
 
@@ -194,8 +194,8 @@ def _create_vault_button(text_length, color=light_blue):
             border-radius: 5px;
             font-size: 16px;
             padding: 5px 8px;
-            max-width: 300px;
-            min-width: 300px;
+            max-width: 275px;
+            min-width: 275px;
         }}
 
         QPushButton:pressed {{
@@ -212,8 +212,8 @@ def _create_vault_button(text_length, color=light_blue):
             border-radius: 5px;
             font-size: 16px;
             padding: 5px 8px;
-            max-width: 300px;
-            min-width: 300px;
+            max-width: 275px;
+            min-width: 275px;
             text-align: left;
         }}
 
@@ -223,7 +223,7 @@ def _create_vault_button(text_length, color=light_blue):
             border: 1px solid {color};
         }}
         """
-    if text_length > 35:
+    if text_length > 25:
         return VaultButtonLeftAlign
     else:
         return VaultButton

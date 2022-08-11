@@ -57,15 +57,15 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.read_styles()
 
         self.logged_in = False
-        settings = Model().read('settings')[0]
-        # Set the default value of the settings
-        self.chkbox_nightmode.setChecked(int(settings[1]))
-        self.chkbox_calendar.setChecked(int(settings[6]))
-        self.chkbox_2fa.setChecked(int(settings[7]))
+        # settings = Model().read('settings')[0]
+        # # Set the default value of the settings
+        # self.chkbox_nightmode.setChecked(int(settings[1]))
+        # self.chkbox_calendar.setChecked(int(settings[6]))
+        # self.chkbox_2fa.setChecked(int(settings[7]))
         
-        auto_save_on = json.loads(settings[8])['auto_save']
-        self.chk_auto_save.setChecked(auto_save_on)
-        
+        # auto_save_on = json.loads(settings[8])['auto_save']
+        # self.chk_auto_save.setChecked(auto_save_on)
+        self.set_checkboxes()
         self.set_btn_icons()
 
 
@@ -89,9 +89,19 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.btn_google.clicked.connect(self.google_sign_in)        
 
         # connect the custom signals to the slots
-        self.settings_signal.connect(self.read_styles)
-        self.settings_update_signal.connect(self.read_styles)
+        self.settings_signal.connect(lambda: self.updateWindow(False))
+        self.settings_update_signal.connect(lambda: self.updateWindow(False))
         self.login_signal.connect(self.login)
+        
+    def set_checkboxes(self):
+        settings = Model().read('settings')[0]
+        # Set the default value of the settings
+        self.chkbox_nightmode.setChecked(int(settings[1]))
+        self.chkbox_calendar.setChecked(int(settings[6]))
+        self.chkbox_2fa.setChecked(int(settings[7]))
+        
+        auto_save_on = json.loads(settings[8])['auto_save']
+        self.chk_auto_save.setChecked(auto_save_on)
         
     def manage_groups(self):
         GroupsWindow().exec_()
@@ -145,9 +155,10 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             Model().update('user', {'twofa_key': None}, 'user')
             Model().update("settings", {'twofa': '0'}, 'settings')
     
-    def updateWindow(self):
+    def updateWindow(self, send_signal: bool = True):
         self.read_styles()
-        self.settings_signal.emit("settings")
+        self.set_checkboxes()
+        if send_signal: self.settings_signal.emit("settings")
 
     def read_styles(self):
         styles = [

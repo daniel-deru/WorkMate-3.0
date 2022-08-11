@@ -21,6 +21,7 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.Label import Label
+from widgetStyles.ScrollBar import NewScrollBar
 from utils.helpers import StyleSheet, set_font
 
 
@@ -48,7 +49,13 @@ class Notes_tab(Ui_notes_tab, QWidget):
         return self
 
     def read_styles(self):
-        styles = [CheckBoxSquare, PushButton, ComboBox, Label]
+        styles = [
+            CheckBoxSquare, 
+            PushButton, 
+            ComboBox, 
+            Label,
+            NewScrollBar
+        ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         

@@ -18,7 +18,6 @@ class SetupWidget(QWidget):
     next_signal = pyqtSignal(bool)
     def __init__(self, data) -> None:
         super(SetupWidget, self).__init__()
-        
         self.message = data[0]
         self.help_link = data[1]
         self.callback = data[2]
@@ -27,7 +26,8 @@ class SetupWidget(QWidget):
         
         self.no_button.clicked.connect(lambda: self.next_signal.emit(True))
         self.yes_button.clicked.connect(self.run_callback)
-        self.btn_help.clicked.connect(lambda: webbrowser.open_new_tab(self.help_link))
+        # self.btn_help.clicked.connect(lambda: webbrowser.open_new_tab(self.help_link))
+        self.btn_help.clicked.connect(lambda: print(self.help_link))
         
     def run_callback(self):
         self.callback()
@@ -58,7 +58,8 @@ class SetupWidget(QWidget):
         btn_container.addWidget(self.btn_help)
         
         vbox.addWidget(lbl_message)
-        vbox.addLayout(btn_container)
+        if self.help_link:
+            vbox.addLayout(btn_container)
         vbox.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding))
         vbox.addLayout(hbox_button_container)
         

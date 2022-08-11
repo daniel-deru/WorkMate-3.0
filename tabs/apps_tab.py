@@ -24,6 +24,7 @@ from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.Line import Line
 from widgetStyles.Label import Label
 from widgetStyles.ComboBox import ComboBox
+from widgetStyles.ScrollBar import NewScrollBar
 
 from utils.helpers import StyleSheet
 from utils.helpers import clear_window
@@ -68,7 +69,14 @@ class Apps_tab(Ui_apps_tab, QWidget):
         return self
 
     def read_styles(self):
-        styles = [CheckBoxSquare, PushButton, Line, Label, ComboBox]
+        styles = [
+            CheckBoxSquare, 
+            PushButton, 
+            Line, 
+            Label, 
+            ComboBox,
+            NewScrollBar
+        ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         widgetList = [
