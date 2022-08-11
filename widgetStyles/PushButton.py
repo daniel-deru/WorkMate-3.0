@@ -186,24 +186,24 @@ def _create_custom_tool_button(id=""):
     return IconToolButton
 
 def _create_vault_button(text_length, color=light_blue):
-    VaultButton = f"""
-        QPushButton {{
-            background-color: {color};
-            color: white;
-            border: 1px solid {color};
-            border-radius: 5px;
-            font-size: 16px;
-            padding: 5px 8px;
-            max-width: 275px;
-            min-width: 275px;
-        }}
+    # VaultButton = f"""
+    #     QPushButton {{
+    #         background-color: {color};
+    #         color: white;
+    #         border: 1px solid {color};
+    #         border-radius: 5px;
+    #         font-size: 16px;
+    #         padding: 5px 8px;
+    #         max-width: 275px;
+    #         min-width: 275px;
+    #     }}
 
-        QPushButton:pressed {{
-            background-color: transparent;
-            color: {default};
-            border: 1px solid {color};
-        }}
-        """
+    #     QPushButton:pressed {{
+    #         background-color: transparent;
+    #         color: {default};
+    #         border: 1px solid {color};
+    #     }}
+    #     """
     VaultButtonLeftAlign = f"""
         QPushButton {{
             background-color: {color};
@@ -213,7 +213,7 @@ def _create_vault_button(text_length, color=light_blue):
             font-size: 16px;
             padding: 5px 8px;
             max-width: 275px;
-            min-width: 275px;
+            min-width: 100px;
             text-align: left;
         }}
 
@@ -223,9 +223,9 @@ def _create_vault_button(text_length, color=light_blue):
             border: 1px solid {color};
         }}
         """
-    if text_length > 25:
-        return VaultButtonLeftAlign
-    else:
-        return VaultButton
+    # if text_length > 25:
+    return VaultButtonLeftAlign
+    # else:
+        # return VaultButton
 VaultButton = _create_vault_button
 IconToolButton = _create_custom_tool_button

@@ -167,7 +167,7 @@ class Main(Ui_main_container, QWidget):
     def add_tabs(self):
         app = QApplication.primaryScreen()
         screen = app.size()
-        self.setMinimumSize(int(screen.width() * 0.6), int(screen.height() * 0.6))
+        self.setMinimumSize(int(screen.width() * 0.5), int(screen.height() * 0.5))
         self.tab_widget.setTabPosition(QTabWidget.West)
         self.vault_tab = Vault_tab().create_tab()
         self.vault_tab.login_signal.connect(self.check_login)
@@ -267,8 +267,8 @@ class Main(Ui_main_container, QWidget):
         width = available_size.width()
         height = available_size.height()
 
-        self.setFixedSize(int(width/2), int(height/1.5))
-        self.setMaximumSize(int(width/2), int(height/1.5))
+        # self.setFixedSize(int(width/2), int(height/1.5))
+        # self.setMaximumSize(int(width/2), int(height/3.8))
 
     def moveEvent(self, event):
         old_screen = QApplication.screenAt(event.oldPos())

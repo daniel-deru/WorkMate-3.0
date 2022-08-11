@@ -1,8 +1,6 @@
-from operator import contains
 import sys
 import os
 import json
-from tabnanny import check
 import pandas as pd
 from datetime import date, timedelta, datetime
 
@@ -19,24 +17,28 @@ from PyQt5.QtWidgets import (
     QListView
     )
 from PyQt5.QtGui import QCursor, QIcon, QFont
-from PyQt5.QtCore import Qt, QModelIndex, pyqtSignal
+from PyQt5.QtCore import Qt, QModelIndex, pyqtSignal, pyqtSlot
 
-from widgetStyles.ComboBox import ComboBox
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from designs.python.browser_import_window import Ui_BrowserPasswordImportWindow
 
-from widgetStyles.QCheckBox import CheckBox
+from widgetStyles.ComboBox import ComboBox
+from widgetStyles.QCheckBox import CheckBoxTable
 from widgetStyles.Dialog import Dialog
 from widgetStyles.PushButton import PushButton
 from widgetStyles.TableWidget import TableWidget
 from widgetStyles.ScrollBar import ScrollBar
 
+from widgets.group_combobox import ComboBox as GroupComboBox
+
 from utils.helpers import StyleSheet, set_font
 
 from database.model import Model
+
+from windows.groups_window import GroupsWindow
 
 
 class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
@@ -62,6 +64,12 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
         
         self.chk_select_all.stateChanged.connect(self.select_all)
         self.btn_import.clicked.connect(self.import_accounts)
+        self.btn_groups.clicked.connect(self.manage_groups)
+    
+    @pyqtSlot()
+    def manage_groups(self) -> None:
+        manage_groups_window = GroupsWindow()
+        manage_groups_window.exec_()
         
     def create_group_data(self) -> tuple[dict, list]:
         groups = Model().read("groups")
@@ -91,7 +99,7 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
     
     # Create a combo box for the groups (this method runs inside a loop that can be very long, DO NOT USE LOOP INSIDE THIS METHOD)
     def create_combobox(self):
-        self.group_box = QComboBox()
+        self.group_box = GroupComboBox()
         self.group_box.setView(QListView())
         self.group_box.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
         
@@ -158,12 +166,6 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
             checkbox: QCheckBox = self.tbl_accounts.cellWidget(i, 0)
             checkbox.setChecked(checked)
         
-        # for checkbox in checkboxes:
-        #     if checked:
-        #         checkbox.setChecked(True)
-        #     else:
-        #         checkbox.setChecked(False)
-        
     def get_file_data(self):
         accounts = pd.read_csv(self.file)
         number_of_rows = len(accounts.index)
@@ -209,7 +211,8 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
             TableWidget, 
             ScrollBar, 
             PushButton,
-            ComboBox
+            ComboBox,
+            CheckBoxTable
         ]
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
@@ -221,6 +224,7 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
             self.tbl_accounts,
             self.tbl_accounts.horizontalHeader(),
             self.tbl_accounts.verticalHeader(),
+            self.btn_groups
             
         ]
         set_font(font_list)

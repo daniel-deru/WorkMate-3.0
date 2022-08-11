@@ -23,7 +23,6 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.Dialog import Dialog
 
 class GroupsWindow(Ui_GroupsWindow, QDialog):
-    
     def __init__(self) -> None:
         super(GroupsWindow, self).__init__()
         self.groups = Model().read("groups")

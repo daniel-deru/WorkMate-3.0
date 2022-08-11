@@ -72,6 +72,6 @@ TableWidget2 = f"""
     }}
  
     QTableWidget QTableCornerButton::section {{
-        background-color: {color};
+        background-color: {green};
     }}
 """

@@ -46,6 +46,31 @@ CheckBox = f"""
     }}
 
 """
+CheckBoxTable = f"""
+    QCheckBox {{
+        color: {default};
+        font-size: 16px;
+        border-radius: 5px;
+        margin-left: 50%;
+    }}
+
+    QCheckBox::indicator:checked {{
+        image: url(:/input/toggle-on.svg);
+        width: {width}px;
+        height: {height}px;
+        max-width: {width}px;
+        max-height: {height}px;
+    }}
+
+    QCheckBox::indicator{{
+        image: url(:/input/toggle-off.svg);
+        width: {width}px;
+        height: {height}px;
+        max-width: {width}px;
+        max-height: {height}px;
+    }}
+
+"""
 
 CheckBoxSquare = f"""
     QCheckBox {{

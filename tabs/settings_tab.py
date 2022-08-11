@@ -6,7 +6,7 @@ import shutil
 import json
 
 from PyQt5.QtWidgets import QWidget, QFileDialog, qApp, QPushButton
-from PyQt5.QtCore import pyqtSignal, Qt, QThread, QSize
+from PyQt5.QtCore import pyqtSignal, Qt, QThread, QSize, pyqtSlot
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 
 
@@ -22,13 +22,14 @@ from widgetStyles.ScrollBar import ScrollBar
 from widgetStyles.ToolButton import ToolButton
 
 from utils.message import Message
-from utils.helpers import StyleSheet, set_font
+from utils.helpers import LoginEvent, StyleSheet, set_font
 from utils.globals import DB_PATH, PATH, DB_NAME, DESKTOP
 
 from database.model import Model
 
 
 from windows.forgot_question import PasswordQuestion
+from windows.reset_password import ResetPassword
 from windows.drive_window import DriveWindow
 from windows.twofa_window import TwofaDialog
 from windows.browser_import_window import BrowserImportWindow
@@ -57,14 +58,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.read_styles()
 
         self.logged_in = False
-        # settings = Model().read('settings')[0]
-        # # Set the default value of the settings
-        # self.chkbox_nightmode.setChecked(int(settings[1]))
-        # self.chkbox_calendar.setChecked(int(settings[6]))
-        # self.chkbox_2fa.setChecked(int(settings[7]))
-        
-        # auto_save_on = json.loads(settings[8])['auto_save']
-        # self.chk_auto_save.setChecked(auto_save_on)
         self.set_checkboxes()
         self.set_btn_icons()
 
@@ -85,6 +78,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.btn_generate_password.clicked.connect(self.generate_password)
         self.btn_setup.clicked.connect(self.setup_wizard)
         self.btn_groups.clicked.connect(self.manage_groups)
+        self.btn_update_password.clicked.connect(self.updatePassword)
         
         self.btn_google.clicked.connect(self.google_sign_in)        
 
@@ -92,6 +86,14 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.settings_signal.connect(lambda: self.updateWindow(False))
         self.settings_update_signal.connect(lambda: self.updateWindow(False))
         self.login_signal.connect(self.login)
+        
+    @pyqtSlot()
+    def updatePassword(self):
+        if not self.logged_in:
+            self.login_clicked()
+        else:
+            update_password_window = ResetPassword(False)
+            update_password_window.exec_()
         
     def set_checkboxes(self):
         settings = Model().read('settings')[0]
@@ -145,15 +147,24 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             self.updateWindow()
     
     # 2fa slot
-    def twofa(self):
+    def twofa(self, checked):
         toggle = self.chkbox_2fa
-        if(toggle.isChecked()):
-            Model().update("settings", {'twofa': '1'}, 'settings')
-            twofa_window = TwofaDialog()
-            twofa_window.exec_()
+        if not self.logged_in:
+            toggle.blockSignals(True)
+            self.login_clicked()
+            toggle.setChecked(not checked)
+            state = Qt.Unchecked if checked else Qt.Checked
+            toggle.setCheckState(state)
+            toggle.blockSignals(False)
         else:
-            Model().update('user', {'twofa_key': None}, 'user')
-            Model().update("settings", {'twofa': '0'}, 'settings')
+            if checked:
+                Model().update("settings", {'twofa': '1'}, 'settings')
+                twofa_window = TwofaDialog()
+                twofa_window.exec_()
+            else:
+                Model().update('user', {'twofa_key': None}, 'user')
+                Model().update("settings", {'twofa': '0'}, 'settings')
+
     
     def updateWindow(self, send_signal: bool = True):
         self.read_styles()
@@ -187,7 +198,8 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             self.lbl_google_integration,
             self.lbl_generate_password,
             self.lbl_setup,
-            self.lbl_groups
+            self.lbl_groups,
+            self.lbl_update_password
         ]
         
         set_font(font_widgets)
@@ -212,6 +224,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             [self.btn_save_local, ":/button_icons/drive_upload"],
             [self.btn_setup, ":/button_icons/setup"],
             [self.btn_groups, ":/button_icons/group"],
+            [self.btn_update_password, ":/button_icons/reset"]
         ]
         
         for button, icon in button_icon_list:

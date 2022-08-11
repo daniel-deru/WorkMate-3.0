@@ -24,6 +24,7 @@ class VaultType(Ui_VaultTypeDialog, QDialog):
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setupUi(self)
+        self.setMinimumWidth(100)
         self.readStyles()
 
         self.btn_general.clicked.connect(self.open_general_vault)
@@ -44,9 +45,15 @@ class VaultType(Ui_VaultTypeDialog, QDialog):
             self.btn_crypto,
             self.btn_general
         ]
-        self.btn_app.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['app']};border: 1px solid {VAULT_BUTTON_COLORS['app']};")
-        self.btn_crypto.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['crypto']};border: 1px solid {VAULT_BUTTON_COLORS['crypto']};")
-        self.btn_general.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['general']};border: 1px solid {VAULT_BUTTON_COLORS['general']};")        
+        self.btn_app.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['app']};border: 1px solid {VAULT_BUTTON_COLORS['app']};text-align: left;")
+        self.btn_crypto.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['crypto']};border: 1px solid {VAULT_BUTTON_COLORS['crypto']};text-align: left;")
+        self.btn_general.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['general']};border: 1px solid {VAULT_BUTTON_COLORS['general']};text-align: left;")
+        
+        self.btn_app.setIcon(QIcon(":/button_icons/app"))        
+        self.btn_crypto.setIcon(QIcon(":/button_icons/crypto"))        
+        self.btn_general.setIcon(QIcon(":/button_icons/general"))      
+        
+          
         
         widget: QWidget
         

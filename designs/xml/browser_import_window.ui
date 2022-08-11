@@ -61,6 +61,16 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="btn_groups">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>Manage Groups</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="btn_import">
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>

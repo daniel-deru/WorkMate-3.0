@@ -25,8 +25,9 @@ from windows.generate_password import GeneratePasswordWindow
 
 
 class ResetPassword(Ui_ResetPassword, QDialog):
-    def __init__(self):
+    def __init__(self, reset: bool = True):
         super(ResetPassword, self).__init__()
+        self.reset = reset
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setupUi(self)
@@ -74,5 +75,8 @@ class ResetPassword(Ui_ResetPassword, QDialog):
             PlaySound("sound.wav", winsound.SND_FILENAME)
         else:
             Model().update('user', {'password': pass1}, 'user')
+            if self.reset:
+                Model().update('user', {'twofa_key': None}, 'user')
+                Model().update('settings', {'twofa': '0'}, 'settings')
             self.close()
             

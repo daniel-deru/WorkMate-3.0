@@ -353,6 +353,6 @@ class Model:
         data = cursor.fetchone()
         return data[0] == "ok"
          
-model = Model()
+# model = Model()
 # model.update("settings", {"font": "Roboto Condensed"}, "settings")
-model.update("settings", {"font": "Proxon"}, "settings")
+# model.update("settings", {"font": "Proxon"}, "settings")

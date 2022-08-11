@@ -5,7 +5,7 @@ import math
 
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QResizeEvent
 
 
 
@@ -42,7 +42,7 @@ class Vault_tab(Ui_Vault_tab, QWidget):
     def __init__(self):
         super(Vault_tab, self).__init__()
         self.setupUi(self)
-        
+        self.COLUMNS = 3
         self.filter_widget = FilterGroupWidget()
         self.filter_widget.group_changed_signal.connect(lambda group: self.create_secrets(group))
         self.hbox_filter_widget.addWidget(self.filter_widget)
@@ -113,11 +113,11 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         current_group = list(filter(lambda todo: todo[4] == str(group), secrets))
         
         # Create the nested list for the grid layout
-        COLUMNS = 3
+
         grid_items = []
-        for i in range(math.ceil(len(current_group)/COLUMNS)):
+        for i in range(math.ceil(len(current_group)/self.COLUMNS)):
             subarr = []
-            for j in range(COLUMNS):
+            for j in range(self.COLUMNS):
                 if current_group:
                     subarr.append(current_group.pop(0))
             grid_items.append(subarr)
@@ -216,3 +216,15 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         elif secret[1] == "general":
             general_vault = GeneralVaultView(secret)
             general_vault.exec_()
+            
+    # def resizeEvent(self, event: QResizeEvent) -> None:
+    #     four_items = 4 * 280
+    #     width = self.gbox_secrets.geometry().width()
+    #     if width >= four_items:
+    #         self.COLUMNS = 4
+    #         self.update()
+    #     if width < four_items:
+    #         self.COLUMNS = 3
+    #         self.update()
+        
+    #     return super().resizeEvent(event)

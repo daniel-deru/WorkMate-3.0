@@ -5,7 +5,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-development_mode = True
+development_mode = False
 
 PATH = os.getenv("APPDATA") + "\\TrustLock" if not development_mode else os.getcwd()
 
