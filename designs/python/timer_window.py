@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'timer_window.ui'
+# Form implementation generated from reading ui file './xml/timer_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -28,6 +28,7 @@ class Ui_Timer(object):
         self.lcd_timer.setObjectName("lcd_timer")
         self.verticalLayout.addWidget(self.lcd_timer)
         self.hslide_timer = QtWidgets.QSlider(Timer)
+        self.hslide_timer.setMinimum(1)
         self.hslide_timer.setMaximum(60)
         self.hslide_timer.setTracking(True)
         self.hslide_timer.setOrientation(QtCore.Qt.Horizontal)
@@ -52,13 +53,3 @@ class Ui_Timer(object):
         Timer.setWindowTitle(_translate("Timer", "Timer"))
         self.lbl_vault_timer.setText(_translate("Timer", "Set the vault timer in minutes"))
         self.btn_save.setText(_translate("Timer", "Save"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Timer = QtWidgets.QDialog()
-    ui = Ui_Timer()
-    ui.setupUi(Timer)
-    Timer.show()
-    sys.exit(app.exec_())

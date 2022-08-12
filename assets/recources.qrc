@@ -71,7 +71,7 @@
         <file alias="file_white">file_white.svg</file>
         <file alias="file_black">file_black.svg</file>
         <file alias="qrcode">qrcode.svg</file>
-
+        <file alias="timer">timer_icon.svg</file>
     </qresource>
 
 

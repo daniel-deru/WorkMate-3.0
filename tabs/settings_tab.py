@@ -36,16 +36,13 @@ from windows.browser_import_window import BrowserImportWindow
 from windows.generate_password import GeneratePasswordWindow
 from windows.setup_window import InitialSetup
 from windows.groups_window import GroupsWindow
+from windows.timer_window import Timer
 
 from threads.google_thread import upload_google, download_google
 from threads.onedrive_thread import upload_onedrive, download_onedrive
 from threads.browser_import_thread import browser_import
 
 from integrations.calendar.c import Google
-
-
-
-
 
 class SettingsTab(Ui_Settings_tab, QWidget):
     settings_signal = pyqtSignal(str)
@@ -80,12 +77,21 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.btn_groups.clicked.connect(self.manage_groups)
         self.btn_update_password.clicked.connect(self.updatePassword)
         
-        self.btn_google.clicked.connect(self.google_sign_in)        
+        self.btn_google.clicked.connect(self.google_sign_in)
+        self.btn_timer.clicked.connect(self.timer)
 
         # connect the custom signals to the slots
         self.settings_signal.connect(lambda: self.updateWindow(False))
         self.settings_update_signal.connect(lambda: self.updateWindow(False))
         self.login_signal.connect(self.login)
+        
+    @pyqtSlot()
+    def timer(self):
+        if not self.logged_in:
+            self.login_clicked()
+        else:
+            timer_window = Timer()
+            timer_window.exec_()
         
     @pyqtSlot()
     def updatePassword(self):
@@ -199,7 +205,8 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             self.lbl_generate_password,
             self.lbl_setup,
             self.lbl_groups,
-            self.lbl_update_password
+            self.lbl_update_password,
+            self.lbl_timer,
         ]
         
         set_font(font_widgets)
@@ -224,7 +231,8 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             [self.btn_save_local, ":/button_icons/drive_upload"],
             [self.btn_setup, ":/button_icons/setup"],
             [self.btn_groups, ":/button_icons/group"],
-            [self.btn_update_password, ":/button_icons/reset"]
+            [self.btn_update_password, ":/button_icons/reset"],
+            [self.btn_timer, ":/button_icons/timer"]
         ]
         
         for button, icon in button_icon_list:

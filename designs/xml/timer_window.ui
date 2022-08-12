@@ -39,6 +39,9 @@
    </item>
    <item>
     <widget class="QSlider" name="hslide_timer">
+     <property name="minimum">
+      <number>1</number>
+     </property>
      <property name="maximum">
       <number>60</number>
      </property>

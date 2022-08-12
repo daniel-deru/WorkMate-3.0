@@ -8,7 +8,7 @@ from PyQt5.QtCore import Qt
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from designs.python.timer_window import Ui_Timer
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 from database.model import Model
 
 from widgetStyles.PushButton import PushButton
@@ -46,6 +46,12 @@ class Timer(Ui_Timer, QDialog):
         self.lcd_timer.setSegmentStyle(QLCDNumber.Flat)
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
+        
+        widget_list = [
+            self.btn_save,
+            self.lbl_vault_timer
+        ]
+        set_font(widget_list)
     
     def save(self):
         Model().update("settings", {"timer": self.hslide_timer.value()}, 'settings')
