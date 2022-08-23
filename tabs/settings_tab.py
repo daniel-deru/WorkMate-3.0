@@ -184,7 +184,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             ComboBox, 
             ScrollBar, 
             IconButton,
-            ToolButton
+            ToolButton # this is for the google button
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)

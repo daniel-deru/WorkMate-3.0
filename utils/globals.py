@@ -1,6 +1,4 @@
-from lib2to3.pgen2.token import NUMBER
 import os
-from sre_parse import SPECIAL_CHARS
 import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))

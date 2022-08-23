@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>949</width>
-    <height>508</height>
+    <height>598</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,7 +32,7 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="text">
@@ -88,7 +88,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -146,7 +146,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -207,7 +207,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -265,7 +265,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -329,7 +329,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="text">
@@ -387,7 +387,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="text">
@@ -448,7 +448,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="text">
@@ -500,7 +500,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="text">
@@ -559,7 +559,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="text">
@@ -617,7 +617,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="text">
@@ -669,7 +669,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="text">
@@ -727,7 +727,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="text">
@@ -791,7 +791,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="text">
@@ -843,7 +843,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="text">
@@ -901,7 +901,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="text">
@@ -953,7 +953,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>40</height>
+           <height>50</height>
           </size>
          </property>
          <property name="text">

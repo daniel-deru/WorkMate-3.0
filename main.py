@@ -167,7 +167,7 @@ class Main(Ui_main_container, QWidget):
     def add_tabs(self):
         app = QApplication.primaryScreen()
         screen = app.size()
-        self.setMinimumSize(int(screen.width() * 0.5), int(screen.height() * 0.5))
+        self.setMinimumSize(int(screen.width() * 0.7), int(screen.height() * 0.7))
         self.tab_widget.setTabPosition(QTabWidget.West)
         self.vault_tab = Vault_tab().create_tab()
         self.vault_tab.login_signal.connect(self.check_login)

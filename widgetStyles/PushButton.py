@@ -142,7 +142,7 @@ IconButton = f"""
     background-color: {light_blue};
     border: none;
     border-radius: 5px;
-    width: 70px;
+    width: 125px;
     min-height: 25px;
 }}
 

@@ -1,7 +1,8 @@
 import sys
 import os
+import math
 
-from PyQt5.QtWidgets import QDialog, QWidget
+from PyQt5.QtWidgets import QDialog, QWidget, QLabel, QLineEdit, QHBoxLayout
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QIcon
 
@@ -9,7 +10,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from designs.python.forgot_question import Ui_AnswerQuestionDialog
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
+from utils.message import Message
 
 from widgetStyles.Dialog import Dialog
 from widgetStyles.PushButton import PushButton
@@ -28,6 +30,8 @@ class PasswordQuestion(Ui_AnswerQuestionDialog, QDialog):
         self.read_styles()
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        
+        self.create_fields() # create the line edit fields for the words
 
         user: list[tuple] = Model().read('user')[0]
         self.correct_phrase: str = user[4]
@@ -50,20 +54,51 @@ class PasswordQuestion(Ui_AnswerQuestionDialog, QDialog):
         
         font_widgets = [
             self.lbl_question,
-            self.lnedt_answer,
             self.btn_enter
         ]
-        
-        widget: QWidget
-        for widget in font_widgets:
-            widget.setFont(QFont(font_name))
+            
+        set_font(font_widgets)
 
     def verify_answer(self):
-        answer: str = self.lnedt_answer.text()
-        if(answer == self.correct_phrase):
-            self.close()
-            reset_password_window = ResetPassword()
-            reset_password_window.exec_()
-        else:
-            text: str = self.lbl_question.text()
-            self.lbl_question.setText(text + "\nIncorrect Answer")
+        empty_field: bool = False
+        invalid_word: bool = False
+        
+        passphrase: list[str] = self.correct_phrase.split(" ")
+        
+        for i in range(self.gbox_words.count()):
+            container: QHBoxLayout = self.gbox_words.itemAt(i).layout()
+            field: QLineEdit = container.itemAt(1).widget()
+            if not field.text():
+                empty_field = True
+                break
+            elif field.text() != passphrase[i]:
+                invalid_word = True
+        
+        if(empty_field):
+           return Message("Please fill in all the fields.", "Not Enough Words").exec_()
+        elif(invalid_word):
+           return Message("The passphrase is not correct.", "Incorrect Passphrase").exec_()
+
+        self.close()
+        reset_password_window = ResetPassword()
+        reset_password_window.exec_()
+        
+    def create_fields(self):
+        num_words: int = 12 # number of words in the passphrase
+        cols: int = 3 # number of columns in the grid
+        count: int = 1 # number to display next to the line edit
+        
+        # Loop to add the fields in the grid
+        for i in range(math.ceil(num_words/cols)):
+            for j in range(cols):
+                container: QHBoxLayout = QHBoxLayout()
+                number: str = f"{count}. "
+                count += 1
+                label: QLabel = QLabel(number)
+                line_edit: QLineEdit = QLineEdit()
+                
+                set_font([line_edit, label]) # set the font for the widgets being added to the grid
+                
+                container.addWidget(label)
+                container.addWidget(line_edit)
+                self.gbox_words.addLayout(container, j, i)
