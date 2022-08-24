@@ -53,7 +53,7 @@ PushButtonLink = """
             background: transparent;
             color: black;
             border: none;
-            width: 100px;
+            width: 200px;
             }
 
         QPushButton:hover {

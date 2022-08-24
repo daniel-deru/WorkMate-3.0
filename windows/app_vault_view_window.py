@@ -9,7 +9,7 @@ from pynput.mouse import Listener, Button
 import pyotp
 from threading import Thread
 
-from PyQt5.QtWidgets import QDialog, QCheckBox, QToolButton, QWidget
+from PyQt5.QtWidgets import QDialog, QCheckBox, QToolButton, QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem, QWidgetItem
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtCore import QSize, QThread, Qt, pyqtSlot
 
@@ -17,7 +17,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from designs.python.app_vault_view_window import Ui_AppVaultViewDialog
 
-from utils.helpers import StyleSheet, json_to_dict
+from utils.helpers import StyleSheet, json_to_dict, clear_window
 
 from widgetStyles.Label import Label
 from widgetStyles.PushButton import PushButton
@@ -50,15 +50,14 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         
         self.data = json_to_dict(self.app[3])
         
-        totp_counter(self, self.data['twofa_code'])
+        self.set_twofa_code()
         
         # The widgets in the vertical layout are [0,2,4,6,8] because of the hlines
-        self.chk_username.stateChanged.connect(lambda: self.show_hidden("username", self.chk_username, 1))
-        self.chk_email.stateChanged.connect(lambda: self.show_hidden("email", self.chk_email, 3))
-        self.chk_password.stateChanged.connect(lambda: self.show_hidden("password", self.chk_password, 5))
-        self.chk_password_exp.stateChanged.connect(lambda: self.show_hidden("password_exp", self.chk_password_exp, 7))
-        # self.chk_twofa.stateChanged.connect(lambda: self.show_hidden("twofa_code", self.chk_twofa, 9))
-        self.chk_path.stateChanged.connect(lambda: self.show_hidden("path", self.chk_path, 11))
+        self.chk_username.stateChanged.connect(lambda checked: self.show_hidden("username", checked, 0))
+        self.chk_email.stateChanged.connect(lambda checked: self.show_hidden("email", checked, 1))
+        self.chk_password.stateChanged.connect(lambda checked: self.show_hidden("password", checked, 2))
+        self.chk_password_exp.stateChanged.connect(lambda checked: self.show_hidden("password_exp", checked, 3))
+        self.chk_path.stateChanged.connect(lambda checked: self.show_hidden("path", checked, 4))
         
         self.tbtn_username.clicked.connect(lambda: self.copy_data("username"))
         self.tbtn_email.clicked.connect(lambda: self.copy_data("email"))
@@ -69,8 +68,38 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         
         self.btn_open.clicked.connect(self.open_app)
         
-        self.chk_twofa.stateChanged.connect(self.get_twofa_code)
-        self.tbtn_twofa.clicked.connect(self.copy_twofa_code)
+
+    def set_twofa_code(self):
+        print("the function is running")
+        if(self.data['twofa_code']):
+            totp_counter(self, self.data['twofa_code'])
+            self.chk_twofa.stateChanged.connect(self.get_twofa_code)
+            self.tbtn_twofa.clicked.connect(self.copy_twofa_code)
+        else:
+            # get the twofa container
+            index: int = self.vbox_data.count() - 1
+            container_layout: QVBoxLayout = self.vbox_data.itemAt(index).layout()
+            
+            # Remove the line
+            line = container_layout.itemAt(1).widget()
+            line.setParent(None)
+            
+            # Get the container with the data
+            data_container: QHBoxLayout = container_layout.itemAt(0).layout()
+
+            # Get the widgets
+            label = data_container.itemAt(0).widget()
+            label2 = data_container.itemAt(1).widget()
+            countdown = data_container.itemAt(3).widget()
+            toolbutton = data_container.itemAt(4).widget()
+            checkbox = data_container.itemAt(5).widget()
+            
+            # Remove the widgets
+            label.setParent(None)
+            label2.setParent(None)
+            countdown.setParent(None)
+            toolbutton.setParent(None)
+            checkbox.setParent(None)
         
     @pyqtSlot()
     def copy_twofa_code(self):
@@ -127,14 +156,17 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         
     def hideText(self):
         dots = u"\u2022"*10
+        for i in range(self.vbox_data.count()):
+            vertical_layout = self.vbox_data.itemAt(i).layout()
+            data_label = vertical_layout.itemAt(0).layout().itemAt(1).widget()
+            data_label.setText(dots)
         
-        for i in range(1, self.layout().count() - 2, 2):
-            self.layout().itemAt(i).layout().itemAt(1).widget().setText(dots)
+    def show_hidden(self, field_name: str, checked: int, label_index: int):
+        vertical_container = self.vbox_data.layout().itemAt(label_index).layout()
+        label = vertical_container.itemAt(0).layout().itemAt(1).widget()
         
-    def show_hidden(self, field_name: str, checkbox: QCheckBox, label_index: int):
-        label = self.layout().itemAt(label_index).layout().itemAt(1).widget()
         dots = u"\u2022"*10
-        if checkbox.isChecked():
+        if checked:
             label.setText(self.data[field_name])
         else:
             label.setText(dots)
@@ -144,6 +176,9 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         
     def set_icons(self):
         dark_mode_on = Model().read('settings')[0][1]
+        icon_color = "white" if int(dark_mode_on) else "black"
+        icon = QIcon(f":/input/copy_{icon_color}")  
+         
         buttons = [
             self.tbtn_email,
             self.tbtn_password,
@@ -152,12 +187,7 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
             self.tbtn_twofa,
             self.tbtn_username
         ]
-        if int(dark_mode_on):
-            # Set the white copy icon
-            icon = QIcon(":/input/copy_white")
-        else:
-            # Set the black copy icon
-            icon = QIcon(":/input/copy_black")        
+    
         for button in buttons:
             button.setIcon(icon)
             button.setIconSize(QSize(25, 25))

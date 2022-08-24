@@ -5,7 +5,7 @@ import json
 import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen, QTabWidget
-from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent, QFontDatabase, QShowEvent
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent, QFontDatabase
 from PyQt5.QtCore import QTimer, Qt, pyqtSlot
 
 from designs.python.main_widget import Ui_main_container

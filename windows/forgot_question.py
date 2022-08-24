@@ -1,6 +1,7 @@
 import sys
 import os
 import math
+import webbrowser
 
 from PyQt5.QtWidgets import QDialog, QWidget, QLabel, QLineEdit, QHBoxLayout
 from PyQt5.QtCore import Qt
@@ -14,7 +15,7 @@ from utils.helpers import StyleSheet, set_font
 from utils.message import Message
 
 from widgetStyles.Dialog import Dialog
-from widgetStyles.PushButton import PushButton
+from widgetStyles.PushButton import PushButton, PushButtonLink
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Label import Label
 
@@ -35,7 +36,9 @@ class PasswordQuestion(Ui_AnswerQuestionDialog, QDialog):
 
         user: list[tuple] = Model().read('user')[0]
         self.correct_phrase: str = user[4]
-
+        
+        self.btn_help.setStyleSheet(PushButtonLink)
+        self.btn_help.clicked.connect(lambda: webbrowser.open_new_tab("https://lutiekhosting.com/"))
 
         self.btn_enter.clicked.connect(self.verify_answer)
 
@@ -71,9 +74,9 @@ class PasswordQuestion(Ui_AnswerQuestionDialog, QDialog):
             if not field.text():
                 empty_field = True
                 break
-            elif field.text() != passphrase[i]:
+            elif field.text().strip() != passphrase[i]:
                 invalid_word = True
-        
+
         if(empty_field):
            return Message("Please fill in all the fields.", "Not Enough Words").exec_()
         elif(invalid_word):
@@ -92,13 +95,24 @@ class PasswordQuestion(Ui_AnswerQuestionDialog, QDialog):
         for i in range(math.ceil(num_words/cols)):
             for j in range(cols):
                 container: QHBoxLayout = QHBoxLayout()
-                number: str = f"{count}. "
+                number: str = f"{str(count).zfill(2)}. "
                 count += 1
                 label: QLabel = QLabel(number)
                 line_edit: QLineEdit = QLineEdit()
+                line_edit.textChanged.connect(self.fill_fields)
                 
                 set_font([line_edit, label]) # set the font for the widgets being added to the grid
                 
                 container.addWidget(label)
                 container.addWidget(line_edit)
-                self.gbox_words.addLayout(container, j, i)
+                self.gbox_words.addLayout(container, i, j)
+    
+    def fill_fields(self, text: str):
+        words_list: list[str] = text.split(" ")
+        if(len(words_list) != 12):
+            return
+        
+        for i in range(self.gbox_words.count()):
+            container: QHBoxLayout = self.gbox_words.itemAt(i).layout()
+            field: QLineEdit = container.itemAt(1).widget()
+            field.setText(words_list[i])
