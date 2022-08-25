@@ -39,6 +39,9 @@
    </item>
    <item>
     <widget class="QSlider" name="hslide_timer">
+     <property name="cursor">
+      <cursorShape>OpenHandCursor</cursorShape>
+     </property>
      <property name="minimum">
       <number>1</number>
      </property>
@@ -69,6 +72,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="btn_save">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
         <string>Save</string>
        </property>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1088</width>
-    <height>400</height>
+    <height>498</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -188,43 +188,35 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_6">
-       <item>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
         <widget class="QLabel" name="lbl_name">
          <property name="text">
           <string>Name*</string>
          </property>
         </widget>
        </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <widget class="QLineEdit" name="lnedt_name"/>
-         </item>
-        </layout>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lnedt_name"/>
        </item>
-       <item>
+       <item row="1" column="0">
         <widget class="QLabel" name="lbl_email">
          <property name="text">
           <string>Email*</string>
          </property>
         </widget>
        </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <widget class="QLineEdit" name="lnedt_email"/>
-         </item>
-        </layout>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lnedt_email"/>
        </item>
-       <item>
+       <item row="2" column="0">
         <widget class="QLabel" name="lbl_password">
          <property name="text">
           <string>Password*</string>
          </property>
         </widget>
        </item>
-       <item>
+       <item row="2" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QLineEdit" name="lnedt_password">
@@ -245,14 +237,14 @@
          </item>
         </layout>
        </item>
-       <item>
+       <item row="3" column="0">
         <widget class="QLabel" name="lbl_password2">
          <property name="text">
           <string>Confirm Password*</string>
          </property>
         </widget>
        </item>
-       <item>
+       <item row="3" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
           <widget class="QLineEdit" name="lnedt_password2">
@@ -273,23 +265,29 @@
          </item>
         </layout>
        </item>
-       <item>
+       <item row="4" column="0">
         <widget class="QLabel" name="lbl_password_exp">
          <property name="text">
           <string>Password Expiration</string>
          </property>
         </widget>
        </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_9">
-         <item>
-          <widget class="QDateEdit" name="dte_password_exp">
-           <property name="calendarPopup">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <item row="4" column="1">
+        <widget class="QDateEdit" name="dte_password_exp">
+         <property name="calendarPopup">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="lbl_product_code">
+         <property name="text">
+          <string>Product Code</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="lne_product_code"/>
        </item>
       </layout>
      </item>
