@@ -34,7 +34,7 @@ class GeneratePasswordWindow(Ui_GeneratePasswordWindow, QDialog):
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.read_styles()
-        self.password_length: int = 12
+        self.password_length: int = 30
         self.lbl_display_length.setText(str(self.password_length))
         
         self.characters = {
@@ -47,6 +47,7 @@ class GeneratePasswordWindow(Ui_GeneratePasswordWindow, QDialog):
             'brackets': [True, CHAR_GROUPS.BRACKETS]
         }
         
+        self.slide_length.setValue(self.password_length)
         self.slide_length.valueChanged.connect(self.set_length)
         
         self.chk_uppercase.stateChanged.connect(lambda checked: self.set_char_list(checked, 'uppercase'))

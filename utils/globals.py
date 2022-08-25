@@ -1,9 +1,11 @@
 import os
 import sys
+from tkinter import END
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 development_mode = True
+server_development_mode = True
 
 PATH = os.getenv("APPDATA") + "\\TrustLock" if not development_mode else os.getcwd()
 
@@ -12,6 +14,8 @@ DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 DB_PATH = PATH + "\\database\\" if not development_mode else f"{os.getcwd()}/database/"
 DB_NAME = "test.db" if development_mode else "trustlock.db"
 KEY_FILE_NAME = "test.pkl" if development_mode else "trustlock.pkl"
+ENDPOINT = "/api/trustlock/verify"
+REQUEST_URL = "http://localhost:8000" + ENDPOINT if server_development_mode else "https://api.smartmetatec.com" + ENDPOINT
 
 ASSET_PATH = "./assets/"
 

@@ -2,6 +2,7 @@ import sys
 import os
 import pyperclip
 import math
+import requests
 from datetime import date, timedelta
 
 from PyQt5.QtWidgets import QDialog, QLineEdit, QGridLayout, QWidget, QGraphicsBlurEffect, QWidget
@@ -13,7 +14,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from designs.python.register_window import Ui_Register
 from utils.message import Message
 from database.model import Model
-from utils.helpers import StyleSheet, random_words
 from windows.passphase_copy_window import PassphraseCopyWindow
 
 import assets.resources
@@ -29,7 +29,9 @@ from widgetStyles.QCheckBox import BlackEyeCheckBox
 from widgetStyles.Calendar import Calendar
 from widgetStyles.DateEdit import DateEditForm
 
+from utils.helpers import StyleSheet, random_words, set_font
 from utils.message import Message
+from utils.globals import REQUEST_URL
 
 from windows.generate_password import GeneratePasswordWindow
 
@@ -72,6 +74,13 @@ class Register(Ui_Register, QDialog):
         
         self.set_blur()
         
+    def verify_code(self, code):
+        if(not code):
+            return False
+        request = requests.post(REQUEST_URL, {"product_key": code})
+        if(request.status_code != 200):
+            return False
+        return True
     
     @pyqtSlot()
     def generate_password(self):
@@ -79,12 +88,19 @@ class Register(Ui_Register, QDialog):
         
 
     def register_clicked(self):
+        valid_submition = False
+        
+        product_code = self.lne_product_code.text()
         name = self.lnedt_name.text()
         email = self.lnedt_email.text()
         password1 = self.lnedt_password.text()
         password2 = self.lnedt_password2.text()
         password_exp = self.dte_password_exp.date().toPyDate()
 
+        verified: bool = self.verify_code(product_code)
+        if(not verified):
+            Message("The product code is invalid", "Invalid Product Code").exec_()
+            
         fields = [
             name,
             email,
@@ -92,7 +108,6 @@ class Register(Ui_Register, QDialog):
             password2,
         ]
 
-        valid_submition = False
         
         for field in fields:
             if not field:
@@ -103,7 +118,7 @@ class Register(Ui_Register, QDialog):
 
         if password1 != password2:
             Message("Please make sure your passwords match. Check to see if your caps lock is on", "Passwords don't match").exec_()
-        elif valid_submition:
+        elif valid_submition and verified:
             data = {
                 "name": name,
                 "email": email,
@@ -146,8 +161,6 @@ class Register(Ui_Register, QDialog):
         self.lbl_developed_by.setStyleSheet("color: white;")
         self.lbl_passphrase_desc.setStyleSheet("font-weight: 700;")
         
-        font_name = Model().read("settings")[0][2]
-        
         self.tbtn_generate_password.setIcon(QIcon(":/button_icons/password"))
         self.tbtn_generate_password.setIconSize(QSize(30, 20))
         
@@ -160,14 +173,11 @@ class Register(Ui_Register, QDialog):
             self.lnedt_name,            self.lnedt_password,
             self.lnedt_password2,       self.btn_copy,
             self.btn_register,          self.lbl_generate_password,
-            self.lbl_password_exp,      self.dte_password_exp
+            self.lbl_password_exp,      self.dte_password_exp,
+            self.lbl_product_code,      self.lne_product_code
         ]
         
-        widget: QWidget
-        
-        for widget in font_widgets:
-            widget.setFont(QFont(font_name))
-        
+        set_font(font_widgets)
         
 
     def closeEvent(self, event):
@@ -214,5 +224,3 @@ class Register(Ui_Register, QDialog):
     
     def copy_word(self, some):
         pass
-
-

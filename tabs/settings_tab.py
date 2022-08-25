@@ -140,14 +140,12 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         return self
 
     # color is at index 3 and nightmode is at index 1
-    def set_night_mode(self):
-        toggle = self.chkbox_nightmode
-
-        if toggle.isChecked():
+    def set_night_mode(self, checked):
+        if checked:
             Model().update("settings", {'nightmode': "1"}, 'settings')
             self.settings_signal.emit("settings changed")
             self.updateWindow()
-        elif not toggle.isChecked():
+        else:
             Model().update("settings", {'nightmode': "0"}, 'settings')
             self.settings_signal.emit("settings changed")
             self.updateWindow()

@@ -80,6 +80,8 @@ class FilterGroupWidget(QWidget):
             self.cmb_groups.addItem(group[1], group[0])
             
     def get_current_group(self):
+        # Update the UI when the update function is called in the tabs
+        self.read_styles()
         groups = Model().read("groups")
         for group in groups:
             if group[1] != self.cmb_groups.currentText():

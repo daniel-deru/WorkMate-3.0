@@ -72,9 +72,7 @@ class Apps_tab(Ui_apps_tab, QWidget):
         styles = [
             CheckBoxSquare, 
             PushButton, 
-            Line, 
-            Label, 
-            # ComboBox,
+            Line,
             NewScrollBar
         ]
         stylesheet = StyleSheet(styles).create()
