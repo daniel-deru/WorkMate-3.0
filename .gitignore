@@ -1,6 +1,7 @@
 dist
 build
 env
+.qt_for_python
 *.spec
 database/*.db
 database/*.pkl

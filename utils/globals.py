@@ -1,11 +1,10 @@
 import os
 import sys
-from tkinter import END
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-development_mode = True
-server_development_mode = True
+development_mode: bool = False
+server_development_mode: bool = True
+validate_code: bool = False
 
 PATH = os.getenv("APPDATA") + "\\TrustLock" if not development_mode else os.getcwd()
 
@@ -17,10 +16,10 @@ KEY_FILE_NAME = "test.pkl" if development_mode else "trustlock.pkl"
 ENDPOINT = "/api/trustlock/verify"
 REQUEST_URL = "http://localhost:8000" + ENDPOINT if server_development_mode else "https://api.smartmetatec.com" + ENDPOINT
 
-ASSET_PATH = "./assets/"
+ASSET_PATH: str = "./assets/"
 
 
-PICKLE_ENC = 'SqQ1-jsiAXjOmRWQqLWoMyzTWgW_Kxy8rc5aGKLG91k='
+PICKLE_ENC: str = 'SqQ1-jsiAXjOmRWQqLWoMyzTWgW_Kxy8rc5aGKLG91k='
 # ASSET_PATH = PATH + "\\assets"
 
 class CHAR_GROUPS:

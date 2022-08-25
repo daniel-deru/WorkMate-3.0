@@ -1,5 +1,7 @@
+from pyexpat import version_info
 import sys
 import os
+from xmlrpc.client import Server
 import pyperclip
 import math
 import requests
@@ -12,7 +14,6 @@ from PyQt5.QtCore import Qt, pyqtSignal, QSize, pyqtSlot
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from designs.python.register_window import Ui_Register
-from utils.message import Message
 from database.model import Model
 from windows.passphase_copy_window import PassphraseCopyWindow
 
@@ -31,9 +32,11 @@ from widgetStyles.DateEdit import DateEditForm
 
 from utils.helpers import StyleSheet, random_words, set_font
 from utils.message import Message
-from utils.globals import REQUEST_URL
+from utils.globals import REQUEST_URL, validate_code
 
 from windows.generate_password import GeneratePasswordWindow
+
+from utils.enums import ServerConnectStatus
 
 class Register(Ui_Register, QDialog):
     register_close_signal = pyqtSignal(str)
@@ -76,11 +79,14 @@ class Register(Ui_Register, QDialog):
         
     def verify_code(self, code):
         if(not code):
-            return False
-        request = requests.post(REQUEST_URL, {"product_key": code})
-        if(request.status_code != 200):
-            return False
-        return True
+            return ServerConnectStatus.denied
+        try:
+            request = requests.post(REQUEST_URL, {"product_key": code})
+            if(request.status_code != 200):
+                return ServerConnectStatus.denied
+            return ServerConnectStatus.verified
+        except Exception:
+            return ServerConnectStatus.failed
     
     @pyqtSlot()
     def generate_password(self):
@@ -96,47 +102,51 @@ class Register(Ui_Register, QDialog):
         password1 = self.lnedt_password.text()
         password2 = self.lnedt_password2.text()
         password_exp = self.dte_password_exp.date().toPyDate()
-
-        verified: bool = self.verify_code(product_code)
-        if(not verified):
-            Message("The product code is invalid", "Invalid Product Code").exec_()
-            
+        
+        verified: ServerConnectStatus = self.verify_code(product_code) if validate_code else ServerConnectStatus.verified
+        
         fields = [
             name,
             email,
             password1,
             password2,
         ]
-
         
+        if password1 != password2:
+            Message("Please make sure your passwords match. Check to see if your caps lock is on", "Passwords don't match").exec_()
+        elif(verified == ServerConnectStatus.denied):
+            Message("The product code is invalid", "Invalid Product Code").exec_()
+        elif(verified == ServerConnectStatus.failed):
+            Message("Cannot contact server to validate code", "Network Error").exec_()
+
         for field in fields:
             if not field:
                 Message(f"Make sure you fill in all the fields.", "Please fill in all the fields").exec_()
                 break
             else:
                 valid_submition = True
+                
+        if not (valid_submition and verified == ServerConnectStatus.verified): return
 
-        if password1 != password2:
-            Message("Please make sure your passwords match. Check to see if your caps lock is on", "Passwords don't match").exec_()
-        elif valid_submition and verified:
-            data = {
-                "name": name,
-                "email": email,
-                "password": password1,
-                "passphrase": self.words,
-                "password_exp": password_exp
-            }
-            
-            message = PassphraseCopyWindow()
-            message.yes_signal.connect(self.set_passphrase_safe)
-            message.exec_()
-            
-            if not self.passphrase_safe: return
 
-            Model().save("user", data)
-            self.registered = True
-            self.register_close_signal.emit("user created")
-            self.close()
+        data = {
+            "name": name,
+            "email": email,
+            "password": password1,
+            "passphrase": self.words,
+            "password_exp": password_exp
+        }
+        
+        message = PassphraseCopyWindow()
+        message.yes_signal.connect(self.set_passphrase_safe)
+        message.exec_()
+        
+        if not self.passphrase_safe: return
+
+        Model().save("user", data)
+        self.registered = True
+        self.register_close_signal.emit("user created")
+        self.close()
     
     def set_passphrase_safe(self, response):
         self.passphrase_safe = response
