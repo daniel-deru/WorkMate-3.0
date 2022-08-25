@@ -2,9 +2,9 @@ import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from PyQt5.QtWidgets import QPushButton, QWidget, QLineEdit, QToolButton, QHBoxLayout, QWidget
+from PyQt5.QtWidgets import QWidget, QLineEdit, QToolButton, QHBoxLayout, QWidget, QSizePolicy
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QFont, QIcon, QCursor
+from PyQt5.QtGui import QFont, QIcon
 
 
 
@@ -35,6 +35,9 @@ class PasswordWidget(QWidget):
 
         self.text_field: QLineEdit = QLineEdit()
         self.text_field.setEchoMode(QLineEdit.Password)
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.text_field.setSizePolicy(sizePolicy)
+        
         if(self.input):
             self.text_field.setText(self.input)
         self.show_button: QToolButton = QToolButton()

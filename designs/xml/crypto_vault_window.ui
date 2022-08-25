@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>614</width>
-    <height>563</height>
+    <height>319</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -71,44 +71,6 @@
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="cmb_num_words">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <item>
-        <property name="text">
-         <string>12 Words</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>15 Words</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>18 Words</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>21 Words</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>24 Words</string>
-        </property>
-       </item>
       </widget>
      </item>
      <item row="2" column="0">
@@ -248,46 +210,59 @@
      <item row="5" column="1">
       <widget class="QComboBox" name="cmb_group"/>
      </item>
+     <item row="1" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QComboBox" name="cmb_num_words">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <item>
+          <property name="text">
+           <string>12 Words</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>15 Words</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>18 Words</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>21 Words</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>24 Words</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="tbtn_num_words">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QFrame" name="frame">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>1</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: #9ecd16;</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::HLine</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gbox_words" rowminimumheight="0">
-     <property name="topMargin">
-      <number>5</number>
-     </property>
-    </layout>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">

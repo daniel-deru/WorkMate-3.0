@@ -36,6 +36,8 @@ from threads.google_thread import upload_google
 from threads.onedrive_thread import upload_onedrive
 from threads.update_password_thread import update_password
 
+QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+
 class Main(Ui_main_container, QWidget):
     def __init__(self):
         super(Main, self).__init__()
@@ -296,7 +298,6 @@ class Main(Ui_main_container, QWidget):
 
 
 if __name__ == "__main__":
-    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     app = QApplication(sys.argv)
     app.setStyle(ProxyStyle())
     splash_image = QPixmap(":/other/splash.png")

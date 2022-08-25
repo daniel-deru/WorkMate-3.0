@@ -1,25 +1,14 @@
 import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 import re
-import math
 from typing import Pattern
 from datetime import date, datetime, timedelta
 from json import dumps, loads
-from PyQt5.QtWidgets import (
-    QDialog, 
-    QHBoxLayout, 
-    QLabel, 
-    QLineEdit, 
-    QWidget, 
-    QGridLayout, 
-    QComboBox, 
-    QWidget,
-    QListView
-)
+from PyQt5.QtWidgets import ( QDialog, QLineEdit, QComboBox, QListView)
 from PyQt5.QtCore import pyqtSignal, Qt, QSize, pyqtSlot
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtGui import QIcon
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from designs.python.crypto_vault_window import Ui_CryptoVault
 
@@ -33,14 +22,13 @@ from widgetStyles.QCheckBox import WhiteEyeCheckBox, BlackEyeCheckBox
 from widgetStyles.Calendar import Calendar
 from widgetStyles.DateEdit import DateEditForm
 
-from utils.helpers import StyleSheet, clear_window, set_font
+from utils.helpers import StyleSheet, set_font
 from utils.message import Message
-
-from widgets.password_show_hide import PasswordWidget
 
 from database.model import Model
 
 from windows.generate_password import GeneratePasswordWindow
+from windows.crypto_words import CryptoWords
 
 class CryptoVaultWindow(Ui_CryptoVault, QDialog):
     crypto_update_signal = pyqtSignal(bool)
@@ -49,6 +37,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setupUi(self)
+        
         self.cmb_group.setView(QListView())
         self.cmb_group.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
         self.cmb_num_words.setView(QListView())
@@ -57,10 +46,11 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         
         self.set_groups()
         self.dte_password_exp.setDate(date.today() + timedelta(days=90))
-        self.displayWordBoxes()
+        # self.displayWordBoxes()
         self.read_styles()
         if self.secret: self.fill_data()
-
+        
+        self.words = None
 
         self.cmb_num_words.currentIndexChanged.connect(self.update)
         self.chk_password1.stateChanged.connect(lambda: self.show_hide_password(self.chk_password1, self.lne_password1))
@@ -69,6 +59,24 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         
         self.btn_save.clicked.connect(self.save)
         self.tbtn_generate_password.clicked.connect(self.generate_password)
+        self.tbtn_num_words.clicked.connect(self.open_word_window)
+        
+    def open_word_window(self):
+        words: int = self.get_num_words()
+        existing_words = None
+        
+        if(self.secret):
+            data: object = self.get_data()
+            existing_words: list[str] = data['words'].split(" ")
+            if words > len(existing_words):
+                existing_words += ["" for _ in range(words - len(existing_words))]
+
+        crypto_words_window = CryptoWords(words, existing_words)
+        crypto_words_window.filled_words.connect(self.set_words)
+        crypto_words_window.exec_()
+        
+    def set_words(self, words):
+        self.words = words
         
     def set_groups(self):
         groups = Model().read("groups")
@@ -90,14 +98,16 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
             checkbox, Dialog, ComboBox,
             Label, PushButton, LineEdit,
             ToolButton, Calendar, DateEditForm,
-            IconToolButton("#tbtn_generate_password")
+            IconToolButton("#tbtn_generate_password"),
+            IconToolButton("#tbtn_num_words")
         ]
-        self.setMinimumHeight(850)
         stylesheet = StyleSheet(widget_list).create()
         
         # Set the generate password icon
         self.tbtn_generate_password.setIcon(QIcon(":/button_icons/password"))
         self.tbtn_generate_password.setIconSize(QSize(30, 20))
+        
+        self.tbtn_num_words.setIcon(QIcon(":/button_icons/general"))
 
         self.setStyleSheet(stylesheet)
         
@@ -110,54 +120,13 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
             self.lne_password1, self.lbl_generate_password,
             self.lbl_password_exp, self.dte_password_exp,
             self.lbl_group, self.cmb_group, self.cmb_group.view(),
-            self.cmb_num_words.view()
+            self.cmb_num_words.view(), self.tbtn_num_words
         ]
         
-        set_font(font_widgets)
-
-    def displayWordBoxes(self):        
-        words: int = self.get_num_words()
-
-        COLUMNS: int = 3
-        count: int = 1
-        existing_words: None = None
-        if(self.secret):
-            data: object = self.get_data()
-            existing_words: list[str] = data['words'].split(" ")
-            if words > len(existing_words):
-                existing_words += ["" for _ in range(words - len(existing_words))]
-                
-        font_name = Model().read("settings")[0][2]
-
-        for i in range(math.ceil(words/COLUMNS)):
-            for j in range(COLUMNS):
-                hbox: QHBoxLayout = QHBoxLayout()
-                hbox.setContentsMargins(0, 0, 0, 0)
-                widget: QWidget = QWidget()
-
-                self.number: QLabel = QLabel(f"{str(count).zfill(2)}. ")
-                self.number.setFont(QFont(font_name))
-                self.number.setFixedWidth(30)
-                
-                param = existing_words[count-1] if existing_words else None
-                password: PasswordWidget = PasswordWidget(param)
-
-                hbox.addWidget(self.number)
-                hbox.addWidget(password)
-
-                widget.setLayout(hbox)
-
-                if(count > words):
-                    break
-                self.gbox_words.addWidget(widget, i, j)
-                
-                count += 1
-        
+        set_font(font_widgets)       
         
 
     def update(self) -> None:
-        clear_window(self.gbox_words)
-        self.displayWordBoxes()
         self.read_styles()
 
     def save(self) -> None:
@@ -166,9 +135,6 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
 
         description:str = self.lne_description.text()
         username: str = self.lne_name.text()
-        num_words: int = self.get_num_words()
-        words_layout: QGridLayout = self.gbox_words
-        words: list[str] = []
         
         public_key: str = self.lne_public.text()
         private_key: str = self.lne_private.text()
@@ -180,20 +146,6 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
 
         valid_submit: bool = True
 
-        for i in range(words_layout.count()):
-            widget_container: QWidget = words_layout.itemAt(i).widget()
-            password_widget: QWidget = widget_container.layout().itemAt(1).widget()
-
-            
-            line_edit: QLineEdit = password_widget.layout().itemAt(0).widget()
-
-            if(type(line_edit) == QLineEdit):
-                word: str = line_edit.text()
-                # if(not word):
-                    # Message(f"There is no word in block {i + 1}.", "Missing Word").exec_()
-                    # valid_submit = False
-                if word: words.append(word)
-
         if(password1 and (password1 != password2)):
             Message("The passwords don't match", "Passwords Incorrect").exec_()
             valid_submit = False
@@ -204,36 +156,26 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         if(not username): 
             valid_submit = False
             Message("Please Provide a username", "No Username").exec_()
-        
 
-        num_words = self.get_num_words()
-        if(len(words) < num_words):
-            Message(f"You have {len(words)} words but, you need {num_words} words. Please check for missing fields", "Missing Words").exec_()
-            valid_submit = False
-
-        
         if(valid_submit):
             data = {
                 'name': username,
-                'num_words': num_words,
-                'words': " ".join(words),
+                'num_words': self.get_num_words(),
+                'words': " ".join(self.words),
                 'description': description,
                 'password': password1,
                 "password_exp": password_exp_string
             }
             
-            
             if private_key:
                 data['private_key'] = private_key
             if public_key:
                 data['public_key'] = public_key
-                
-            data: str = dumps(data)
             
             payload = {
                 'type': 'crypto', 
                 'name': description, 
-                'data':data,
+                'data': dumps(data),
                 'group_id': group
             }
 

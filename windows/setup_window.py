@@ -21,6 +21,7 @@ from database.model import Model
 
 from windows.twofa_window import TwofaDialog
 from windows.browser_import_window import BrowserImportWindow
+from windows.timer_window import Timer
 
 from threads.browser_import_thread import browser_import
 
@@ -52,7 +53,8 @@ class InitialSetup(Ui_InitialSetup, QDialog):
         # This list will be passed to the StackedWidget Item to show the message and run the respective function
         self.setup_list = [
             ["Do you want to use Two Factor Authentication?", "https://smartmetatec.com", self.setup_twofa],
-            ["Do you want to turn on dark mode?", None, self.setup_night_mode],
+            ["Do you want to turn on dark mode?", "https://smartmetatec.com", self.setup_night_mode],
+            ["Set the login timer duration.", "https://smartmetatec.com", self.setup_login_timer],
             ["Did you export your passwords from your browser and do you want to import your passwords?", "https://smartmetatec.com", self.setup_import_browser],
             ["Do you want to sync with Google Calendar?", "https://smartmetatec.com", self.setup_calendar],
             ["Do you want to automatically save database to Google Drive?", "https://smartmetatec.com", self.setup_google_drive],
@@ -104,6 +106,10 @@ class InitialSetup(Ui_InitialSetup, QDialog):
         current_index = self.stack_widget.currentIndex()
         self.stack_widget.setCurrentIndex(current_index - 1)
         self.lbl_setup.setText(f"Step {self.stack_widget.currentIndex()+1} of {len(self.setup_list)}")
+        
+    def setup_login_timer(self):
+        timer_window = Timer()
+        timer_window.exec_()
             
               
     def setup_twofa(self):
