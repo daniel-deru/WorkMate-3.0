@@ -2,6 +2,7 @@ from datetime import date, datetime
 import sys
 import time
 import json
+import os
 import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen, QTabWidget
@@ -234,8 +235,8 @@ class Main(Ui_main_container, QWidget):
             
     # This function gets called at a set interval by timer.timeout
     def start_timer(self):
-        self.count -= 1
-        if self.count == 0:
+        # Compare current time to the time the login should expire
+        if self.count <= time.time():
             self.update_status(False)
             self.timer.stop()
     
@@ -244,7 +245,8 @@ class Main(Ui_main_container, QWidget):
         if logged_in:
             self.logged_in = True
             self.send_signals("logged in")
-            self.count = int(Model().read("settings")[0][5]) * 60
+            # Set the counter to the current time plus the duration of the timer
+            self.count = time.time() + int(Model().read("settings")[0][5]) * 60
             self.timer.timeout.connect(self.start_timer)
             self.timer.start(1000)
         # If auth is on and the user is not logged in
@@ -294,6 +296,7 @@ class Main(Ui_main_container, QWidget):
 
 
 if __name__ == "__main__":
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     app = QApplication(sys.argv)
     app.setStyle(ProxyStyle())
     splash_image = QPixmap(":/other/splash.png")

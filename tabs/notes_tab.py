@@ -52,7 +52,7 @@ class Notes_tab(Ui_notes_tab, QWidget):
         styles = [
             CheckBoxSquare, 
             PushButton, 
-            ComboBox, 
+            # ComboBox, 
             Label,
             NewScrollBar
         ]

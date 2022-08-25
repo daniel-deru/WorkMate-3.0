@@ -74,7 +74,7 @@ class Apps_tab(Ui_apps_tab, QWidget):
             PushButton, 
             Line, 
             Label, 
-            ComboBox,
+            # ComboBox,
             NewScrollBar
         ]
         stylesheet = StyleSheet(styles).create()

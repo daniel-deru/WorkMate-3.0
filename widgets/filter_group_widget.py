@@ -1,5 +1,6 @@
 import sys
 import os
+from tkinter.ttk import Style
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 import time
@@ -12,7 +13,9 @@ from database.model import Model
 
 from windows.groups_window import GroupsWindow
 
-from utils.helpers import set_font
+from utils.helpers import set_font, StyleSheet
+
+from widgetStyles.ComboBox import ComboBoxFilter
 
 class FilterGroupWidget(QWidget):
     group_changed_signal = pyqtSignal(int)
@@ -21,10 +24,16 @@ class FilterGroupWidget(QWidget):
         super(FilterGroupWidget, self).__init__()
         self.setupUi()
         self.show_groups()
+        self.read_styles()
         
         self.btn_manage_groups.clicked.connect(self.manage_groups)
         
         self.cmb_groups.currentIndexChanged.connect(self.filter)
+        
+    def read_styles(self):
+        style_list = [ComboBoxFilter]
+        stylesheet = StyleSheet(style_list).create()
+        self.setStyleSheet(stylesheet)
         
     @pyqtSlot()
     def filter(self):

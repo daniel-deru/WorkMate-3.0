@@ -55,7 +55,7 @@ class Todo_tab(Ui_todo_tab, QWidget):
             Label,
             DateEdit,
             Calendar,
-            ComboBox,
+            # ComboBox,
             NewScrollBar
         ]
         stylesheet = StyleSheet(styles).create()

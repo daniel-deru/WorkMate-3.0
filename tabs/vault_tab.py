@@ -8,7 +8,6 @@ from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QFont, QResizeEvent
 
 
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from designs.python.vault_tab import Ui_Vault_tab
@@ -69,7 +68,7 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             PushButton,
             CheckBoxSquare,
             Label,
-            ComboBox,
+            # ComboBox,
             NewScrollBar
         ]
         stylesheet = StyleSheet(styles).create()

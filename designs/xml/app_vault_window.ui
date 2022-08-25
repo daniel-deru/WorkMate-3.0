@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>482</width>
-    <height>590</height>
+    <width>734</width>
+    <height>321</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -49,69 +49,45 @@
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="topMargin">
-      <number>10</number>
-     </property>
-     <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
       <widget class="QLabel" name="lbl_name">
        <property name="text">
         <string>Name</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="QLineEdit" name="lne_name"/>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_4">
-     <property name="topMargin">
-      <number>10</number>
-     </property>
-     <item>
+     <item row="1" column="0">
       <widget class="QLabel" name="lbl_username">
        <property name="text">
         <string>Username</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QLineEdit" name="lne_username"/>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_5">
-     <property name="topMargin">
-      <number>10</number>
-     </property>
-     <item>
+     <item row="2" column="0">
       <widget class="QLabel" name="lbl_email">
        <property name="text">
         <string>Email</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lne_username"/>
+     </item>
+     <item row="2" column="1">
       <widget class="QLineEdit" name="lne_email"/>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_6">
-     <property name="topMargin">
-      <number>10</number>
-     </property>
-     <item>
+     <item row="3" column="0">
       <widget class="QLabel" name="lbl_password">
        <property name="text">
         <string>Password</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="3" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
         <widget class="QLineEdit" name="lne_password"/>
@@ -131,21 +107,14 @@
        </item>
       </layout>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_8">
-     <property name="topMargin">
-      <number>10</number>
-     </property>
-     <item>
+     <item row="4" column="0">
       <widget class="QLabel" name="lbl_password2">
        <property name="text">
         <string>Confirm Password</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="4" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
         <widget class="QLineEdit" name="lne_password2">
@@ -172,42 +141,28 @@
        </item>
       </layout>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_9">
-     <property name="topMargin">
-      <number>10</number>
-     </property>
-     <item>
+     <item row="5" column="0">
       <widget class="QLabel" name="lbl_password_expiration">
        <property name="text">
         <string>Password Expiration</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="5" column="1">
       <widget class="QDateEdit" name="dte_password_exp">
        <property name="calendarPopup">
         <bool>true</bool>
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <property name="topMargin">
-      <number>10</number>
-     </property>
-     <item>
+     <item row="6" column="0">
       <widget class="QLabel" name="lbl_twofa_code">
        <property name="text">
         <string>Two Factor Authentication Code</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="6" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
         <widget class="QLineEdit" name="lne_twofa_code"/>
@@ -224,38 +179,24 @@
        </item>
       </layout>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_11">
-     <property name="topMargin">
-      <number>10</number>
-     </property>
-     <item>
+     <item row="7" column="0">
       <widget class="QLabel" name="lbl_group">
        <property name="text">
         <string>Group</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="7" column="1">
       <widget class="QComboBox" name="cmb_group"/>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_7">
-     <property name="topMargin">
-      <number>10</number>
-     </property>
-     <item>
+     <item row="8" column="0">
       <widget class="QLabel" name="lbl_path">
        <property name="text">
         <string>URL/Path</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="8" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QLineEdit" name="lne_path"/>
