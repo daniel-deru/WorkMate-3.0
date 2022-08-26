@@ -957,7 +957,7 @@ padding: 0px;</string>
           </size>
          </property>
          <property name="text">
-          <string>Manage Groups</string>
+          <string>Edit Groups</string>
          </property>
         </widget>
        </item>

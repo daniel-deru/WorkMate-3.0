@@ -24,10 +24,15 @@ from windows.twofa_verify_window import TwofaVerifyWindow
 
 class Login(Ui_Login, QDialog):
     login_status = pyqtSignal(str)
-    def __init__(self):
+    update_password_status = pyqtSignal(str)
+    def __init__(self, update_password=False):
         super(Login, self).__init__()
         
         self.login_state = "failure"
+        self.update_password = update_password
+        # Check if the window closed from login button or exit button
+        self.login_pressed = False
+        
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
@@ -77,34 +82,51 @@ class Login(Ui_Login, QDialog):
         user = Model().read("user")[0]
         db_password = user[3]
         password = self.lnedt_password.text()
-        if(password == db_password):
-            has_2fa = Model().read('settings')[0][7]
-            if(int(has_2fa)):
-                self.hide()
-                twofa_verify_window = TwofaVerifyWindow()
-                twofa_verify_window.opt_verify_signal.connect(self.verify_otp)
-                twofa_verify_window.exec_()
-                # Go to the two fa login window
-            else:
-                self.login_status.emit("success")
-                self.login_state = "success"
-                self.close()
-        else:
-            Message("The password is incorrect", "Wrong Password").exec_()
-            self.login_status.emit("failure")
-            self.login_state = "failure"
-    
+        has_2fa = Model().read('settings')[0][7]
+
+        signal = self.get_correct_signal()
+        
+        # if the is wrong
+        if(password != db_password):
+            return Message("The password is incorrect", "Wrong Password").exec_()
+            
+        # if twofa is not required
+        if(not int(has_2fa)):
+            signal.emit("success")
+            self.login_pressed = True
+            return self.close()
+        
+        self.hide()
+        twofa_verify_window = TwofaVerifyWindow()
+        twofa_verify_window.opt_verify_signal.connect(self.verify_otp)
+        twofa_verify_window.exec_()
+        
+
+
     def verify_otp(self, verified):
+        signal = self.get_correct_signal()
+            
         if(verified == LoginEvent.success):
-            self.login_status.emit("success")
-            self.login_state = "success"
+            signal.emit("success")
+            self.login_pressed = True
             self.close()
             
     def closeEvent(self, a0: QCloseEvent) -> None:
-        self.login_status.emit(self.login_state)
+        if not self.login_pressed:
+            signal = self.get_correct_signal()
+            signal.emit("failure")
+        
         return super().closeEvent(a0)
     
     def show_password(self, show):
         if show: self.lnedt_password.setEchoMode(QLineEdit.Normal)
         else: self.lnedt_password.setEchoMode(QLineEdit.Password)
+        
+    def get_correct_signal(self):
+        signal: pyqtSignal = self.login_status
+        
+        if(self.update_password):
+            signal = self.update_password_status
+            
+        return signal
             

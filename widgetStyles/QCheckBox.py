@@ -15,7 +15,7 @@ width = SIZE * RATIO
 height = SIZE * 1
 
 SQUARE_SIZE = 30
-SQUARE_RATIO = 3
+SQUARE_RATIO = 4
 
 square_width= SQUARE_SIZE * SQUARE_RATIO
 square_height = SQUARE_SIZE

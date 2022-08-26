@@ -58,7 +58,7 @@ class FilterGroupWidget(QWidget):
         self.cmb_groups.setView(QListView())
         self.cmb_groups.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
         
-        self.btn_manage_groups = QPushButton("Manage Groups")
+        self.btn_manage_groups = QPushButton("Edit Groups")
         self.btn_manage_groups.setCursor(QCursor(Qt.PointingHandCursor))
         
         hbox.addWidget(self.cmb_groups)

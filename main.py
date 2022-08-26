@@ -275,7 +275,6 @@ class Main(Ui_main_container, QWidget):
         return super().closeEvent(event)
         
 
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyle(ProxyStyle())

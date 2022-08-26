@@ -8,7 +8,6 @@ from PyQt5.QtWidgets import QWidget, QFileDialog, qApp, QPushButton
 from PyQt5.QtCore import pyqtSignal, Qt, QThread, QSize, pyqtSlot
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from designs.python.settings_tab import Ui_Settings_tab
@@ -36,6 +35,7 @@ from windows.generate_password import GeneratePasswordWindow
 from windows.setup_window import InitialSetup
 from windows.groups_window import GroupsWindow
 from windows.timer_window import Timer
+from windows.login_window import Login
 
 from threads.google_thread import upload_google, download_google
 from threads.onedrive_thread import upload_onedrive, download_onedrive
@@ -96,9 +96,16 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         
     @pyqtSlot()
     def updatePassword(self):
-        if not self.logged_in:
-            self.login_clicked()
-        else:
+        # Request login even if user is logged in
+        # Pass in a variable to determin which signals to send
+        login_window = Login(update_password=True)
+        login_window.update_password_status.connect(self.update_password)
+        login_window.exec_()
+
+    
+    @pyqtSlot(str)
+    def update_password(self, status: str):
+        if(status == "success"):
             update_password_window = ResetPassword(False)
             update_password_window.exec_()
         

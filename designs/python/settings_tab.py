@@ -488,4 +488,4 @@ class Ui_Settings_tab(object):
         self.lbl_generate_password.setText(_translate("Settings_tab", "Generate Password"))
         self.lbl_browser_web_import.setText(_translate("Settings_tab", "Import Passwords From Browser"))
         self.lbl_setup.setText(_translate("Settings_tab", "Setup Wizard"))
-        self.lbl_groups.setText(_translate("Settings_tab", "Manage Groups"))
+        self.lbl_groups.setText(_translate("Settings_tab", "Edit Groups"))
