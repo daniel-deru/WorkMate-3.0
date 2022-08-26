@@ -4,6 +4,7 @@ import sys
 import os
 import math
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+import webbrowser
 
 from PyQt5.QtWidgets import QDialog, QSlider, QLineEdit, QWidget
 from PyQt5.QtCore import Qt
@@ -16,7 +17,7 @@ from utils.helpers import char_in_string, StyleSheet
 from utils.message import Message
 
 from widgetStyles.Label import Label
-from widgetStyles.PushButton import PushButton
+from widgetStyles.PushButton import PushButton, PushButtonLink
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Dialog import Dialog
 from widgetStyles.QCheckBox import CheckBox, custom_eye
@@ -66,10 +67,14 @@ class GeneratePasswordWindow(Ui_GeneratePasswordWindow, QDialog):
         self.btn_copy.clicked.connect(lambda: pyperclip.copy(self.lne_password.text()))
         
         self.btn_generate.clicked.connect(self.generate_password)
+        self.btn_whats_this.clicked.connect(lambda: webbrowser.open_new_tab("https://smartmetatec.com"))
         
         self.lne_password.textChanged.connect(self.calc_entropy)
         
     def read_styles(self):
+        # Get the dark mode setting to check which color to use in the PassGenFrame at calltime
+        dark_mode = int(Model().read("settings")[0][1])
+        
         widget_list = [
             Dialog,
             PushButton,
@@ -79,11 +84,13 @@ class GeneratePasswordWindow(Ui_GeneratePasswordWindow, QDialog):
             CheckBox,
             HSlider,
             ProgressBar,
-            PassGenFrame("#frame_checkbox_container")
+            PassGenFrame("#frame_checkbox_container", dark_mode),
         ]
         
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
+        
+        self.btn_whats_this.setStyleSheet(StyleSheet([PushButtonLink]).create())
         
         font_name = Model().read("settings")[0][2]
         font = QFont(font_name)

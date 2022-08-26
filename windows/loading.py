@@ -7,14 +7,13 @@ from PyQt5.QtCore import QVariantAnimation, pyqtSlot, QVariant, QAbstractAnimati
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from designs.python.loading import Ui_LoadingDialog
-
 # https://stackoverflow.com/questions/55258872/how-to-animate-an-image-icon-widget
 
 
 class Loading(QDialog):
     def __init__(self, message="Loading... Please wait."):
         super(Loading, self).__init__()
+        self.setWindowTitle("Please Wait")
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setStyleSheet("background-color: black;")

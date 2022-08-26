@@ -144,17 +144,14 @@ class InitialSetup(Ui_InitialSetup, QDialog):
     def closeEvent(self, event: QCloseEvent) -> None:
         self.setup_finished.emit(True)
         auto_save = {
-            "auto_save": False,
             "google": False,
             "onedrive": False
         }
         
         if self.auto_save_google: auto_save['google'] = True      
         if self.auto_save_onedrive: auto_save['onedrive'] = True
-        
-        if auto_save['google'] or auto_save['onedrive']:
-            auto_save['auto_save'] = True
-            Model().update('settings', {'auto_save': json.dumps(auto_save)}, 'settings')
+
+        Model().update('settings', {'auto_save': json.dumps(auto_save)}, 'settings')
 
         return super().closeEvent(event)
     

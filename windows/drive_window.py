@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 
 from PyQt5.QtWidgets import QDialog, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt
@@ -34,6 +35,15 @@ class DriveWindow(Ui_DriveDialog, QDialog):
         self.chk_google.stateChanged.connect(self.check_google)
         
         self.data_saved = False
+        
+        self.set_checkboxes()
+    
+    def set_checkboxes(self):
+        json_settings = Model().read("settings")[0][8]
+        settings = json.loads(json_settings)
+        
+        self.chk_google.setChecked(settings['google'])
+        self.chk_onedrive.setChecked(settings['onedrive'])
         
     def check_google(self, state):
         token_file = f"{PATH}/integrations/google_token.json"

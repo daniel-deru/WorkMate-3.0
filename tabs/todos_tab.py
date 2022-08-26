@@ -24,7 +24,7 @@ from widgetStyles.Label import Label
 from widgetStyles.DateEdit import DateEdit
 from widgetStyles.Calendar import Calendar
 from widgetStyles.ComboBox import ComboBox
-from widgetStyles.ScrollBar import NewScrollBar
+from widgetStyles.ScrollBar import ScrollBar
 
 from windows.todo_window import TodoWindow
 
@@ -56,7 +56,7 @@ class Todo_tab(Ui_todo_tab, QWidget):
             DateEdit,
             Calendar,
             # ComboBox,
-            NewScrollBar
+            ScrollBar
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)

@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, datetime, date
 import os.path
 import tzlocal
 import io
@@ -46,7 +46,8 @@ class Google:
             with open(f'{PATH}/integrations/google_token.json', 'w') as token:
                 token.write(creds.to_json())
     
-    def save(date, message):
+    def save(date: date, message: str):
+        print("Inside the Google save method")
         """Shows basic usage of the Google Calendar API.
             Prints the start and name of the next 10 events on the user's calendar.
     """
@@ -71,10 +72,13 @@ class Google:
         
         try:
             service = build('calendar', 'v3', credentials=creds, static_discovery=False)
-            start_date = date + timedelta(hours=1)
-            end_date = start_date + timedelta(hours=4)
-            timezone = str(tzlocal.get_localzone())
+            # Get the current datetime to convert date object to datetime for google start and end date
+            current_time = datetime.now()
             
+            start_date: datetime = datetime(date.year, date.month, date.day, current_time.hour, current_time.minute, current_time.second)
+            end_date: datetime = start_date + timedelta(hours=1)
+            timezone = str(tzlocal.get_localzone())
+
             event = {
                 'summary': message,
                 'start': {

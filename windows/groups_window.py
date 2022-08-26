@@ -21,6 +21,8 @@ from utils.helpers import StyleSheet, set_font, clear_window
 from widgetStyles.Label import Label
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Dialog import Dialog
+from widgetStyles.ScrollArea import ScrollAreaGroups
+from widgetStyles.ScrollBar import ScrollBarGroups
 
 class GroupsWindow(Ui_GroupsWindow, QDialog):
     def __init__(self) -> None:
@@ -29,14 +31,34 @@ class GroupsWindow(Ui_GroupsWindow, QDialog):
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
-        
+
         self.set_groups()
         self.read_styles()
         
+
         self.btn_add_group.clicked.connect(self.add_group)
+    
+    def set_window_height(self, num_groups):
+        min_height = 110
+        max_height = 600        
+        height = min_height + (50 * num_groups)
+        print(num_groups)
         
+        if(num_groups < 10):
+            print("There are less than 9 groups setting to custom height")
+            self.setFixedHeight(height)
+        else:
+            print("There are more than 9 groups setting fixed height")
+            self.setFixedHeight(max_height)
+            
     def read_styles(self):
-        widget_list = [Dialog, PushButton, Label]
+        widget_list = [
+            ScrollAreaGroups, 
+            Dialog, 
+            PushButton, 
+            Label,
+            ScrollBarGroups
+        ]
         
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
@@ -57,6 +79,8 @@ class GroupsWindow(Ui_GroupsWindow, QDialog):
         clear_window(self.vbox_group_container)
         # Get the initial group data   
         group_data = self.get_group_data()
+        self.set_window_height(len(list(group_data.keys())))
+        
         # Create the GroupWidget and add it to the UI
         for group_id in group_data:
             
@@ -121,6 +145,5 @@ class GroupsWindow(Ui_GroupsWindow, QDialog):
             if group_id not in group_dict:
                 break
             if name in group_dict[group_id]['data']:
-                group_dict[group_id]['data'][name] += 1       
-        
+                group_dict[group_id]['data'][name] += 1
         

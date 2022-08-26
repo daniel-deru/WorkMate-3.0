@@ -16,3 +16,18 @@ ScrollArrea = f"""
     }}
 
 """
+
+ScrollAreaGroups = f"""
+    QScrollArea {{
+        background-color: {mode};
+        margin: 0px;
+        padding: 0px;
+        border-radius: 5px;
+    }}
+    
+    QScrollArea QWidget {{
+        background-color: {mode};
+        border-radius: 5px;
+    }}
+
+"""

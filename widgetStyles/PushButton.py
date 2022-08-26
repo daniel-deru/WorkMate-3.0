@@ -48,18 +48,18 @@ QPushButton:pressed {{
 }}
 """
 
-PushButtonLink = """
-        QPushButton {
+PushButtonLink = f"""
+        QPushButton {{
             background: transparent;
-            color: black;
+            color: {default};
             border: none;
-            width: 200px;
-            }
+            width: 75px;
+            }}
 
-        QPushButton:hover {
+        QPushButton:hover {{
             color: blue;
             text-decoration: underline;
-        }
+        }}
 """
 
 ButtonBackIcon = f"""

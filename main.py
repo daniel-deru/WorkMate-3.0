@@ -2,7 +2,6 @@ from datetime import date, datetime
 import sys
 import time
 import json
-import os
 import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen, QTabWidget
@@ -262,32 +261,12 @@ class Main(Ui_main_container, QWidget):
         self.settings_tab.login_signal.emit(signal)
         self.vault_tab.login_signal.emit(signal)
 
-    def windowSize(self):
-        app = QApplication.instance()
-
-        screen = app.primaryScreen()
-
-        available_size = screen.availableGeometry()
-        width = available_size.width()
-        height = available_size.height()
-
-        # self.setFixedSize(int(width/2), int(height/1.5))
-        # self.setMaximumSize(int(width/2), int(height/3.8))
-
-    def moveEvent(self, event):
-        old_screen = QApplication.screenAt(event.oldPos())
-        new_screen = QApplication.screenAt(event.pos())
-
-        if not old_screen == new_screen:
-            # self.windowSize() 
-            pass
         
     def closeEvent(self, event: QCloseEvent) -> None:
         
         auto_save_json = Model().read("settings")[0][8]
         auto_save_dict = json.loads(auto_save_json)
-        
-        if not auto_save_dict['auto_save']: return
+
         
         if auto_save_dict['google']:
             upload_google(self, False)

@@ -1,4 +1,3 @@
-from msilib.schema import Icon
 import sys
 import os
 import threading
@@ -63,7 +62,9 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.chkbox_nightmode.stateChanged.connect(self.set_night_mode)
         self.chkbox_2fa.stateChanged.connect(self.twofa)
         self.chkbox_calendar.stateChanged.connect(self.calendar_toggle)
-        self.chk_auto_save.stateChanged.connect(self.auto_save)
+        # self.chk_auto_save.stateChanged.connect(self.auto_save)
+        
+        self.btn_auto_save.clicked.connect(self.auto_save)
         
         self.btn_login.clicked.connect(self.login_clicked)
         self.btn_forgot_password.clicked.connect(self.forgot_password_clicked)
@@ -106,10 +107,10 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         # Set the default value of the settings
         self.chkbox_nightmode.setChecked(int(settings[1]))
         self.chkbox_calendar.setChecked(int(settings[6]))
-        self.chkbox_2fa.setChecked(int(settings[7]))
         
-        auto_save_on = json.loads(settings[8])['auto_save']
-        self.chk_auto_save.setChecked(auto_save_on)
+        self.chkbox_2fa.blockSignals(True)
+        self.chkbox_2fa.setChecked(int(settings[7]))
+        self.chkbox_2fa.blockSignals(False)
         
     def manage_groups(self):
         GroupsWindow().exec_()
@@ -230,7 +231,8 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             [self.btn_setup, ":/button_icons/setup"],
             [self.btn_groups, ":/button_icons/group"],
             [self.btn_update_password, ":/button_icons/reset"],
-            [self.btn_timer, ":/button_icons/timer"]
+            [self.btn_timer, ":/button_icons/timer"],
+            [self.btn_auto_save, ":/button_icons/auto_save"]
         ]
         
         for button, icon in button_icon_list:
@@ -316,13 +318,10 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             message.exec_()
             
     def auto_save(self):
-        if self.chk_auto_save.isChecked():
-            drive_window = DriveWindow()
-            drive_window.drive_dict.connect(self.save_drives)
-            drive_window.exec_()
-        else:   
-            auto_save = { "auto_save": False, "google": False, "onedrive": False }
-            Model().update("settings", {"auto_save": json.dumps(auto_save)}, "settings")
+        # if self.chk_auto_save.isChecked():
+        drive_window = DriveWindow()
+        drive_window.drive_dict.connect(self.save_drives)
+        drive_window.exec_()
             
     def update_db(self, name: str):
         if name == None:
@@ -342,9 +341,8 @@ class SettingsTab(Ui_Settings_tab, QWidget):
     
     # Slot to handle the drive_dict signal from the DriveWindow  
     def save_drives(self, drives: object or None) -> None:
+        print(f"Thise is the data passed to save_drives slot in settings_tab: {drives}")
         if not drives:
-            self.chk_auto_save.setChecked(False)
-            self.chk_auto_save.setCheckState(Qt.Unchecked)
             return
         drives["auto_save"] = True
         

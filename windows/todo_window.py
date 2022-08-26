@@ -1,12 +1,13 @@
 import os
 import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from datetime import date, datetime, timedelta
+from threading import Thread
 
 from PyQt5.QtWidgets import QDialog, QWidget, QListView
 from PyQt5.QtGui import QFont, QCursor, QIcon
 from PyQt5.QtCore import QDate, Qt, pyqtSignal
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from designs.python.todo_edit_window import Ui_todo_edit
 
@@ -19,6 +20,8 @@ from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Dialog import Dialog
 from widgetStyles.Widget import Widget
 from widgetStyles.TextEdit import TextEdit
+
+from integrations.calendar.c import Google
 
 
 from database.model import Model
@@ -41,6 +44,7 @@ class TodoWindow(Ui_todo_edit, QDialog):
         if self.todo: self.set_data()
 
         self.btn_save.clicked.connect(self.save_clicked)
+        self.integrate_google_calendar = Model().read("settings")[0][6]
         
     def set_groups(self):
         groups = Model().read("groups")
@@ -101,11 +105,12 @@ class TodoWindow(Ui_todo_edit, QDialog):
             
 
     def save_clicked(self):
+        
+
         name: str = self.lnedt_name.text()
         description: str = self.txe_description.toPlainText()
         deadline: date = self.dtedt_date.date().toPyDate()
         group = self.cmb_group.currentData()
-        
         deadline_text: str = datetime.strftime(deadline, "%Y-%m-%d")
         
         status_text = self.cmbx_status.currentText()
@@ -119,6 +124,9 @@ class TodoWindow(Ui_todo_edit, QDialog):
             'description': description,
             'group_id': group
         }
+        
+        if(self.integrate_google_calendar):
+            Thread(target=calendar_thread, daemon=True, args=(deadline, name,)).start()
 
         if self.todo:
             Model().update('todos', data, self.todo[0])
@@ -135,5 +143,8 @@ class TodoWindow(Ui_todo_edit, QDialog):
     def get_status(self):
         status: int = self.cmbx_status.currentIndex()
         self.todo['status'] = status
+        
+def calendar_thread(date, name):
+    Google.save(date, name)
             
         

@@ -50,8 +50,7 @@ class Tables:
             "password": "TEXT NOT NULL",
             "passphrase": "TEXT NOT NULL",
             "twofa_key": "TEXT",
-            "password_exp": "TEXT",
-            "last_active_check": "TEXT"
+            "password_exp": "TEXT"
         }
         
         vault = {

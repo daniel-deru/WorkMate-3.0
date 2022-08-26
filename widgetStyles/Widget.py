@@ -60,7 +60,8 @@ def CustomItemWidget(id):
             border-radius: 10px;
             background-color: transparent;
             border: 1px solid {light_blue};
-            padding: 10px;
+            padding: 0px;
+            height: 100px;
         }}
 
     """

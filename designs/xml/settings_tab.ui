@@ -280,7 +280,7 @@ padding: 0px;</string>
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="chk_auto_save">
+        <widget class="QPushButton" name="btn_auto_save">
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
          </property>

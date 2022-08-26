@@ -24,7 +24,7 @@ from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.Line import Line
 from widgetStyles.Label import Label
 from widgetStyles.ComboBox import ComboBox
-from widgetStyles.ScrollBar import NewScrollBar
+from widgetStyles.ScrollBar import ScrollBar
 
 from utils.helpers import StyleSheet
 from utils.helpers import clear_window
@@ -73,7 +73,7 @@ class Apps_tab(Ui_apps_tab, QWidget):
             CheckBoxSquare, 
             PushButton, 
             Line,
-            NewScrollBar
+            ScrollBar
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
