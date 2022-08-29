@@ -24,7 +24,7 @@
        <item>
         <widget class="QLabel" name="lbl_google_integration">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -32,7 +32,7 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="text">
@@ -80,7 +80,7 @@ padding: 0px;</string>
        <item>
         <widget class="QLabel" name="lbl_2fa">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -88,7 +88,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -138,7 +138,7 @@ padding: 0px;</string>
        <item>
         <widget class="QLabel" name="lbl_night_mode">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -146,7 +146,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -199,7 +199,7 @@ padding: 0px;</string>
        <item>
         <widget class="QLabel" name="lbl_calendar">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -207,7 +207,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -257,7 +257,7 @@ padding: 0px;</string>
        <item>
         <widget class="QLabel" name="lbl_auto_save">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -265,7 +265,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -321,7 +321,7 @@ padding: 0px;</string>
        <item>
         <widget class="QLabel" name="lbl_save_remote">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -329,7 +329,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="text">
@@ -379,7 +379,7 @@ padding: 0px;</string>
        <item>
         <widget class="QLabel" name="lbl_restore_remote">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -387,7 +387,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="text">
@@ -440,7 +440,7 @@ padding: 0px;</string>
        <item>
         <widget class="QLabel" name="lbl_save_local">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -448,7 +448,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="text">
@@ -492,7 +492,7 @@ padding: 0px;</string>
        <item>
         <widget class="QLabel" name="lbl_restore_local">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -500,7 +500,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="text">
@@ -559,7 +559,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="text">
@@ -617,7 +617,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="text">
@@ -669,7 +669,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="text">
@@ -727,7 +727,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="text">
@@ -791,7 +791,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="text">
@@ -843,7 +843,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="text">
@@ -901,7 +901,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="text">
@@ -953,7 +953,7 @@ padding: 0px;</string>
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>50</height>
+           <height>45</height>
           </size>
          </property>
          <property name="text">

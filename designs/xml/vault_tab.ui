@@ -64,7 +64,7 @@
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="text">
-        <string>Add Secret</string>
+        <string>Add</string>
        </property>
       </widget>
      </item>
@@ -83,7 +83,7 @@
    <item>
     <widget class="QLabel" name="lbl_secret">
      <property name="text">
-      <string>Secrets</string>
+      <string>Vault Items</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

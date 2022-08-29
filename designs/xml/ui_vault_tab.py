@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './xml/vault_tab.ui'
+# Form implementation generated from reading ui file 'c:\Users\SA Trust PC Big\Desktop\WorkMate 3.0 Pro\designs\xml\vault_tab.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #

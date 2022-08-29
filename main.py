@@ -167,9 +167,24 @@ class Main(Ui_main_container, QWidget):
         self.vault_tab.vault_signal.emit("update")
 
     def add_tabs(self):
+        # Get the primary screen
         app = QApplication.primaryScreen()
+        # Get the size of the screen
         screen = app.size()
-        self.setMinimumSize(int(screen.width() * 0.7), int(screen.height() * 0.7))
+        
+        # Get the screen dimensions
+        screen_width: int = screen.width()
+        screen_height: int = screen.height()
+        # Scale factor to determine minimum size
+        scale_factor = 0.7
+        
+        # If the screen is not full hd increase the scale factor
+        if(screen_width < 1920 and screen_height < 1080):
+            scale_factor = 0.8
+            
+        # Set the minimum size
+        self.setMinimumSize(int(screen_width * scale_factor), int(screen_height * scale_factor))
+        
         self.tab_widget.setTabPosition(QTabWidget.West)
         self.vault_tab = Vault_tab().create_tab()
         self.vault_tab.login_signal.connect(self.check_login)

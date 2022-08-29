@@ -96,33 +96,35 @@ CheckBoxSquare = f"""
     }}
 
 
-"""             
+"""
+settings_checkbox_width = 135  # width of the google button
+settings_checkbox_height_ratio = 4  
 SettingsCheckBox = f"""
     QCheckBox {{
         color: {default};
         font-size: 16px;
         border-radius: 5px;
         text-align: left center;
-        width: 135px;
-        height: 40px;
-        max-width: 135px;
-        max-height: 40px;
+        width: {settings_checkbox_width}px;
+        height: {settings_checkbox_width/settings_checkbox_height_ratio}px;
+        max-width: {settings_checkbox_width}px;
+        max-height: {settings_checkbox_width/settings_checkbox_height_ratio}px;
     }}
 
     QCheckBox::indicator:checked {{
         image: url(:/input/toggle_square_on);
-        width: 135px;
-        height: 40px;
-        max-width: 135px;
-        max-height: 40px;
+        width: {settings_checkbox_width}px;
+        height: {settings_checkbox_width/settings_checkbox_height_ratio}px;
+        max-width: {settings_checkbox_width}px;
+        max-height: {settings_checkbox_width/settings_checkbox_height_ratio}px;
     }}
 
     QCheckBox::indicator{{
         image: url(:/input/toggle_square_off);
-        width: 135px;
-        height: 40px;
-        max-width: 135px;
-        max-height: 40px;
+        width: {settings_checkbox_width}px;
+        height: {settings_checkbox_width/settings_checkbox_height_ratio}px;
+        max-width: {settings_checkbox_width}px;
+        max-height: {settings_checkbox_width/settings_checkbox_height_ratio}px;
         subcontrol-position: right center;
     }}
 """

@@ -60,6 +60,7 @@ ComboBoxFilter = f"""
         border-radius: 5px;
         font-size: 16px;
         min-height: 20px;
+        min-width: 150px;
     }}
 
     QComboBox::drop-down {{

@@ -309,7 +309,6 @@ class Model:
         self.cur.execute(get_query)
         settings_data = self.cur.fetchall()
         auto_save = {
-            "auto_save": False,
             "google": False,
             "onedrive": False
         }
@@ -317,10 +316,11 @@ class Model:
         if len(settings_data) < 1:
             query = f"""INSERT INTO [{settings}] VALUES (
                 '{enc('settings')}', 
-                '{enc('0')}', '{enc('Roboto Condensed')}', 
+                '{enc('0')}', 
+                '{enc('Roboto Condensed')}', 
                 '{enc('#000000')}', 
                 '{enc('0')}', 
-                '{enc('5')}', 
+                '{enc('30')}', 
                 '{enc('0')}', 
                 '{enc('0')}', 
                 '{enc(json.dumps(auto_save))}'
