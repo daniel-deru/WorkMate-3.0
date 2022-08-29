@@ -69,9 +69,11 @@ class ResetPassword(Ui_ResetPassword, QDialog):
     def compare_passwords(self):
         pass1 = self.lnedt_password1.text()
         pass2 = self.lnedit_confirm_password.text()
-
-        if(pass1 != pass2):
-            self.lbl_message.setText("The passwords don't match")
+        
+        if(not pass1 or not pass2):
+            self.lbl_message.setText("Please enter a password.")
+        elif(pass1 != pass2):
+            self.lbl_message.setText("The passwords don't match.")
             PlaySound("sound.wav", winsound.SND_FILENAME)
         else:
             Model().update('user', {'password': pass1}, 'user')

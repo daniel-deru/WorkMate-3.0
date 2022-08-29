@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-development_mode: bool = True
+development_mode: bool = False
 server_development_mode: bool = True
 validate_code: bool = False
 
