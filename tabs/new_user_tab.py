@@ -37,10 +37,10 @@ from utils.globals import REQUEST_URL, validate_code
 
 from windows.generate_password import GeneratePasswordWindow
 
-from utils.enums import ServerConnectStatus
+from utils.enums import ServerConnectStatus, RegisterStatus
 
 class NewUserTab(Ui_new_user, QDialog):
-    register_close_signal = pyqtSignal(str)
+    register_close_signal = pyqtSignal(RegisterStatus)
     def __init__(self):
         super(NewUserTab, self).__init__()
         self.setupUi(self)
@@ -48,11 +48,6 @@ class NewUserTab(Ui_new_user, QDialog):
         self.passphrase_safe = False
         self.dte_password_exp.setDate(date.today() + timedelta(days=90))
         
-        pixmap = QPixmap(":/other/SMT Logo.png")
-        app_logo_pixmap = QPixmap(":/other/app_logo")
-        app_logo_pixmap = app_logo_pixmap.scaledToWidth(200)
-        # self.lbl_company.setPixmap(pixmap)
-        # self.lbl_workmate_logo.setPixmap(app_logo_pixmap)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.lnedt_password.setEchoMode(QLineEdit.Password)
@@ -67,8 +62,6 @@ class NewUserTab(Ui_new_user, QDialog):
         
         self.chk_password.stateChanged.connect(lambda: self.show_hide_password(self.lnedt_password, self.chk_password))
         self.chk_password2.stateChanged.connect(lambda: self.show_hide_password(self.lnedt_password2, self.chk_password2))
-        
-        self.registered = False
         
         word_widget: QWidget = self.word_widget
         word_widget.setAttribute(Qt.WA_Hover, True)
@@ -138,9 +131,7 @@ class NewUserTab(Ui_new_user, QDialog):
         if not self.passphrase_safe: return
 
         Model().save("user", data)
-        self.registered = True
-        self.register_close_signal.emit("user created")
-        self.close()
+        self.register_close_signal.emit(RegisterStatus.user_created)
     
     def set_passphrase_safe(self, response):
         self.passphrase_safe = response

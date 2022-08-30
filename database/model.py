@@ -3,11 +3,9 @@ import os
 import sys
 import json
 
-from rsa import decrypt
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from utils.globals import DB_PATH, DB_NAME
+from utils.globals import DB_PATH, DB_NAME, KEY_FILE_NAME
 from utils.encryption import Encryption
 from database.tables import Tables
 
@@ -17,11 +15,54 @@ class Model:
     def __init__(self):
         self.db = sqlite3.connect(f"{DB_PATH}{DB_NAME}")
         self.cur = self.db.cursor()
+        self.encryptor = Encryption.key_encryptor()
         self.create_table_names()
         self.create_tables()
+        # self.create_key_table()
         self.fill_defaults()
+    
+    def create_key_table(self):
         
-
+        path = f"{DB_PATH}{KEY_FILE_NAME}"
+        encrypted_path = self.encryptor.encrypt(path.encode())
+        
+        table_query = f"""
+            CREATE TABLE IF NOT EXISTS loc (
+                id TEXT PRIMARY KEY ,
+                loc TEXT DEFAULT [{encrypted_path}]
+            )
+        """
+        
+        insert_query = f"""INSERT INTO loc (id, loc) VALUES (?, ?)"""
+        self.cur.execute(table_query)
+        
+        # data = self.read_key_location()
+        
+        # if(len(data) > 0):
+        #     return
+        
+        self.cur.execute(insert_query, ['loc', f'[{encrypted_path.decode()}]'])
+        
+    def update_key_location(self, new_location):
+        encrypted_new_location = self.encryptor.encrypt(new_location.encode())
+        
+        table_query = f"""
+            UPDATE loc SET loc = ? WHERE id = loc
+        """
+        
+        self.cur.execute(table_query, [encrypted_new_location])
+        self.db.close()
+    
+    def read_key_location(self):
+        table_query = """
+            SELECT loc from loc
+        """
+        
+        self.cur.execute(table_query)
+        data = self.cur.fetchall()
+        print(data)
+        return data
+        
     def create_tables(self):     
         
         self.create_table("groups", Tables.groups)
@@ -354,5 +395,6 @@ class Model:
         return data[0] == "ok"
          
 # model = Model()
+# model.read_key_location()
 # model.update("settings", {"font": "Roboto Condensed"}, "settings")
 # model.update("settings", {"font": "Proxon"}, "settings")

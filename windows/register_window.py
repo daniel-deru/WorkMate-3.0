@@ -12,6 +12,7 @@ from tabs.new_user_tab import NewUserTab
 from tabs.existing_user_tab import ExistingUserTab
 
 from utils.helpers import set_font, StyleSheet
+from utils.enums import RegisterStatus
 
 from widgetStyles.Dialog import Dialog
 from widgetStyles.Label import Label, LabelWhite
@@ -26,7 +27,7 @@ from widgetStyles.TabBar import RegisterTabBar
 
 
 class Register(Ui_Register, QDialog):
-    register_close_signal: pyqtSignal = pyqtSignal(str)
+    register_close_signal: pyqtSignal = pyqtSignal(RegisterStatus)
     def __init__(self) -> None:
         super(Register, self).__init__()
         self.setupUi(self)
@@ -49,10 +50,16 @@ class Register(Ui_Register, QDialog):
         
     def add_tabs(self):
         new_user_tab = NewUserTab().create_tab()
+        new_user_tab.register_close_signal.connect(self.register_handler)
         self.tab_widget_start.addTab(new_user_tab, "New User")
         
         existing_user_tab = ExistingUserTab().create_tab()
         self.tab_widget_start.addTab(existing_user_tab, "Existing User")
+        
+    def register_handler(self, signal):
+        if(signal == RegisterStatus.user_created):
+            self.registered = True
+            self.close()
         
     def set_style(self):
         style_list = [
@@ -86,7 +93,7 @@ class Register(Ui_Register, QDialog):
         
     def closeEvent(self, event):
         if not self.registered:
-            self.register_close_signal.emit("window closed")
+            self.register_close_signal.emit(RegisterStatus.window_closed)
         elif self.registered:
-            self.register_close_signal.emit("registered")
+            self.register_close_signal.emit(RegisterStatus.user_created)
         

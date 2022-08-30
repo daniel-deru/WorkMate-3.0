@@ -62,3 +62,7 @@ class Encryption:
         decryptor = Fernet(self.key)
         decrypted_string = decryptor.decrypt(string.encode()).decode()
         return decrypted_string
+    
+    @staticmethod
+    def key_encryptor():
+        return Fernet(PICKLE_ENC.encode())

@@ -25,6 +25,7 @@ from widgetStyles.Widget import Widget, MainWidget
 from widgets.tabbar import TabBar, ProxyStyle
 
 from utils.helpers import StyleSheet
+from utils.enums import RegisterStatus
 
 from tabs.new_user_tab import NewUserTab
 from windows.register_window import Register
@@ -127,13 +128,13 @@ class Main(Ui_main_container, QWidget):
             update_password_window.exec_()
 
     def register_event(self, event):
-        if event == "window closed":
-            sys.exit()
-        elif event == "user created":
-            self.register.close()
-            setup_wizard = InitialSetup()
-            setup_wizard.setup_finished.connect(self.updateWindow)
-            setup_wizard.exec_()
+        if event == RegisterStatus.window_closed:
+            return sys.exit()
+        
+        self.register.close()
+        setup_wizard = InitialSetup()
+        setup_wizard.setup_finished.connect(self.updateWindow)
+        setup_wizard.exec_()
      
        
     def read_style(self):
