@@ -132,6 +132,6 @@ class Ui_new_user(object):
         self.lbl_password.setText(_translate("new_user", "Password*"))
         self.lbl_password2.setText(_translate("new_user", "Confirm Password*"))
         self.lbl_password_exp.setText(_translate("new_user", "Password Expiration"))
-        self.lbl_passphrase_desc.setText(_translate("new_user", "Passphrase:"))
+        self.lbl_passphrase_desc.setText(_translate("new_user", "Keys:"))
         self.btn_copy.setText(_translate("new_user", "Copy"))
         self.btn_register.setText(_translate("new_user", "Register"))

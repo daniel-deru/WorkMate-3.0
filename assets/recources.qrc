@@ -73,6 +73,8 @@
         <file alias="qrcode">qrcode.svg</file>
         <file alias="timer">timer_icon.svg</file>
         <file alias="auto_save">auto_save_icon.svg</file>
+        <file alias="key_file">key_file.svg</file>
+        <file alias="database">database.svg</file>
     </qresource>
 
 

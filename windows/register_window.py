@@ -14,7 +14,7 @@ from tabs.existing_user_tab import ExistingUserTab
 from utils.helpers import set_font, StyleSheet
 
 from widgetStyles.Dialog import Dialog
-from widgetStyles.Label import Label
+from widgetStyles.Label import Label, LabelWhite
 from widgetStyles.Widget import SideWidget
 from widgetStyles.PushButton import PushButton, IconToolButton
 from widgetStyles.LineEdit import LineEdit
@@ -42,6 +42,8 @@ class Register(Ui_Register, QDialog):
         
         self.tab_widget_start.tabBar().setCursor(QCursor(Qt.PointingHandCursor))
         
+        self.registered = False
+        
         self.add_tabs()
         self.set_style()
         
@@ -55,7 +57,7 @@ class Register(Ui_Register, QDialog):
     def set_style(self):
         style_list = [
             PushButton,
-            Label,
+            LabelWhite,
             LineEdit,
             Dialog,
             SideWidget,
@@ -69,6 +71,9 @@ class Register(Ui_Register, QDialog):
         stylesheet = StyleSheet(style_list).create()
         self.setStyleSheet(stylesheet)
         
+        self.lbl_create_account.setStyleSheet("color: white;margin-top: 30px;font-size: 20px;font-weight: 700;height: 200px;")
+        self.lbl_developed_by.setStyleSheet("color: white;")
+        
         widget_list = [
             self.lbl_developed_by,
             self.lbl_company,
@@ -78,4 +83,10 @@ class Register(Ui_Register, QDialog):
         ]
         
         set_font(widget_list)
+        
+    def closeEvent(self, event):
+        if not self.registered:
+            self.register_close_signal.emit("window closed")
+        elif self.registered:
+            self.register_close_signal.emit("registered")
         

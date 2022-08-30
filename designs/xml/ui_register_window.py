@@ -27,6 +27,7 @@ class Ui_Register(object):
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.lbl_create_account = QtWidgets.QLabel(self.sidewidget)
         self.lbl_create_account.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.lbl_create_account.setStyleSheet("font-size: 24px;")
         self.lbl_create_account.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl_create_account.setObjectName("lbl_create_account")
         self.verticalLayout_4.addWidget(self.lbl_create_account)

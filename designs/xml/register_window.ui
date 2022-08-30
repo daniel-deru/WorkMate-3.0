@@ -39,6 +39,9 @@
             <height>50</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">font-size: 24px;</string>
+          </property>
           <property name="text">
            <string>Create Your Account</string>
           </property>

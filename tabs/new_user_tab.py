@@ -161,8 +161,7 @@ class NewUserTab(Ui_new_user, QDialog):
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         
-        # self.lbl_create_account.setStyleSheet("color: white;margin-top: 30px;font-size: 20px;font-weight: 700;height: 200px;")
-        # self.lbl_developed_by.setStyleSheet("color: white;")
+
         self.lbl_passphrase_desc.setStyleSheet("font-weight: 700;")
         
         self.tbtn_generate_password.setIcon(QIcon(":/button_icons/password"))
@@ -180,13 +179,6 @@ class NewUserTab(Ui_new_user, QDialog):
         ]
         
         set_font(font_widgets)
-        
-
-    def closeEvent(self, event):
-        if not self.registered:
-            self.register_close_signal.emit("window closed")
-        elif self.registered:
-            self.register_close_signal.emit("registered")
             
     def set_random_words(self):
         random: list[str] = random_words()
