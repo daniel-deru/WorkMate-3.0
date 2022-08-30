@@ -15,12 +15,17 @@ class Encryption:
         
     def create_key(self):
         encryptor = Fernet(PICKLE_ENC.encode())
+        # Create key
         key = Fernet.generate_key()
         print("new key has been created")
+        # Encrypt key
         encrypted_key = encryptor.encrypt(key)
+        # Put the encrypted key in a json object
         json_data = json.dumps({"key": encrypted_key.decode()})
+        # Encrypt the json object
         data = encryptor.encrypt(json_data.encode())
         
+        # Put the json object in the key file
         with open(f"{DB_PATH}{KEY_FILE_NAME}", "wb") as file:
             pickle.dump(data, file)
         

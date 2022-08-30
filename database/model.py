@@ -22,7 +22,7 @@ class Model:
         self.fill_defaults()
         
 
-    def create_tables(self):      
+    def create_tables(self):     
         
         self.create_table("groups", Tables.groups)
         self.create_table("user", Tables.users)

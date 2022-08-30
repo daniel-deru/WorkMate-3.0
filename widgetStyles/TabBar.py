@@ -46,3 +46,23 @@ TabBar = f"""
         color: {default};    
     }}
 """
+
+RegisterTabBar = f"""
+    QTabBar{{
+        border: none;
+        qproperty-drawBase: 0;
+    }}
+    QTabBar::tab {{
+        padding: 5px;
+        border: none;
+        color: black;
+        font-size: 16px;
+        width: 100px;
+        height: 30px;
+    }}
+
+    QTabBar::tab:selected {{
+        color: {light_blue};    
+    }}
+
+"""

@@ -1,5 +1,6 @@
 import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 import math
 
 from PyQt5.QtWidgets import QWidget
@@ -7,7 +8,6 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QFont
 
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from database.model import Model
 from designs.python.notes_widget import Ui_notes_tab

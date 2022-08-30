@@ -15,14 +15,15 @@ from utils.helpers import StyleSheet
 
 from database.model import Model
 
+from designs.python.backup_verify import Ui_backup_verify
 
-class PassphraseCopyWindow(QDialog):
+
+class BackupVerifyWindow(Ui_backup_verify, QDialog):
     yes_signal = pyqtSignal(bool)
     def __init__(self) -> None:
-        super(PassphraseCopyWindow, self).__init__()
-        self.setupUi()
-        self.setFixedHeight(300)
-        self.setWindowTitle("Are you sure?")
+        super(BackupVerifyWindow, self).__init__()
+        self.setupUi(self)
+        # self.setFixedHeight(300)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.read_styles()
@@ -33,6 +34,7 @@ class PassphraseCopyWindow(QDialog):
     def read_styles(self):
         widget_list = [
             Dialog,
+            Label,
             PushButton
         ]
         stylesheet = StyleSheet(widget_list).create()
@@ -41,34 +43,26 @@ class PassphraseCopyWindow(QDialog):
         font_name = Model().read("settings")[0][2]
         
         font_list = [
-            self.lbl_message,
             self.btn_no,
-            self.btn_yes
+            self.btn_yes,
+            self.lbl_explain,          
+            self.lbl_heading,
+            self.lbl_keys,
+            self.lbl_liability,
+            self.lbl_warning,
+            self.lbl_reccomend
         ]
         
         for item in font_list:
             item.setFont(QFont(font_name))
-    
-    def setupUi(self):
-        vbox: QVBoxLayout = QVBoxLayout()
         
-        self.lbl_message: QLabel = QLabel("DID YOU STORE YOUR PASSPHRASE IN A SAFE PLACE?")
-        self.lbl_message.setStyleSheet("color: red;font-size: 30px;")
-        self.lbl_message.setAlignment(Qt.AlignCenter)
-        self.lbl_message.setWordWrap(True)
-        
-        hbox_btn_container: QHBoxLayout = QHBoxLayout()
-        
-        self.btn_yes: QPushButton = QPushButton("Yes")
-        self.btn_no: QPushButton = QPushButton("No")
-        
-        hbox_btn_container.addWidget(self.btn_yes)
-        hbox_btn_container.addWidget(self.btn_no)
-        
-        vbox.addWidget(self.lbl_message)
-        vbox.addLayout(hbox_btn_container)
-        
-        self.setLayout(vbox)
+        self.lbl_warning.setStyleSheet("color: red; font-size: 48px")
+        self.lbl_heading.setStyleSheet("color: red; font-size: 24px; margin-bottom: 10px;")
+        # self.lbl_explain.setStyleSheet("color: red;")
+        # self.lbl_reccomend.setStyleSheet("color: red;")
+        self.lbl_liability.setStyleSheet("color: red; font-size: 20px")
+        self.lbl_keys.setStyleSheet("font-size: 24px;")
+
     
     def response(self, response):
         self.close()

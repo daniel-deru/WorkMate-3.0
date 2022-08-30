@@ -26,6 +26,7 @@ from widgets.tabbar import TabBar, ProxyStyle
 
 from utils.helpers import StyleSheet
 
+from tabs.new_user_tab import NewUserTab
 from windows.register_window import Register
 from windows.login_window import Login
 from windows.setup_window import InitialSetup

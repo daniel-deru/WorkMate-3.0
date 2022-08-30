@@ -1,5 +1,6 @@
 import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from winsound import PlaySound
 import winsound
@@ -8,7 +9,6 @@ from PyQt5.QtWidgets import QDialog
 from PyQt5.QtCore import Qt, pyqtSlot, QSize
 from PyQt5.QtGui import QIcon
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from designs.python.reset_password import Ui_ResetPassword
 
