@@ -127,7 +127,7 @@ class Ui_new_user(object):
         _translate = QtCore.QCoreApplication.translate
         new_user.setWindowTitle(_translate("new_user", "Form"))
         self.lbl_generate_password.setText(_translate("new_user", "Password Generator"))
-        self.lbl_name.setText(_translate("new_user", "Name*"))
+        self.lbl_name.setText(_translate("new_user", "Full Name*"))
         self.lbl_email.setText(_translate("new_user", "Email*"))
         self.lbl_password.setText(_translate("new_user", "Password*"))
         self.lbl_password2.setText(_translate("new_user", "Confirm Password*"))

@@ -8,3 +8,11 @@ class ServerConnectStatus(Enum):
 class RegisterStatus(Enum):
     user_created: str = "user created"
     window_closed: str = "window closed"
+    
+class LoginSignal(Enum):
+    logged_in: str = "logged in"
+    logged_out: str = "logged out"
+    login_requested: str = "login requested"
+    logout_requested: str = "logout requested"
+    success: str = "success"
+    failure: str = "failure"

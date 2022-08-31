@@ -4,12 +4,11 @@ import time
 import json
 import assets.resources
 
-from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen, QTabWidget
+from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen, QTabWidget, QMessageBox
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent, QFontDatabase
 from PyQt5.QtCore import QTimer, Qt, pyqtSlot
 
 from designs.python.main_widget import Ui_main_container
-from tabs.apps_tab import Apps_tab
 
 from database.model import Model
 
@@ -26,8 +25,8 @@ from widgets.tabbar import TabBar, ProxyStyle
 
 from utils.helpers import StyleSheet
 from utils.enums import RegisterStatus
+from utils.message import Message
 
-from tabs.new_user_tab import NewUserTab
 from windows.register_window import Register
 from windows.login_window import Login
 from windows.setup_window import InitialSetup
@@ -51,6 +50,8 @@ class Main(Ui_main_container, QWidget):
         self.timer = QTimer(self) 
         self.logged_in = False
         self.count = 0
+        self.duration = int(Model().read("settings")[0][5]) * 60
+        
         self.setupUi(self)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowTitle("TrustLock")
@@ -58,6 +59,7 @@ class Main(Ui_main_container, QWidget):
         self.tab_widget.setDocumentMode(True)
         self.custom_tabbar = TabBar(self.tab_widget)
         self.tab_widget.setTabBar(self.custom_tabbar)
+        self.set_screen_size()
 
         self.add_tabs()
         self.setTabIcons()
@@ -149,8 +151,6 @@ class Main(Ui_main_container, QWidget):
 
         self.tab_widget.setFont(QFont(font))
         self.setTabIcons()
-      
-       
 
     def updateWindow(self):     
         self.apps_tab.app_signal.emit("update")
@@ -168,25 +168,7 @@ class Main(Ui_main_container, QWidget):
     def updateTable(self):
         self.vault_tab.vault_signal.emit("update")
 
-    def add_tabs(self):
-        # Get the primary screen
-        app = QApplication.primaryScreen()
-        # Get the size of the screen
-        screen = app.size()
-        
-        # Get the screen dimensions
-        screen_width: int = screen.width()
-        screen_height: int = screen.height()
-        # Scale factor to determine minimum size
-        scale_factor = 0.7
-        
-        # If the screen is not full hd increase the scale factor
-        if(screen_width < 1920 and screen_height < 1080):
-            scale_factor = 0.8
-            
-        # Set the minimum size
-        self.setMinimumSize(int(screen_width * scale_factor), int(screen_height * scale_factor))
-        
+    def add_tabs(self):        
         self.tab_widget.setTabPosition(QTabWidget.West)
         self.vault_tab = Vault_tab().create_tab()
         self.vault_tab.login_signal.connect(self.check_login)
@@ -210,6 +192,25 @@ class Main(Ui_main_container, QWidget):
         self.tab_widget.tabBar().setCursor(QCursor(Qt.PointingHandCursor))
 
         self.main_layout.addWidget(self.tab_widget)
+        
+    def set_screen_size(self):
+        # Get the primary screen
+        app = QApplication.primaryScreen()
+        # Get the size of the screen
+        screen = app.size()
+        
+        # Get the screen dimensions
+        screen_width: int = screen.width()
+        screen_height: int = screen.height()
+        # Scale factor to determine minimum size
+        scale_factor = 0.7
+        
+        # If the screen is not full hd increase the scale factor
+        if(screen_width < 1920 and screen_height < 1080):
+            scale_factor = 0.8
+            
+        # Set the minimum size
+        self.setMinimumSize(int(screen_width * scale_factor), int(screen_height * scale_factor))
 
     def setTabIcons(self):
 
@@ -253,8 +254,27 @@ class Main(Ui_main_container, QWidget):
             
     # This function gets called at a set interval by timer.timeout
     def start_timer(self):
-        # Compare current time to the time the login should expire
-        if self.count <= time.time():
+        # Variable to keep track of time left
+        time_left = self.count - time.time()
+        # This will run when there is 10 seconds left before logout
+        if(time_left < 10 and time_left > 0):
+            # Window to ask user to stay logged in or not
+            stay_logged_in = Message("Do you want to stay logged in?", "Stay Logged In?").prompt()
+
+            # If user wants to stay logged in reset the timer
+            if stay_logged_in == QMessageBox.Yes and self.count > time.time():
+                self.count = time.time() + self.duration
+            # If the user wants to stay logged in but the timer expired
+            elif(stay_logged_in == QMessageBox.Yes and self.count <= time.time()):
+                self.timer.stop()
+                self.update_status(False)
+                Message("Login window has expired.", "Too Late").exec_()
+            # The user doesn't want to stay signed in
+            elif stay_logged_in == QMessageBox.No:
+                self.update_status(False)
+                self.timer.stop()
+        # Stop the Timer when the manually manually logs out since self.count is set to 0 in update_status method
+        elif time_left < 0:
             self.update_status(False)
             self.timer.stop()
     

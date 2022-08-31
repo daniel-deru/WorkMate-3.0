@@ -1,24 +1,20 @@
-from pyexpat import version_info
 import sys
 import os
-from xmlrpc.client import Server
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 import pyperclip
 import math
 import requests
+import re
 from datetime import date, timedelta
 
 from PyQt5.QtWidgets import QDialog, QLineEdit, QGridLayout, QWidget, QGraphicsBlurEffect, QWidget
 from PyQt5.QtGui import QIcon, QPixmap, QFont
 from PyQt5.QtCore import Qt, pyqtSignal, QSize, pyqtSlot
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from designs.python.register_window import Ui_Register
 from designs.python.new_user_tab import Ui_new_user
 from database.model import Model
 from windows.backup_verify import BackupVerifyWindow
-
-import assets.resources
 
 from widgets.register_word import RegisterWordButton
 
@@ -33,7 +29,7 @@ from widgetStyles.DateEdit import DateEditForm
 
 from utils.helpers import StyleSheet, random_words, set_font
 from utils.message import Message
-from utils.globals import REQUEST_URL, validate_code
+from utils.globals import REQUEST_URL
 
 from windows.generate_password import GeneratePasswordWindow
 
@@ -71,11 +67,9 @@ class NewUserTab(Ui_new_user, QDialog):
         
         self.set_blur()
         
-    def verify_code(self, code):
-        if(not code):
-            return ServerConnectStatus.denied
+    def send_data(self, user_data):
         try:
-            request = requests.post(REQUEST_URL, {"product_key": code})
+            request: requests.Response = requests.post(REQUEST_URL, user_data)
             if(request.status_code != 200):
                 return ServerConnectStatus.denied
             return ServerConnectStatus.verified
@@ -85,16 +79,45 @@ class NewUserTab(Ui_new_user, QDialog):
     @pyqtSlot()
     def generate_password(self):
         GeneratePasswordWindow().exec_()
+    
+    def verify_password_strength(self, password):
+        contains_num = r"^.*\d+.*$"
+        contains_special = r"^.*[!@#$%^&*(){}:;'\"<,>.?/\\]+.*"
+        contains_upper = r".*[A-Z]+.*"
+        contains_lower = r".*[a-z]+.*"
+        longer_than_8 = r".{8,}"
         
+        test_list = [
+            [contains_num, "Password must contain a number."],
+            [contains_special, "Password must contain a special character"],
+            [contains_upper, "Password must contain an uppercase letter."],
+            [contains_lower, "Password must contain an lowercase letter."],
+            [longer_than_8, "Password must be longer than eight characters."],
+        ]
+        
+        for test in test_list:
+            pattern, message = test
+            if(not re.match(pattern, password)):
+                return [False, message]
+        
+        return [True, None]
+    
+    def verify_email(self, email):
+        valid_email = r"^.+@[a-z]{2,12}\.[a-z]{2,10}(\.[a-z]{2,10})?$"
+          
+        if(re.match(valid_email, email)):
+            return True
 
     def register_clicked(self):
-        valid_submition = False
         
         name = self.lnedt_name.text()
         email = self.lnedt_email.text()
         password1 = self.lnedt_password.text()
         password2 = self.lnedt_password2.text()
         password_exp = self.dte_password_exp.date().toPyDate()
+        
+        valid_mail = self.verify_email(email)
+        valid_password, password_message = self.verify_password_strength(password1)
         
         fields = [
             name,
@@ -103,18 +126,18 @@ class NewUserTab(Ui_new_user, QDialog):
             password2,
         ]
         
-        if password1 != password2:
-            Message("Please make sure your passwords match. Check to see if your caps lock is on", "Passwords don't match").exec_()
-
         for field in fields:
             if not field:
-                Message(f"Make sure you fill in all the fields.", "Please fill in all the fields").exec_()
-                break
-            else:
-                valid_submition = True
-                
-        if not valid_submition: return
-
+                return Message(f"Make sure you fill in all the fields.", "Please fill in all the fields").exec_()
+                    
+        if(not valid_mail):
+            return Message("Please enter a valid email", "Email not valid").exec_()
+        elif(not valid_password):
+           return Message(password_message, "Password Too Weak").exec_()      
+        elif password1 != password2:
+            return Message("Please make sure your passwords match. Check to see if your caps lock is on", "Passwords don't match").exec_()
+        
+        self.send_data({'name': name, 'email': email})
 
         data = {
             "name": name,
