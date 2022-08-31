@@ -57,17 +57,15 @@ class SecretWindow(Ui_AddSecret_window, QDialog):
         values: list[str] = list(data.values())
         container = self.vbox_column_def
         self.lnedt_name.setText(self.secret[2])
-        # f = Fernet(self.secret[3])
 
-        # secret = json.loads(f.decrypt(self.secret[2]).decode("UTF-8"))
         for i in range(len(keys)):
             # Set the data to the fields
             container.itemAt(i).layout().itemAt(0).widget().setText(keys[i])
             container.itemAt(i).layout().itemAt(1).widget().setText(values[i])
 
 
-    def get_data(self) -> object:
-        data: object[str, str] = {}
+    def get_data(self) -> object[str, str or object]:
+        data: object[str, str or object] = {}
         fields = self.vbox_column_def.layout()
 
         name = self.lnedt_name.text()
@@ -87,15 +85,13 @@ class SecretWindow(Ui_AddSecret_window, QDialog):
             elif header_field.text() and data_field.text():
                 data[header_field.text()] = data_field.text()
             
-
-        # encrypted = self.encrypt(data)
         return {
             'name': name,
             'data': data
         }
 
 
-    def save(self, data) -> None:
+    def save(self) -> None:
         group = self.cmb_group.currentData()
         data = self.get_data()
         if(len(data['data'].keys()) <= 0):

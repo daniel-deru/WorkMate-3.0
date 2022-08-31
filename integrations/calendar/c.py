@@ -1,4 +1,5 @@
 from datetime import timedelta, datetime, date
+from os import stat
 import os.path
 import tzlocal
 import io
@@ -20,6 +21,7 @@ SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.co
 
 
 class Google:
+    @staticmethod
     def connect():
         """Shows basic usage of the Google Calendar API.
             Prints the start and name of the next 10 events on the user's calendar.
@@ -101,8 +103,9 @@ class Google:
             event = service.events().insert(calendarId='primary', body=event).execute()
             
         except HttpError as error:
-            print('An error occurred: %s' % error)
+            print(f'An error occurred: {error}')
             
+    @staticmethod  
     def upload_backup():
         """Shows basic usage of the Google Calendar API.
         Prints the start and name of the next 10 events on the user's calendar.
@@ -152,11 +155,11 @@ class Google:
             file_metadata = {'name': DB_NAME}
             media = MediaFileUpload(f'{PATH}/database/{DB_NAME}', mimetype='application/octet-stream')
             file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-            # return True
             
         except HttpError as error:
             print('An error occurred: %s' % error)
-            
+    
+    @staticmethod      
     def download_backup():
         """Shows basic usage of the Google Calendar API.
         Prints the start and name of the next 10 events on the user's calendar.
