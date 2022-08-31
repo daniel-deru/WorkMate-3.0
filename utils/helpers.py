@@ -17,7 +17,7 @@ DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 from widgetStyles.styles import placeholders
 from widgetStyles.QCheckBox import WhiteEyeCheckBox, BlackEyeCheckBox
 from database.model import Model
-from utils.globals import WORDS, DB_PATH
+from utils.globals import WORDS, DB_PATH, FONT_NAME
 
 layouts = [QGridLayout, QVBoxLayout, QHBoxLayout]
 
@@ -107,9 +107,8 @@ def get_checkbox():
     return checkbox
 
 def set_font(font_list):
-    font_name = Model().read("settings")[0][2]
     for item in font_list:
-        item.setFont(QFont(font_name))
+        item.setFont(QFont(FONT_NAME))
         
 def char_in_string(string: str, regex: Pattern) -> bool:
     result = re.findall(regex, string)

@@ -10,13 +10,9 @@ from PyQt5.QtGui import QIcon, QFont
 from designs.python.existing_user_tab import Ui_ExistingUser
 
 from utils.helpers import set_font, StyleSheet
+from utils.globals import FONT_NAME
 
 from widgetStyles.Label import Label
-from widgetStyles.LineEdit import LineEdit
-from widgetStyles.ToolButton import ToolButton
-from widgetStyles.PushButton import PushButton
-
-from database.model import Model
 
 class ExistingUserTab(Ui_ExistingUser, QWidget):
     def __init__(self) -> None:
@@ -31,8 +27,7 @@ class ExistingUserTab(Ui_ExistingUser, QWidget):
         keys_num: int = 12
         cols: int = 4
         count = 1
-        font_name = Model().read("settings")[0][2]
-        font = QFont(font_name)
+        font = QFont(FONT_NAME)
         
         for i in range(math.ceil(keys_num/cols)):
             for j in range(cols):

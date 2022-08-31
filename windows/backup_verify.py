@@ -11,7 +11,7 @@ from PyQt5.QtGui import QIcon, QFont
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Dialog import Dialog
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 from database.model import Model
 
@@ -40,8 +40,6 @@ class BackupVerifyWindow(Ui_backup_verify, QDialog):
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
         
-        font_name = Model().read("settings")[0][2]
-        
         font_list = [
             self.btn_no,
             self.btn_yes,
@@ -53,13 +51,10 @@ class BackupVerifyWindow(Ui_backup_verify, QDialog):
             self.lbl_reccomend
         ]
         
-        for item in font_list:
-            item.setFont(QFont(font_name))
+        set_font(font_list)
         
         self.lbl_warning.setStyleSheet("color: red; font-size: 48px")
         self.lbl_heading.setStyleSheet("color: red; font-size: 24px; margin-bottom: 10px;")
-        # self.lbl_explain.setStyleSheet("color: red;")
-        # self.lbl_reccomend.setStyleSheet("color: red;")
         self.lbl_liability.setStyleSheet("color: red; font-size: 20px")
         self.lbl_keys.setStyleSheet("font-size: 24px;")
 

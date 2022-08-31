@@ -18,7 +18,6 @@ from widgetStyles.DateEdit import DateEditForm
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Dialog import Dialog
-from widgetStyles.Widget import Widget
 from widgetStyles.TextEdit import TextEdit
 
 from integrations.calendar.c import Google
@@ -26,6 +25,7 @@ from integrations.calendar.c import Google
 
 from database.model import Model
 from utils.helpers import StyleSheet, set_font
+from utils.globals import FONT_NAME
 
 class TodoWindow(Ui_todo_edit, QDialog):
     todo_edit_signal = pyqtSignal(str)
@@ -68,7 +68,6 @@ class TodoWindow(Ui_todo_edit, QDialog):
 
         stylesheet: str = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
-        font_name: str = Model().read("settings")[0][2]
 
         font_widgets = [
             self.lbl_name,
@@ -85,10 +84,7 @@ class TodoWindow(Ui_todo_edit, QDialog):
             self.cmb_group.view()
         ]
         
-        set_font(font_widgets)
-            
-        self.dtedt_date.setFont(QFont(font_name, 5))
-        
+        set_font(font_widgets)        
 
     
     def set_data(self):

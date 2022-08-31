@@ -3,12 +3,7 @@ import os
 import json
 from threading import Thread
 
-from PyQt5.QtWidgets import (
-    QDialog, 
-    QCheckBox,
-    QHBoxLayout, 
-    QWidget,
-    QFileDialog)
+from PyQt5.QtWidgets import (QDialog, QFileDialog)
 from PyQt5.QtGui import QCursor, QIcon, QCloseEvent, QFont
 from PyQt5.QtCore import Qt, QModelIndex, pyqtSignal, QSize
 
@@ -26,7 +21,7 @@ from windows.timer_window import Timer
 from threads.browser_import_thread import browser_import
 
 from utils.globals import DESKTOP
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 from integrations.calendar.c import Google
 
@@ -82,9 +77,7 @@ class InitialSetup(Ui_InitialSetup, QDialog):
         self.btn_back.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_back.setIconSize(QSize(40, 40))
         
-        font_name = Model().read("settings")[0][2]
-        
-        self.lbl_setup.setFont(QFont(font_name))
+        set_font([self.lbl_setup])
     
     def create_stack(self):        
         for i in range(len(self.setup_list)):

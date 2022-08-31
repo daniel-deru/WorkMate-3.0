@@ -14,7 +14,7 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.Dialog import Dialog
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 from utils.globals import PATH
 from utils.message import Message
 
@@ -59,17 +59,13 @@ class DriveWindow(Ui_DriveDialog, QDialog):
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
         
-        font_name = Model().read("settings")[0][2]
-        
         font_widgets = [
             self.chk_google,
             self.chk_onedrive,
             self.btn_save
         ]
         
-        widget: QWidget
-        for widget in font_widgets:
-            widget.setFont(QFont(font_name))
+        set_font(font_widgets)
         
     def save(self):
         drives = {

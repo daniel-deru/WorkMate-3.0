@@ -13,7 +13,7 @@ from PyQt5.QtGui import QFont, QIcon
 from designs.python.generate_password import Ui_GeneratePasswordWindow
 
 from utils.globals import CHAR_GROUPS
-from utils.helpers import char_in_string, StyleSheet
+from utils.helpers import char_in_string, StyleSheet, set_font
 from utils.message import Message
 
 from widgetStyles.Label import Label
@@ -92,9 +92,6 @@ class GeneratePasswordWindow(Ui_GeneratePasswordWindow, QDialog):
         
         self.btn_whats_this.setStyleSheet(StyleSheet([PushButtonLink]).create())
         
-        font_name = Model().read("settings")[0][2]
-        font = QFont(font_name)
-        
         font_list = [
             self.lbl_password,      self.lne_password,
             self.chk_uppercase,     self.chk_lowercase,
@@ -106,9 +103,7 @@ class GeneratePasswordWindow(Ui_GeneratePasswordWindow, QDialog):
             self.btn_generate,      self.bar_strength
         ]
         
-        for widget in font_list:
-            widget: QWidget
-            widget.setFont(font)
+        set_font(font_list)
         
     def generate_password(self):
         character_list = []

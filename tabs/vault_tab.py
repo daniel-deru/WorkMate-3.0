@@ -12,8 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from designs.python.vault_tab import Ui_Vault_tab
 
-from utils.helpers import StyleSheet, json_to_dict
-from utils.helpers import clear_window
+from utils.helpers import StyleSheet, clear_window, set_font
 
 from widgets.vault_item import VaultItem
 from widgets.filter_group_widget import FilterGroupWidget
@@ -63,12 +62,10 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         return self
 
     def read_styles(self):
-        font = Model().read('settings')[0][2]
         styles = [
             PushButton,
             CheckBoxSquare,
             Label,
-            # ComboBox,
             ScrollBar
         ]
         stylesheet = StyleSheet(styles).create()
@@ -82,8 +79,7 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             self.btn_delete
         ]
 
-        for widget in widget_list:
-            widget.setFont(QFont(font))
+        set_font(widget_list)
 
     def add_clicked(self):
         vault_type = VaultType()

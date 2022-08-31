@@ -22,12 +22,9 @@ from widgets.filter_group_widget import FilterGroupWidget
 from widgetStyles.PushButton import PushButton
 from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.Line import Line
-from widgetStyles.Label import Label
-from widgetStyles.ComboBox import ComboBox
 from widgetStyles.ScrollBar import ScrollBar
 
-from utils.helpers import StyleSheet
-from utils.helpers import clear_window
+from utils.helpers import StyleSheet, clear_window, set_font
 
 class Apps_tab(Ui_apps_tab, QWidget):
     app_signal = pyqtSignal(str)
@@ -48,11 +45,8 @@ class Apps_tab(Ui_apps_tab, QWidget):
         
         self.read_styles()
 
-        # self.create_protected_apps()
-
         self.btn_add_app.clicked.connect(self.add_app)
         self.chk_edit_apps.stateChanged.connect(self.edit_checked)
-        # self.chk_delete_apps.stateChanged.connect(self.delete_checked)
         
         self.btn_delete.clicked.connect(self.delete)
         
@@ -77,17 +71,15 @@ class Apps_tab(Ui_apps_tab, QWidget):
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
-        widgetList = [
+        
+        widget_list = [
             self.btn_add_app,
             self.chk_edit_apps,
-            # self.chk_delete_apps,
             self.lbl_open_apps,
             self.btn_delete
         ]
-        font = Model().read('settings')[0][2]
-
-        for i in range(len(widgetList)):
-            widgetList[i].setFont(QFont(font))
+        
+        set_font(widget_list)
 
     def add_app(self):
         app_window = Apps_window()
@@ -123,25 +115,12 @@ class Apps_tab(Ui_apps_tab, QWidget):
         # if delete_apps.isChecked() and edit_apps.isChecked():
         #     edit_apps.setChecked(True)
         #     delete_apps.setChecked(False)
-          
-    def delete_checked(self):
-        # delete_apps = self.chk_delete_apps
-        edit_apps = self.chk_edit_apps
 
-        # if edit_apps.isChecked() and delete_apps.isChecked():
-        #     delete_apps.setChecked(True)
-        #     edit_apps.setChecked(False)
             
     
     # Handles the editing and deleting of the apps
     def get_app(self, app):
-        # delete = self.chk_delete_apps
         edit = self.chk_edit_apps
-
-        # if delete.isChecked():
-        #     Model().delete('apps', app[0])
-        #     self.update()
-        #     delete.setChecked(False)
             
         if edit.isChecked():
             app_window = AppsEdit(app)

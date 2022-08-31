@@ -12,7 +12,7 @@ from widgetStyles.Widget import Widget
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.ToolButton import ToolButton
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 from database.model import Model
 
@@ -74,14 +74,9 @@ class PasswordWidget(QWidget):
         stylesheet: str = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
         
-        font_name = Model().read("settings")[0][2]
-        
         font_widgets = [
             self.text_field
         ]
         
-        widget: QWidget
-        
-        for widget in font_widgets:
-            widget.setFont(QFont(font_name))
+        set_font(font_widgets)
     

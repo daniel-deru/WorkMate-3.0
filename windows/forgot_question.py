@@ -53,8 +53,6 @@ class PasswordQuestion(Ui_AnswerQuestionDialog, QDialog):
         stylesheet: str = StyleSheet(widgetlist).create()
         self.setStyleSheet(stylesheet)
         
-        font_name = Model().read("settings")[0][2]
-        
         font_widgets = [
             self.lbl_question,
             self.btn_enter

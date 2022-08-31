@@ -10,12 +10,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from designs.python.vault_type_window import Ui_VaultTypeDialog
 
 from widgetStyles.Dialog import Dialog
-from widgetStyles.PushButton import ButtonFullWidth, VaultButton
+from widgetStyles.PushButton import ButtonFullWidth
 from widgetStyles.styles import VAULT_BUTTON_COLORS
 
-from utils.helpers import StyleSheet
-
-from database.model import Model
+from utils.helpers import StyleSheet, set_font
 
 class VaultType(Ui_VaultTypeDialog, QDialog):
     vault_type_signal = pyqtSignal(str)
@@ -38,13 +36,14 @@ class VaultType(Ui_VaultTypeDialog, QDialog):
 
         self.setStyleSheet(stylesheet)
         
-        font_name = Model().read("settings")[0][2]
-        
         font_widget = [
             self.btn_app,
             self.btn_crypto,
             self.btn_general
         ]
+        
+        set_font(font_widget)
+        
         self.btn_app.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['app']};border: 1px solid {VAULT_BUTTON_COLORS['app']};text-align: left;")
         self.btn_crypto.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['crypto']};border: 1px solid {VAULT_BUTTON_COLORS['crypto']};text-align: left;")
         self.btn_general.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['general']};border: 1px solid {VAULT_BUTTON_COLORS['general']};text-align: left;")
@@ -54,12 +53,6 @@ class VaultType(Ui_VaultTypeDialog, QDialog):
         self.btn_general.setIcon(QIcon(":/button_icons/general"))      
         
           
-        
-        widget: QWidget
-        
-        for widget in font_widget:
-            widget.setFont(QFont(font_name))
-
     def open_general_vault(self):
         self.vault_type_signal.emit("general")
         self.close()

@@ -1,21 +1,20 @@
 import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from PyQt5.QtWidgets import QHBoxLayout, QLabel, QPushButton, QFrame, QSpacerItem, QSizePolicy, QToolButton
 from PyQt5.QtCore import pyqtSignal, QSize, Qt, pyqtSlot
 from PyQt5.QtGui import QIcon, QFont, QCursor
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from windows.notes_window import Note_window
 from windows.note_view import NoteView
 
-import assets.resources
 from database.model import Model
 from widgetStyles.Frame import Frame
 from widgetStyles.Label import Label
 from widgetStyles.ToolButton import ToolButton
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 
 
@@ -97,7 +96,6 @@ class NoteItem(QFrame):
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
-        font = Model().read("settings")[0][2]
-        self.name.setFont(QFont(font))
+        set_font([self.name])
         
         

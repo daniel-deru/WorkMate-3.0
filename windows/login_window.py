@@ -8,10 +8,9 @@ from PyQt5.QtGui import QIcon, QCloseEvent, QFont
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from designs.python.login_window import Ui_Login
-from utils.helpers import StyleSheet, LoginEvent
+from utils.helpers import StyleSheet, LoginEvent, set_font
 from database.model import Model
 from utils.message import Message
-import assets.resources
 
 from widgetStyles.Label import Label
 from widgetStyles.LineEdit import LineEdit
@@ -73,11 +72,8 @@ class Login(Ui_Login, QDialog):
             self.btn_login
         ]
         
-        widget: QWidget
-        for widget in font_widgets:
-            widget.setFont(QFont(font))
+        set_font(font_widgets)
         
-
     def login(self):
         user = Model().read("user")[0]
         db_password = user[3]

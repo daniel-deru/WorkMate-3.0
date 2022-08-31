@@ -10,12 +10,12 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from database.model import Model
 
-from widgetStyles.Frame import TodoFrameComplete, TodoFrameDelete, TodoFrame
+from widgetStyles.Frame import TodoFrame
 from widgetStyles.Label import LabelMono
 from widgetStyles.ToolButton import ToolButton
 from widgetStyles.styles import StatusColor
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 from windows.todo_window import TodoWindow
 from windows.todo_view import TodoView
@@ -67,7 +67,6 @@ class TodoItem(QFrame):
         self.editButton.setIconSize(QSize(20, 20))
         self.editButton.setCursor(QCursor(Qt.PointingHandCursor))
 
-        # icon = QIcon(":/other/delete.png") if self.completed else QIcon(":/other/done.png")
         icon = QIcon(":/input/eye_white_open.svg")
         self.statusButton = QToolButton()
 
@@ -101,11 +100,16 @@ class TodoItem(QFrame):
             TodoFrame(color),
             ToolButton
         ]
+        
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
-        font = Model().read("settings")[0][2]
-        self.name.setFont(QFont(font))
-        self.lbl_date.setFont(QFont(font))
+
+        widget_list = [
+           self.name,
+           self.lbl_date
+        ]
+
+        set_font(widget_list)
     
     def view_todo(self):
         view_todo_window = TodoView(self.todo_item)

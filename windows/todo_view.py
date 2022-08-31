@@ -15,7 +15,7 @@ from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
 from widgetStyles.PushButton import PushButton100Width
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 from database.model import Model
 
@@ -50,8 +50,6 @@ class TodoView(Ui_TodoViewWindow, QDialog):
         widget_list = [Label, Dialog, PushButton100Width]
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
-        
-        font_name = Model().read("settings")[0][2]
 
         font_list = [
             self.btn_complete,
@@ -65,8 +63,8 @@ class TodoView(Ui_TodoViewWindow, QDialog):
             self.lbl_status,
             self.lbl_status_display
         ]
-        for item in font_list:
-            item.setFont(QFont(font_name))
+        
+        set_font(font_list)
         
     def fill_data(self):
         self.lbl_name_display.setText(self.todo[1])

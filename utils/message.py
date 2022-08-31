@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from widgetStyles.Label import Label
 from widgetStyles.Dialog import Dialog
 from widgetStyles.PushButton import PushButton
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 from database.model import Model
 
@@ -35,8 +35,7 @@ class Message(QMessageBox):
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         
-        font_name = Model().read("settings")[0][2]
-        self.setFont(QFont(font_name))
+        set_font([self])
     
     def create(self):
         return self

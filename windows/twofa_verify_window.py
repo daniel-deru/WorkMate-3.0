@@ -13,7 +13,7 @@ from designs.python.twofa_verify_window import Ui_TwofaDialog
 
 from database.model import Model
 
-from utils.helpers import StyleSheet, LoginEvent
+from utils.helpers import StyleSheet, LoginEvent, set_font
 from utils.message import Message
 
 from widgetStyles.Label import Label
@@ -61,15 +61,11 @@ class TwofaVerifyWindow(Ui_TwofaDialog, QDialog):
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
         
-        font_name = Model().read("settings")[0][2]
-        
         font_widgets = [
             self.lbl_message
         ]
         
-        widget: QWidget
-        for widget in font_widgets:
-            widget.setFont(QFont(font_name))
+        set_font(font_widgets)
 
     def verify_otp(self, value):
         # Get the otp from the database

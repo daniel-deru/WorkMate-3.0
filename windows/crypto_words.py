@@ -16,7 +16,7 @@ from database.model import Model
 from widgets.password_show_hide import PasswordWidget
 
 from utils.message import Message
-
+from utils.globals import FONT_NAME
 from utils.helpers import set_font, StyleSheet
 
 from widgetStyles.Dialog import Dialog
@@ -82,7 +82,6 @@ class CryptoWords(Ui_CryptoWords, QDialog):
     def displayWordBoxes(self):        
         COLUMNS: int = 3
         count: int = 1     
-        font_name = Model().read("settings")[0][2]
 
         for i in range(math.ceil(self.num_words/COLUMNS)):
             for j in range(COLUMNS):
@@ -92,7 +91,7 @@ class CryptoWords(Ui_CryptoWords, QDialog):
                 widget.setContentsMargins(0, 0, 0, 0)
 
                 self.number: QLabel = QLabel(f"{str(count).zfill(2)}. ")
-                self.number.setFont(QFont(font_name))
+                self.number.setFont(QFont(FONT_NAME))
                 self.number.setMaximumWidth(30)
                 
                 param = self.words[count-1] if self.words else None

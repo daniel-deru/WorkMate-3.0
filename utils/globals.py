@@ -18,6 +18,9 @@ REQUEST_URL = "http://localhost:8000" + ENDPOINT if server_development_mode else
 
 ASSET_PATH: str = "./assets/"
 
+FONT_NAME = "Proxon"
+# FONT_NAME = "Roboto Condensed"
+
 
 PICKLE_ENC: str = 'SqQ1-jsiAXjOmRWQqLWoMyzTWgW_Kxy8rc5aGKLG91k='
 # ASSET_PATH = PATH + "\\assets"

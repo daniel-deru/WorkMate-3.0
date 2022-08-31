@@ -12,7 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from designs.python.twofa_window import Ui_TwoFADialog
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 from utils.qrcode import QRCodeTemplate
 
 from widgetStyles.Label import Label
@@ -41,16 +41,12 @@ class TwofaDialog(Ui_TwoFADialog, QDialog):
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
         
-        font_name = Model().read("settings")[0][2]
-        
         font_widgets =[
             self.lbl_message,
             self.lbl_setupkey
         ]
         
-        widget: QWidget
-        for widget in font_widgets:
-            widget.setFont(QFont(font_name))
+        set_font(font_widgets)
 
     def create_qrcode(self):
         secret = self.get_otp()

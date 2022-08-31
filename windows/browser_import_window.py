@@ -50,9 +50,6 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
         self.file = file
         self.group_dict, self.group_names = self.create_group_data()
         
-        font_name = Model().read("settings")[0][2]
-        self.current_font = QFont(font_name)
-        
         self.setupUi(self)
         self.get_file_data()
         self.read_styles()
@@ -103,8 +100,12 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
         self.group_box.setView(QListView())
         self.group_box.view().window().setWindowFlags(Qt.Popup | Qt.FramelessWindowHint | Qt.NoDropShadowWindowHint)
         
-        self.group_box.setFont(self.current_font)
-        self.group_box.view().setFont(self.current_font)
+        widget_list = [
+            self.group_box,
+            self.group_box.view()
+        ]
+
+        set_font(widget_list)
         
         self.group_box.addItems(self.group_names)
             

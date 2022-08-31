@@ -10,10 +10,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from database.model import Model
 
-from widgetStyles.PushButton import VaultButton, VaultButtonLeftAlign
+from widgetStyles.PushButton import VaultButton
 from widgetStyles.styles import VAULT_BUTTON_COLORS
 
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 class VaultItem(QPushButton):
     vault_clicked_signal = pyqtSignal(tuple)
@@ -35,8 +35,8 @@ class VaultItem(QPushButton):
     
     def setupUI(self):
         self.setText(self.secret[2])
-        font = Model().read("settings")[0][2]
-        self.setFont(QFont(font))
+
+        set_font([self])
         
         icon = QIcon(f":/button_icons/{self.secret[1]}")
         self.setIcon(icon)

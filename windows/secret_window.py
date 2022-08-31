@@ -64,8 +64,8 @@ class SecretWindow(Ui_AddSecret_window, QDialog):
             container.itemAt(i).layout().itemAt(1).widget().setText(values[i])
 
 
-    def get_data(self) -> object[str, str or object]:
-        data: object[str, str or object] = {}
+    def get_data(self) -> object:
+        data: object = {}
         fields = self.vbox_column_def.layout()
 
         name = self.lnedt_name.text()

@@ -13,7 +13,7 @@ from designs.python.update_password import Ui_UpdatePassword
 from database.model import Model
 
 from utils.message import Message
-from utils.helpers import StyleSheet
+from utils.helpers import StyleSheet, set_font
 
 from widgetStyles.Dialog import Dialog
 from widgetStyles.DateEdit import DateEditForm
@@ -98,9 +98,6 @@ class UpdatePassword(Ui_UpdatePassword, QDialog):
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
         
-        font_name = Model().read("settings")[0][2]
-        font = QFont(font_name)
-        
         font_list = [
             self.lbl_desc,
             self.lbl_account,
@@ -116,9 +113,7 @@ class UpdatePassword(Ui_UpdatePassword, QDialog):
             self.btn_save
         ]
         
-        for widget in font_list:
-            widget: QWidget
-            widget.setFont(font)
+        set_font(font_list)
         
         self.tbtn_password_generator.setIcon(QIcon(":/button_icons/password"))
         self.tbtn_password_generator.setIconSize(QSize(30, 20))
