@@ -54,11 +54,13 @@ class Register(Ui_Register, QDialog):
         self.tab_widget_start.addTab(new_user_tab, "New User")
         
         existing_user_tab = ExistingUserTab().create_tab()
+        existing_user_tab.existing_user_signal.connect(self.register_handler)
         self.tab_widget_start.addTab(existing_user_tab, "Existing User")
         
     def register_handler(self, signal):
         if(signal == RegisterStatus.user_created):
             self.registered = True
+            self.hide()
             self.close()
         
     def set_style(self):

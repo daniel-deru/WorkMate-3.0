@@ -2,7 +2,6 @@ from datetime import date, datetime
 import sys
 import time
 import json
-import assets.resources
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen, QTabWidget, QMessageBox
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent, QFontDatabase

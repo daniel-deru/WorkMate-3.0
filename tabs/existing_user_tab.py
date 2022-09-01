@@ -3,15 +3,18 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 import math
+import shutil
 
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QLineEdit, QFileDialog
 from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtCore import pyqtSignal
 
 from designs.python.existing_user_tab import Ui_ExistingUser
 
 from utils.helpers import set_font, StyleSheet
 from utils.message import Message
-from utils.globals import FONT_NAME, DESKTOP
+from utils.globals import FONT_NAME, DESKTOP, DB_PATH, DB_NAME
+from utils.enums import RegisterStatus
 
 from widgetStyles.Label import Label
 
@@ -19,6 +22,7 @@ from database.model import Model
 from database.tables import TableEnum
 
 class ExistingUserTab(Ui_ExistingUser, QWidget):
+    existing_user_signal: pyqtSignal = pyqtSignal(RegisterStatus)
     def __init__(self) -> None:
         super(ExistingUserTab, self).__init__()
         self.setupUi(self)
@@ -32,24 +36,35 @@ class ExistingUserTab(Ui_ExistingUser, QWidget):
         
         
     def submit(self):
-        db_path = self.lne_database.text()
-        name = self.lne_name.text()
-        email = self.lne_email.text()
+        db_path = self.lne_database.text().strip()
+        name = self.lne_name.text().strip()
+        email = self.lne_email.text().strip()
         words = self.get_words()
         
         verified, message = self.verify_data([db_path, name, email, words])
 
         if(not verified):
-            return Message(message, "Invalid Data")
+            return Message(message, "Invalid Data").exec_()
         
-        print("Yay your verified")
+        # Move db to correct location
+        shutil.copy2(db_path, f'{DB_PATH}{DB_NAME}')
+        self.existing_user_signal.emit(RegisterStatus.user_created)
         
     def verify_data(self, data: list[str]) -> tuple[bool, str or None]:
         db_path, name, email, words = data
+        model = None
         
-        model = Model(db_path)
-        user = model.read('user')[0]
+        try:
+            model = Model(db_path)
+        except:
+            return [False, "Database could not be opened"]
         
+        user = model.read('user')
+        
+        if(len(user) < 1):
+            return [False, "Database could not be opened"]
+        
+        user = user[0]
         db_name = user[1]
         db_email = user[2]
         db_words = user[4]
@@ -72,8 +87,8 @@ class ExistingUserTab(Ui_ExistingUser, QWidget):
         words = []
         for i in range(gbox_item_count):
             container = self.gbox_keys.layout().itemAt(i)
-            lne_key = container.layout().itemAt(1).widget()
-            words.append(lne_key.text())
+            lne_key: QLineEdit = container.layout().itemAt(1).widget()
+            words.append(lne_key.text().strip())
         
         return " ".join(words)
         
@@ -88,6 +103,7 @@ class ExistingUserTab(Ui_ExistingUser, QWidget):
                 hbox = QHBoxLayout()
                 lbl_num = QLabel(f"{str(count).zfill(2)}.")
                 lne_key = QLineEdit()
+                lne_key.textChanged.connect(self.fill_fields)
                 
                 lbl_num.setFont(font)
                 lne_key.setFont(font)
@@ -95,7 +111,18 @@ class ExistingUserTab(Ui_ExistingUser, QWidget):
                 hbox.addWidget(lbl_num)
                 hbox.addWidget(lne_key)
                 self.gbox_keys.addLayout(hbox, i, j)
-                count += 1 
+                count += 1
+                
+                
+    def fill_fields(self, text: str):
+        words_list: list[str] = text.split(" ")
+        if(len(words_list) != 12):
+            return
+        
+        for i in range(self.gbox_keys.count()):
+            container: QHBoxLayout = self.gbox_keys.itemAt(i).layout()
+            field: QLineEdit = container.itemAt(1).widget()
+            field.setText(words_list[i])
         
     def create_tab(self):
         return self

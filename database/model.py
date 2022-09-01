@@ -11,7 +11,10 @@ from database.tables import Tables, TableEnum
 
 class Model:
     def __init__(self, db_path: str = f"{DB_PATH}{DB_NAME}"):
-        self.db = sqlite3.connect(db_path)
+        try:
+            self.db = sqlite3.connect(db_path)
+        except sqlite3.OperationalError:
+            raise Exception
         self.cur = self.db.cursor()
 
         self.create_key_table()
