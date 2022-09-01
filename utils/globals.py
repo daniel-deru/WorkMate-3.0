@@ -17,13 +17,8 @@ ENDPOINT = "/api/trustlock/createuser"
 REQUEST_URL = "http://localhost:8000" + ENDPOINT if server_development_mode else "https://api.smartmetatec.com" + ENDPOINT
 
 ASSET_PATH: str = "./assets/"
-
-FONT_NAME = "Proxon"
-# FONT_NAME = "Roboto Condensed"
-
-
+FONT_NAME = "Roboto Condensed"
 PICKLE_ENC: str = 'SqQ1-jsiAXjOmRWQqLWoMyzTWgW_Kxy8rc5aGKLG91k='
-# ASSET_PATH = PATH + "\\assets"
 
 class CHAR_GROUPS:
     NUMBERS = [*range(48,58)]

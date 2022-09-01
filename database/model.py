@@ -5,77 +5,62 @@ import json
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
-from utils.globals import DB_PATH, DB_NAME, KEY_FILE_NAME
+from utils.globals import DB_PATH, DB_NAME
 from utils.encryption import Encryption
-from database.tables import Tables
-
-encryption = Encryption()
+from database.tables import Tables, TableEnum
 
 class Model:
-    def __init__(self):
-        self.db = sqlite3.connect(f"{DB_PATH}{DB_NAME}")
+    def __init__(self, db_path: str = f"{DB_PATH}{DB_NAME}"):
+        self.db = sqlite3.connect(db_path)
         self.cur = self.db.cursor()
-        self.encryptor = Encryption.key_encryptor()
+
+        self.create_key_table()
+        key = self.get_key()
+        self.encryption = Encryption(key)
+        self.tables = Tables(key).tables()
+        
         self.create_table_names()
         self.create_tables()
-        # self.create_key_table()
         self.fill_defaults()
     
-    def create_key_table(self):
-        
-        path = f"{DB_PATH}{KEY_FILE_NAME}"
-        encrypted_path = self.encryptor.encrypt(path.encode())
-        
+    def create_key_table(self):      
         table_query = f"""
-            CREATE TABLE IF NOT EXISTS loc (
-                id TEXT PRIMARY KEY ,
-                loc TEXT DEFAULT [{encrypted_path}]
+            CREATE TABLE IF NOT EXISTS trustlock (
+                name TEXT UNIQUE,
+                value TEXT
             )
         """
-        
-        insert_query = f"""INSERT INTO loc (id, loc) VALUES (?, ?)"""
         self.cur.execute(table_query)
-        
-        # data = self.read_key_location()
-        
-        # if(len(data) > 0):
-        #     return
-        
-        self.cur.execute(insert_query, ['loc', f'[{encrypted_path.decode()}]'])
-        
-    def update_key_location(self, new_location):
-        encrypted_new_location = self.encryptor.encrypt(new_location.encode())
-        
-        table_query = f"""
-            UPDATE loc SET loc = ? WHERE id = loc
-        """
-        
-        self.cur.execute(table_query, [encrypted_new_location])
-        self.db.close()
     
-    def read_key_location(self):
-        table_query = """
-            SELECT loc from loc
+    def get_key(self):
+        key = self.read_key()
+        encrypt_key = Encryption.encrypted_key()
+        if(len(key) < 1):
+            query = "INSERT INTO trustlock (name, value) VALUES (?, ?)"
+            self.cur.execute(query, ['trustlock', f'[{encrypt_key}]'])
+        else:
+            return key[0][0]
+        return encrypt_key
+    
+    def read_key(self):
+        query = """
+            SELECT value FROM trustlock;
         """
-        
-        self.cur.execute(table_query)
-        data = self.cur.fetchall()
-        print(data)
-        return data
+        self.cur.execute(query)
+        return self.cur.fetchall()
         
     def create_tables(self):     
-        
-        self.create_table("groups", Tables.groups)
-        self.create_table("user", Tables.users)
-        self.create_table("settings", Tables.settings)
-        self.create_table("metadata", Tables.metadata)
-        self.create_table("apps", Tables.apps, "group_id", "groups", "id")
-        self.create_table("notes", Tables.notes, "group_id", "groups", "id")
-        self.create_table("todos", Tables.todos, "group_id", "groups", "id")
-        self.create_table("vault", Tables.vault, "group_id", "groups", "id")
+        self.create_table("groups", self.tables[TableEnum.groups])
+        self.create_table("user", self.tables[TableEnum.users])
+        self.create_table("settings", self.tables[TableEnum.settings])
+        self.create_table("metadata", self.tables[TableEnum.metadata])
+        self.create_table("apps", self.tables[TableEnum.apps], "group_id", "groups", "id")
+        self.create_table("notes", self.tables[TableEnum.notes], "group_id", "groups", "id")
+        self.create_table("todos", self.tables[TableEnum.todos], "group_id", "groups", "id")
+        self.create_table("vault", self.tables[TableEnum.vault], "group_id", "groups", "id")
         
     def create_table(self, tablename: str, fields: object, foreign_field: str = None, foreign_tablename: str = None, foreign_table_field: str = None):
-        encrypted_table_name = encryption.encrypt(tablename)
+        encrypted_table_name = self.encryption.encrypt(tablename)
         
         new_table = self.insert_table_name(encrypted_table_name)
         
@@ -86,7 +71,7 @@ class Model:
         encrypted_foreign_key = ""
         
         for i in range(len(names)):
-            encrypted_name = encryption.encrypt(names[i])
+            encrypted_name = self.encryption.encrypt(names[i])
             if names[i] == foreign_field:
                 encrypted_foreign_key = encrypted_name
             table_definition += f"[{encrypted_name}] {definitions[i]}"
@@ -144,7 +129,7 @@ class Model:
         # encrypt the data and add it to the list of data that must be added
         values_list = []
         for entry in data.values():
-            values_list.append(f'{encryption.encrypt(entry)}')
+            values_list.append(f'{self.encryption.encrypt(entry)}')
         
         # Convert to tuple for proper sqlite handling
         values_list = tuple(values_list)
@@ -171,11 +156,11 @@ class Model:
                 entry_list = []
                 for i in range(len(list(entry))):
                     if (table == "user" or table == "settings"):
-                            decrypted = encryption.decrypt(entry[i])
+                            decrypted = self.encryption.decrypt(entry[i])
                             entry_list.append(decrypted)
                     else:
                         if i > 0:
-                            decrypted = encryption.decrypt(entry[i])
+                            decrypted = self.encryption.decrypt(entry[i])
                             entry_list.append(decrypted)
                         else:
                             entry_list.append(entry[i])
@@ -202,7 +187,7 @@ class Model:
         encrypted_cols = self.get_encrypted_table_cols(table)
         
         # Create list of encrypted values and append id for query
-        values = list(map(lambda v: f"[{encryption.encrypt(v)}]", list(data.values())))
+        values = list(map(lambda v: f"[{self.encryption.encrypt(v)}]", list(data.values())))
         
         if id == "settings" or id == "user":
             encrypted_id = self.get_config_table_id(id)
@@ -260,7 +245,7 @@ class Model:
     def add_column(self, table_name, column_name, column_definition):
         encrypted_table_name = self.get_encrypted_table_name(table_name)
         
-        encrypted_column_name = encryption.encrypt(column_name)
+        encrypted_column_name = self.encryption.encrypt(column_name)
         query = f"ALTER TABLE [{encrypted_table_name}] ADD [{encrypted_column_name}] {column_definition}"
         self.cur.execute(query)
         
@@ -296,8 +281,8 @@ class Model:
         tables = self.cur.fetchall()
         
         for table in tables:
-            existing_decrypted_table = encryption.decrypt(table[0])
-            decrypted_table = encryption.decrypt(value)
+            existing_decrypted_table = self.encryption.decrypt(table[0])
+            decrypted_table = self.encryption.decrypt(value)
             if existing_decrypted_table == decrypted_table:
                 return False
         
@@ -312,7 +297,7 @@ class Model:
         tables = self.cur.fetchall()
         
         for table in tables:
-            decrypted_table = encryption.decrypt(table[0])
+            decrypted_table = self.encryption.decrypt(table[0])
             if tablename == decrypted_table:
                 return table[0]
             
@@ -327,7 +312,7 @@ class Model:
         table_columns = {}
         
         for meta in data.description:
-            name = encryption.decrypt(meta[0])
+            name = self.encryption.decrypt(meta[0])
             table_columns[name] = meta[0]
             
         return table_columns
@@ -343,7 +328,7 @@ class Model:
         
     
     def fill_defaults(self):
-        enc = encryption.encrypt
+        enc = self.encryption.encrypt
         settings = self.get_encrypted_table_name("settings")
         
         get_query = f"SELECT * FROM [{settings}]"
@@ -395,6 +380,5 @@ class Model:
         return data[0] == "ok"
          
 # model = Model()
-# model.read_key_location()
 # model.update("settings", {"font": "Roboto Condensed"}, "settings")
 # model.update("settings", {"font": "Proxon"}, "settings")
