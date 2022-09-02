@@ -64,6 +64,8 @@ def download_onedrive(self):
     
     # Clean up the processes for better memory management
     self.onedrive_download_worker.finished.connect(self.onedrive_download_worker.deleteLater)
+    self.onedrive_download_worker.finished.connect(self.onedrive_download_thread.exit)
+    self.onedrive_download_worker.finished.connect(self.onedrive_download_thread.quit)
     self.onedrive_download_thread.finished.connect(self.onedrive_download_thread.deleteLater)
     
     self.onedrive_download_thread.start()

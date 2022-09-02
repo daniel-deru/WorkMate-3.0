@@ -25,8 +25,7 @@ class OneDriveUpload(QObject):
                 Model().save("metadata", {"name": self.META_DATA_NAME, "data": file_id})
             else:
                 Model().update("metadata", {"data": file_id}, onedrive_file_id[0][0])         
-            
-
+                
         self.finished.emit(True)
         
     
@@ -36,6 +35,7 @@ class OneDriveDownload(QObject):
     def download(self):
         meta_data = Model().read("metadata")
         file_id = None
+
         try:
             file_id = list(filter(lambda db_entry: db_entry[1] == self.META_DATA_NAME, meta_data))[0]
         except Exception:
@@ -43,5 +43,4 @@ class OneDriveDownload(QObject):
             
         onedrive = OneDrive()
         name: str or None = onedrive.download(file_id[2])
-        
         self.finished.emit(name)

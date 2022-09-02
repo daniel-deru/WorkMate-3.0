@@ -41,7 +41,8 @@ class OneDrive(Microsoft):
         if response_file.status_code == 200:
             with open(f"{DB_PATH}{DB_COPY_NAME}", "wb") as file:
                 file.write(response_file.content)
-            return self.get_file_name(file_id)
+            
+            return DB_COPY_NAME
         else:
             if response_file.status_code == 404:
                 return None

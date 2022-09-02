@@ -387,6 +387,8 @@ class Model:
         if(passphrase != new_user[0][4]):
             return [False, "Trying to import incorrect account."]
         
+        return [True, None]
+        
     @staticmethod 
     def valid_database(db_path):
         new_db = None
@@ -402,6 +404,8 @@ class Model:
         integrity_check = new_db.cur.fetchone()
         if(integrity_check[0] != "ok"):
             return False
+        
+        return True
 
 # model = Model()
 # model.update("settings", {"font": "Roboto Condensed"}, "settings")

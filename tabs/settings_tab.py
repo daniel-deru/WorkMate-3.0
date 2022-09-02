@@ -355,7 +355,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
     
     # check if the new db is valid and replace old db with new db
     def update_db(self, name: str or None):
-
         if(not name):
             self.loading.close()
             return Message("The database does not exist or there is a network error", "Sync Failed").exec_()
@@ -366,7 +365,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             self.loading.close()
             return Message(message, "Sync Error").exec_()
 
-        shutil.move(name, f"{DB_PATH}{DB_NAME}")
+        shutil.move(f"{DB_PATH}{name}", f"{DB_PATH}{DB_NAME}")
         Message("Sync was successful.", "Sync Successful").exec_()
         
         # Close the loading dialog after thread is finished
