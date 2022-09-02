@@ -69,12 +69,12 @@ class Apps_window(Ui_App_Window, QDialog):
         is_unique = True
         for app in self.apps:
             if data['name'] in app:
-                Message("This name is already being used", "Name already exists").exec_()
                 is_unique = False
+                return Message("This name is already being used", "Name already exists").exec_()
 
             elif data['path'] in app:
-                Message("This path is already being used", "Path already exists").exec_()
                 is_unique = False
+                return Message("This path is already being used", "Path already exists").exec_()
         if is_unique:
             Model().save('apps', data)
             self.app_window_signal.emit("saved")

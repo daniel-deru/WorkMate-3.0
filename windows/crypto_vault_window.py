@@ -144,48 +144,43 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         
         password_exp_string = datetime.strftime(password_exp, "%Y-%m-%d")
 
-        valid_submit: bool = True
-
         if(password1 and (password1 != password2)):
-            Message("The passwords don't match", "Passwords Incorrect").exec_()
-            valid_submit = False
+            return Message("The passwords don't match", "Passwords Incorrect").exec_()
+        elif(not description): 
+            return Message("Please Provide a description", "No Description").exec_()
+        elif(not username): 
+            return Message("Please Provide a username", "No Username").exec_()
+        elif(not self.words):
+            return Message("Please save your seedphrase/passphrase by pressing the button next to the number to words.", "No Passphrase").exec_()        
 
-        if(not description): 
-            valid_submit = False
-            Message("Please Provide a description", "No Description").exec_()
-        if(not username): 
-            valid_submit = False
-            Message("Please Provide a username", "No Username").exec_()
-
-        if(valid_submit):
-            data = {
-                'name': username,
-                'num_words': self.get_num_words(),
-                'words': " ".join(self.words),
-                'description': description,
-                'password': password1,
-                "password_exp": password_exp_string
-            }
+        data = {
+            'name': username,
+            'num_words': self.get_num_words(),
+            'words': " ".join(self.words),
+            'description': description,
+            'password': password1,
+            "password_exp": password_exp_string
+        }
             
-            if private_key:
-                data['private_key'] = private_key
-            if public_key:
-                data['public_key'] = public_key
-            
-            payload = {
-                'type': 'crypto', 
-                'name': description, 
-                'data': dumps(data),
-                'group_id': group
-            }
+        if private_key:
+            data['private_key'] = private_key
+        if public_key:
+            data['public_key'] = public_key
+        
+        payload = {
+            'type': 'crypto', 
+            'name': description, 
+            'data': dumps(data),
+            'group_id': group
+        }
 
-            if self.secret:
-                Model().update("vault", payload, self.secret[0])
-            else:
-                Model().save("vault", payload)
+        if self.secret:
+            Model().update("vault", payload, self.secret[0])
+        else:
+            Model().save("vault", payload)
 
-            self.crypto_update_signal.emit(True)
-            self.close()
+        self.crypto_update_signal.emit(True)
+        self.close()
     
     def get_num_words(self) -> int:
         num_words: str = self.cmb_num_words.currentText()

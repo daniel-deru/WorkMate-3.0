@@ -1,6 +1,6 @@
 import sys
 import os
-# import cv2
+import cv2
 import re
 from json import dumps
 from datetime import date, datetime, timedelta
@@ -64,11 +64,11 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         
     @pyqtSlot()
     def read_qrcode(self):
-        # file = QFileDialog.getOpenFileName(self, "Open a file", DESKTOP, "All Files (*.*)")[0]
-        # image = cv2.imread(file)
-        # detector = cv2.QRCodeDetector()
-        # code = detector.detectAndDecode(image)[0]
-        code = False
+        file = QFileDialog.getOpenFileName(self, "Open a file", DESKTOP, "All Files (*.*)")[0]
+        image = cv2.imread(file)
+        detector = cv2.QRCodeDetector()
+        code = detector.detectAndDecode(image)[0]
+        print(code)
         if not code:
             Message("The QR code is invalid please select a valid image of a QR code", "Invalid QR Code").exec_()
             return
