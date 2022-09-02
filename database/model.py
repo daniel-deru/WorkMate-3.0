@@ -370,18 +370,39 @@ class Model:
                 )"""
             self.cur.execute(query)
             self.db.commit()
-            
-    def is_valid(self, db_path):
-        new_db = sqlite3.connect(db_path)
-        cursor = new_db.cursor()
+
+    def valid_account(self, db_path):
+        valid_db = Model.valid_database(db_path)
         
-        query = "PRAGMA integrity_check;"
+        if(not valid_db):
+            return [False, "The database is corrupted or not a valid Trust Lock database"]
         
-        cursor.execute(query)
+        new_user = Model(db_path).read("user")
         
-        data = cursor.fetchone()
-        return data[0] == "ok"
-         
+        if(len(new_user) < 1):
+            return [False, "User not found in database"]
+        
+        passphrase = self.read("user")[0][4]
+        
+        if(passphrase != new_user[0][4]):
+            return [False, "Trying to import incorrect account."]
+        
+    @staticmethod 
+    def valid_database(db_path):
+        new_db = None
+        try:
+           new_db = Model(db_path)
+        except Exception:
+            return False
+        
+        # Check db integrity
+        new_db.cur.execute("PRAGMA integrity_check;")
+        
+        # Make sure the integrity is ok
+        integrity_check = new_db.cur.fetchone()
+        if(integrity_check[0] != "ok"):
+            return False
+
 # model = Model()
 # model.update("settings", {"font": "Roboto Condensed"}, "settings")
 # model.update("settings", {"font": "Proxon"}, "settings")

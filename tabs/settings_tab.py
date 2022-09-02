@@ -314,34 +314,60 @@ class SettingsTab(Ui_Settings_tab, QWidget):
     def restore_from_local(self):
         file = QFileDialog.getOpenFileName(self, "Choose a file", DESKTOP, f"DB File ({DB_NAME})")[0]
         
-        if not file: return
+        if not file: 
+            return
+
+        valid_db, message = self.compare_dbs(file)
+
+        if(not valid_db):
+            return Message(message, "Sync Failed")
+
+        shutil.copy(file, f"{DB_PATH}{DB_NAME}")
+        self.updateWindow()
+        Message("Local data sync was successful.", "Sync Successful").exec_()
+            
+    def compare_dbs(self, new_db_path):
+        new_db = None
+    
+        try: 
+            new_db = Model(new_db_path)
+        except Exception:
+            return [False, "Unable to open database"]
         
-        if Model().is_valid(file):
-            shutil.copy(file, f"{DB_PATH}{DB_NAME}")
-            message: Message = Message("Local data sync was successful.", "Sync Successful")
-            message.exec_()
-        else:
-            message: Message = Message("Your data was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
-            message.exec_()
+        new_db_user = new_db.read('user')
+        
+        if(len(new_db_user) < 1):
+            return [False, "Invalid database"]
+        
+        new_db_passphrase = new_db_user[0][4]
+        passphrase = Model().read('user')[0][4]
+        
+        if(new_db_passphrase != passphrase):
+            return [False, "The account you are trying to restore is not the same as the account you currently have."]
+        
+        return [True, None]
             
     def auto_save(self):
         # if self.chk_auto_save.isChecked():
         drive_window = DriveWindow()
         drive_window.drive_dict.connect(self.save_drives)
         drive_window.exec_()
-            
-    def update_db(self, name: str):
-        if name == None:
-            message: Message = Message("The database sync was not successfull", "Sync Failed")
-            message.exec_()
-        else:  
-            if Model().is_valid(name):
-                shutil.move(name, f"{DB_PATH}{DB_NAME}")
-                message: Message = Message("Sync successful, You may need to restart the application", "Restart Application")
-                message.exec_()
-            else:
-                message: Message = Message("Your data on the cloud was corrupted. The data did not sync to your local database. Please save a new working backup to your remote storage to prevent data loss", "Sync Failed")
-                message.exec_()
+    
+    # check if the new db is valid and replace old db with new db
+    def update_db(self, name: str or None):
+
+        if(not name):
+            self.loading.close()
+            return Message("The database does not exist or there is a network error", "Sync Failed").exec_()
+        
+        valid_db, message = Model().valid_account(f"{DB_PATH}{name}")
+        
+        if(not valid_db):
+            self.loading.close()
+            return Message(message, "Sync Error").exec_()
+
+        shutil.move(name, f"{DB_PATH}{DB_NAME}")
+        Message("Sync was successful.", "Sync Successful").exec_()
         
         # Close the loading dialog after thread is finished
         self.loading.close()
@@ -382,6 +408,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         except Exception as error:
             with open(f"{PATH}error.txt", "a") as error_file:
                 error_file.write(f"\n\n{error}")
+        self.updateWindow()
         
           
 # This is for the calendar integration

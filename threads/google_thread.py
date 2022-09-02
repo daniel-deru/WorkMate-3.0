@@ -71,6 +71,5 @@ def download_google(self):
     self.loading = Loading("Syncing from Google Drive...")
     self.loading.exec_()
     
-    message: Message = Message("The restore is complete", "Restore Successful")
-    message.exec_()        
+    # Message("The restore is complete", "Restore Successful").exec_()
     

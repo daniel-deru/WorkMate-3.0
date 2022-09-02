@@ -73,7 +73,7 @@ class NewUserTab(Ui_new_user, QDialog):
             if(request.status_code != 200):
                 return ServerConnectStatus.denied
             return ServerConnectStatus.verified
-        except Exception:
+        except Exception as e:
             return ServerConnectStatus.failed
     
     @pyqtSlot()

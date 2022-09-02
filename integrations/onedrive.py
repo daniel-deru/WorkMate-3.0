@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from integrations.graph_api import Microsoft
-from utils.globals import PATH, DB_NAME, DB_PATH
+from utils.globals import PATH, DB_NAME, DB_PATH, DB_COPY_NAME
 
 class OneDrive(Microsoft):
     
@@ -39,12 +39,12 @@ class OneDrive(Microsoft):
         response_file: requests.Response = requests.get(endpoint, headers=self.headers)
         
         if response_file.status_code == 200:
-            with open(f"{DB_NAME}", "wb") as file:
+            with open(f"{DB_PATH}{DB_COPY_NAME}", "wb") as file:
                 file.write(response_file.content)
             return self.get_file_name(file_id)
         else:
             if response_file.status_code == 404:
-                return Exception()
+                return None
             print("response file get request failed")
             print(response_file.status_code)
             return None

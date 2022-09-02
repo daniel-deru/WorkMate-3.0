@@ -14,7 +14,7 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from googleapiclient.errors import HttpError
 
-from utils.globals import PATH, DB_NAME
+from utils.globals import PATH, DB_NAME, DB_COPY_NAME, DB_PATH
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/drive']
@@ -200,8 +200,11 @@ class Google:
             for file in files:
                 if "name" in file and file['name'] == DB_NAME:
                     file_id = file['id']
-            
-            file = service.files().get_media(fileId=file_id)
+            file = None
+            try:
+                file = service.files().get_media(fileId=file_id)
+            except Exception:
+                return None
             
             download = io.BytesIO()
             downloader = MediaIoBaseDownload(download, file)
@@ -211,11 +214,12 @@ class Google:
                 status, done = downloader.next_chunk()
             
             download.seek(0)
-            name = DB_NAME
-            with open(name, "wb") as f:
+
+            # Copy data to a copy of the database
+            with open(f"{DB_PATH}{DB_COPY_NAME}", "wb") as f:
                 shutil.copyfileobj(download, f)
             
-            return name
+            return DB_COPY_NAME
             
         except HttpError as error:
             print('An error occurred: %s' % error)

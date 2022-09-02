@@ -35,11 +35,13 @@ class OneDriveDownload(QObject):
     META_DATA_NAME: str = "onedrive_remote_file_id"
     def download(self):
         meta_data = Model().read("metadata")
-        file_id = list(filter(lambda db_entry: db_entry[1] == self.META_DATA_NAME, meta_data))[0]
-
+        file_id = None
+        try:
+            file_id = list(filter(lambda db_entry: db_entry[1] == self.META_DATA_NAME, meta_data))[0]
+        except Exception:
+            return self.finished.emit(None)
+            
         onedrive = OneDrive()
-        name: str = onedrive.download(file_id[2])
-        if name != None:
-            self.finished.emit(name)
-        else:
-            self.finished.emit(None)
+        name: str or None = onedrive.download(file_id[2])
+        
+        self.finished.emit(name)

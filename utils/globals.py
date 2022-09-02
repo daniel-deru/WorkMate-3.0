@@ -3,8 +3,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 development_mode: bool = True
-server_development_mode: bool = True
-validate_code: bool = False
+server_development_mode: bool = False
 
 PATH = os.getenv("APPDATA") + "\\TrustLock" if not development_mode else os.getcwd()
 
@@ -12,9 +11,10 @@ DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
 DB_PATH = PATH + "\\database\\" if not development_mode else f"{os.getcwd()}/database/"
 DB_NAME = "test.db" if development_mode else "trustlock.db"
+DB_COPY_NAME = "copy.db"
 KEY_FILE_NAME = "test.pkl" if development_mode else "trustlock.pkl"
-ENDPOINT = "/api/trustlock/createuser"
-REQUEST_URL = "http://localhost:8000" + ENDPOINT if server_development_mode else "https://api.smartmetatec.com" + ENDPOINT
+ENDPOINT = "/api/products/trustlock"
+REQUEST_URL = "http://localhost:8000" + ENDPOINT if server_development_mode else "https://users.smartmetatec.com" + ENDPOINT
 
 ASSET_PATH: str = "./assets/"
 FONT_NAME = "Roboto Condensed"

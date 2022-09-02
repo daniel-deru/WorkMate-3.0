@@ -71,6 +71,6 @@ def download_onedrive(self):
     self.loading = Loading("Syncing from OneDrive...")
     self.loading.exec_()
     
-    message: Message = Message("The restore is complete", "Restore Successful")
-    message.exec_()
+    # message: Message = Message("The restore is complete", "Restore Successful")
+    # message.exec_()
         
