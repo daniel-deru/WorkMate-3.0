@@ -15,7 +15,7 @@ import assets.resources
 
 from widgetStyles.Dialog import Dialog
 from widgetStyles.LineEdit import LineEdit
-from widgetStyles.PushButton import PushButton
+from widgetStyles.PushButton import PushButton, IconToolButton
 from widgetStyles.Label import Label
 from widgetStyles.SpinBox import SpinBox
 from widgetStyles.QCheckBox import SettingsCheckBox
@@ -36,7 +36,7 @@ class Apps_window(Ui_App_Window, QDialog):
         self.apps = Model().read('apps')
 
         self.btn_save.clicked.connect(self.save_clicked)
-        self.btn_desktop.clicked.connect(self.add_from_desktop)
+        self.tbtn_desktop.clicked.connect(self.add_from_desktop)
         self.btn_discard.clicked.connect(lambda: self.close())
         
     def show_groups(self):
@@ -96,14 +96,15 @@ class Apps_window(Ui_App_Window, QDialog):
             Label,
             SpinBox,
             SettingsCheckBox,
-            ComboBox
+            ComboBox,
+            IconToolButton()
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
         
         font_list = [
             self.btn_save,
-            self.btn_desktop,
+            self.tbtn_desktop,
             self.btn_discard,
             self.lbl_name,
             self.lbl_path,
@@ -115,3 +116,5 @@ class Apps_window(Ui_App_Window, QDialog):
         ]
         
         set_font(font_list)
+        
+        self.tbtn_desktop.setIcon(QIcon(":/button_icons/file_white"))

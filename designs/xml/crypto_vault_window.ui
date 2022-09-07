@@ -256,7 +256,7 @@
           <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="text">
-          <string/>
+          <string>Add</string>
          </property>
         </widget>
        </item>

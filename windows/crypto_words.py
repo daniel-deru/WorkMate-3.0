@@ -1,19 +1,16 @@
 import sys
 import os
+import re
 from tkinter.ttk import Style
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 import math
 
-from PyQt5.QtWidgets import QDialog, QHBoxLayout, QWidget, QLabel, QGridLayout, QLineEdit
+from PyQt5.QtWidgets import QDialog, QHBoxLayout, QWidget, QLabel, QGridLayout, QLineEdit, QSizePolicy
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QIcon, QFont
 
 from designs.python.crypto_words import Ui_CryptoWords
-
-from database.model import Model
-
-from widgets.password_show_hide import PasswordWidget
 
 from utils.message import Message
 from utils.globals import FONT_NAME
@@ -22,6 +19,8 @@ from utils.helpers import set_font, StyleSheet
 from widgetStyles.Dialog import Dialog
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
+from widgetStyles.LineEdit import LineEdit
+from widgetStyles.Widget import Widget
 
 class CryptoWords(Ui_CryptoWords, QDialog):
     filled_words: pyqtSignal = pyqtSignal(list)
@@ -43,7 +42,8 @@ class CryptoWords(Ui_CryptoWords, QDialog):
         styles = [
             PushButton,
             Dialog,
-            Label
+            Label,
+            LineEdit
         ]
         
         stylesheet = StyleSheet(styles).create()
@@ -59,20 +59,24 @@ class CryptoWords(Ui_CryptoWords, QDialog):
         
         for i in range(words_layout.count()):
             widget_container: QWidget = words_layout.itemAt(i).widget()
-            password_widget: QWidget = widget_container.layout().itemAt(1).widget()
+            line_edit: QLineEdit = widget_container.layout().itemAt(1).widget()
 
             
-            line_edit: QLineEdit = password_widget.layout().itemAt(0).widget()
+            # line_edit: QLineEdit = password_widget.layout().itemAt(0).widget()
 
             if(type(line_edit) == QLineEdit):
                 word: str = line_edit.text()
-                # if(not word):
-                    # Message(f"There is no word in block {i + 1}.", "Missing Word").exec_()
-                    # valid_submit = False
                 if word: words.append(word)
                 
         if(len(words) < self.num_words):
             Message(f"You have {len(words)} words but, you need {self.num_words} words. Please check for missing fields", "Missing Words").exec_()
+            valid_submit = False
+            
+        word_string = "".join(words)
+        valid_words = re.match(r"^[a-z]*$", word_string)
+
+        if(not valid_words):
+            Message("One or more words are not valid. Only alphabetic characters are allowed as valid words", "Invalid Word").exec_()
             valid_submit = False
             
         if(valid_submit):
@@ -82,23 +86,32 @@ class CryptoWords(Ui_CryptoWords, QDialog):
     def displayWordBoxes(self):        
         COLUMNS: int = 3
         count: int = 1     
-
+        widget_style = StyleSheet([Widget, Label]).create()
+        
         for i in range(math.ceil(self.num_words/COLUMNS)):
             for j in range(COLUMNS):
                 hbox: QHBoxLayout = QHBoxLayout()
                 hbox.setContentsMargins(0, 0, 0, 0)
+                
                 widget: QWidget = QWidget()
                 widget.setContentsMargins(0, 0, 0, 0)
+                widget.setStyleSheet(widget_style)
 
                 self.number: QLabel = QLabel(f"{str(count).zfill(2)}. ")
                 self.number.setFont(QFont(FONT_NAME))
-                self.number.setMaximumWidth(30)
+                self.number.setMaximumWidth(40)
                 
-                param = self.words[count-1] if self.words else None
-                password: PasswordWidget = PasswordWidget(param)
+                lne_word: QLineEdit = QLineEdit()
+                lne_word.setMinimumWidth(200)
+                sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+                lne_word.setSizePolicy(sizePolicy)
+                param = self.words[count-1] if self.words else ""
+                lne_word.setText(param)
+                lne_word.textChanged.connect(self.fill_fields)
+                set_font([lne_word])
 
                 hbox.addWidget(self.number)
-                hbox.addWidget(password)
+                hbox.addWidget(lne_word)
 
                 widget.setLayout(hbox)
 
@@ -107,3 +120,13 @@ class CryptoWords(Ui_CryptoWords, QDialog):
                 self.gbox_words.addWidget(widget, i, j)
                 
                 count += 1
+                
+    def fill_fields(self, text: str):
+        words_list: list[str] = text.split(" ")
+        if(len(words_list) != 12):
+            return
+        
+        for i in range(self.gbox_words.count()):
+            widget_container: QWidget = self.gbox_words.itemAt(i).widget()
+            line_edit: QLineEdit = widget_container.layout().itemAt(1).widget()
+            line_edit.setText(words_list[i])

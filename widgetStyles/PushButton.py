@@ -173,6 +173,7 @@ def _create_custom_tool_button(id=""):
         background-color: {light_blue};
         border: none;
         border-radius: 5px;
+        font-size: 16px;
         width: 70px;
         height: 30px;
     }}

@@ -63,13 +63,14 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         
     def open_word_window(self):
         words: int = self.get_num_words()
-        existing_words = None
+        existing_words = self.words
         
-        if(self.secret):
+        if(self.secret and not existing_words):
             data: object = self.get_data()
             existing_words: list[str] = data['words'].split(" ")
             if words > len(existing_words):
                 existing_words += ["" for _ in range(words - len(existing_words))]
+            
 
         crypto_words_window = CryptoWords(words, existing_words)
         crypto_words_window.filled_words.connect(self.set_words)
@@ -107,7 +108,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         self.tbtn_generate_password.setIcon(QIcon(":/button_icons/password"))
         self.tbtn_generate_password.setIconSize(QSize(30, 20))
         
-        self.tbtn_num_words.setIcon(QIcon(":/button_icons/general"))
+        # self.tbtn_num_words.setIcon(QIcon(":/button_icons/general"))
 
         self.setStyleSheet(stylesheet)
         
@@ -151,7 +152,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         elif(not username): 
             return Message("Please Provide a username", "No Username").exec_()
         elif(not self.words):
-            return Message("Please save your seedphrase/passphrase by pressing the button next to the number to words.", "No Passphrase").exec_()        
+            return Message("Please save your passphrase by pressing the 'Add' button.", "No Passphrase").exec_()        
 
         data = {
             'name': username,

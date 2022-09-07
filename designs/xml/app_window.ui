@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>514</width>
-    <height>284</height>
+    <height>127</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,20 +15,14 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QVBoxLayout" name="vbox_name">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMinimumSize</enum>
-     </property>
-     <item>
+    <layout class="QFormLayout" name="formLayout_3">
+     <item row="0" column="0">
       <widget class="QLabel" name="lbl_name">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -36,13 +30,13 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>40</height>
+         <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>40</height>
+         <height>16777215</height>
         </size>
        </property>
        <property name="text">
@@ -50,17 +44,10 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QLineEdit" name="lnedt_name"/>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
+     <item row="1" column="0">
       <widget class="QLabel" name="lbl_group">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -68,7 +55,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>40</height>
+         <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -82,23 +69,10 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QComboBox" name="cmb_group"/>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="vbox_path">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMinimumSize</enum>
-     </property>
-     <item>
+     <item row="2" column="0">
       <widget class="QLabel" name="lbl_path">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -106,7 +80,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>40</height>
+         <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -123,60 +97,25 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QLineEdit" name="lnedt_path"/>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="lnedt_name"/>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="hbox_desktop">
-     <item>
-      <spacer name="spcr_left_desktop">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="cmb_group"/>
      </item>
-     <item>
-      <widget class="QPushButton" name="btn_desktop">
-       <property name="minimumSize">
-        <size>
-         <width>200</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>400</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="text">
-        <string>Add From Desktop</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="spcr_right_desktop">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
+     <item row="2" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLineEdit" name="lnedt_path"/>
+       </item>
+       <item>
+        <widget class="QToolButton" name="tbtn_desktop">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
