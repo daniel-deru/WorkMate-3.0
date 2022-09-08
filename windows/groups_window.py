@@ -39,16 +39,13 @@ class GroupsWindow(Ui_GroupsWindow, QDialog):
         self.btn_add_group.clicked.connect(self.add_group)
     
     def set_window_height(self, num_groups):
-        min_height = 110
+        min_height = 130
         max_height = 600        
-        height = min_height + (50 * num_groups)
-        print(num_groups)
+        height = min_height + (55 * num_groups)
         
         if(num_groups < 10):
-            print("There are less than 9 groups setting to custom height")
             self.setFixedHeight(height)
         else:
-            print("There are more than 9 groups setting fixed height")
             self.setFixedHeight(max_height)
             
     def read_styles(self):

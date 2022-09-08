@@ -66,16 +66,16 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="btn_delete">
+      <widget class="QPushButton" name="btn_copy">
        <property name="text">
-        <string>Delete</string>
+        <string>Copy</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_copy">
+      <widget class="QPushButton" name="btn_delete">
        <property name="text">
-        <string>Copy</string>
+        <string>Delete</string>
        </property>
       </widget>
      </item>

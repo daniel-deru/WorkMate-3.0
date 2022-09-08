@@ -33,7 +33,11 @@ class Apps_window(Ui_App_Window, QDialog):
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.setWindowTitle("Add Your App")
         self.read_styles()
+        
+        self.app = app
         self.apps = Model().read('apps')
+        
+        self.fill_data()
 
         self.btn_save.clicked.connect(self.save_clicked)
         self.tbtn_desktop.clicked.connect(self.add_from_desktop)
@@ -57,27 +61,24 @@ class Apps_window(Ui_App_Window, QDialog):
                     'sequence': '0',
                     'group_id': group
                 }
-
+        
         if not name:
-            Message("Please enter a name for your app", "No name").exec_()
+           return Message("Please enter a name for your app", "No name").exec_()
         elif not path:
-            Message("Please enter a path for your app", "No path").exec_()
-        else:
-            self.save_apps(data)
+           return Message("Please enter a path for your app", "No path").exec_()
+        self.save_apps(data)
     
     def save_apps(self, data):
-        is_unique = True
-        for app in self.apps:
-            if data['name'] in app:
-                is_unique = False
-                return Message("This name is already being used", "Name already exists").exec_()
 
-            elif data['path'] in app:
-                is_unique = False
-                return Message("This path is already being used", "Path already exists").exec_()
-        if is_unique:
+        if(not self.app):
+            for app in self.apps:
+                if data['name'] in app:
+                    return Message("This name is already being used", "Name already exists").exec_()
             Model().save('apps', data)
-            self.app_window_signal.emit("saved")
+        else:
+            Model().update('apps', data, self.app[0])
+
+        self.app_window_signal.emit("saved")
         self.close()
 
     def add_from_desktop(self):
@@ -118,3 +119,19 @@ class Apps_window(Ui_App_Window, QDialog):
         set_font(font_list)
         
         self.tbtn_desktop.setIcon(QIcon(":/button_icons/file_white"))
+        
+    def fill_data(self):
+        if(not self.app):
+            return
+        
+        groups = Model().read("groups")
+        current_group = 0
+            
+        for i in range(len(groups)):
+            if int(self.app[4]) == groups[i][0]:
+                current_group = i
+            self.cmb_group.addItem(groups[i][1], groups[i][0])
+
+        self.cmb_group.setCurrentIndex(current_group) 
+        self.lnedt_name.setText(self.app[1])
+        self.lnedt_path.setText(self.app[2])

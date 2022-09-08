@@ -16,3 +16,16 @@ LineEdit = f"""
         border: 1px solid {light_blue};
     }}
 """
+
+LineEditSearch = f"""
+    QLineEdit {{
+        background-color: {mode};
+        color: {default};
+        padding: 5px 8px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid {light_blue};
+        max-width: 300px;
+    }}
+
+"""

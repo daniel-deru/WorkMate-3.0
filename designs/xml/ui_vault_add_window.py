@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './xml/vault_add_window.ui'
+# Form implementation generated from reading ui file 'c:\Users\SA Trust PC Big\Desktop\WorkMate 3.0 Pro\designs\xml\vault_add_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #

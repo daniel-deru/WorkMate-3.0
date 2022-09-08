@@ -120,21 +120,6 @@ class AppsEdit(Ui_AppsEdit, QDialog):
         else:
             
             if self.app is not None:
-                # if self.app[3] != sequence:
-                #     old = int(self.app[3]) - 1
-                #     new = sequence - 1
-                #     move_up = True if old > new else False
-                #     global array
-                #     if move_up:
-                #         array = self.apps[new:old]
-                #     elif not move_up:
-                #         array = self.apps[old+1:new+1]
-                #     for app in array:
-                #         app = list(app)
-                #         if move_up:
-                #             Model().update('apps', {'sequence': app[3] + 1}, app[0])
-                #         elif not move_up:
-                #             Model().update('apps', {'sequence': app[3] - 1}, app[0])
                 Model().update('apps', data, self.app[0])
                 self.app_edit_window_signal.emit("updated")
             self.close()

@@ -13,7 +13,6 @@ from designs.python.apps_tab import Ui_apps_tab
 from database.model import Model
 
 from windows.apps_window import Apps_window
-from windows.apps_edit_window import AppsEdit
 from windows.delete import DeleteWindow
 
 from widgets.app_item import AppItem
@@ -46,7 +45,7 @@ class Apps_tab(Ui_apps_tab, QWidget):
         self.read_styles()
 
         self.btn_add_app.clicked.connect(self.add_app)
-        self.chk_edit_apps.stateChanged.connect(self.edit_checked)
+        # self.chk_edit_apps.stateChanged.connect(self.edit_checked)
         
         self.btn_delete.clicked.connect(self.delete)
         
@@ -107,24 +106,14 @@ class Apps_tab(Ui_apps_tab, QWidget):
                 app_button = AppItem(grid_items[i][j]).create()
                 app_button.app_clicked_signal.connect(self.get_app)
                 self.gbox_apps.addWidget(app_button, row, col)
-
-    def edit_checked(self):
-        # delete_apps = self.chk_delete_apps
-        edit_apps = self.chk_edit_apps
-
-        # if delete_apps.isChecked() and edit_apps.isChecked():
-        #     edit_apps.setChecked(True)
-        #     delete_apps.setChecked(False)
-
-            
-    
-    # Handles the editing and deleting of the apps
+  
+    # Handles the editing of the apps
     def get_app(self, app):
         edit = self.chk_edit_apps
             
         if edit.isChecked():
-            app_window = AppsEdit(app)
-            app_window.app_edit_window_signal.connect(self.update)
+            app_window = Apps_window(app)
+            app_window.app_window_signal.connect(self.update)
             app_window.exec_()
             edit.setChecked(False)
         else:

@@ -24,7 +24,7 @@ class FilterGroupWidget(QWidget):
         super(FilterGroupWidget, self).__init__()
         self.setupUi()
         self.show_groups()
-        self.read_styles()
+        self.read_styles()        
         
         self.btn_manage_groups.clicked.connect(self.manage_groups)
         
@@ -53,6 +53,7 @@ class FilterGroupWidget(QWidget):
         
     def setupUi(self):
         hbox = QHBoxLayout()
+        hbox.setContentsMargins(0, 0, 0, 0)
         
         self.cmb_groups = ComboBox()
         self.cmb_groups.setView(QListView())

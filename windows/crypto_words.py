@@ -1,7 +1,6 @@
 import sys
 import os
 import re
-from tkinter.ttk import Style
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 import math
@@ -86,7 +85,6 @@ class CryptoWords(Ui_CryptoWords, QDialog):
     def displayWordBoxes(self):        
         COLUMNS: int = 3
         count: int = 1     
-        widget_style = StyleSheet([Widget, Label]).create()
         
         for i in range(math.ceil(self.num_words/COLUMNS)):
             for j in range(COLUMNS):
@@ -95,7 +93,6 @@ class CryptoWords(Ui_CryptoWords, QDialog):
                 
                 widget: QWidget = QWidget()
                 widget.setContentsMargins(0, 0, 0, 0)
-                widget.setStyleSheet(widget_style)
 
                 self.number: QLabel = QLabel(f"{str(count).zfill(2)}. ")
                 self.number.setFont(QFont(FONT_NAME))

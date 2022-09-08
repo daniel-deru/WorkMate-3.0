@@ -30,6 +30,7 @@ from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
 from widgetStyles.ComboBox import ComboBox
+from widgetStyles.LineEdit import LineEditSearch
 from widgetStyles.ScrollBar import ScrollBar
 
 from database.model import Model
@@ -66,7 +67,8 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             PushButton,
             CheckBoxSquare,
             Label,
-            ScrollBar
+            ScrollBar,
+            LineEditSearch
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
@@ -76,7 +78,9 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             self.btn_add,
             self.btn_login,
             self.lbl_secret,
-            self.btn_delete
+            self.btn_delete,
+            self.btn_search,
+            self.lne_search
         ]
 
         set_font(widget_list)
