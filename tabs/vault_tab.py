@@ -3,10 +3,11 @@ import re
 import sys
 import json
 import math
+from time import time
 
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QPushButton
 from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QFont, QResizeEvent
+from PyQt5.QtGui import QFont, QResizeEvent, QIcon
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -33,6 +34,7 @@ from widgetStyles.Label import Label
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.LineEdit import LineEditSearch
 from widgetStyles.ScrollBar import ScrollBar
+from widgetStyles.styles import VAULT_BUTTON_COLORS
 
 from database.model import Model
 
@@ -130,13 +132,16 @@ class Vault_tab(Ui_Vault_tab, QWidget):
     def update_by_group(self, group):
         grid_items = self.get_group_items(group)
         self.create_secrets(grid_items)
+
             
     def get_group_items(self, group) -> list:
         secrets = Model().read('vault')
         
         current_group = list(filter(lambda todo: todo[4] == str(group), secrets))
+       
         # Create the nested list for the grid layout
         grid_items = []
+             
         for i in range(math.ceil(len(current_group)/self.COLUMNS)):
             subarr = []
             for j in range(self.COLUMNS):
@@ -152,9 +157,9 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         # Loop over the nested list and add items to the grid layout
         for i in range(len(grid_items)):
             for j in range(len(grid_items[i])):
-                self.secret_item = VaultItem(grid_items[i][j]).create()
-                self.secret_item.vault_clicked_signal.connect(self.get_secret)
-                self.gbox_secrets.addWidget(self.secret_item, i, j)
+                self.btn_vault = VaultItem(grid_items[i][j]).create()
+                self.btn_vault.vault_clicked_signal.connect(self.get_secret)
+                self.gbox_secrets.addWidget(self.btn_vault, i, j)
         
     # Main event handler for when a button is clicked
     def get_secret(self, secret):
@@ -169,9 +174,11 @@ class Vault_tab(Ui_Vault_tab, QWidget):
     
     # Clear the window from the data add the data back and read the styles
     def update(self):
-        clear_window(self.gbox_secrets)
+        clear_window(self.gbox_secrets) # clear the grid before adding new items
+        
+        # Get the current group index
         initial_group = self.filter_widget.get_current_group()
-        self.create_secrets(initial_group)
+        self.update_by_group(initial_group)
         self.read_styles()
 
     # Slot for when the login button is clicked
@@ -241,15 +248,3 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         elif secret[1] == "general":
             general_vault = GeneralVaultView(secret)
             general_vault.exec_()
-            
-    # def resizeEvent(self, event: QResizeEvent) -> None:
-    #     four_items = 4 * 280
-    #     width = self.gbox_secrets.geometry().width()
-    #     if width >= four_items:
-    #         self.COLUMNS = 4
-    #         self.update()
-    #     if width < four_items:
-    #         self.COLUMNS = 3
-    #         self.update()
-        
-    #     return super().resizeEvent(event)

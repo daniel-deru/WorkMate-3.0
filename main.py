@@ -151,11 +151,11 @@ class Main(Ui_main_container, QWidget):
         self.tab_widget.setFont(QFont(font))
         self.setTabIcons()
 
-    def updateWindow(self):     
+    def updateWindow(self):
         self.apps_tab.app_signal.emit("update")
         self.notes_tab.note_signal.emit("update")
         self.todo_tab.todo_signal.emit("update")
-        self.vault_tab.vault_signal.emit("update")
+        self.vault_tab.vault_signal.emit("update") # problem lies here
         self.settings_tab.settings_update_signal.emit("update")
         self.custom_tabbar.update_bar.emit(True)
         self.read_style()

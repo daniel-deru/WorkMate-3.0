@@ -3,6 +3,7 @@ import os
 import threading
 import shutil
 import json
+from time import time
 
 from PyQt5.QtWidgets import QWidget, QFileDialog, qApp, QPushButton
 from PyQt5.QtCore import pyqtSignal, Qt, QThread, QSize, pyqtSlot
@@ -151,12 +152,11 @@ class SettingsTab(Ui_Settings_tab, QWidget):
     def set_night_mode(self, checked):
         if checked:
             Model().update("settings", {'nightmode': "1"}, 'settings')
-            self.settings_signal.emit("settings changed")
-            self.updateWindow()
         else:
             Model().update("settings", {'nightmode': "0"}, 'settings')
-            self.settings_signal.emit("settings changed")
-            self.updateWindow()
+            
+        self.updateWindow()
+        
     
     # 2fa slot
     def twofa(self, checked):
@@ -182,6 +182,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.read_styles()
         self.set_checkboxes()
         if send_signal: self.settings_signal.emit("settings")
+
 
     def read_styles(self):
         styles = [

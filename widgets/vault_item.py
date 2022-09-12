@@ -1,19 +1,17 @@
 import os
 import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QFont, QCursor, QIcon
-
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from database.model import Model
 
 from widgetStyles.PushButton import VaultButton
 from widgetStyles.styles import VAULT_BUTTON_COLORS
 
-from utils.helpers import StyleSheet, set_font
+from utils.helpers import set_font
 
 class VaultItem(QPushButton):
     vault_clicked_signal = pyqtSignal(tuple)
@@ -23,8 +21,7 @@ class VaultItem(QPushButton):
         self.setupUI()
         self.read_styles()
         self.setCursor(QCursor(Qt.PointingHandCursor))
-        
-        # if(len(self.text()) > 35): self.setStyleSheet(VaultButtonLeftAlign)
+    
         self.clicked.connect(self.app_clicked)
 
     def app_clicked(self):
@@ -42,10 +39,7 @@ class VaultItem(QPushButton):
         self.setIcon(icon)
     
     def read_styles(self):
-        text_length = len(self.text())
         color = VAULT_BUTTON_COLORS[self.secret[1]]
-        widget_list = [VaultButton(text_length, color)]
-        
-        stylesheet = StyleSheet(widget_list).create()
-        self.setStyleSheet(stylesheet)
+        self.setStyleSheet(VaultButton(color))
+
         
