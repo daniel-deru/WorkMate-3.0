@@ -82,7 +82,21 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cmb_groups"/>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QComboBox" name="cmb_groups"/>
+       </item>
+       <item>
+        <widget class="QToolButton" name="tbtn_add_group">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string>Add</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>734</width>
-    <height>321</height>
+    <height>323</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -186,9 +186,6 @@
        </property>
       </widget>
      </item>
-     <item row="7" column="1">
-      <widget class="QComboBox" name="cmb_group"/>
-     </item>
      <item row="8" column="0">
       <widget class="QLabel" name="lbl_path">
        <property name="text">
@@ -208,6 +205,30 @@
          </property>
          <property name="text">
           <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="7" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QComboBox" name="cmb_group">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="tbtn_add_group">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string>Add</string>
          </property>
         </widget>
        </item>

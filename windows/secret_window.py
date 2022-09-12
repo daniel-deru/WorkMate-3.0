@@ -13,7 +13,7 @@ from designs.python.vault_add_window import Ui_AddSecret_window
 
 from database.model import Model
 
-from widgetStyles.PushButton import PushButton
+from widgetStyles.PushButton import PushButton, IconToolButton
 from widgetStyles.SpinBox import SpinBox
 from widgetStyles.Label import Label
 from widgetStyles.LineEdit import LineEdit
@@ -23,6 +23,7 @@ from widgetStyles.ComboBox import ComboBox
 from utils.helpers import StyleSheet, json_to_dict, set_font
 from utils.message import Message
 
+from windows.group_window import GroupWindow
 
 class SecretWindow(Ui_AddSecret_window, QDialog):
     secret_signal = pyqtSignal(str)
@@ -39,11 +40,19 @@ class SecretWindow(Ui_AddSecret_window, QDialog):
         self.read_styles()
         self.btn_save.clicked.connect(self.save)
         self.btn_cancel.clicked.connect(lambda: self.close())
+        self.tbtn_add_group.clicked.connect(self.add_new_group)
+       
         if secret:
             self.display_secret()
+        
+    def add_new_group(self):
+        group_window = GroupWindow()
+        group_window.group_add_signal.connect(lambda: self.set_groups())
+        group_window.exec_()
             
     def set_groups(self):
         groups = Model().read("groups")
+        self.cmb_group.clear()
         
         for i in range(len(groups)):
             self.cmb_group.addItem(groups[i][1], groups[i][0])
@@ -136,7 +145,8 @@ class SecretWindow(Ui_AddSecret_window, QDialog):
             Label,
             LineEdit,
             Dialog,
-            ComboBox
+            ComboBox,
+            IconToolButton("#tbtn_add_group")
         ]
 
         stylesheet = StyleSheet(styles).create()
@@ -161,7 +171,8 @@ class SecretWindow(Ui_AddSecret_window, QDialog):
             self.lnedt_header5,
             self.lbl_group,
             self.cmb_group,
-            self.cmb_group.view()
+            self.cmb_group.view(),
+            self.tbtn_add_group,
         ]
 
         set_font(font_widgets)

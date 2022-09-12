@@ -9,6 +9,8 @@ from PyQt5.QtWidgets import QDialog, QFileDialog, QLineEdit, QListView
 from PyQt5.QtCore import pyqtSignal, Qt, pyqtSlot, QSize
 from PyQt5.QtGui import QFont, QIcon
 
+from windows.group_window import GroupWindow
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
@@ -62,6 +64,14 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.chk_show_password.stateChanged.connect(lambda show: self.show_password(show, self.lne_password))
         self.chk_password2.stateChanged.connect(lambda show: self.show_password(show, self.lne_password2))
         
+        self.tbtn_add_group.clicked.connect(self.add_new_group)
+        
+    def add_new_group(self):
+        print("I am supposed to add a new group")
+        group_window = GroupWindow()
+        group_window.group_add_signal.connect(lambda: self.set_groups())
+        group_window.exec_()
+        
     @pyqtSlot()
     def read_qrcode(self):
         file = QFileDialog.getOpenFileName(self, "Open a file", DESKTOP, "All Files (*.*)")[0]
@@ -79,6 +89,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
     
     def set_groups(self):
         groups = Model().read("groups")
+        self.cmb_group.clear()
         
         for i in range(len(groups)):
             self.cmb_group.addItem(groups[i][1], groups[i][0])
@@ -124,7 +135,7 @@ class AppVaultWindow(Ui_AppVault, QDialog):
             self.dte_password_exp,
             self.lbl_group,         self.cmb_group,
             self.cmb_group.view(),  self.lbl_twofa_code,
-            self.lne_twofa_code
+            self.lne_twofa_code, self.tbtn_add_group
         ]
         
         set_font(font_widget)

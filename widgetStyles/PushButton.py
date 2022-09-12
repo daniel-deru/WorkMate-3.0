@@ -171,6 +171,7 @@ def _create_custom_tool_button(id=""):
     IconToolButton = f"""
         QToolButton{id} {{
         background-color: {light_blue};
+        color: white;
         border: none;
         border-radius: 5px;
         font-size: 16px;

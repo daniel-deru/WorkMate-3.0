@@ -13,16 +13,19 @@ from designs.python.note_window import Ui_Note_Window
 
 
 from utils.message import Message
+from utils.helpers import StyleSheet, set_font
+
 from database.model import Model
-import assets.resources
-from widgetStyles.PushButton import PushButton
+
+from windows.group_window import GroupWindow
+
+from widgetStyles.PushButton import PushButton, IconToolButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.TextEdit import TextEdit
 from widgetStyles.Dialog import Dialog
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.Label import Label
-from utils.helpers import StyleSheet, set_font
 
 
 class Note_window(Ui_Note_Window, QDialog):
@@ -42,19 +45,29 @@ class Note_window(Ui_Note_Window, QDialog):
         self.vbox_body.addWidget(self.custom_text_edit)
 
         self.read_styles()
+        self.set_note()
 
-        self.chkbx_edit.stateChanged.connect(self.set_delete_active)
-
-        if self.note:
-            self.lnedt_title.setText(self.note[1])
-            self.custom_text_edit.setPlainText(self.note[2])
-            self.btn_save.setText("Update")
-            self.text = self.note[2]
+        self.chkbx_edit.stateChanged.connect(self.set_delete_active) 
         self.btn_save.clicked.connect(self.save_clicked)
         self.btn_copy_note.clicked.connect(self.copy_text)
+        self.tbtn_add_group.clicked.connect(self.add_new_group)
+        
+    def add_new_group(self):
+        group_window = GroupWindow()
+        group_window.group_add_signal.connect(lambda: self.set_groups())
+        group_window.exec_()
+        
+    def set_note(self):
+        if not self.note: return
+        
+        self.lnedt_title.setText(self.note[1])
+        self.custom_text_edit.setPlainText(self.note[2])
+        self.btn_save.setText("Update")
+        self.text = self.note[2]
         
     def set_groups(self):
         groups = Model().read('groups')
+        self.cmb_groups.clear()
         
         for i in range(len(groups)):
             self.cmb_groups.addItem(groups[i][1], groups[i][0])
@@ -103,7 +116,8 @@ class Note_window(Ui_Note_Window, QDialog):
             TextEdit,
             Dialog,
             ComboBox,
-            Label
+            Label,
+            IconToolButton()
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
@@ -118,7 +132,8 @@ class Note_window(Ui_Note_Window, QDialog):
             self.cmb_groups.view(),
             self.lbl_group,
             self.lbl_name,
-            self.lbl_body
+            self.lbl_body,
+            self.tbtn_add_group
         ]
         set_font(font_list)
 

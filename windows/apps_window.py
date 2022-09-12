@@ -1,5 +1,6 @@
 import sys
 import os
+from tokenize import group
 from PyQt5.QtWidgets import QDialog, QFileDialog, QListView
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QFont, QIcon
@@ -11,7 +12,7 @@ from database.model import Model
 from utils.message import Message
 from utils.helpers import StyleSheet, set_font
 
-import assets.resources
+from windows.group_window import GroupWindow
 
 from widgetStyles.Dialog import Dialog
 from widgetStyles.LineEdit import LineEdit
@@ -42,9 +43,17 @@ class Apps_window(Ui_App_Window, QDialog):
         self.btn_save.clicked.connect(self.save_clicked)
         self.tbtn_desktop.clicked.connect(self.add_from_desktop)
         self.btn_discard.clicked.connect(lambda: self.close())
+        self.tbtn_add.clicked.connect(self.add_new_group)
+        
+    def add_new_group(self):
+        group_window = GroupWindow()
+        group_window.group_add_signal.connect(lambda: self.show_groups())
+        group_window.exec_()
         
     def show_groups(self):
         groups = Model().read("groups")
+        self.cmb_group.clear()
+        
         for group in groups:
             self.cmb_group.addItem(group[1], group[0])
         
@@ -113,7 +122,8 @@ class Apps_window(Ui_App_Window, QDialog):
             self.lnedt_path,
             self.lbl_group,
             self.cmb_group,
-            self.cmb_group.view()
+            self.cmb_group.view(),
+            self.tbtn_add
         ]
         
         set_font(font_list)

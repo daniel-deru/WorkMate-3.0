@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import json
 import math
@@ -43,21 +44,42 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         self.setupUi(self)
         self.COLUMNS = 3
         self.filter_widget = FilterGroupWidget()
-        self.filter_widget.group_changed_signal.connect(lambda group: self.create_secrets(group))
+        self.filter_widget.group_changed_signal.connect(lambda group: self.update_by_group(group))
         self.hbox_filter_widget.addWidget(self.filter_widget)
         self.read_styles()
         
         initial_group = self.filter_widget.get_current_group()
-        self.create_secrets(initial_group)
+        self.update_by_group(initial_group)
 
         self.btn_add.clicked.connect(self.add_clicked)
         self.btn_login.clicked.connect(self.login_clicked)
         self.btn_delete.clicked.connect(self.delete_secret)
+        self.btn_search.clicked.connect(self.search_items)
        
         self.vault_signal.connect(self.update)
         self.login_signal.connect(self.login)
 
         self.logged_in = False
+        
+    def search_items(self):
+        search_for = self.lne_search.text()
+        current_group = self.filter_widget.get_current_group()
+        
+        group_items = self.get_group_items(current_group)
+        
+        found_items = []
+
+        for group in group_items:
+            item_list = []
+            for item in group:
+                if(re.match(f".*{search_for}.*", item[2], re.IGNORECASE)):
+                    print(item[2])
+                    item_list.append(item)
+            if(len(item_list) > 0):
+                found_items.append(item_list)
+                
+        self.create_secrets(found_items)
+        
 
     def create_tab(self):
         return self
@@ -105,14 +127,15 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             new_crypto_secret.crypto_update_signal.connect(self.update)
             new_crypto_secret.exec_()
     
-    def create_secrets(self, group):
-        clear_window(self.gbox_secrets)
+    def update_by_group(self, group):
+        grid_items = self.get_group_items(group)
+        self.create_secrets(grid_items)
+            
+    def get_group_items(self, group) -> list:
         secrets = Model().read('vault')
         
         current_group = list(filter(lambda todo: todo[4] == str(group), secrets))
-        
         # Create the nested list for the grid layout
-
         grid_items = []
         for i in range(math.ceil(len(current_group)/self.COLUMNS)):
             subarr = []
@@ -120,15 +143,18 @@ class Vault_tab(Ui_Vault_tab, QWidget):
                 if current_group:
                     subarr.append(current_group.pop(0))
             grid_items.append(subarr)
-        
+            
+        return grid_items
+    
+    def create_secrets(self, grid_items):
+        clear_window(self.gbox_secrets)
+
         # Loop over the nested list and add items to the grid layout
         for i in range(len(grid_items)):
-            row = i
             for j in range(len(grid_items[i])):
-                col = j
                 self.secret_item = VaultItem(grid_items[i][j]).create()
                 self.secret_item.vault_clicked_signal.connect(self.get_secret)
-                self.gbox_secrets.addWidget(self.secret_item, row, col)
+                self.gbox_secrets.addWidget(self.secret_item, i, j)
         
     # Main event handler for when a button is clicked
     def get_secret(self, secret):

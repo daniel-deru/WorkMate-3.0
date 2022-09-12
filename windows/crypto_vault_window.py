@@ -29,6 +29,7 @@ from database.model import Model
 
 from windows.generate_password import GeneratePasswordWindow
 from windows.crypto_words import CryptoWords
+from windows.group_window import GroupWindow
 
 class CryptoVaultWindow(Ui_CryptoVault, QDialog):
     crypto_update_signal = pyqtSignal(bool)
@@ -60,6 +61,12 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         self.btn_save.clicked.connect(self.save)
         self.tbtn_generate_password.clicked.connect(self.generate_password)
         self.tbtn_num_words.clicked.connect(self.open_word_window)
+        self.tbtn_add_group.clicked.connect(self.add_new_group)
+        
+    def add_new_group(self):
+        group_window = GroupWindow()
+        group_window.group_add_signal.connect(lambda: self.set_groups())
+        group_window.exec_()
         
     def open_word_window(self):
         words: int = self.get_num_words()
@@ -81,7 +88,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         
     def set_groups(self):
         groups = Model().read("groups")
-        
+        self.cmb_group.clear()
         for i in range(len(groups)):
             self.cmb_group.addItem(groups[i][1], groups[i][0])
             if self.secret and int(self.secret[4]) == groups[i][0]:
@@ -100,15 +107,14 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
             Label, PushButton, LineEdit,
             ToolButton, Calendar, DateEditForm,
             IconToolButton("#tbtn_generate_password"),
-            IconToolButton("#tbtn_num_words")
+            IconToolButton("#tbtn_num_words"),
+            IconToolButton("#tbtn_add_group")
         ]
         stylesheet = StyleSheet(widget_list).create()
         
         # Set the generate password icon
         self.tbtn_generate_password.setIcon(QIcon(":/button_icons/password"))
         self.tbtn_generate_password.setIconSize(QSize(30, 20))
-        
-        # self.tbtn_num_words.setIcon(QIcon(":/button_icons/general"))
 
         self.setStyleSheet(stylesheet)
         
@@ -121,7 +127,8 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
             self.lne_password1, self.lbl_generate_password,
             self.lbl_password_exp, self.dte_password_exp,
             self.lbl_group, self.cmb_group, self.cmb_group.view(),
-            self.cmb_num_words.view(), self.tbtn_num_words
+            self.cmb_num_words.view(), self.tbtn_num_words,
+            self.tbtn_add_group
         ]
         
         set_font(font_widgets)       
