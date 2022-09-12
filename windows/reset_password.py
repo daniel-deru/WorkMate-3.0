@@ -6,7 +6,7 @@ from winsound import PlaySound
 import winsound
 
 from PyQt5.QtWidgets import QDialog
-from PyQt5.QtCore import Qt, pyqtSlot, QSize
+from PyQt5.QtCore import Qt, pyqtSlot, QSize, pyqtSignal
 from PyQt5.QtGui import QIcon
 
 
@@ -25,6 +25,7 @@ from windows.generate_password import GeneratePasswordWindow
 
 
 class ResetPassword(Ui_ResetPassword, QDialog):
+    reset_signal: pyqtSignal = pyqtSignal(bool)
     def __init__(self, reset: bool = True):
         super(ResetPassword, self).__init__()
         self.reset = reset
@@ -80,5 +81,6 @@ class ResetPassword(Ui_ResetPassword, QDialog):
             if self.reset:
                 Model().update('user', {'twofa_key': None}, 'user')
                 Model().update('settings', {'twofa': '0'}, 'settings')
+                self.reset_signal.emit(True)
             self.close()
             

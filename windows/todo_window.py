@@ -11,7 +11,7 @@ from PyQt5.QtCore import QDate, Qt, pyqtSignal
 
 from designs.python.todo_edit_window import Ui_todo_edit
 
-from widgetStyles.PushButton import PushButton
+from widgetStyles.PushButton import PushButton, IconToolButton
 from widgetStyles.Label import Label
 from widgetStyles.Calendar import Calendar
 from widgetStyles.DateEdit import DateEditForm
@@ -22,6 +22,7 @@ from widgetStyles.TextEdit import TextEdit
 
 from integrations.calendar.c import Google
 
+from windows.group_window import GroupWindow
 
 from database.model import Model
 from utils.helpers import StyleSheet, set_font
@@ -44,10 +45,18 @@ class TodoWindow(Ui_todo_edit, QDialog):
         if self.todo: self.set_data()
 
         self.btn_save.clicked.connect(self.save_clicked)
+        self.tbtn_add_group.clicked.connect(self.add_new_group)
+        
         self.integrate_google_calendar = Model().read("settings")[0][6]
+        
+    def add_new_group(self):
+        group_window = GroupWindow()
+        group_window.group_add_signal.connect(lambda: self.set_groups())
+        group_window.exec_()
         
     def set_groups(self):
         groups = Model().read("groups")
+        self.cmb_group.clear()
         
         for i in range(len(groups)):
             self.cmb_group.addItem(groups[i][1], groups[i][0])
@@ -63,7 +72,8 @@ class TodoWindow(Ui_todo_edit, QDialog):
             ComboBox,
             DateEditForm,
             Calendar,
-            TextEdit
+            TextEdit,
+            IconToolButton()
         ]
 
         stylesheet: str = StyleSheet(widget_list).create()
@@ -81,7 +91,8 @@ class TodoWindow(Ui_todo_edit, QDialog):
             self.txe_description,
             self.lbl_group,
             self.cmb_group,
-            self.cmb_group.view()
+            self.cmb_group.view(),
+            self.tbtn_add_group
         ]
         
         set_font(font_widgets)        

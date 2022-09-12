@@ -293,6 +293,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
 
     def forgot_password_clicked(self):
         ask_question = PasswordQuestion()
+        ask_question.passphrase_signal.connect(lambda: self.updateWindow())
         ask_question.exec_()
 
 

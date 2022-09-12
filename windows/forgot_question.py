@@ -4,7 +4,7 @@ import math
 import webbrowser
 
 from PyQt5.QtWidgets import QDialog, QWidget, QLabel, QLineEdit, QHBoxLayout
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QFont, QIcon
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -25,6 +25,7 @@ from windows.reset_password import ResetPassword
 
 
 class PasswordQuestion(Ui_AnswerQuestionDialog, QDialog):
+    passphrase_signal: pyqtSignal = pyqtSignal(bool)
     def __init__(self):
         super(PasswordQuestion, self).__init__()
         self.setupUi(self)
@@ -82,6 +83,7 @@ class PasswordQuestion(Ui_AnswerQuestionDialog, QDialog):
 
         self.close()
         reset_password_window = ResetPassword()
+        reset_password_window.reset_signal.connect(lambda s: self.passphrase_signal.emit(s))
         reset_password_window.exec_()
         
     def create_fields(self):
