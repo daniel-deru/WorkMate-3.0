@@ -52,6 +52,7 @@ class Apps_window(Ui_App_Window, QDialog):
         
     def show_groups(self):
         groups = Model().read("groups")
+        print("adding groups to combobox")
         self.cmb_group.clear()
         
         for group in groups:
@@ -136,6 +137,7 @@ class Apps_window(Ui_App_Window, QDialog):
         
         groups = Model().read("groups")
         current_group = 0
+        self.cmb_group.clear()
             
         for i in range(len(groups)):
             if int(self.app[4]) == groups[i][0]:

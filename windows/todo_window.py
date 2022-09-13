@@ -132,7 +132,7 @@ class TodoWindow(Ui_todo_edit, QDialog):
             'group_id': group
         }
         
-        if(self.integrate_google_calendar):
+        if(int(self.integrate_google_calendar)):
             Thread(target=calendar_thread, daemon=True, args=(deadline, name,)).start()
 
         if self.todo:
