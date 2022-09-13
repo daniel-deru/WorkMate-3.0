@@ -17,6 +17,7 @@ TableWidget = f"""
     }}
     QHeaderView {{
         qproperty-defaultAlignment: AlignHCenter AlignVCenter;
+        background-color: {green};
     }}
     
     QHeaderView::section {{
@@ -37,8 +38,25 @@ TableWidget = f"""
         color: {button};
     }}
  
-    QTableWidget QTableCornerButton::section {{
+    QTableCornerButton::section {{
         background-color: {green};
+    }}
+    
+    QScrollBar:vertical {{
+      width: 10px;
+    }}
+    
+    QScrollBar::handle:vertical {{
+        min-height: 10px;
+        background-color: {green};
+    }}
+
+    QScrollBar::add-line:vertical {{
+        background: none;
+    }}
+
+    QScrollBar::sub-line:vertical {{
+        background: none;
     }}
 """
 TableWidget2 = f"""

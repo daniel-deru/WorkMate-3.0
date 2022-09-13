@@ -14,7 +14,8 @@ from PyQt5.QtWidgets import (
     QHBoxLayout, 
     QWidget,
     QComboBox,
-    QListView
+    QListView,
+    QAbstractButton
     )
 from PyQt5.QtGui import QCursor, QIcon, QFont
 from PyQt5.QtCore import Qt, QModelIndex, pyqtSignal, pyqtSlot
@@ -31,6 +32,8 @@ from widgetStyles.Dialog import Dialog
 from widgetStyles.PushButton import PushButton
 from widgetStyles.TableWidget import TableWidget
 from widgetStyles.ScrollBar import ScrollBar
+from widgetStyles.Widget import Widget
+from widgetStyles.styles import green
 
 from widgets.group_combobox import ComboBox as GroupComboBox
 
@@ -62,6 +65,12 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
         self.chk_select_all.stateChanged.connect(self.select_all)
         self.btn_import.clicked.connect(self.import_accounts)
         self.btn_groups.clicked.connect(self.manage_groups)
+        
+        self.chk_select_all.setChecked(True)
+        
+        self.corner: QAbstractButton = self.tbl_accounts.findChild(QAbstractButton)
+        # self.corner.setStyleSheet(f"background-color: {green};")
+        print(self.corner.styleSheet())
     
     @pyqtSlot()
     def manage_groups(self) -> None:
@@ -208,12 +217,13 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
             
     def read_styles(self):
         widget_list = [
-            Dialog, 
-            TableWidget, 
-            ScrollBar, 
+            Dialog,
+            Widget,
+            ScrollBar,
+            TableWidget,
             PushButton,
             ComboBox,
-            CheckBoxTable
+            CheckBoxTable,
         ]
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)

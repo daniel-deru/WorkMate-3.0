@@ -142,7 +142,7 @@ class Main(Ui_main_container, QWidget):
         styles = [
             Widget,
             MainWidget, 
-            TabWidget, 
+            TabWidget,
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)

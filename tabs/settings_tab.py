@@ -4,6 +4,7 @@ import threading
 import shutil
 import json
 from time import time
+import math
 
 from PyQt5.QtWidgets import QWidget, QFileDialog, qApp, QPushButton
 from PyQt5.QtCore import pyqtSignal, Qt, QThread, QSize, pyqtSlot

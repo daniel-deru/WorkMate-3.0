@@ -44,7 +44,7 @@ ScrollBarArea = f"""
 
 ScrollBar = f"""
   QScrollBar:vertical {{
-      width: 20px;
+      width: 25px;
   }}
 
   QScrollBar::handle:vertical {{

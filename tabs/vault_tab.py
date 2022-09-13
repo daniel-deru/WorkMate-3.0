@@ -136,7 +136,6 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             
     def get_group_items(self, group) -> list:
         secrets = Model().read('vault')
-        
         current_group = list(filter(lambda todo: todo[4] == str(group), secrets))
        
         # Create the nested list for the grid layout
