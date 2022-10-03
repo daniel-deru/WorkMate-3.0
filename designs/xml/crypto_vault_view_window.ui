@@ -358,6 +358,26 @@
         </spacer>
        </item>
        <item>
+        <widget class="QPushButton" name="btn_edit">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string>Edit</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_delete">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string>Delete</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="btn_copyall">
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>

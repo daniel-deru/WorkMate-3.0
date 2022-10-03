@@ -154,7 +154,9 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
             self.lbl_password_exp_view,
             self.lbl_twofa,
             self.lbl_twofa_view,
-            self.lbl_counter    
+            self.lbl_counter,
+            self.btn_edit,
+            self.btn_delete  
         ]
         
         widget: QWidget

@@ -246,4 +246,5 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             crypto_vault.exec_()
         elif secret[1] == "general":
             general_vault = GeneralVaultView(secret)
+            general_vault.update_signal.connect(lambda: print("update the window"))
             general_vault.exec_()

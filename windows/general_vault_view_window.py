@@ -3,8 +3,8 @@ import os
 from json import dumps
 
 from PyQt5.QtWidgets import QDialog, QLabel, QSpacerItem, QSizePolicy, QToolButton, QCheckBox, QHBoxLayout, QVBoxLayout, QFrame
-from PyQt5.QtCore import pyqtSignal, Qt, QSize
-from PyQt5.QtGui import QIcon, QCursor, QFont
+from PyQt5.QtCore import pyqtSignal, Qt, QSize, pyqtSlot
+from PyQt5.QtGui import QIcon, QCursor, QFont, QCloseEvent
 import pyperclip
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -15,12 +15,16 @@ from widgetStyles.Label import Label
 from widgetStyles.ToolButton import ToolButton
 from widgetStyles.QCheckBox import WhiteEyeCheckBox, BlackEyeCheckBox
 from widgetStyles.Dialog import Dialog
+from widgetStyles.PushButton import PushButton
 
-from utils.helpers import StyleSheet, json_to_dict
+from utils.helpers import StyleSheet, json_to_dict, clear_window
+
+from windows.secret_window import SecretWindow
 
 from database.model import Model
 
 class GeneralVaultView(Ui_GeneralVaultView, QDialog):
+    update_signal = pyqtSignal(bool)
     def __init__(self, secret) -> None:
         super(GeneralVaultView, self).__init__()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
@@ -34,15 +38,51 @@ class GeneralVaultView(Ui_GeneralVaultView, QDialog):
         self.read_styles()
         self.set_data()
         
-
+        self.should_update = False
+        
+        self.btn_delete.clicked.connect(self.delete_secret)
+        self.btn_edit.clicked.connect(self.edit_secret)
+    
+    @pyqtSlot()
+    def delete_secret(self):
+        model = Model()
+        model.delete("vault", self.secret[0])
+        self.should_update = True
+        self.close()
+    
+    @pyqtSlot()
+    def edit_secret(self):
+        edit_window = SecretWindow(self.secret)
+        edit_window.secret_signal.connect(self.update_after_edit)
+        edit_window.exec_()
+        
+    @pyqtSlot()
+    def update_after_edit(self):
+        # Get the new secrets
+        secrets: list[list] = Model().read("vault")
+        # Filter to get the correct one
+        secret_filter = filter(lambda secret: secret[0] == self.secret[0], secrets)
+        # get list object from filter object
+        secret = list(secret_filter)[0]
+        # Set the new data
+        self.secret = secret
+        self.data = json_to_dict(secret[3])
+        
+        self.set_data()
+        
+        self.should_update = True
+        
         
     def read_styles(self):
+        
         checkbox = WhiteEyeCheckBox if self.night_mode_on else BlackEyeCheckBox
+        
         widget_list = [
             checkbox,
             Label,
             ToolButton,
-            Dialog
+            Dialog,
+            PushButton
         ]
         
         stylesheet = StyleSheet(widget_list).create()
@@ -50,12 +90,16 @@ class GeneralVaultView(Ui_GeneralVaultView, QDialog):
         self.setStyleSheet(stylesheet)
         
         self.lbl_description.setFont(QFont(self.font_name))
+        self.btn_edit.setFont(QFont(self.font_name))
+        self.btn_delete.setFont(QFont(self.font_name))
         
     def set_data(self):
         self.lbl_description.setText(self.secret[2])
         
         keys: list[str] = list(self.data.keys())
         values: list[str] = list(self.data.values())
+        
+        clear_window(self.vbox_secrets)
         
         for i in range(len(keys)):
             widget = self.create_widget(keys[i], values[i])
@@ -114,6 +158,12 @@ class GeneralVaultView(Ui_GeneralVaultView, QDialog):
             lbl_value.setText(self.data[key])
         else:
             lbl_value.setText(u"\u2022"*10)
+            
+    def closeEvent(self, event: QCloseEvent) -> None:
+        if self.should_update:
+            self.update_signal.emit(True)
+            
+        return super().closeEvent(event)
         
         
         

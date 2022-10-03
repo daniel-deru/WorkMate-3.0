@@ -96,7 +96,9 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
             self.lbl_public_view,
             self.lbl_username_view,
             self.lbl_password_exp,
-            self.lbl_password_exp_view
+            self.lbl_password_exp_view,
+            self.btn_delete,
+            self.btn_edit
         ]
 
         widget: QWidget
@@ -144,17 +146,6 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
             button: QToolButton
             button.setIcon(icon)
             button.setIconSize(QSize(20, 20))
-        
-        # self.tbtn_password.setIcon(icon)
-        # self.tbtn_password.setIconSize(QSize(20, 20))
-        # self.tbtn_private.setIcon(icon)
-        # self.tbtn_private.setIconSize(QSize(20, 20))
-        # self.tbtn_username.setIcon(icon)
-        # self.tbtn_username.setIconSize(QSize(20, 20))
-        # self.tbtn_public.setIcon(icon)
-        # self.tbtn_public.setIconSize(QSize(20, 20))
-        # self.tbtn_password_exp.setIcon(icon)
-        # self.tbtn_password_exp.setIconSize(QSize(20, 20))
         
     def create_word_boxes(self, count: int, word: str) -> QFrame:
         hbox = QHBoxLayout()
