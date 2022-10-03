@@ -1,7 +1,7 @@
 import sys
 import os
 import math
-from turtle import dot
+from turtle import clear
 import pyperclip
 
 from PyQt5.QtWidgets import (
@@ -13,10 +13,11 @@ from PyQt5.QtWidgets import (
     QFrame, 
     QSpacerItem, 
     QSizePolicy,
-    QWidget
+    QWidget,
+    QMessageBox
 )
-from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QIcon, QCursor, QFont
+from PyQt5.QtCore import Qt, QSize, pyqtSlot, pyqtSignal
+from PyQt5.QtGui import QIcon, QCursor, QFont, QCloseEvent
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -27,7 +28,7 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.Dialog import Dialog
 from widgetStyles.QCheckBox import BlackEyeCheckBox, WhiteEyeCheckBox
 
-from utils.helpers import StyleSheet, json_to_dict
+from utils.helpers import StyleSheet, json_to_dict, clear_window
 from utils.message import Message
 
 from designs.python.crypto_vault_view_window import Ui_CryptoViewWindow
@@ -35,8 +36,11 @@ from designs.python.crypto_vault_view_window import Ui_CryptoViewWindow
 from database.model import Model
 
 from windows.login_window import Login
+from windows.crypto_vault_window import CryptoVaultWindow
 
 class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
+    update_signal = pyqtSignal(bool)
+    
     def __init__(self, secret):
         super(CryptoVaultViewWindow, self).__init__()
         self.secret = secret
@@ -52,6 +56,7 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         self.set_data()
         self.set_icons()
         
+        self.should_update = False        
         
         self.tbtn_username.clicked.connect(lambda: self.copy("name"))
         self.tbtn_password.clicked.connect(lambda: self.copy("password"))
@@ -63,7 +68,43 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         self.chk_password.stateChanged.connect(lambda: self.view("password", self.lbl_password, self.chk_password))
         self.chk_public.stateChanged.connect(lambda: self.view("public_key", self.lbl_public, self.chk_public))
         self.chk_password_exp.stateChanged.connect(lambda: self.view("password_exp", self.lbl_password_exp, self.chk_password_exp))
-        self.chk_private.stateChanged.connect(lambda: self.private_login(self.chk_private))        
+        self.chk_private.stateChanged.connect(lambda: self.private_login(self.chk_private))
+        
+        self.btn_delete.clicked.connect(self.delete_secret)
+        self.btn_edit.clicked.connect(self.edit_secret)
+        
+    @pyqtSlot()
+    def delete_secret(self):
+        confirm_delete = Message("Are you sure you want to delete this data", "Are You Sure?").prompt()
+        
+        if confirm_delete == QMessageBox.No: return
+        
+        Model().delete("vault", self.secret[0])
+        self.should_update = True
+        self.close()
+        
+    @pyqtSlot()
+    def edit_secret(self):
+        edit_window = CryptoVaultWindow(self.secret)
+        edit_window.crypto_update_signal.connect(self.update_after_edit)
+        edit_window.exec_()
+        
+    @pyqtSlot()
+    def update_after_edit(self):
+        secrets = Model().read("vault")
+        
+        secret_filter = filter(lambda secret: secret[0] == self.secret[0], secrets)
+        
+        secret = list(secret_filter)[0]
+        
+        self.secret = secret
+        self.data = json_to_dict(secret[3])
+        
+        self.set_dots()
+        self.set_data()
+        self.set_icons()
+        
+        self.should_update = True
         
     def read_styles(self):
         settings = Model().read("settings")[0]
@@ -115,6 +156,9 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         words: list[str] = self.data['words'].split(" ")
         COLUMNS = 3
         count = 1
+        
+        clear_window(self.gbox_words)
+        
         for i in range(math.ceil(len(words)/COLUMNS)):
             for j in range(COLUMNS):
                 frame = self.create_word_boxes(count, words[count - 1])
@@ -238,4 +282,10 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         elif status == "failure" and type(widget) is QCheckBox:
             widget.setChecked(False)
             widget.setCheckState(Qt.Unchecked)
+            
+    def closeEvent(self, event: QCloseEvent) -> None:
+        if self.should_update:
+            self.update_signal.emit(True)
+        
+        return super().closeEvent(event)
         

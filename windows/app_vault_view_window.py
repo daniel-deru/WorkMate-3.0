@@ -67,6 +67,8 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         self.tbtn_path.clicked.connect(lambda: self.copy_data("path"))
         
         self.btn_open.clicked.connect(self.open_app)
+        self.btn_delete.clicked.connect(self.delete_secret)
+        self.btn_edit.clicked.connect(self.edit_secret)
         
 
     def set_twofa_code(self):

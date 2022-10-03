@@ -2,7 +2,18 @@ import sys
 import os
 from json import dumps
 
-from PyQt5.QtWidgets import QDialog, QLabel, QSpacerItem, QSizePolicy, QToolButton, QCheckBox, QHBoxLayout, QVBoxLayout, QFrame
+from PyQt5.QtWidgets import (
+    QDialog, 
+    QLabel, 
+    QSpacerItem, 
+    QSizePolicy, 
+    QToolButton, 
+    QCheckBox, 
+    QHBoxLayout, 
+    QVBoxLayout, 
+    QFrame,
+    QMessageBox
+)
 from PyQt5.QtCore import pyqtSignal, Qt, QSize, pyqtSlot
 from PyQt5.QtGui import QIcon, QCursor, QFont, QCloseEvent
 import pyperclip
@@ -18,6 +29,7 @@ from widgetStyles.Dialog import Dialog
 from widgetStyles.PushButton import PushButton
 
 from utils.helpers import StyleSheet, json_to_dict, clear_window
+from utils.message import Message
 
 from windows.secret_window import SecretWindow
 
@@ -45,8 +57,11 @@ class GeneralVaultView(Ui_GeneralVaultView, QDialog):
     
     @pyqtSlot()
     def delete_secret(self):
-        model = Model()
-        model.delete("vault", self.secret[0])
+        confirm_delete = Message("Are you sure you want to delete this data", "Are You Sure?").prompt()
+        
+        if confirm_delete == QMessageBox.No: return
+        
+        Model().delete("vault", self.secret[0])
         self.should_update = True
         self.close()
     
