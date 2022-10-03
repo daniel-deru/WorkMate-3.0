@@ -3,7 +3,6 @@ import re
 import sys
 import json
 import math
-from time import time
 
 from PyQt5.QtWidgets import QWidget, QPushButton
 from PyQt5.QtCore import Qt, pyqtSignal
@@ -27,6 +26,7 @@ from windows.app_vault_view_window import AppVaultView
 from windows.crypto_vault_view_window import CryptoVaultViewWindow
 from windows.general_vault_view_window import GeneralVaultView
 from windows.delete import DeleteWindow
+from windows.login_window import Login
 
 from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.PushButton import PushButton
@@ -54,14 +54,24 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         self.update_by_group(initial_group)
 
         self.btn_add.clicked.connect(self.add_clicked)
-        self.btn_login.clicked.connect(self.login_clicked)
-        self.btn_delete.clicked.connect(self.delete_secret)
+        # self.btn_login.clicked.connect(self.login_clicked)
+        self.btn_delete.clicked.connect(self.delete_login)
         self.btn_search.clicked.connect(self.search_items)
        
         self.vault_signal.connect(self.update)
-        self.login_signal.connect(self.login)
+        # self.login_signal.connect(self.login)
 
         self.logged_in = False
+        
+    def delete_login(self):
+        login_window = Login(update_password=True)
+        login_window.update_password_status.connect(self.delete_secret)
+        login_window.exec_()
+        
+    def vault_login(self, secret):
+        login_window = Login(update_password=True)
+        login_window.update_password_status.connect(lambda status: self.open_secret(secret, status))
+        login_window.exec_()
         
     def search_items(self):
         search_for = self.lne_search.text()
@@ -98,9 +108,8 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         self.setStyleSheet(stylesheet)
 
         widget_list = [
-            self.chk_edit,
             self.btn_add,
-            self.btn_login,
+            # self.btn_login,
             self.lbl_secret,
             self.btn_delete,
             self.btn_search,
@@ -157,19 +166,9 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         for i in range(len(grid_items)):
             for j in range(len(grid_items[i])):
                 self.btn_vault = VaultItem(grid_items[i][j]).create()
-                self.btn_vault.vault_clicked_signal.connect(self.get_secret)
+                self.btn_vault.vault_clicked_signal.connect(self.vault_login)
                 self.gbox_secrets.addWidget(self.btn_vault, i, j)
-        
-    # Main event handler for when a button is clicked
-    def get_secret(self, secret):
-        edit = self.chk_edit
 
-        if edit.isChecked():
-            # Edit the secret that was clicked
-            self.edit_secret(secret)
-        else:
-            # Open the secret in view mode
-            self.open_secret(secret)
     
     # Clear the window from the data add the data back and read the styles
     def update(self):
@@ -188,26 +187,24 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             self.login_signal.emit("login requested")
 
     # Slot for the login signal and middleware event handler to check if the user is logged in when an event is triggered
-    def login(self, signal):
-        if signal == "logged in":
-            self.btn_login.setText("Logout")
-            self.logged_in = True
-        elif signal == "logged out":
-            self.btn_login.setText("Login")
-            self.logged_in = False
+    # def login(self, signal):
+        # if signal == "logged in":
+        #     self.btn_login.setText("Logout")
+        #     self.logged_in = True
+        # elif signal == "logged out":
+        #     self.btn_login.setText("Login")
+        #     self.logged_in = False
     
     def app_vault_click(self, secret):
-        edit = self.chk_edit
-        if not edit.isChecked():
-            data = json.loads(secret[3])
-            try:
-                os.startfile(data['path'])
-            except OSError:
-                pass
+        data = json.loads(secret[3])
+        try:
+            os.startfile(data['path'])
+        except OSError:
+            pass
 
-    def delete_secret(self):
-        if not self.logged_in:
-            self.login_clicked()
+    def delete_secret(self, status: str):
+        if status != "success":
+            # self.login_clicked()
             return
         else:
             delete_window = DeleteWindow('vault')
@@ -232,11 +229,10 @@ class Vault_tab(Ui_Vault_tab, QWidget):
                 general_vault_window = SecretWindow(secret)
                 general_vault_window.secret_signal.connect(self.update)
                 general_vault_window.exec_()
-            self.chk_edit.setChecked(False)
     
-    def open_secret(self, secret: tuple):
-        if not self.logged_in:
-            self.login_clicked()
+    def open_secret(self, secret: tuple, status: str):
+        if status != "success":
+            # self.login_clicked()
             return
         if secret[1] == "app":
             app_view = AppVaultView(secret)

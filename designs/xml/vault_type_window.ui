@@ -26,7 +26,7 @@
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="text">
-      <string>Crypto Vault</string>
+      <string>Crypto Wallet</string>
      </property>
     </widget>
    </item>
