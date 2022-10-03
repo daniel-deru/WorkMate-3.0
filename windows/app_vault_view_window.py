@@ -1,23 +1,24 @@
 import os
 import sys
 import pyperclip
-import keyboard
-import time
-from datetime import datetime
-from threading import Thread
-from pynput.mouse import Listener, Button
 import pyotp
-from threading import Thread
 
-from PyQt5.QtWidgets import QDialog, QCheckBox, QToolButton, QWidget, QVBoxLayout, QHBoxLayout, QSpacerItem, QWidgetItem
-from PyQt5.QtGui import QIcon, QFont
-from PyQt5.QtCore import QSize, QThread, Qt, pyqtSlot
+from PyQt5.QtWidgets import (
+    QDialog, 
+    QWidget, 
+    QVBoxLayout, 
+    QHBoxLayout, 
+    QMessageBox   
+)
+from PyQt5.QtGui import QIcon, QFont, QCloseEvent
+from PyQt5.QtCore import QSize, QThread, Qt, pyqtSlot, pyqtSignal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from designs.python.app_vault_view_window import Ui_AppVaultViewDialog
 
 from utils.helpers import StyleSheet, json_to_dict, clear_window
+from utils.message import Message
 
 from widgetStyles.Label import Label
 from widgetStyles.PushButton import PushButton
@@ -25,6 +26,8 @@ from widgetStyles.RadioButton import RadioButton
 from widgetStyles.QCheckBox import WhiteEyeCheckBox, BlackEyeCheckBox
 from widgetStyles.Dialog import Dialog
 from widgetStyles.ToolButton import ToolButton
+
+from windows.app_vault_window import AppVaultWindow
 
 from database.model import Model
 
@@ -36,15 +39,21 @@ from threads.totp_counter import totp_counter
 class AppVaultView(Ui_AppVaultViewDialog, QDialog):
     previous_left = 0
     auto_type_thread_active = False
+    update_signal = pyqtSignal(bool)
+    
     def __init__(self, app):
         super(AppVaultView, self).__init__()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.app = app
+        
         self.setupUi(self)
         self.setWindowIcon(QIcon(":/other/app_icon"))
+        
         self.set_icons()
         self.hideText()
         self.read_styles()
+        
+        self.should_update = False
         
         self.lbl_name_view.setText(self.app[2])
         
@@ -70,6 +79,37 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         self.btn_delete.clicked.connect(self.delete_secret)
         self.btn_edit.clicked.connect(self.edit_secret)
         
+    @pyqtSlot()
+    def delete_secret(self):
+        confirm_delete = Message("Are you sure you want to delete this data", "Are You Sure?").prompt()
+        
+        if confirm_delete == QMessageBox.No: return
+        
+        Model().delete("vault", self.app[0])
+        self.should_update = True
+        self.close()
+        
+    @pyqtSlot()
+    def edit_secret(self):
+        edit_window = AppVaultWindow(self.app)
+        edit_window.app_update_signal.connect(self.update_after_edit)
+        edit_window.exec_()
+        
+    @pyqtSlot()
+    def update_after_edit(self):
+        # Get the new secrets
+        secrets: list[list] = Model().read("vault")
+        # Filter to get the correct one
+        secret_filter = filter(lambda secret: secret[0] == self.app[0], secrets)
+        # get list object from filter object
+        secret = list(secret_filter)[0]
+        
+        self.app = secret
+        self.data = json_to_dict(secret[3])
+        
+        self.lbl_name_view.setText(self.app[2])
+        
+        self.should_update = True       
 
     def set_twofa_code(self):
         try:
@@ -236,3 +276,9 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
     def auto_type_off(self):
         self.auto_type_thread.deleteLater
         self.auto_type_thread_active = False
+        
+    def closeEvent(self, event: QCloseEvent) -> None:
+        if self.should_update:
+            self.update_signal.emit(True)
+            
+        return super().closeEvent(event)
