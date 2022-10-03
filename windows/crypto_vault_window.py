@@ -22,7 +22,7 @@ from widgetStyles.QCheckBox import WhiteEyeCheckBox, BlackEyeCheckBox
 from widgetStyles.Calendar import Calendar
 from widgetStyles.DateEdit import DateEditForm
 
-from utils.helpers import StyleSheet, set_font
+from utils.helpers import StyleSheet, set_font, json_to_dict
 from utils.message import Message
 
 from database.model import Model
@@ -51,7 +51,12 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
         self.read_styles()
         if self.secret: self.fill_data()
         
-        self.words = None
+        # Set the words if there are existing words
+        if self.secret == None:
+            self.words = None
+        else:
+            self.string_words: str = json_to_dict(self.secret[3])['words']
+            self.words = self.string_words.split(" ")
 
         self.cmb_num_words.currentIndexChanged.connect(self.update)
         self.chk_password1.stateChanged.connect(lambda: self.show_hide_password(self.chk_password1, self.lne_password1))
