@@ -128,6 +128,10 @@ class CryptoWords(Ui_CryptoWords, QDialog):
     @pyqtSlot(str)
     def fill_fields(self, text: str):
         words_list: list[str] = text.split(" ")
+        num_words_array = [12, 15, 18, 21, 24]
+        
+        # Only loop and add words if the correct number of words have been specified
+        if len(words_list) not in num_words_array: return
         
         for i in range(self.gbox_words.count()):
             widget_container: QWidget = self.gbox_words.itemAt(i).widget()

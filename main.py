@@ -46,7 +46,7 @@ class Main(Ui_main_container, QWidget):
         
         QFontDatabase.addApplicationFont(":/fonts/RobotoCondensed")
         
-        self.timer = QTimer(self) 
+        self.timer = QTimer(self)
         self.logged_in = False
         self.count = 0
         self.duration = int(Model().read("settings")[0][5]) * 60
