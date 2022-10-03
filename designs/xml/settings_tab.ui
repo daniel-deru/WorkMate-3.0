@@ -42,6 +42,9 @@
        </item>
        <item>
         <widget class="QToolButton" name="btn_google">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="styleSheet">
           <string notr="true">background-color: transparent;
 padding: 0px;</string>

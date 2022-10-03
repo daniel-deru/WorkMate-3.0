@@ -219,7 +219,11 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.lne_email.setText(data['email'])
         self.lne_username.setText(data['username'])
         self.lne_path.setText(data['path'])
-        self.lne_twofa_code.setText(data['twofa_code'])
+        
+        try:
+            self.lne_twofa_code.setText(data['twofa_code'])
+        except:
+            pass
         
         # Get the datetime object from string
         password_exp_datetime: datetime = datetime.strptime(data['password_exp'], "%Y-%m-%d")

@@ -52,7 +52,7 @@ class SetupWidget(QWidget):
         lbl_message.setStyleSheet("font-size: 20px;font-weight: bold;")
         
         self.btn_help = QPushButton("What's This?")
-        self.btn_help.setStyleSheet(StyleSheet([PushButtonLink]).create())
+        self.btn_help.setStyleSheet(StyleSheet([PushButtonLink()]).create())
         self.btn_help.setCursor(QCursor(Qt.PointingHandCursor))
         btn_container = QHBoxLayout()
         btn_container.addWidget(self.btn_help)

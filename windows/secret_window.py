@@ -76,11 +76,12 @@ class SecretWindow(Ui_AddSecret_window, QDialog):
     def get_data(self) -> object:
         data: object = {}
         fields = self.vbox_column_def.layout()
-
+        
         name = self.lnedt_name.text()
         if not name:
-            Message("Please enter a display name for your secret by which your will recognize it.", "No Name Entered")
-
+            Message("Please enter a display name for your secret by which your will recognize it.", "No Name Entered").exec_()
+            return False
+        
         for i in range(fields.count()):
             field = fields.itemAt(i).layout()
             header_field = field.itemAt(0).widget()
@@ -89,8 +90,10 @@ class SecretWindow(Ui_AddSecret_window, QDialog):
 
             if not header_field.text() and data_field.text():
                 Message("One or more of your data entries is missing a header. Please", "Please check your information.").exec_()
+                return False
             elif header_field.text() and not data_field.text():
                 Message("One or more of your header fields is missing a data entry.", "Please check your information.").exec_()
+                return False
             elif header_field.text() and data_field.text():
                 data[header_field.text()] = data_field.text()
             
@@ -103,6 +106,8 @@ class SecretWindow(Ui_AddSecret_window, QDialog):
     def save(self) -> None:
         group = self.cmb_group.currentData()
         data = self.get_data()
+        
+        if not data: return
         if(len(data['data'].keys()) <= 0):
             Message("Please Enter data into the vault.", "No Data").exec_()
             return

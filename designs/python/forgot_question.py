@@ -50,5 +50,5 @@ class Ui_AnswerQuestionDialog(object):
         _translate = QtCore.QCoreApplication.translate
         AnswerQuestionDialog.setWindowTitle(_translate("AnswerQuestionDialog", "Enter Your Passphrase"))
         self.lbl_question.setText(_translate("AnswerQuestionDialog", "Please enter your recovery phrase"))
-        self.btn_help.setText(_translate("AnswerQuestionDialog", "What is a recovery phrase?"))
+        self.btn_help.setText(_translate("AnswerQuestionDialog", "What\'s this?"))
         self.btn_enter.setText(_translate("AnswerQuestionDialog", "Enter"))

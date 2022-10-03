@@ -60,6 +60,7 @@ class Ui_App_Window(object):
         self.lnedt_path.setObjectName("lnedt_path")
         self.horizontalLayout.addWidget(self.lnedt_path)
         self.tbtn_desktop = QtWidgets.QToolButton(App_Window)
+        self.tbtn_desktop.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.tbtn_desktop.setText("")
         self.tbtn_desktop.setObjectName("tbtn_desktop")
         self.horizontalLayout.addWidget(self.tbtn_desktop)

@@ -32,6 +32,7 @@ class Ui_Settings_tab(object):
         self.lbl_google_integration.setObjectName("lbl_google_integration")
         self.horizontalLayout_13.addWidget(self.lbl_google_integration)
         self.btn_google = QtWidgets.QToolButton(Settings_tab)
+        self.btn_google.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_google.setStyleSheet("background-color: transparent;\n"
 "padding: 0px;")
         self.btn_google.setObjectName("btn_google")

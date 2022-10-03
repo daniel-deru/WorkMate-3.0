@@ -5,8 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from PyQt5.QtWidgets import QDialog, QFileDialog, QLineEdit, QWidget
 from PyQt5.QtCore import pyqtSignal, Qt, pyqtSlot, QSize
-from PyQt5.QtGui import QFont, QIcon
-
+from PyQt5.QtGui import QFont, QIcon, QCloseEvent
 
 from designs.python.groups_window import Ui_GroupsWindow
 
@@ -25,6 +24,8 @@ from widgetStyles.ScrollArea import ScrollAreaGroups
 from widgetStyles.ScrollBar import ScrollBarGroups
 
 class GroupsWindow(Ui_GroupsWindow, QDialog):
+    browser_import_signal: pyqtSignal = pyqtSignal(bool)
+    
     def __init__(self) -> None:
         super(GroupsWindow, self).__init__()
         self.groups = Model().read("groups")
@@ -143,4 +144,8 @@ class GroupsWindow(Ui_GroupsWindow, QDialog):
                 break
             if name in group_dict[group_id]['data']:
                 group_dict[group_id]['data'][name] += 1
+                
+    def closeEvent(self, event: QCloseEvent) -> None:
+        self.browser_import_signal.emit(True)
+        return super().closeEvent(event)
         

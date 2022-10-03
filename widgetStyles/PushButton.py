@@ -48,20 +48,6 @@ QPushButton:pressed {{
 }}
 """
 
-PushButtonLink = f"""
-        QPushButton {{
-            background: transparent;
-            color: {default};
-            border: none;
-            width: 75px;
-            }}
-
-        QPushButton:hover {{
-            color: blue;
-            text-decoration: underline;
-        }}
-"""
-
 ButtonBackIcon = f"""
     QPushButton#btn_back {{
     background-color: transparent;
@@ -208,5 +194,22 @@ def _create_vault_button(color=light_blue):
         }}
         """
     return VaultButtonLeftAlign
+
+def _create_link(id: str = ""):
+    return f"""
+        QPushButton{id} {{
+            background: transparent;
+            color: {default};
+            border: none;
+            width: 75px;
+            }}
+
+        QPushButton:hover {{
+            color: blue;
+            text-decoration: underline;
+        }}
+    """
+    
+PushButtonLink = _create_link
 VaultButton = _create_vault_button
 IconToolButton = _create_custom_tool_button

@@ -1,12 +1,14 @@
 import sys
 import os
 import re
+
+from pyparsing import line
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 import math
 
 from PyQt5.QtWidgets import QDialog, QHBoxLayout, QWidget, QLabel, QGridLayout, QLineEdit, QSizePolicy
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QIcon, QFont
 
 from designs.python.crypto_words import Ui_CryptoWords
@@ -84,7 +86,7 @@ class CryptoWords(Ui_CryptoWords, QDialog):
         
     def displayWordBoxes(self):        
         COLUMNS: int = 3
-        count: int = 1     
+        count: int = 1
         
         for i in range(math.ceil(self.num_words/COLUMNS)):
             for j in range(COLUMNS):
@@ -102,7 +104,13 @@ class CryptoWords(Ui_CryptoWords, QDialog):
                 lne_word.setMinimumWidth(200)
                 sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
                 lne_word.setSizePolicy(sizePolicy)
-                param = self.words[count-1] if self.words else ""
+
+                word_index = count - 1
+                # check if index for word is valid since the could only be 12 items but the loop can go to 21
+                valid_word = self.words and word_index < len(self.words) 
+                
+                param = self.words[word_index] if valid_word else ""
+                
                 lne_word.setText(param)
                 lne_word.textChanged.connect(self.fill_fields)
                 set_font([lne_word])
@@ -117,13 +125,19 @@ class CryptoWords(Ui_CryptoWords, QDialog):
                 self.gbox_words.addWidget(widget, i, j)
                 
                 count += 1
-                
+    @pyqtSlot(str)
     def fill_fields(self, text: str):
         words_list: list[str] = text.split(" ")
-        if(len(words_list) != 12):
-            return
         
         for i in range(self.gbox_words.count()):
             widget_container: QWidget = self.gbox_words.itemAt(i).widget()
             line_edit: QLineEdit = widget_container.layout().itemAt(1).widget()
-            line_edit.setText(words_list[i])
+            
+            word = words_list[i] if i < len(words_list) else ""
+            
+            # Prevent signal from firing when adding the data
+            line_edit.blockSignals(True)
+            
+            line_edit.setText(word)
+            # Re-enable signals after data is added
+            line_edit.blockSignals(False)

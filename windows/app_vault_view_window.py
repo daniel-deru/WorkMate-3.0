@@ -63,43 +63,52 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         self.tbtn_email.clicked.connect(lambda: self.copy_data("email"))
         self.tbtn_password.clicked.connect(lambda: self.copy_data("password"))
         self.tbtn_password_exp.clicked.connect(lambda: self.copy_data("password_exp"))
-        self.tbtn_twofa.clicked.connect(lambda: self.copy_data("twofa_code"))
+        self.tbtn_twofa.clicked.connect(lambda: self.copy_twofa_code())
         self.tbtn_path.clicked.connect(lambda: self.copy_data("path"))
         
         self.btn_open.clicked.connect(self.open_app)
         
 
     def set_twofa_code(self):
-        print("the function is running")
+        try:
+            self.data['twofa_code']
+        except:
+            self.delete_twofa_code()
+            return
+        
         if(self.data['twofa_code']):
             totp_counter(self, self.data['twofa_code'])
             self.chk_twofa.stateChanged.connect(self.get_twofa_code)
             self.tbtn_twofa.clicked.connect(self.copy_twofa_code)
         else:
-            # get the twofa container
-            index: int = self.vbox_data.count() - 1
-            container_layout: QVBoxLayout = self.vbox_data.itemAt(index).layout()
-            
-            # Remove the line
-            line = container_layout.itemAt(1).widget()
-            line.setParent(None)
-            
-            # Get the container with the data
-            data_container: QHBoxLayout = container_layout.itemAt(0).layout()
+            self.delete_twofa_code()
+    
+    def delete_twofa_code(self):
+        # get the twofa container
+        index: int = self.vbox_data.count() - 1
+        container_layout: QVBoxLayout = self.vbox_data.itemAt(index).layout()
+        
+        # Remove the line
+        line = container_layout.itemAt(1).widget()
+        line.setParent(None)
+        
+        # Get the container with the data
+        data_container: QHBoxLayout = container_layout.itemAt(0).layout()
 
-            # Get the widgets
-            label = data_container.itemAt(0).widget()
-            label2 = data_container.itemAt(1).widget()
-            countdown = data_container.itemAt(3).widget()
-            toolbutton = data_container.itemAt(4).widget()
-            checkbox = data_container.itemAt(5).widget()
+        # Get the widgets
+        label = data_container.itemAt(0).widget()
+        label2 = data_container.itemAt(1).widget()
+        countdown = data_container.itemAt(3).widget()
+        toolbutton = data_container.itemAt(4).widget()
+        checkbox = data_container.itemAt(5).widget()
+        
+        # Remove the widgets
+        label.setParent(None)
+        label2.setParent(None)
+        countdown.setParent(None)
+        toolbutton.setParent(None)
+        checkbox.setParent(None)
             
-            # Remove the widgets
-            label.setParent(None)
-            label2.setParent(None)
-            countdown.setParent(None)
-            toolbutton.setParent(None)
-            checkbox.setParent(None)
         
     @pyqtSlot()
     def copy_twofa_code(self):
@@ -210,6 +219,8 @@ class AppVaultView(Ui_AppVaultViewDialog, QDialog):
         self.auto_type_thread.started.connect(self.auto_typer.auto_type)
         
         self.auto_typer.finished.connect(self.auto_typer.deleteLater)
+        self.auto_typer.finished.connect(self.auto_type_thread.exit)
+        self.auto_typer.finished.connect(self.auto_type_thread.quit)
         self.auto_type_thread.finished.connect(self.auto_type_off)
         
         self.auto_type_thread.start()

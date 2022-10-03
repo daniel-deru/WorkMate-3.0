@@ -75,7 +75,12 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
     @pyqtSlot()
     def manage_groups(self) -> None:
         manage_groups_window = GroupsWindow()
+        manage_groups_window.browser_import_signal.connect(self.update_groups)
         manage_groups_window.exec_()
+    
+    @pyqtSlot()
+    def update_groups(self) -> None:
+        self.group_dict, self.group_names = self.create_group_data()
         
     def create_group_data(self) -> tuple[dict, list]:
         groups = Model().read("groups")

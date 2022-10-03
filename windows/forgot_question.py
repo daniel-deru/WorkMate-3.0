@@ -38,7 +38,7 @@ class PasswordQuestion(Ui_AnswerQuestionDialog, QDialog):
         user: list[tuple] = Model().read('user')[0]
         self.correct_phrase: str = user[4]
         
-        self.btn_help.setStyleSheet(PushButtonLink)
+        self.btn_help.setStyleSheet(PushButtonLink())
         self.btn_help.clicked.connect(lambda: webbrowser.open_new_tab("https://lutiekhosting.com/"))
 
         self.btn_enter.clicked.connect(self.verify_answer)
@@ -48,11 +48,14 @@ class PasswordQuestion(Ui_AnswerQuestionDialog, QDialog):
             Dialog,
             PushButton,
             LineEdit,
-            Label
+            Label,
+            PushButtonLink("#btn_help")
         ]
 
         stylesheet: str = StyleSheet(widgetlist).create()
         self.setStyleSheet(stylesheet)
+        
+        # self.btn_help.setStyleSheet(PushButtonLink)
         
         font_widgets = [
             self.lbl_question,

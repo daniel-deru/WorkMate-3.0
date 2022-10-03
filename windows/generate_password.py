@@ -90,7 +90,7 @@ class GeneratePasswordWindow(Ui_GeneratePasswordWindow, QDialog):
         stylesheet = StyleSheet(widget_list).create()
         self.setStyleSheet(stylesheet)
         
-        self.btn_whats_this.setStyleSheet(StyleSheet([PushButtonLink]).create())
+        self.btn_whats_this.setStyleSheet(StyleSheet([PushButtonLink()]).create())
         
         font_list = [
             self.lbl_password,      self.lne_password,
