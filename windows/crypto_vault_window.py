@@ -168,7 +168,7 @@ class CryptoVaultWindow(Ui_CryptoVault, QDialog):
 
         data = {
             'name': username,
-            'num_words': self.get_num_words(),
+            'num_words': len(self.words),
             'words': " ".join(self.words),
             'description': description,
             'password': password1,

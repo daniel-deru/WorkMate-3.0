@@ -67,7 +67,6 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         self.tbtn_add_group.clicked.connect(self.add_new_group)
         
     def add_new_group(self):
-        print("I am supposed to add a new group")
         group_window = GroupWindow()
         group_window.group_add_signal.connect(lambda: self.set_groups())
         group_window.exec_()
@@ -78,7 +77,6 @@ class AppVaultWindow(Ui_AppVault, QDialog):
         image = cv2.imread(file)
         detector = cv2.QRCodeDetector()
         code = detector.detectAndDecode(image)[0]
-        print(code)
         if not code:
             Message("The QR code is invalid please select a valid image of a QR code", "Invalid QR Code").exec_()
             return

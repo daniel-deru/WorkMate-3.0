@@ -376,7 +376,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
     
     # Slot to handle the drive_dict signal from the DriveWindow  
     def save_drives(self, drives: object or None) -> None:
-        print(f"Thise is the data passed to save_drives slot in settings_tab: {drives}")
+        
         if not drives:
             return
         drives["auto_save"] = True

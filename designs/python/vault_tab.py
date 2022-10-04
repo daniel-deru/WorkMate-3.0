@@ -88,5 +88,5 @@ class Ui_Vault_tab(object):
         Vault_tab.setWindowTitle(_translate("Vault_tab", "Form"))
         self.btn_add.setText(_translate("Vault_tab", "Add"))
         self.btn_search.setText(_translate("Vault_tab", "Search"))
-        self.btn_delete.setText(_translate("Vault_tab", "Delete"))
+        self.btn_delete.setText(_translate("Vault_tab", "Bulk Delete"))
         self.lbl_secret.setText(_translate("Vault_tab", "Vault Items"))

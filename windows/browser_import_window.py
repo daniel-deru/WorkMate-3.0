@@ -69,8 +69,6 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
         self.chk_select_all.setChecked(True)
         
         self.corner: QAbstractButton = self.tbl_accounts.findChild(QAbstractButton)
-        # self.corner.setStyleSheet(f"background-color: {green};")
-        print(self.corner.styleSheet())
     
     @pyqtSlot()
     def manage_groups(self) -> None:

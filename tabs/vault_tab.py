@@ -85,7 +85,6 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             item_list = []
             for item in group:
                 if(re.match(f".*{search_for}.*", item[2], re.IGNORECASE)):
-                    print(item[2])
                     item_list.append(item)
             if(len(item_list) > 0):
                 found_items.append(item_list)

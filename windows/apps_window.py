@@ -52,7 +52,6 @@ class Apps_window(Ui_App_Window, QDialog):
         
     def show_groups(self):
         groups = Model().read("groups")
-        print("adding groups to combobox")
         self.cmb_group.clear()
         
         for group in groups:

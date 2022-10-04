@@ -2,7 +2,7 @@ import sys
 import os
 import math
 
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QMessageBox
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QFont
 
@@ -24,6 +24,7 @@ from widgetStyles.Line import Line
 from widgetStyles.ScrollBar import ScrollBar
 
 from utils.helpers import StyleSheet, clear_window, set_font
+from utils.message import Message
 
 class Apps_tab(Ui_apps_tab, QWidget):
     app_signal = pyqtSignal(str)
@@ -110,8 +111,11 @@ class Apps_tab(Ui_apps_tab, QWidget):
     # Handles the editing of the apps
     def get_app(self, app):
         edit = self.chk_edit_apps
-            
-        if edit.isChecked():
+        
+        open_or_edit = Message("Do you want to open or edit the app?", "Open Or Edit?").prompt(('Open', 'Edit'))
+        should_open = open_or_edit == QMessageBox.Yes
+        
+        if not should_open:
             app_window = Apps_window(app)
             app_window.app_window_signal.connect(self.update)
             app_window.exec_()

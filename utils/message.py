@@ -40,6 +40,12 @@ class Message(QMessageBox):
     def create(self):
         return self
     
-    def prompt(self, buttons=QMessageBox.Yes | QMessageBox.No):
-        self.setStandardButtons(buttons)
+    def prompt(self, buttons: tuple[str, str] = ('Yes', 'No')):
+        self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        
+        yes_button = self.button(QMessageBox.Yes)
+        yes_button.setText(buttons[0])
+        no_button = self.button(QMessageBox.No)
+        no_button.setText(buttons[1])
+        
         return self.exec_()
