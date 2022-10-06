@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>443</width>
     <height>300</height>
    </rect>
   </property>
@@ -41,21 +41,89 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="lbl_setupkey">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="bottomMargin">
+      <number>15</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="lbl_setup_display">
+       <property name="text">
+        <string> setup key:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lbl_setupkey">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Setup Key</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="btn_copy">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="lbl_enter_code_display">
      <property name="text">
-      <string>Setup Key</string>
+      <string>Verify the code by entering the 6 digit code below</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hbox_codes">
+     <property name="bottomMargin">
+      <number>15</number>
+     </property>
+     <item>
+      <widget class="QLineEdit" name="lne_code1"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lne_code2"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lne_code3"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lne_code4"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lne_code5"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lne_code6"/>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="btn_copy">
+      <widget class="QPushButton" name="btn_done">
        <property name="text">
-        <string>Copy</string>
+        <string>Done</string>
        </property>
       </widget>
      </item>
@@ -65,7 +133,7 @@
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="text">
-        <string>Exit</string>
+        <string>Discard</string>
        </property>
       </widget>
      </item>

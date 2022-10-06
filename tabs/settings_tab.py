@@ -1,12 +1,11 @@
+from math import fabs
 import sys
 import os
 import threading
 import shutil
 import json
-from time import time
-import math
 
-from PyQt5.QtWidgets import QWidget, QFileDialog, qApp, QPushButton
+from PyQt5.QtWidgets import QWidget, QFileDialog, QPushButton
 from PyQt5.QtCore import pyqtSignal, Qt, QThread, QSize, pyqtSlot
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 
@@ -24,6 +23,7 @@ from widgetStyles.ToolButton import ToolButton
 from utils.message import Message
 from utils.helpers import LoginEvent, StyleSheet, set_font
 from utils.globals import DB_PATH, PATH, DB_NAME, DESKTOP
+from utils.enums import TwofaStatus
 
 from database.model import Model
 
@@ -171,12 +171,18 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             toggle.blockSignals(False)
         else:
             if checked:
-                Model().update("settings", {'twofa': '1'}, 'settings')
                 twofa_window = TwofaDialog()
+                twofa_window.twofa_status.connect(self.twofa_status)
                 twofa_window.exec_()
             else:
                 Model().update('user', {'twofa_key': None}, 'user')
                 Model().update("settings", {'twofa': '0'}, 'settings')
+    
+    @pyqtSlot(TwofaStatus)       
+    def twofa_status(self, status: TwofaStatus):
+        if status == TwofaStatus.failure:
+            self.chkbox_2fa.setChecked(False)
+            self.chkbox_2fa.setCheckState(Qt.Unchecked)
 
     
     def updateWindow(self, send_signal: bool = True):

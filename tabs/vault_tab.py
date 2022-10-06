@@ -34,7 +34,6 @@ from widgetStyles.Label import Label
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.LineEdit import LineEditSearch
 from widgetStyles.ScrollBar import ScrollBar
-from widgetStyles.styles import VAULT_BUTTON_COLORS
 
 from database.model import Model
 
@@ -54,19 +53,12 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         self.update_by_group(initial_group)
 
         self.btn_add.clicked.connect(self.add_clicked)
-        # self.btn_login.clicked.connect(self.login_clicked)
-        self.btn_delete.clicked.connect(self.delete_login)
+        self.btn_delete.clicked.connect(self.delete_secret)
         self.btn_search.clicked.connect(self.search_items)
        
         self.vault_signal.connect(self.update)
-        # self.login_signal.connect(self.login)
 
         self.logged_in = False
-        
-    def delete_login(self):
-        login_window = Login(update_password=True)
-        login_window.update_password_status.connect(self.delete_secret)
-        login_window.exec_()
         
     def vault_login(self, secret):
         login_window = Login(update_password=True)
@@ -108,7 +100,6 @@ class Vault_tab(Ui_Vault_tab, QWidget):
 
         widget_list = [
             self.btn_add,
-            # self.btn_login,
             self.lbl_secret,
             self.btn_delete,
             self.btn_search,
@@ -165,7 +156,7 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         for i in range(len(grid_items)):
             for j in range(len(grid_items[i])):
                 self.btn_vault = VaultItem(grid_items[i][j]).create()
-                self.btn_vault.vault_clicked_signal.connect(self.vault_login)
+                self.btn_vault.vault_clicked_signal.connect(self.open_secret)
                 self.gbox_secrets.addWidget(self.btn_vault, i, j)
 
     
@@ -177,22 +168,7 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         initial_group = self.filter_widget.get_current_group()
         self.update_by_group(initial_group)
         self.read_styles()
-
-    # Slot for when the login button is clicked
-    def login_clicked(self):
-        if self.logged_in:
-            self.login_signal.emit("logout requested")
-        elif not self.logged_in:
-            self.login_signal.emit("login requested")
-
-    # Slot for the login signal and middleware event handler to check if the user is logged in when an event is triggered
-    # def login(self, signal):
-        # if signal == "logged in":
-        #     self.btn_login.setText("Logout")
-        #     self.logged_in = True
-        # elif signal == "logged out":
-        #     self.btn_login.setText("Login")
-        #     self.logged_in = False
+            
     
     def app_vault_click(self, secret):
         data = json.loads(secret[3])
@@ -201,38 +177,12 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         except OSError:
             pass
 
-    def delete_secret(self, status: str):
-        if status != "success":
-            # self.login_clicked()
-            return
-        else:
-            delete_window = DeleteWindow('vault')
-            delete_window.delete_signal.connect(self.update)
-            delete_window.exec_()
+    def delete_secret(self):
+        delete_window = DeleteWindow('vault')
+        delete_window.delete_signal.connect(self.update)
+        delete_window.exec_()
     
-    def edit_secret(self, secret):
-        if not self.logged_in:
-            self.login_clicked()
-            return
-        else:
-            if secret[1] == "app":
-                edit_app = AppVaultWindow(secret)
-                edit_app.app_update_signal.connect(self.update)
-                edit_app.exec_()
-            elif secret[1] == "crypto":
-                crypto_vault_window = CryptoVaultWindow(secret)
-                crypto_vault_window.crypto_update_signal.connect(self.update)
-                crypto_vault_window.exec_()
-                # open the crypto edit window
-            elif secret[1] == "general":
-                general_vault_window = SecretWindow(secret)
-                general_vault_window.secret_signal.connect(self.update)
-                general_vault_window.exec_()
-    
-    def open_secret(self, secret: tuple, status: str):
-        if status != "success":
-            # self.login_clicked()
-            return
+    def open_secret(self, secret: tuple):
         if secret[1] == "app":
             app_view = AppVaultView(secret)
             app_view.update_signal.connect(self.update)

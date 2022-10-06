@@ -61,6 +61,8 @@ class Main(Ui_main_container, QWidget):
         self.set_screen_size()
 
         self.add_tabs()
+        self.tab_widget.setCurrentIndex(4)
+        self.previous_index = 4
         self.setTabIcons()
         self.update_status(False)
 
@@ -169,6 +171,7 @@ class Main(Ui_main_container, QWidget):
 
     def add_tabs(self):        
         self.tab_widget.setTabPosition(QTabWidget.West)
+        
         self.vault_tab = Vault_tab().create_tab()
         self.vault_tab.login_signal.connect(self.check_login)
         self.tab_widget.addTab(self.vault_tab, "Vault")
@@ -233,6 +236,28 @@ class Main(Ui_main_container, QWidget):
     
     def changed(self):
         self.setTabIcons()
+        current_index = self.tab_widget.currentIndex()
+        if(current_index == 0):
+            self.tab_widget.setCurrentIndex(self.previous_index)
+            login_window = Login()
+            login_window.login_status.connect(self.access_vault)
+            login_window.exec_()
+        elif(self.previous_index == 0 and self.logged_in):
+            
+            lock_vault = Message("Do you want to lock the vault?", "Lock The Vault").prompt()
+            if lock_vault == QMessageBox.Yes:
+                self.update_status(False)
+            self.previous_index = current_index
+        else:
+            self.previous_index = current_index
+    
+    @pyqtSlot(str)
+    def access_vault(self, signal):
+        if signal == "success":
+            self.update_status(True)
+            current_index = self.tab_widget.currentIndex()
+            self.previous_index = current_index
+            self.tab_widget.setCurrentIndex(0)
 
     def check_login(self, signal):
         # The user wants to log in
@@ -243,6 +268,8 @@ class Main(Ui_main_container, QWidget):
             login_window.exec_()
         # The user wants to log out
         elif signal == "logout requested" and self.logged_in == True:
+            if self.tab_widget.currentIndex() == 0:
+                self.tab_widget.setCurrentIndex(1)
             self.update_status(False)
 
     # slot for the login window signal to verify if the user successfully logged in
@@ -302,7 +329,6 @@ class Main(Ui_main_container, QWidget):
         
         auto_save_json = Model().read("settings")[0][8]
         auto_save_dict = json.loads(auto_save_json)
-
         
         if auto_save_dict['google']:
             upload_google(self, False)

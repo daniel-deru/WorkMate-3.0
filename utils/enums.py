@@ -16,3 +16,7 @@ class LoginSignal(Enum):
     logout_requested: str = "logout requested"
     success: str = "success"
     failure: str = "failure"
+    
+class TwofaStatus(Enum):
+    success: str = "success"
+    failure: str = "failure"
