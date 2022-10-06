@@ -1,6 +1,5 @@
 import sys
 import os
-from tkinter import font
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 from PyQt5.QtWidgets import QDialog
@@ -16,6 +15,7 @@ from widgetStyles.PushButton import PushButton
 from widgetStyles.Dialog import Dialog
 
 from utils.helpers import set_font
+from utils.message import Message
 
 from database.model import Model
 
@@ -24,11 +24,13 @@ class GroupViewWindow(Ui_GroupWindow, QDialog):
     def __init__(self, group) -> None:
         super(GroupViewWindow, self).__init__()
         self.group = group
+        self.has_data: bool = False
         self.setupUi(self)
         self.read_styles()
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
         self.display_data()
+        
         
         self.btn_delete.clicked.connect(self.delete)
         
@@ -37,6 +39,8 @@ class GroupViewWindow(Ui_GroupWindow, QDialog):
         
     @pyqtSlot()
     def delete(self):
+        if self.has_data:
+           return Message("Cannot delete group because there is still some data in te group", "Cannot Delete Group").exec_()
         # Send signal back to group widget with the id of the group to delete
         Model().delete("groups", self.group['id'])
         self.delete_group_signal.emit(self.group['id'])
@@ -78,11 +82,10 @@ class GroupViewWindow(Ui_GroupWindow, QDialog):
             'notes': self.lbl_notes_display,
             'todos': self.lbl_todos_display
         }
-        
+
+
         for key, value in display_widget.items():
             total = self.group['data'][key]
-            value.setText(str(total))
-        
-    
-        
+            if total > 0: self.has_data = True
+            value.setText(str(total))     
     

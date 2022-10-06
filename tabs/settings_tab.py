@@ -1,4 +1,3 @@
-from math import fabs
 import sys
 import os
 import threading
@@ -86,7 +85,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         # connect the custom signals to the slots
         self.settings_signal.connect(lambda: self.updateWindow(False))
         self.settings_update_signal.connect(lambda: self.updateWindow(False))
-        self.login_signal.connect(self.login)
         
     @pyqtSlot()
     def timer(self):
@@ -255,10 +253,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             button.setIcon(QIcon(icon))
             button.setIconSize(QSize(20, 20))
     
-    def login(self, signal):
-        if signal == "success":
-            self.logged_in = True
-    
     def check_login(self, signal):
         if signal == "logged in":
             self.logged_in = True
@@ -284,20 +278,19 @@ class SettingsTab(Ui_Settings_tab, QWidget):
 
     def login_clicked(self):
         if self.logged_in:
-            self.login_signal.emit("logout requested")
-        elif not self.logged_in:
-            self.login_signal.emit("login requested")
-
-
-    def login(self, signal):
-        if signal == "logged in":
-            # self.btn_login.setText("Logout")
+            self.logged_in = False
+            self.btn_login.setIcon(QIcon(":/button_icons/unlock"))
+        else:
+            login_window = Login()
+            login_window.login_status.connect(self.login)
+            login_window.exec_()
+            
+    @pyqtSlot(str)
+    def login(self, signal: str):
+        if signal == "success":
             self.btn_login.setIcon(QIcon(":/button_icons/lock"))
             self.logged_in = True
-        elif signal == "logged out":
-            # self.btn_login.setText("Login")
-            self.btn_login.setIcon(QIcon(":/button_icons/unlock"))
-            self.logged_in = False
+    
 
     def forgot_password_clicked(self):
         ask_question = PasswordQuestion()

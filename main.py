@@ -188,7 +188,6 @@ class Main(Ui_main_container, QWidget):
 
         self.settings_tab = SettingsTab().create_tab()
         self.settings_tab.settings_signal.connect(self.updateWindow)
-        self.settings_tab.login_signal.connect(self.check_login)
         self.tab_widget.addTab(self.settings_tab, "Settings")
         
         self.tab_widget.tabBar().setCursor(QCursor(Qt.PointingHandCursor))
