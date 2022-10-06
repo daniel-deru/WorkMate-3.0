@@ -46,7 +46,6 @@ class Apps_tab(Ui_apps_tab, QWidget):
         self.read_styles()
 
         self.btn_add_app.clicked.connect(self.add_app)
-        # self.chk_edit_apps.stateChanged.connect(self.edit_checked)
         
         self.btn_delete.clicked.connect(self.delete)
         
@@ -74,7 +73,6 @@ class Apps_tab(Ui_apps_tab, QWidget):
         
         widget_list = [
             self.btn_add_app,
-            self.chk_edit_apps,
             self.lbl_open_apps,
             self.btn_delete
         ]
@@ -110,7 +108,6 @@ class Apps_tab(Ui_apps_tab, QWidget):
   
     # Handles the editing of the apps
     def get_app(self, app):
-        edit = self.chk_edit_apps
         
         open_or_edit = Message("Do you want to open or edit the app?", "Open Or Edit?").prompt(('Open', 'Edit'))
         should_open = open_or_edit == QMessageBox.Yes
@@ -119,7 +116,6 @@ class Apps_tab(Ui_apps_tab, QWidget):
             app_window = Apps_window(app)
             app_window.app_window_signal.connect(self.update)
             app_window.exec_()
-            edit.setChecked(False)
         else:
             try:
                 os.startfile(app[2])

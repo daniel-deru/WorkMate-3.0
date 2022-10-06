@@ -3,7 +3,6 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 development_mode: bool = True
-server_development_mode: bool = False
 
 PATH = os.getenv("APPDATA") + "\\TrustLock" if not development_mode else os.getcwd()
 
@@ -13,10 +12,7 @@ DB_PATH = PATH + "\\database\\" if not development_mode else f"{os.getcwd()}/dat
 DB_NAME = "test.db" if development_mode else "trustlock.db"
 DB_COPY_NAME = "copy.db"
 KEY_FILE_NAME = "test.pkl" if development_mode else "trustlock.pkl"
-ENDPOINT = "/api/products/trustlock"
-REQUEST_URL = "http://localhost:8000" + ENDPOINT if server_development_mode else "https://users.smartmetatec.com" + ENDPOINT
 
-ASSET_PATH: str = "./assets/"
 FONT_NAME = "Roboto Condensed"
 PICKLE_ENC: str = 'SqQ1-jsiAXjOmRWQqLWoMyzTWgW_Kxy8rc5aGKLG91k='
 
@@ -28,8 +24,6 @@ class CHAR_GROUPS:
     PUNCTUATION = [33, 34, 39, 44, 46, 58, 59, 63, 96]
     SPECIAL = [35, 36, 64, 95, 124, 126]
     BRACKETS = [40, 41, 60, 62, 91, 93, 123, 125]
-    
-
 
 
 WORDS = [

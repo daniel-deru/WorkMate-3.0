@@ -193,7 +193,11 @@ class CryptoVaultViewWindow(Ui_CryptoViewWindow, QDialog):
         
     def create_word_boxes(self, count: int, word: str) -> QFrame:
         hbox = QHBoxLayout()
-        tool_button_icon_path = "./assets/copy_white.svg" if self.night_mode_on else "./assets/copy_black.svg"
+        tool_button_icon_path = ":/input/copy_white" if self.night_mode_on else ":/input/copy_black"
+        print(self.night_mode_on)
+        print(type(self.night_mode_on))
+        print("This is the icon path")
+        print(tool_button_icon_path)
         icon = QIcon(tool_button_icon_path)
         
         num = QLabel(f"{str(count).zfill(2)} ")

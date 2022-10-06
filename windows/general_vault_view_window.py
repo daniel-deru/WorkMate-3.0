@@ -135,7 +135,7 @@ class GeneralVaultView(Ui_GeneralVaultView, QDialog):
         hspacer: QSpacerItem = QSpacerItem(20, 40, QSizePolicy.Expanding, QSizePolicy.Minimum)
         
         btn_copy: QToolButton = QToolButton()
-        icon_path = "./assets/copy_white.svg" if self.night_mode_on else "./assets/copy_black.svg"
+        icon_path = ":/input/copy_white" if self.night_mode_on else ":/input/copy_black"
         btn_copy.setIcon(QIcon(icon_path))
         btn_copy.setIconSize(QSize(20, 20))
         btn_copy.setCursor(QCursor(Qt.PointingHandCursor))

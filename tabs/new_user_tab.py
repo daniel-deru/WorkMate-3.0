@@ -29,7 +29,6 @@ from widgetStyles.DateEdit import DateEditForm
 
 from utils.helpers import StyleSheet, random_words, set_font
 from utils.message import Message
-from utils.globals import REQUEST_URL
 
 from windows.generate_password import GeneratePasswordWindow
 
@@ -66,15 +65,6 @@ class NewUserTab(Ui_new_user, QDialog):
         word_widget.leaveEvent = self.mouseLeave
         
         self.set_blur()
-        
-    def send_data(self, user_data):
-        try:
-            request: requests.Response = requests.post(REQUEST_URL, user_data)
-            if(request.status_code != 200):
-                return ServerConnectStatus.denied
-            return ServerConnectStatus.verified
-        except Exception as e:
-            return ServerConnectStatus.failed
     
     @pyqtSlot()
     def generate_password(self):
@@ -136,8 +126,6 @@ class NewUserTab(Ui_new_user, QDialog):
            return Message(password_message, "Password Too Weak").exec_()      
         elif password1 != password2:
             return Message("Please make sure your passwords match. Check to see if your caps lock is on", "Passwords don't match").exec_()
-        
-        self.send_data({'name': name, 'email': email})
 
         data = {
             "name": name,

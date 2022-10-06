@@ -62,22 +62,12 @@ QLine {
       </spacer>
      </item>
      <item>
-      <widget class="QCheckBox" name="chk_edit_apps">
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="text">
-        <string>Edit</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="btn_delete">
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="text">
-        <string>Delete</string>
+        <string>Bulk Delete</string>
        </property>
       </widget>
      </item>
@@ -99,7 +89,7 @@ QLine {
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="text">
-        <string>Add App</string>
+        <string>Add</string>
        </property>
       </widget>
      </item>

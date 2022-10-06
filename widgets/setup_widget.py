@@ -26,8 +26,7 @@ class SetupWidget(QWidget):
         
         self.no_button.clicked.connect(lambda: self.next_signal.emit(True))
         self.yes_button.clicked.connect(self.run_callback)
-        # self.btn_help.clicked.connect(lambda: webbrowser.open_new_tab(self.help_link))
-        self.btn_help.clicked.connect(lambda: print(self.help_link))
+        self.btn_help.clicked.connect(lambda: webbrowser.open_new_tab(self.help_link))
         
     def run_callback(self):
         self.callback()
