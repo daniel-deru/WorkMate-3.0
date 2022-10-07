@@ -39,6 +39,16 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="btn_delete">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>Bulk Delete</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="btn_add">
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
@@ -79,12 +89,12 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_delete">
+      <widget class="QPushButton" name="btn_lock">
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="text">
-        <string>Bulk Delete</string>
+        <string>Lock</string>
        </property>
       </widget>
      </item>

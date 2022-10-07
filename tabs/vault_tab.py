@@ -31,7 +31,6 @@ from windows.login_window import Login
 from widgetStyles.QCheckBox import CheckBoxSquare
 from widgetStyles.PushButton import PushButton
 from widgetStyles.Label import Label
-from widgetStyles.ComboBox import ComboBox
 from widgetStyles.LineEdit import LineEditSearch
 from widgetStyles.ScrollBar import ScrollBar
 
@@ -40,6 +39,8 @@ from database.model import Model
 class Vault_tab(Ui_Vault_tab, QWidget):
     vault_signal = pyqtSignal(str)
     login_signal = pyqtSignal(str)
+    logout_signal = pyqtSignal(bool)
+    
     def __init__(self):
         super(Vault_tab, self).__init__()
         self.setupUi(self)
@@ -55,6 +56,7 @@ class Vault_tab(Ui_Vault_tab, QWidget):
         self.btn_add.clicked.connect(self.add_clicked)
         self.btn_delete.clicked.connect(self.delete_secret)
         self.btn_search.clicked.connect(self.search_items)
+        self.btn_lock.clicked.connect(lambda: self.logout_signal.emit(True))
        
         self.vault_signal.connect(self.update)
 
@@ -103,7 +105,8 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             self.lbl_secret,
             self.btn_delete,
             self.btn_search,
-            self.lne_search
+            self.lne_search,
+            self.btn_lock
         ]
 
         set_font(widget_list)

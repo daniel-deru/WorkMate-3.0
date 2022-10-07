@@ -6,7 +6,7 @@ import json
 
 from PyQt5.QtWidgets import QWidget, QFileDialog, QPushButton
 from PyQt5.QtCore import pyqtSignal, Qt, QThread, QSize, pyqtSlot
-from PyQt5.QtGui import QFont, QIcon, QPixmap
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
@@ -18,6 +18,7 @@ from widgetStyles.QCheckBox import SettingsCheckBox
 from widgetStyles.ComboBox import ComboBox
 from widgetStyles.ScrollBar import ScrollBar
 from widgetStyles.ToolButton import ToolButton
+from widgetStyles.TabBar import RegisterTabBar
 
 from utils.message import Message
 from utils.helpers import LoginEvent, StyleSheet, set_font
@@ -46,9 +47,9 @@ from integrations.calendar.c import Google
 
 class SettingsTab(Ui_Settings_tab, QWidget):
     settings_signal = pyqtSignal(str)
-    # This signal will communicate with the main window to get and set the login status
-    login_signal = pyqtSignal(str)
     settings_update_signal = pyqtSignal(str)
+    logout_signal = pyqtSignal(bool)
+    
     def __init__(self):
         super(SettingsTab, self).__init__()
         self.setupUi(self)
@@ -63,11 +64,9 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.chkbox_nightmode.stateChanged.connect(self.set_night_mode)
         self.chkbox_2fa.stateChanged.connect(self.twofa)
         self.chkbox_calendar.stateChanged.connect(self.calendar_toggle)
-        # self.chk_auto_save.stateChanged.connect(self.auto_save)
         
         self.btn_auto_save.clicked.connect(self.auto_save)
         
-        self.btn_login.clicked.connect(self.login_clicked)
         self.btn_forgot_password.clicked.connect(self.forgot_password_clicked)
         self.btn_google_drive_sync.clicked.connect(self.restore_from_remote)
         self.btn_save_google_drive.clicked.connect(self.save_to_remote_storage)
@@ -81,18 +80,38 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         
         self.btn_google.clicked.connect(self.google_sign_in)
         self.btn_timer.clicked.connect(self.timer)
+        self.btn_lock.clicked.connect(lambda: self.tab_widget_settings.setCurrentIndex(0))
 
         # connect the custom signals to the slots
         self.settings_signal.connect(lambda: self.updateWindow(False))
         self.settings_update_signal.connect(lambda: self.updateWindow(False))
+        self.logout_signal.connect(lambda s: self.tab_widget_settings.setCurrentIndex(0) if s else None)
         
+        self.tab_widget_settings.currentChanged.connect(self.tab_changed)
+
+    
+    @pyqtSlot()
+    def tab_changed(self):
+        current_index = self.tab_widget_settings.currentIndex()
+        
+        if current_index == 1 and not self.logged_in:
+            self.tab_widget_settings.setCurrentIndex(0)
+            login_window = Login()
+            login_window.login_status.connect(self.login)
+            login_window.exec_()
+        else:
+            self.logged_in = False
+            
+    @pyqtSlot(str)
+    def login(self, signal: str):
+        if signal == "success":
+            self.logged_in = True
+            self.tab_widget_settings.setCurrentIndex(1)
+    
     @pyqtSlot()
     def timer(self):
-        if not self.logged_in:
-            self.login_clicked()
-        else:
-            timer_window = Timer()
-            timer_window.exec_()
+        timer_window = Timer()
+        timer_window.exec_()
         
     @pyqtSlot()
     def updatePassword(self):
@@ -159,35 +178,24 @@ class SettingsTab(Ui_Settings_tab, QWidget):
     
     # 2fa slot
     def twofa(self, checked):
-        toggle = self.chkbox_2fa
-        if not self.logged_in:
-            toggle.blockSignals(True)
-            self.login_clicked()
-            toggle.setChecked(not checked)
-            state = Qt.Unchecked if checked else Qt.Checked
-            toggle.setCheckState(state)
-            toggle.blockSignals(False)
+        if checked:
+            twofa_window = TwofaDialog()
+            twofa_window.twofa_status.connect(self.twofa_status)
+            twofa_window.exec_()
         else:
-            if checked:
-                twofa_window = TwofaDialog()
-                twofa_window.twofa_status.connect(self.twofa_status)
-                twofa_window.exec_()
-            else:
-                Model().update('user', {'twofa_key': None}, 'user')
-                Model().update("settings", {'twofa': '0'}, 'settings')
+            Model().update('user', {'twofa_key': None}, 'user')
+            Model().update("settings", {'twofa': '0'}, 'settings')
     
     @pyqtSlot(TwofaStatus)       
     def twofa_status(self, status: TwofaStatus):
         if status == TwofaStatus.failure:
             self.chkbox_2fa.setChecked(False)
             self.chkbox_2fa.setCheckState(Qt.Unchecked)
-
     
     def updateWindow(self, send_signal: bool = True):
         self.read_styles()
         self.set_checkboxes()
         if send_signal: self.settings_signal.emit("settings")
-
 
     def read_styles(self):
         styles = [
@@ -196,17 +204,19 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             ComboBox, 
             ScrollBar, 
             IconButton,
-            ToolButton # this is for the google button
+            ToolButton, # this is for the google button
+            RegisterTabBar
         ]
         stylesheet = StyleSheet(styles).create()
         self.setStyleSheet(stylesheet)
+        
+        self.tab_widget_settings.tabBar().setCursor(QCursor(Qt.PointingHandCursor))
         
         font_widgets = [
             self.lbl_2fa,
             self.lbl_night_mode,
             self.lbl_calendar,
             self.lbl_auto_save,
-            self.lbl_login,
             self.lbl_forgot_password,
             self.lbl_browser_web_import,
             self.lbl_save_remote,
@@ -219,6 +229,8 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             self.lbl_groups,
             self.lbl_update_password,
             self.lbl_timer,
+            self.tab_widget_settings,
+            self.lbl_lock
         ]
         
         set_font(font_widgets)
@@ -236,7 +248,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         button_icon_list = [
             [self.btn_browser_web_import, ":/button_icons/import"],
             [self.btn_forgot_password, ":/button_icons/reset"],
-            [self.btn_login, ":/button_icons/unlock"],
+            [self.btn_lock, ":/button_icons/lock"],
             [self.btn_google_drive_sync, ":/button_icons/cloud_download"],
             [self.btn_save_google_drive, ":/button_icons/cloud_upload"],
             [self.btn_restore_local, ":/button_icons/drive_download"],
@@ -252,12 +264,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             button: QPushButton
             button.setIcon(QIcon(icon))
             button.setIconSize(QSize(20, 20))
-    
-    def check_login(self, signal):
-        if signal == "logged in":
-            self.logged_in = True
-        elif signal == "logged out":
-            self.logged_in = False
+
         
     def google_sign_in(self):
         token_file = f"{PATH}/integrations/google_token.json"
@@ -275,21 +282,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         else:
             checked = "1" if self.chkbox_calendar.isChecked() else "0"
             Model().update("settings", {"calendar": checked}, "settings")
-
-    def login_clicked(self):
-        if self.logged_in:
-            self.logged_in = False
-            self.btn_login.setIcon(QIcon(":/button_icons/unlock"))
-        else:
-            login_window = Login()
-            login_window.login_status.connect(self.login)
-            login_window.exec_()
-            
-    @pyqtSlot(str)
-    def login(self, signal: str):
-        if signal == "success":
-            self.btn_login.setIcon(QIcon(":/button_icons/lock"))
-            self.logged_in = True
     
 
     def forgot_password_clicked(self):

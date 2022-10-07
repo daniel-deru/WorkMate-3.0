@@ -174,6 +174,7 @@ class Main(Ui_main_container, QWidget):
         
         self.vault_tab = Vault_tab().create_tab()
         self.vault_tab.login_signal.connect(self.check_login)
+        self.vault_tab.logout_signal.connect(self.lock)
         self.tab_widget.addTab(self.vault_tab, "Vault")
         
         self.apps_tab = Apps_tab().create_tab()
@@ -193,6 +194,14 @@ class Main(Ui_main_container, QWidget):
         self.tab_widget.tabBar().setCursor(QCursor(Qt.PointingHandCursor))
 
         self.main_layout.addWidget(self.tab_widget)
+        
+    @pyqtSlot()
+    def lock(self):
+        self.tab_widget.blockSignals(True)
+        self.tab_widget.setCurrentIndex(1)
+        self.update_status(False)
+        self.previous_index = self.tab_widget.currentIndex()
+        self.tab_widget.blockSignals(False)
         
     def set_screen_size(self):
         # Get the primary screen
@@ -236,7 +245,7 @@ class Main(Ui_main_container, QWidget):
     def changed(self):
         self.setTabIcons()
         current_index = self.tab_widget.currentIndex()
-        if(current_index == 0):
+        if(current_index == 0 and not self.logged_in):
             self.tab_widget.setCurrentIndex(self.previous_index)
             login_window = Login()
             login_window.login_status.connect(self.access_vault)
@@ -249,6 +258,9 @@ class Main(Ui_main_container, QWidget):
             self.previous_index = current_index
         else:
             self.previous_index = current_index
+            
+        if self.previous_index == 4:
+            self.settings_tab.logout_signal.emit(True)
     
     @pyqtSlot(str)
     def access_vault(self, signal):
@@ -319,8 +331,6 @@ class Main(Ui_main_container, QWidget):
             self.send_signals("logged out")
 
     def send_signals(self, signal):
-        self.apps_tab.login_signal.emit(signal)
-        self.settings_tab.login_signal.emit(signal)
         self.vault_tab.login_signal.emit(signal)
 
         

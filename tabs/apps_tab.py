@@ -29,8 +29,6 @@ from utils.message import Message
 class Apps_tab(Ui_apps_tab, QWidget):
     app_signal = pyqtSignal(str)
     table_signal = pyqtSignal(str)
-    # This signal is to communicate with the main window where the login will take place
-    login_signal = pyqtSignal(str)
 
     def __init__(self):
         super(Apps_tab, self).__init__()

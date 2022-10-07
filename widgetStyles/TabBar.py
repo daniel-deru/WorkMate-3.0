@@ -62,7 +62,8 @@ RegisterTabBar = f"""
     }}
 
     QTabBar::tab:selected {{
-        color: {light_blue};    
+        color: {light_blue};
+        border-bottom: 1px solid {light_blue};  
     }}
 
 """
