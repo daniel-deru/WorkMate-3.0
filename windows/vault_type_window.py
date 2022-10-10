@@ -10,8 +10,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from designs.python.vault_type_window import Ui_VaultTypeDialog
 
 from widgetStyles.Dialog import Dialog
-from widgetStyles.PushButton import ButtonFullWidth
+from widgetStyles.PushButton import ButtonFullWidth, PushButton
 from widgetStyles.styles import VAULT_BUTTON_COLORS
+from widgetStyles.Frame import vault_type_frame
 
 from utils.helpers import StyleSheet, set_font
 
@@ -30,7 +31,13 @@ class VaultType(Ui_VaultTypeDialog, QDialog):
         self.btn_crypto.clicked.connect(self.open_crypto_vault)
 
     def readStyles(self):
-        widget_list = [ButtonFullWidth, Dialog]
+        widget_list = [
+            PushButton, 
+            Dialog,
+            vault_type_frame("#frame_crypto_wallet", VAULT_BUTTON_COLORS['crypto']),
+            vault_type_frame("#frame_app_vault", VAULT_BUTTON_COLORS['app']),
+            vault_type_frame("#frame_general_vault", VAULT_BUTTON_COLORS['general'])
+        ]
 
         stylesheet = StyleSheet(widget_list).create()
 
@@ -39,14 +46,20 @@ class VaultType(Ui_VaultTypeDialog, QDialog):
         font_widget = [
             self.btn_app,
             self.btn_crypto,
-            self.btn_general
+            self.btn_general,
+            self.lbl_app_heading,
+            self.lbl_crypto_heading,
+            self.lbl_general_heading,
+            self.lbl_app_desc,
+            self.lbl_crypto_desc,
+            self.lbl_general_desc
         ]
         
         set_font(font_widget)
         
-        self.btn_app.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['app']};border: 1px solid {VAULT_BUTTON_COLORS['app']};text-align: left;")
-        self.btn_crypto.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['crypto']};border: 1px solid {VAULT_BUTTON_COLORS['crypto']};text-align: left;")
-        self.btn_general.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['general']};border: 1px solid {VAULT_BUTTON_COLORS['general']};text-align: left;")
+        self.btn_app.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['app']};border: 1px solid {VAULT_BUTTON_COLORS['app']};")
+        self.btn_crypto.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['crypto']};border: 1px solid {VAULT_BUTTON_COLORS['crypto']};")
+        self.btn_general.setStyleSheet(f"background-color: {VAULT_BUTTON_COLORS['general']};border: 1px solid {VAULT_BUTTON_COLORS['general']};")
         
         self.btn_app.setIcon(QIcon(":/button_icons/app"))        
         self.btn_crypto.setIcon(QIcon(":/button_icons/crypto"))        

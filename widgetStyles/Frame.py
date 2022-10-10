@@ -60,6 +60,14 @@ def create_todo_frame(status):
     """
     return TodoFrameComplete
 
+def vault_type_frame(id: str, color: str):
+    return f"""
+        QFrame{id} {{
+            border-radius: 10px;
+            border: 2px solid {color};
+        }}
+    """
+
 
 def create_frame(id, dark_mode):
     PassGenFrame = f"""
