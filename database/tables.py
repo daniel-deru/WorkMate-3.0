@@ -5,26 +5,12 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 
 from enum import Enum
 
-from utils.encryption import Encryption
-
-
-
-class TableNames():
-    apps = 'apps'
-    notes = 'notes'
-    todos = 'todos'
-    settings = 'settings'
-    users = 'users'
-    vault = 'vault'
-    metadata = 'metadata'
-    groups = 'groups'
-    
 class TableEnum(Enum):
     apps = 'apps'
     notes = 'notes'
     todos = 'todos'
     settings = 'settings'
-    users = 'users'
+    user = 'user'
     vault = 'vault'
     metadata = 'metadata'
     groups = 'groups'
@@ -39,7 +25,6 @@ class Tables:
         "path": "TEXT NOT NULL",
         "sequence": "INTEGER NOT NULL",
         "group_id": "INTEGER",
-        "some_field": "TEXT"
     }
     
     notes = {
@@ -50,15 +35,15 @@ class Tables:
     }
     
     settings = {
-        "id": f"TEXT PRIMARY KEY",
-        "nightmode": f"TEXT NOT NULL",
-        "font": f"TEXT NOT NULL",
-        "color": f"TEXT NOT NULL",
-        "vault_on": f"TEXT NOT NULL",
-        "timer": f"TEXT NOT NULL",
-        "calendar": f"TEXT NOT NULL",
-        "twofa": f"TEXT",
-        "auto_save": f"TEXT"
+        "id": "TEXT PRIMARY KEY",
+        "nightmode": "TEXT NOT NULL",
+        "font": "TEXT NOT NULL",
+        "color": "TEXT NOT NULL",
+        "vault_on": "TEXT NOT NULL",
+        "timer": "TEXT NOT NULL",
+        "calendar": "TEXT NOT NULL",
+        "twofa": "TEXT",
+        "auto_save": "TEXT"
     }
     
     vault = {
@@ -81,31 +66,33 @@ class Tables:
         "description": "TEXT NOT NULL"
     }
     
-    todos = ""
-    user = ""
+    user = {
+        "id": "TEXT PRIMARY KEY",
+        "name": "TEXT",
+        "email": "TEXT",
+        "password": "TEXT",
+        "passphrase": "TEXT",
+        "twofa_key": "TEXT",
+        "password_exp": "TEXT",
+        "last_update_request": "TEXT",
+    }
     
-    def tables(self, key):
-        
-        enc = Encryption(key).encrypt
-        
-        self.todos = {
-            "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
-            "name": "TEXT NOT NULL",
-            "complete": f"TEXT DEFAULT '{enc('0')}' NOT NULL",
-            "deadline": "TEXT",
-            "description": "TEXT",
-            "group_id": "INTEGER",
-        }
-        
-        self.user = {
-            "id": f"TEXT DEFAULT '{enc('user')}' PRIMARY KEY",
-            "name": "TEXT NOT NULL",
-            "email": "TEXT NOT NULL",
-            "password": "TEXT NOT NULL",
-            "passphrase": "TEXT NOT NULL",
-            "twofa_key": "TEXT",
-            "password_exp": "TEXT",
-            "last_update_request": "TEXT",
-        }
-        
-        return self
+    todos = {
+        "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
+        "name": "TEXT NOT NULL",
+        "complete": "TEXT NOT NULL",
+        "deadline": "TEXT",
+        "description": "TEXT",
+        "group_id": "INTEGER",
+    }
+    
+    tablesDict = {
+        TableEnum.apps.name:        apps,
+        TableEnum.notes.name:       notes,
+        TableEnum.todos.name:       todos,
+        TableEnum.settings.name:    settings,
+        TableEnum.user.name:        user,
+        TableEnum.vault.name:       vault,
+        TableEnum.metadata.name:    metadata,
+        TableEnum.groups.name:      groups
+    }

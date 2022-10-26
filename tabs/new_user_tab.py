@@ -128,6 +128,7 @@ class NewUserTab(Ui_new_user, QDialog):
             return Message("Please make sure your passwords match. Check to see if your caps lock is on", "Passwords don't match").exec_()
 
         data = {
+            "id": "user",
             "name": name,
             "email": email,
             "password": password1,

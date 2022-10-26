@@ -20,10 +20,10 @@ class Model:
         self.create_key_table()
         key = self.get_key()
         self.encryption = Encryption(key)
-        self.tables = Tables().tables(key)
         
-        self.create_table_names()
-        self.create_tables()
+        self.create_table_names() 
+        self.create_tables() # create the tables
+        self.migrate_table_columns() # add new columns to tables if needed
         self.fill_defaults()
     
     def create_key_table(self):      
@@ -35,11 +35,20 @@ class Model:
         """
         self.cur.execute(table_query)
         
-    def list_column_names(self, table):
-        if table == "tablenames": return
+    def migrate_table_columns(self):
+        tables = Tables.tablesDict
+        
+        for table in tables:
+            encrypted_cols = self.get_encrypted_table_cols(table)
+            columns = tables[table]
+            
+            for column in columns:
 
-        encrypted_cols = self.get_encrypted_table_cols(table)
-        print(self.tables)
+                if column not in encrypted_cols:
+                    print(encrypted_cols)
+                    self.add_column(table, column, Tables.tablesDict[table][column])
+                    encrypted_colsA = self.get_encrypted_table_cols(table)
+                    print(encrypted_colsA)
 
 
     def get_key(self):
@@ -60,17 +69,17 @@ class Model:
         return self.cur.fetchall()
         
     def create_tables(self):    
-        self.create_table("groups", self.tables.groups)
-        self.create_table("user", self.tables.user)
-        self.create_table("settings", self.tables.settings)
-        self.create_table("metadata", self.tables.metadata)
-        self.create_table("apps", self.tables.apps, "group_id", "groups", "id")
-        self.create_table("notes", self.tables.notes, "group_id", "groups", "id")
-        self.create_table("todos", self.tables.todos, "group_id", "groups", "id")
-        self.create_table("vault", self.tables.vault, "group_id", "groups", "id")
+        self.create_table(TableEnum.groups,     Tables.groups)
+        self.create_table(TableEnum.user,       Tables.user)
+        self.create_table(TableEnum.settings,   Tables.settings)
+        self.create_table(TableEnum.metadata,   Tables.metadata)
+        self.create_table(TableEnum.apps,       Tables.apps,    "group_id", "groups", "id")
+        self.create_table(TableEnum.notes,      Tables.notes,   "group_id", "groups", "id")
+        self.create_table(TableEnum.todos,      Tables.todos,   "group_id", "groups", "id")
+        self.create_table(TableEnum.vault,      Tables.vault,   "group_id", "groups", "id")
         
-    def create_table(self, tablename: str, fields: object, foreign_field: str = None, foreign_tablename: str = None, foreign_table_field: str = None):
-        encrypted_table_name = self.encryption.encrypt(tablename)
+    def create_table(self, tablename: TableEnum, fields: object, foreign_field: str = None, foreign_tablename: str = None, foreign_table_field: str = None):
+        encrypted_table_name = self.encryption.encrypt(tablename.name)
         
         new_table = self.insert_table_name(encrypted_table_name)
         
@@ -149,7 +158,7 @@ class Model:
         self.cur.executemany(query, [values_list])
         self.db.commit()
         
-        if close: self.db.close()
+        # if close: self.db.close()
         
         
 
@@ -360,9 +369,10 @@ class Model:
         default_groups = {
             'name': 'Ungrouped',
             'description': 'Anything that is not in a group'
-        }
+        }        
         
         self.create_defaults('settings', default_settings)
+        # self.create_defaults('user', {'id': 'user'})
         self.create_defaults('groups', default_groups, True)
 
     def valid_account(self, db_path):
@@ -400,8 +410,9 @@ class Model:
             return False
         
         return True
-
-# model = Model()
-# model.list_column_names("apps")
+    
+model = Model()
+for app in model.read("apps"):
+    print(app)
 # model.update("settings", {"font": "Roboto Condensed"}, "settings")
 # model.update("settings", {"font": "Proxon"}, "settings")
