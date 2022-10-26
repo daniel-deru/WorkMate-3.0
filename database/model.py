@@ -20,7 +20,7 @@ class Model:
         self.create_key_table()
         key = self.get_key()
         self.encryption = Encryption(key)
-        self.tables = Tables(key).tables()
+        self.tables = Tables().tables(key)
         
         self.create_table_names()
         self.create_tables()
@@ -34,7 +34,14 @@ class Model:
             )
         """
         self.cur.execute(table_query)
-    
+        
+    def list_column_names(self, table):
+        if table == "tablenames": return
+
+        encrypted_cols = self.get_encrypted_table_cols(table)
+        print(self.tables)
+
+
     def get_key(self):
         key = self.read_key()
         encrypt_key = Encryption.encrypted_key()
@@ -52,15 +59,15 @@ class Model:
         self.cur.execute(query)
         return self.cur.fetchall()
         
-    def create_tables(self):     
-        self.create_table("groups", self.tables[TableEnum.groups])
-        self.create_table("user", self.tables[TableEnum.users])
-        self.create_table("settings", self.tables[TableEnum.settings])
-        self.create_table("metadata", self.tables[TableEnum.metadata])
-        self.create_table("apps", self.tables[TableEnum.apps], "group_id", "groups", "id")
-        self.create_table("notes", self.tables[TableEnum.notes], "group_id", "groups", "id")
-        self.create_table("todos", self.tables[TableEnum.todos], "group_id", "groups", "id")
-        self.create_table("vault", self.tables[TableEnum.vault], "group_id", "groups", "id")
+    def create_tables(self):    
+        self.create_table("groups", self.tables.groups)
+        self.create_table("user", self.tables.user)
+        self.create_table("settings", self.tables.settings)
+        self.create_table("metadata", self.tables.metadata)
+        self.create_table("apps", self.tables.apps, "group_id", "groups", "id")
+        self.create_table("notes", self.tables.notes, "group_id", "groups", "id")
+        self.create_table("todos", self.tables.todos, "group_id", "groups", "id")
+        self.create_table("vault", self.tables.vault, "group_id", "groups", "id")
         
     def create_table(self, tablename: str, fields: object, foreign_field: str = None, foreign_tablename: str = None, foreign_table_field: str = None):
         encrypted_table_name = self.encryption.encrypt(tablename)
@@ -109,7 +116,7 @@ class Model:
 
         if new_table: self.cur.execute(table_query)
 
-    def save(self, table, data):
+    def save(self, table, data, close=True):
         # Generate the question marks required for parameterized queries
         values = ", ".join(list(map(lambda v: "?", data.keys())))
         
@@ -141,7 +148,8 @@ class Model:
 
         self.cur.executemany(query, [values_list])
         self.db.commit()
-        self.db.close()
+        
+        if close: self.db.close()
         
         
 
@@ -234,16 +242,6 @@ class Model:
         self.cur.execute(query)
         self.db.commit()
         self.db.close()
-    
-    def start(self):
-        settings = Model().read("settings")
-        if len(settings) == 0:
-            data = {
-                'nightmode': 0,
-                'font': "Arial",
-                'color': "#000000"
-            }
-            self.save('settings', data)
 
     def add_column(self, table_name, column_name, column_definition):
         encrypted_table_name = self.get_encrypted_table_name(table_name)
@@ -328,48 +326,44 @@ class Model:
         self.cur.execute(query)
         data = self.cur.fetchall()
         return data[0][0]
+    
+    def create_defaults(self, tablename, initial_data, close_db=False):
+        
+        enc_tablename = self.get_encrypted_table_name(tablename)
+        get_query = f"SELECT * FROM [{enc_tablename}]"
+        
+        self.cur.execute(get_query)
+        
+        table_data = self.cur.fetchall()
+        
+        if(len(table_data) > 0):
+            return
+        
+        self.save(tablename, initial_data, close_db)
+        
         
     
     def fill_defaults(self):
-        enc = self.encryption.encrypt
-        settings = self.get_encrypted_table_name("settings")
         
-        get_query = f"SELECT * FROM [{settings}]"
-        self.cur.execute(get_query)
-        settings_data = self.cur.fetchall()
-        auto_save = {
-            "google": False,
-            "onedrive": False
+        default_settings = {
+            'id': 'settings',
+            'nightmode': "0",
+            'font': 'Roboto Condensed',
+            'color': '#000000',
+            'vault_on': '0',
+            'timer': '30',
+            'calendar': '0',
+            'twofa': '0',
+            'auto_save': json.dumps({ "google": False, "onedrive": False })
         }
         
-        if len(settings_data) < 1:
-            query = f"""INSERT INTO [{settings}] VALUES (
-                '{enc('settings')}', 
-                '{enc('0')}', 
-                '{enc('Roboto Condensed')}', 
-                '{enc('#000000')}', 
-                '{enc('0')}', 
-                '{enc('30')}', 
-                '{enc('0')}', 
-                '{enc('0')}', 
-                '{enc(json.dumps(auto_save))}'
-                )"""
-            self.cur.execute(query)
-            self.db.commit()
-            
-        groups = self.get_encrypted_table_name("groups")
-        groups_get_query = f"SELECT * FROM [{groups}]"
-        self.cur.execute(groups_get_query)
-        groups_data = self.cur.fetchall()
+        default_groups = {
+            'name': 'Ungrouped',
+            'description': 'Anything that is not in a group'
+        }
         
-        if len(groups_data) < 1:
-            query = f"""INSERT INTO [{groups}] VALUES (
-                '0', 
-                '{enc('Ungrouped')}', 
-                '{enc('anything that is not in a group')}'
-                )"""
-            self.cur.execute(query)
-            self.db.commit()
+        self.create_defaults('settings', default_settings)
+        self.create_defaults('groups', default_groups, True)
 
     def valid_account(self, db_path):
         valid_db = Model.valid_database(db_path)
@@ -408,5 +402,6 @@ class Model:
         return True
 
 # model = Model()
+# model.list_column_names("apps")
 # model.update("settings", {"font": "Roboto Condensed"}, "settings")
 # model.update("settings", {"font": "Proxon"}, "settings")

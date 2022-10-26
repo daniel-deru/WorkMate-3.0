@@ -1,3 +1,4 @@
+from operator import itemgetter
 import sys
 import os
 import cv2
@@ -87,11 +88,18 @@ class AppVaultWindow(Ui_AppVault, QDialog):
     
     def set_groups(self):
         groups = Model().read("groups")
+        
+        groups = sorted(groups, key=itemgetter(1))
+        
         self.cmb_group.clear()
         
         for i in range(len(groups)):
             self.cmb_group.addItem(groups[i][1], groups[i][0])
             if self.app and int(self.app[4]) == groups[i][0]:
+                self.cmb_group.setCurrentIndex(i)
+                
+        for i in range(len(groups)):
+            if groups[i][1] == "Ungrouped":
                 self.cmb_group.setCurrentIndex(i)
     
     @pyqtSlot()

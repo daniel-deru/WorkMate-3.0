@@ -1,3 +1,4 @@
+from operator import itemgetter
 import sys
 import os
 import math
@@ -76,6 +77,8 @@ class Todo_tab(Ui_todo_tab, QWidget):
     def display_todos(self, group):
         clear_window(self.todo_container)
         todos = Model().read("todos")
+        
+        todos = sorted(todos, key=itemgetter(1))
         
         current_group = list(filter(lambda todo: todo[5] == str(group), todos))
         for i in range(len(current_group)):

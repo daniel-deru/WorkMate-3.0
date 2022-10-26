@@ -1,3 +1,4 @@
+from operator import itemgetter
 import sys
 import os
 
@@ -28,7 +29,7 @@ class GroupsWindow(Ui_GroupsWindow, QDialog):
     
     def __init__(self) -> None:
         super(GroupsWindow, self).__init__()
-        self.groups = Model().read("groups")
+        self.groups = sorted(Model().read("groups"), key=itemgetter(1))
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         self.setWindowIcon(QIcon(":/other/app_icon"))
@@ -101,6 +102,7 @@ class GroupsWindow(Ui_GroupsWindow, QDialog):
     def get_group_data(self):
         # Create the initial group dict with all the current groups
         groups = Model().read('groups')
+        groups = sorted(groups, key=itemgetter(1))
         group_dict = {}
         
         for group in groups:

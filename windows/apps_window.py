@@ -1,6 +1,6 @@
+from operator import itemgetter
 import sys
 import os
-from tokenize import group
 from PyQt5.QtWidgets import QDialog, QFileDialog, QListView
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QFont, QIcon
@@ -54,8 +54,16 @@ class Apps_window(Ui_App_Window, QDialog):
         groups = Model().read("groups")
         self.cmb_group.clear()
         
-        for group in groups:
-            self.cmb_group.addItem(group[1], group[0])
+        groups = sorted(groups, key=itemgetter(1))
+        
+        for i in range(len(groups)):
+            if groups[i][1] == "Ungrouped":
+                self.cmb_group.setCurrentIndex(i)
+            self.cmb_group.addItem(groups[i][1], groups[i][0])
+        
+        for i in range(len(groups)):
+            if groups[i][1] == "Ungrouped":
+                self.cmb_group.setCurrentIndex(i)
         
 
     def save_clicked(self):
@@ -135,6 +143,9 @@ class Apps_window(Ui_App_Window, QDialog):
             return
         
         groups = Model().read("groups")
+        
+        groups = sorted(groups, key=itemgetter(1))
+        
         current_group = 0
         self.cmb_group.clear()
             

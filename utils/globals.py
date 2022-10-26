@@ -6,6 +6,8 @@ development_mode: bool = True
 
 PATH = os.getenv("APPDATA") + "\\TrustLock" if not development_mode else os.getcwd()
 
+VERSION = "1.0.0"
+
 DESKTOP = os.path.join(os.path.join(os.environ['USERPROFILE'], 'Desktop'))
 
 DB_PATH = PATH + "\\database\\" if not development_mode else f"{os.getcwd()}/database/"

@@ -1,3 +1,4 @@
+from operator import itemgetter
 import sys
 import os
 from tkinter.ttk import Style
@@ -77,8 +78,15 @@ class FilterGroupWidget(QWidget):
     def show_groups(self):
         self.cmb_groups.clear()
         groups = Model().read("groups")
+        
+        groups = sorted(groups, key=itemgetter(1))
+        
         for group in groups:
             self.cmb_groups.addItem(group[1], group[0])
+            
+        for i in range(len(groups)):
+            if groups[i][1] == "Ungrouped":
+                self.cmb_groups.setCurrentIndex(i)
             
     def get_current_group(self):
         # Update the UI when the update function is called in the tabs
@@ -101,6 +109,8 @@ class ComboBox(QComboBox):
         self.clear()
         # Get the new groups from the database
         groups = Model().read("groups")
+        
+        groups = sorted(groups, key=itemgetter(1))
         # Add the groups to the combobox
         group_list = []
         for group in groups:

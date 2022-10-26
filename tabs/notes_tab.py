@@ -1,3 +1,4 @@
+from operator import itemgetter
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -75,6 +76,8 @@ class Notes_tab(Ui_notes_tab, QWidget):
     def display_note(self, group):
         clear_window(self.gbox_note_container)
         notes = Model().read("notes")
+        
+        notes = sorted(notes, key=itemgetter(1))
         
         current_group = list(filter(lambda note: note[3] == str(group), notes))
         grid_items = []

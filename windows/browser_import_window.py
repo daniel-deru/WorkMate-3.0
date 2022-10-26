@@ -1,3 +1,4 @@
+from operator import itemgetter
 import sys
 import os
 import json
@@ -82,12 +83,16 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
         
     def create_group_data(self) -> tuple[dict, list]:
         groups = Model().read("groups")
+        
+        groups = sorted(groups, key=itemgetter(1))
+        
         group_dict = {}
         group_names = []
         
         for group in groups:
             group_names.append(group[1])
             group_dict[group[1]] = group[0]
+
             
         return group_dict, group_names
         

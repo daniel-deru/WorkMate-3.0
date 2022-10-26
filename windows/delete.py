@@ -1,3 +1,4 @@
+from operator import itemgetter
 import os
 import sys
 from turtle import clear
@@ -46,7 +47,11 @@ class DeleteWindow(Ui_DeleteWindow, QDialog):
 
         self.function = function
         self.function_items = Model().read(function)
-        self.groups = Model().read("groups")
+        
+        getter_index = 2 if function == "vault" else 1
+        self.function_items = sorted(self.function_items, key=itemgetter(getter_index))
+        
+        self.groups = sorted(Model().read("groups"), key=itemgetter(1))
         
         # Set the current items
         self.set_data()
@@ -79,6 +84,10 @@ class DeleteWindow(Ui_DeleteWindow, QDialog):
         # Set the groups
         for group in self.groups:
             self.cmb_groups.addItem(group[1], group[0])
+            
+        for i in range(len(self.groups)):
+            if self.groups[i][1] == "Ungrouped":
+                self.cmb_groups.setCurrentIndex(i)
             
         # Set function name
         self.lbl_function.setText(self.function)

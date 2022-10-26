@@ -1,3 +1,4 @@
+from operator import itemgetter
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -78,6 +79,9 @@ class AppsEdit(Ui_AppsEdit, QDialog):
     def fill_fields(self):
         
         groups = Model().read("groups")
+        
+        groups = sorted(groups, key=itemgetter(1))
+        
         current_group = 0
             
         for i in range(len(groups)):

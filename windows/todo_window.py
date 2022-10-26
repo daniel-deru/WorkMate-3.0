@@ -1,3 +1,4 @@
+from operator import itemgetter
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
@@ -56,11 +57,18 @@ class TodoWindow(Ui_todo_edit, QDialog):
         
     def set_groups(self):
         groups = Model().read("groups")
+        
+        groups = sorted(groups, key=itemgetter(1))
+        
         self.cmb_group.clear()
         
         for i in range(len(groups)):
             self.cmb_group.addItem(groups[i][1], groups[i][0])
             if self.todo and int(self.todo[5]) == groups[i][0]:
+                self.cmb_group.setCurrentIndex(i)
+        
+        for i in range(len(groups)):
+            if groups[i][1] == "Ungrouped":
                 self.cmb_group.setCurrentIndex(i)
 
     def read_styles(self):

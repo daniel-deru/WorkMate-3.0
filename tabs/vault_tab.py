@@ -1,3 +1,4 @@
+from operator import itemgetter
 import os
 import re
 import sys
@@ -138,6 +139,9 @@ class Vault_tab(Ui_Vault_tab, QWidget):
             
     def get_group_items(self, group) -> list:
         secrets = Model().read('vault')
+        
+        secrets = sorted(secrets, key=itemgetter(2))
+        
         current_group = list(filter(lambda todo: todo[4] == str(group), secrets))
        
         # Create the nested list for the grid layout
@@ -154,7 +158,6 @@ class Vault_tab(Ui_Vault_tab, QWidget):
     
     def create_secrets(self, grid_items):
         clear_window(self.gbox_secrets)
-
         # Loop over the nested list and add items to the grid layout
         for i in range(len(grid_items)):
             for j in range(len(grid_items[i])):

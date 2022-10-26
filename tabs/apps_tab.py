@@ -1,3 +1,4 @@
+from operator import itemgetter
 import sys
 import os
 import math
@@ -85,6 +86,8 @@ class Apps_tab(Ui_apps_tab, QWidget):
     def create_apps(self, group):
         clear_window(self.gbox_apps)
         apps = Model().read('apps')
+        
+        apps = sorted(apps, key=itemgetter(1))
         
         current_group = list(filter(lambda app: app[4] == str(group), apps))
         COLUMNS = 4

@@ -1,5 +1,6 @@
 import sys
 import os
+from operator import itemgetter
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from PyQt5.QtWidgets import QComboBox
@@ -15,6 +16,8 @@ class ComboBox(QComboBox):
         self.clear()
         # Get the new groups from the database
         groups = Model().read("groups")
+        
+        groups = sorted(groups, key=itemgetter(1))
         # Add the groups to the combobox
         group_list = []
         for group in groups:

@@ -1,3 +1,4 @@
+from operator import itemgetter
 import os
 import sys
 import pyperclip
@@ -67,10 +68,17 @@ class Note_window(Ui_Note_Window, QDialog):
         
     def set_groups(self):
         groups = Model().read('groups')
+        
+        groups = sorted(groups, key=itemgetter(1))
+        
         self.cmb_groups.clear()
         
         for i in range(len(groups)):
             self.cmb_groups.addItem(groups[i][1], groups[i][0])
+                
+        for i in range(len(groups)):
+            if groups[i][1] == "Ungrouped":
+                self.cmb_groups.setCurrentIndex(i)
             if self.note and int(self.note[3]) == groups[i][0]:
                 self.cmb_groups.setCurrentIndex(i)
     

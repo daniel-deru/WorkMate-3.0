@@ -13,6 +13,7 @@ from widgetStyles.Dialog import Dialog
 from widgetStyles.PushButton import ButtonFullWidth, PushButton
 from widgetStyles.styles import VAULT_BUTTON_COLORS
 from widgetStyles.Frame import vault_type_frame
+from widgetStyles.Label import Label
 
 from utils.helpers import StyleSheet, set_font
 
@@ -36,7 +37,8 @@ class VaultType(Ui_VaultTypeDialog, QDialog):
             Dialog,
             vault_type_frame("#frame_crypto_wallet", VAULT_BUTTON_COLORS['crypto']),
             vault_type_frame("#frame_app_vault", VAULT_BUTTON_COLORS['app']),
-            vault_type_frame("#frame_general_vault", VAULT_BUTTON_COLORS['general'])
+            vault_type_frame("#frame_general_vault", VAULT_BUTTON_COLORS['general']),
+            Label
         ]
 
         stylesheet = StyleSheet(widget_list).create()

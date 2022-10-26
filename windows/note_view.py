@@ -1,3 +1,4 @@
+from operator import itemgetter
 import os
 import sys
 import pyperclip
@@ -68,6 +69,9 @@ class NoteView(Ui_NoteView, QDialog):
         self.lbl_body.setText(self.note[2])
         
         groups = Model().read('groups')
+        
+        groups = sorted(groups, key=itemgetter(1))
+        
         group = list(filter(lambda group: group[0] == int(self.note[3]), groups))
         self.lbl_group.setText(group[0][1])
         
