@@ -57,7 +57,7 @@
      <item>
       <widget class="QLabel" name="lbl_headers">
        <property name="text">
-        <string>Add Headers</string>
+        <string>Description</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -67,7 +67,7 @@
      <item>
       <widget class="QLabel" name="lbl_data">
        <property name="text">
-        <string>Add Data</string>
+        <string>Information</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
