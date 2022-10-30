@@ -17,8 +17,6 @@ from widgets.filter_group_widget import FilterGroupWidget
 from utils.helpers import StyleSheet, set_font
 from utils.helpers import clear_window
 
-from integrations.calendar.c import Google
-
 from widgetStyles.PushButton import PushButton
 from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Label import Label
@@ -107,11 +105,6 @@ class Todo_tab(Ui_todo_tab, QWidget):
         initial_group = self.filter_widget.get_current_group()
         self.display_todos(initial_group)
         self.read_style()
-
-
-# @concurrent.process(timeout=30)
-def google_thread(date, message):
-    Google.save(date, message)
 
 
         

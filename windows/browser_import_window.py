@@ -81,7 +81,7 @@ class BrowserImportWindow(Ui_BrowserPasswordImportWindow, QDialog):
     def update_groups(self) -> None:
         self.group_dict, self.group_names = self.create_group_data()
         
-    def create_group_data(self) -> tuple[dict, list]:
+    def create_group_data(self) -> tuple:
         groups = Model().read("groups")
         
         groups = sorted(groups, key=itemgetter(1))

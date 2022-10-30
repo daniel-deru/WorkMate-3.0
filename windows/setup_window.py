@@ -23,11 +23,7 @@ from threads.browser_import_thread import browser_import
 from utils.globals import DESKTOP
 from utils.helpers import StyleSheet, set_font
 
-from integrations.calendar.c import Google
-
 from widgets.setup_widget import SetupWidget
-
-from integrations.graph_api import Microsoft
 
 from widgetStyles.PushButton import PushButton, PushButton100Width, ButtonBackIcon
 from widgetStyles.Label import Label
@@ -50,10 +46,7 @@ class InitialSetup(Ui_InitialSetup, QDialog):
             ["Do you want to use Two Factor Authentication?", "https://smartmetatec.com", self.setup_twofa],
             ["Do you want to turn on dark mode?", "https://smartmetatec.com", self.setup_night_mode],
             ["Set the login timer duration.", "https://smartmetatec.com", self.setup_login_timer],
-            ["Did you export your passwords from your browser and do you want to import your passwords?", "https://smartmetatec.com", self.setup_import_browser],
-            ["Do you want to sync with Google Calendar?", "https://smartmetatec.com", self.setup_calendar],
-            ["Do you want to automatically save database to Google Drive?", "https://smartmetatec.com", self.setup_google_drive],
-            ["Do you want to automatically save database to Microsoft OneDrive?", "https://smartmetatec.com", self.setup_onedrive],
+            ["Did you export your passwords from your browser and do you want to import your passwords?", "https://smartmetatec.com", self.setup_import_browser]
         ]
         self.lbl_setup.setText(f"Step {self.stack_widget.currentIndex()+2} of {len(self.setup_list)}")
         self.create_stack()
@@ -119,19 +112,6 @@ class InitialSetup(Ui_InitialSetup, QDialog):
             browser_window = BrowserImportWindow(file)
             browser_window.import_finished.connect(lambda data: browser_import(self, data))
             browser_window.exec_()
-            
-    def setup_calendar(self):
-        th = Thread(target=google_thread, daemon=True)
-        th.start()
-        Model().update("settings", {"calendar": "1"}, "settings")
-        
-    def setup_google_drive(self):
-        self.auto_save_google = True
-        Google.connect()
-
-    def setup_onedrive(self):
-        self.auto_save_onedrive = True
-        Microsoft()
         
         
     def closeEvent(self, event: QCloseEvent) -> None:
@@ -150,14 +130,6 @@ class InitialSetup(Ui_InitialSetup, QDialog):
     
     def updateWindow(self):
         pass
-        
-def google_thread():
-    print("inside the google thread")
-    Google.connect()
-    
-def microsoft_thread():
-    Microsoft()
-    
             
     
         

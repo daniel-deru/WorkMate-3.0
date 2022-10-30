@@ -50,7 +50,7 @@ class ExistingUserTab(Ui_ExistingUser, QWidget):
         shutil.copy2(db_path, f'{DB_PATH}{DB_NAME}')
         self.existing_user_signal.emit(RegisterStatus.user_created)
         
-    def verify_data(self, data: list[str]) -> tuple[bool, str or None]:
+    def verify_data(self, data: list) -> tuple:
         db_path, name, email, words = data
         model = None
         

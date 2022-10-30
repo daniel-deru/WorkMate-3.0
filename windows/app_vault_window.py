@@ -1,7 +1,7 @@
 from operator import itemgetter
 import sys
 import os
-import cv2
+import cv2 #install for this is opencv-python
 import re
 from json import dumps
 from datetime import date, datetime, timedelta

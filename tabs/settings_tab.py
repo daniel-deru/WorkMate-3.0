@@ -39,11 +39,7 @@ from windows.groups_window import GroupsWindow
 from windows.timer_window import Timer
 from windows.login_window import Login
 
-from threads.google_thread import upload_google, download_google
-from threads.onedrive_thread import upload_onedrive, download_onedrive
 from threads.browser_import_thread import browser_import
-
-from integrations.calendar.c import Google
 
 class SettingsTab(Ui_Settings_tab, QWidget):
     settings_signal = pyqtSignal(str)
@@ -63,13 +59,8 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         # checkbox signals        
         self.chkbox_nightmode.stateChanged.connect(self.set_night_mode)
         self.chkbox_2fa.stateChanged.connect(self.twofa)
-        self.chkbox_calendar.stateChanged.connect(self.calendar_toggle)
-        
-        self.btn_auto_save.clicked.connect(self.auto_save)
         
         self.btn_forgot_password.clicked.connect(self.forgot_password_clicked)
-        self.btn_google_drive_sync.clicked.connect(self.restore_from_remote)
-        self.btn_save_google_drive.clicked.connect(self.save_to_remote_storage)
         self.btn_save_local.clicked.connect(self.save_local)
         self.btn_restore_local.clicked.connect(self.restore_from_local)
         self.btn_browser_web_import.clicked.connect(self.import_websites)
@@ -78,7 +69,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.btn_groups.clicked.connect(self.manage_groups)
         self.btn_update_password.clicked.connect(self.updatePassword)
         
-        self.btn_google.clicked.connect(self.google_sign_in)
         self.btn_timer.clicked.connect(self.timer)
         self.btn_lock.clicked.connect(lambda: self.tab_widget_settings.setCurrentIndex(0))
 
@@ -132,7 +122,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         settings = Model().read('settings')[0]
         # Set the default value of the settings
         self.chkbox_nightmode.setChecked(int(settings[1]))
-        self.chkbox_calendar.setChecked(int(settings[6]))
         
         self.chkbox_2fa.blockSignals(True)
         self.chkbox_2fa.setChecked(int(settings[7]))
@@ -215,15 +204,10 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         font_widgets = [
             self.lbl_2fa,
             self.lbl_night_mode,
-            self.lbl_calendar,
-            self.lbl_auto_save,
             self.lbl_forgot_password,
             self.lbl_browser_web_import,
-            self.lbl_save_remote,
-            self.lbl_restore_remote,
             self.lbl_save_local,
             self.lbl_restore_local,
-            self.lbl_google_integration,
             self.lbl_generate_password,
             self.lbl_setup,
             self.lbl_groups,
@@ -237,10 +221,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             
     def set_btn_icons(self):
         # Set the correct size for the google sign in button
-        pixmap: QPixmap = QPixmap(":/button_icons/google")
-        icon: QIcon = QIcon(pixmap)
-        self.btn_google.setIcon(icon)
-        self.btn_google.setIconSize(pixmap.rect().size())
         
         self.btn_generate_password.setIcon(QIcon(":/button_icons/password"))
         self.btn_generate_password.setIconSize(QSize(30, 20))
@@ -249,29 +229,18 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             [self.btn_browser_web_import, ":/button_icons/import"],
             [self.btn_forgot_password, ":/button_icons/reset"],
             [self.btn_lock, ":/button_icons/lock"],
-            [self.btn_google_drive_sync, ":/button_icons/cloud_download"],
-            [self.btn_save_google_drive, ":/button_icons/cloud_upload"],
             [self.btn_restore_local, ":/button_icons/drive_download"],
             [self.btn_save_local, ":/button_icons/drive_upload"],
             [self.btn_setup, ":/button_icons/setup"],
             [self.btn_groups, ":/button_icons/group"],
             [self.btn_update_password, ":/button_icons/reset"],
             [self.btn_timer, ":/button_icons/timer"],
-            [self.btn_auto_save, ":/button_icons/auto_save"]
         ]
         
         for button, icon in button_icon_list:
             button: QPushButton
             button.setIcon(QIcon(icon))
             button.setIconSize(QSize(20, 20))
-
-        
-    def google_sign_in(self):
-        token_file = f"{PATH}/integrations/google_token.json"
-        if not os.path.exists(token_file):
-            threading.Thread(target=google_thread, daemon=True).start()
-        else:
-            Message("You are already integrated with Google Calendar", "No Action Needed").exec_()
 
     def calendar_toggle(self):
         token_file = f"{PATH}/integrations/google_token.json"
@@ -289,21 +258,10 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         ask_question.passphrase_signal.connect(lambda: self.updateWindow())
         ask_question.exec_()
 
-
-    # Slot for the btn_save_google_drive Signal to save to remote storage manually
-    def save_to_remote_storage(self):     
-        self.drive_window: DriveWindow = DriveWindow()
-        self.drive_window.drive_dict.connect(self.manual_remote_save)
-        self.drive_window.exec_()
         
     def save_local(self):
         path = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
         if path: shutil.copy(f"{DB_PATH}{DB_NAME}", f"{path}/{DB_NAME}")
-        
-    def restore_from_remote(self):
-        self.drive_window: DriveWindow = DriveWindow()
-        self.drive_window.drive_dict.connect(self.manual_remote_download)
-        self.drive_window.exec_()
         
     def restore_from_local(self):
         file = QFileDialog.getOpenFileName(self, "Choose a file", DESKTOP, f"DB File ({DB_NAME})")[0]
@@ -340,12 +298,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             return [False, "The account you are trying to restore is not the same as the account you currently have."]
         
         return [True, None]
-            
-    def auto_save(self):
-        # if self.chk_auto_save.isChecked():
-        drive_window = DriveWindow()
-        drive_window.drive_dict.connect(self.save_drives)
-        drive_window.exec_()
     
     # check if the new db is valid and replace old db with new db
     def update_db(self, name: str or None):
@@ -375,36 +327,3 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         json_string = json.dumps(drives)
         
         Model().update('settings', {'auto_save': json_string}, 'settings')
-        
-    def manual_remote_save(self, drives):
-        self.drive_window.close()
-        
-        try:
-            if drives["google"]:
-                upload_google(self)
-                
-            if drives['onedrive']:
-                upload_onedrive(self)
-        except Exception as error:
-            print("error")
-            with open(f"{PATH}error.txt", "a") as error_file:
-                error_file.write(f"\n\n{error}")
-            
-            
-    def manual_remote_download(self, drives):
-        self.drive_window.close()
-        try:
-            if drives["google"]:
-                download_google(self)
-            elif drives['onedrive']:
-                download_onedrive(self)
-        except Exception as error:
-            with open(f"{PATH}error.txt", "a") as error_file:
-                error_file.write(f"\n\n{error}")
-        self.updateWindow()
-        
-          
-# This is for the calendar integration
-def google_thread():
-    print("inside the google thread")
-    Google.connect()

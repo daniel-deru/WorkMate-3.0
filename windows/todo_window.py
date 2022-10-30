@@ -21,8 +21,6 @@ from widgetStyles.LineEdit import LineEdit
 from widgetStyles.Dialog import Dialog
 from widgetStyles.TextEdit import TextEdit
 
-from integrations.calendar.c import Google
-
 from windows.group_window import GroupWindow
 
 from database.model import Model
@@ -139,9 +137,6 @@ class TodoWindow(Ui_todo_edit, QDialog):
             'description': description,
             'group_id': group
         }
-        
-        if(int(self.integrate_google_calendar)):
-            Thread(target=calendar_thread, daemon=True, args=(deadline, name,)).start()
 
         if self.todo:
             Model().update('todos', data, self.todo[0])
@@ -158,8 +153,5 @@ class TodoWindow(Ui_todo_edit, QDialog):
     def get_status(self):
         status: int = self.cmbx_status.currentIndex()
         self.todo['status'] = status
-        
-def calendar_thread(date, name):
-    Google.save(date, name)
             
         

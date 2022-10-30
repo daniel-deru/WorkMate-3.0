@@ -34,8 +34,6 @@ from windows.setup_window import InitialSetup
 from windows.update_password import UpdatePassword
 from windows.download_window import DownloadWindow
 
-from threads.google_thread import upload_google
-from threads.onedrive_thread import upload_onedrive
 from threads.update_password_thread import update_password
 
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
@@ -370,18 +368,6 @@ class Main(Ui_main_container, QWidget):
 
     def send_signals(self, signal):
         self.vault_tab.login_signal.emit(signal)
-
-        
-    def closeEvent(self, event: QCloseEvent) -> None:
-        
-        auto_save_json = Model().read("settings")[0][8]
-        auto_save_dict = json.loads(auto_save_json)
-        
-        if auto_save_dict['google']:
-            upload_google(self, False)
-        if auto_save_dict['onedrive']: 
-            upload_onedrive(self, False)
-        return super().closeEvent(event)
         
 
 if __name__ == "__main__":
