@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 development_mode: bool = False
 
-PATH = os.getenv("APPDATA") + "\\TrustLock" if not development_mode else os.getcwd()
+PATH = os.getenv("APPDATA") + "\\TrustLock Free" if not development_mode else os.getcwd()
 
 VERSION = "1.0.0"
 

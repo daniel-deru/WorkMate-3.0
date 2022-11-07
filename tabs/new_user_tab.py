@@ -3,7 +3,6 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 import pyperclip
 import math
-import requests
 import re
 from datetime import date, timedelta
 

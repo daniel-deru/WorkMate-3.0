@@ -1,6 +1,7 @@
 dist
 build
 env
+install
 .qt_for_python
 *.spec
 *.exe

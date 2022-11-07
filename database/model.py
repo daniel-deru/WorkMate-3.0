@@ -5,6 +5,8 @@ import json
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
+from PyQt5.QtWidgets import QMessageBox
+
 from utils.globals import DB_PATH, DB_NAME
 from utils.encryption import Encryption
 from database.tables import Tables, TableEnum
@@ -13,8 +15,11 @@ class Model:
     def __init__(self, db_path: str = f"{DB_PATH}{DB_NAME}"):
         try:
             self.db = sqlite3.connect(db_path)
-        except sqlite3.OperationalError:
-            raise Exception
+        except sqlite3.OperationalError as err:
+            message = QMessageBox()
+            message.setText(f"DB Path: {DB_PATH}{DB_NAME}\nerror: {err}")
+            message.setWindowTitle("There was an error with the database")
+            message.exec_()
         self.cur = self.db.cursor()
 
         self.create_key_table()

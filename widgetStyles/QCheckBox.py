@@ -6,8 +6,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.
 from widgetStyles.styles import color, mode, default
 from database.model import Model
 
-import assets.resources
-
 dark_mode_on = int(Model().read('settings')[0][1])
 SIZE = 25
 RATIO = 2

@@ -32,7 +32,7 @@ from windows.register_window import Register
 from windows.login_window import Login
 from windows.setup_window import InitialSetup
 from windows.update_password import UpdatePassword
-from windows.download_window import DownloadWindow
+# from windows.download_window import DownloadWindow
 
 from threads.update_password_thread import update_password
 
