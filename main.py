@@ -2,7 +2,7 @@ from datetime import date, datetime
 import sys
 import time
 import json
-import requests
+# import requests
 
 from PyQt5.QtWidgets import QApplication, QWidget, QSplashScreen, QTabWidget, QMessageBox
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QCursor, QCloseEvent, QFontDatabase
@@ -44,7 +44,7 @@ class Main(Ui_main_container, QWidget):
         
         self.expired_passwords: list = []
         self.twofa_passed = True
-        
+    
         QFontDatabase.addApplicationFont(":/fonts/RobotoCondensed")
         
         self.timer = QTimer(self)
@@ -76,7 +76,7 @@ class Main(Ui_main_container, QWidget):
             self.register.register_close_signal.connect(self.register_event)
             self.register.exec_()
         else:
-            self.check_updates()
+            # self.check_updates()
             self.get_user_password_expiration()
             self.get_vault_password_expiration()
             
@@ -84,37 +84,37 @@ class Main(Ui_main_container, QWidget):
             if len(self.expired_passwords) > 0:
                 update_password(self)
                 
-    def check_updates(self):
-        current_time = int(time.time())
-        SECONDS_IN_DAY = 24 * 60 * 60
-        last_checked = Model().read("user")[0][7]
+    # def check_updates(self):
+    #     current_time = int(time.time())
+    #     SECONDS_IN_DAY = 24 * 60 * 60
+    #     last_checked = Model().read("user")[0][7]
         
-        if not last_checked:
-            return Model().update("user", {"last_update_request": current_time}, "user")
+    #     if not last_checked:
+    #         return Model().update("user", {"last_update_request": current_time}, "user")
         
-        # if(current_time < int(last_checked) + SECONDS_IN_DAY):
-        #     return
+    #     if(current_time < int(last_checked) + SECONDS_IN_DAY):
+    #         return
         
-        data = None
+    #     data = None
         
-        try:
-            data = requests.get("https://api.smartmetatec.com/index.php/update/version")
-        except:
-            return Model().update("user", {"last_update_request": current_time}, "user")
+    #     try:
+    #         data = requests.get("https://api.smartmetatec.com/index.php/update/version")
+    #     except:
+    #         return Model().update("user", {"last_update_request": current_time}, "user")
             
-        response = json.loads(json.loads(data.json()['data']))
+    #     response = json.loads(json.loads(data.json()['data']))
 
-        if response['version'] == VERSION:
-            Model().update("user", {"last_update_request": current_time}, "user")
-        else:
-            do_update = Message("There is a new update. Do you want to update TrustLock", "Update Available").prompt()
+    #     if response['version'] == VERSION:
+    #         Model().update("user", {"last_update_request": current_time}, "user")
+    #     else:
+    #         do_update = Message("There is a new update. Do you want to update TrustLock", "Update Available").prompt()
             
-            if do_update == QMessageBox.Yes:
-                download_window = DownloadWindow()
-                download_window.close_app.connect(sys.exit)
-                download_window.exec_()
-            else:
-                Model().update("user", {"last_update_request": current_time}, "user")
+    #         if do_update == QMessageBox.Yes:
+    #             download_window = DownloadWindow()
+    #             download_window.close_app.connect(sys.exit)
+    #             download_window.exec_()
+    #         else:
+    #             Model().update("user", {"last_update_request": current_time}, "user")
                 
 
         

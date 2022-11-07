@@ -1,6 +1,5 @@
 import sys
 import os
-import threading
 import shutil
 import json
 
@@ -32,14 +31,12 @@ from windows.forgot_question import PasswordQuestion
 from windows.reset_password import ResetPassword
 from windows.drive_window import DriveWindow
 from windows.twofa_window import TwofaDialog
-from windows.browser_import_window import BrowserImportWindow
 from windows.generate_password import GeneratePasswordWindow
 from windows.setup_window import InitialSetup
 from windows.groups_window import GroupsWindow
 from windows.timer_window import Timer
 from windows.login_window import Login
 
-from threads.browser_import_thread import browser_import
 
 class SettingsTab(Ui_Settings_tab, QWidget):
     settings_signal = pyqtSignal(str)
@@ -63,7 +60,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.btn_forgot_password.clicked.connect(self.forgot_password_clicked)
         self.btn_save_local.clicked.connect(self.save_local)
         self.btn_restore_local.clicked.connect(self.restore_from_local)
-        self.btn_browser_web_import.clicked.connect(self.import_websites)
         self.btn_generate_password.clicked.connect(self.generate_password)
         self.btn_setup.clicked.connect(self.setup_wizard)
         self.btn_groups.clicked.connect(self.manage_groups)
@@ -138,19 +134,7 @@ class SettingsTab(Ui_Settings_tab, QWidget):
     def generate_password(self):
         generate_password = GeneratePasswordWindow()
         generate_password.exec_()
-        
-    
-    def import_websites(self):
-        file = QFileDialog.getOpenFileName(self, "Choose a file", DESKTOP, f"CSV File (*.csv)")[0]
-        if file:
-            browser_window = BrowserImportWindow(file)
-            browser_window.import_finished.connect(self.import_browser_data)
-            browser_window.exec_()
-        else:
-            Message("Please choose a valid file", "Invalid File").exec_()
-    
-    def import_browser_data(self, data):
-        browser_import(self, data)
+
     
     def create_tab(self):
         return self
@@ -205,7 +189,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             self.lbl_2fa,
             self.lbl_night_mode,
             self.lbl_forgot_password,
-            self.lbl_browser_web_import,
             self.lbl_save_local,
             self.lbl_restore_local,
             self.lbl_generate_password,
@@ -226,7 +209,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
         self.btn_generate_password.setIconSize(QSize(30, 20))
         
         button_icon_list = [
-            [self.btn_browser_web_import, ":/button_icons/import"],
             [self.btn_forgot_password, ":/button_icons/reset"],
             [self.btn_lock, ":/button_icons/lock"],
             [self.btn_restore_local, ":/button_icons/drive_download"],
@@ -241,17 +223,6 @@ class SettingsTab(Ui_Settings_tab, QWidget):
             button: QPushButton
             button.setIcon(QIcon(icon))
             button.setIconSize(QSize(20, 20))
-
-    def calendar_toggle(self):
-        token_file = f"{PATH}/integrations/google_token.json"
-        if not os.path.exists(token_file) and self.chkbox_calendar.checkState() == Qt.Checked:
-            Message("Please Allow Trust Lock to integrate with your google account by clicking on The 'Sign in with Google' button", "Not Allowed").exec_()
-            self.chkbox_calendar.setChecked(False)
-            self.chkbox_calendar.setCheckState(Qt.Unchecked)
-        else:
-            checked = "1" if self.chkbox_calendar.isChecked() else "0"
-            Model().update("settings", {"calendar": checked}, "settings")
-    
 
     def forgot_password_clicked(self):
         ask_question = PasswordQuestion()

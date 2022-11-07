@@ -15,10 +15,7 @@ from designs.python.setup_window import Ui_InitialSetup
 from database.model import Model
 
 from windows.twofa_window import TwofaDialog
-from windows.browser_import_window import BrowserImportWindow
 from windows.timer_window import Timer
-
-from threads.browser_import_thread import browser_import
 
 from utils.globals import DESKTOP
 from utils.helpers import StyleSheet, set_font
@@ -46,7 +43,6 @@ class InitialSetup(Ui_InitialSetup, QDialog):
             ["Do you want to use Two Factor Authentication?", "https://smartmetatec.com", self.setup_twofa],
             ["Do you want to turn on dark mode?", "https://smartmetatec.com", self.setup_night_mode],
             ["Set the login timer duration.", "https://smartmetatec.com", self.setup_login_timer],
-            ["Did you export your passwords from your browser and do you want to import your passwords?", "https://smartmetatec.com", self.setup_import_browser]
         ]
         self.lbl_setup.setText(f"Step {self.stack_widget.currentIndex()+2} of {len(self.setup_list)}")
         self.create_stack()
@@ -105,13 +101,6 @@ class InitialSetup(Ui_InitialSetup, QDialog):
         
     def setup_night_mode(self):
         Model().update("settings", {'nightmode': "1"}, 'settings')
-        
-    def setup_import_browser(self):
-        file = QFileDialog.getOpenFileName(self, "Choose a file", DESKTOP, f"CSV File (*.csv)")[0]
-        if file:
-            browser_window = BrowserImportWindow(file)
-            browser_window.import_finished.connect(lambda data: browser_import(self, data))
-            browser_window.exec_()
         
         
     def closeEvent(self, event: QCloseEvent) -> None:
